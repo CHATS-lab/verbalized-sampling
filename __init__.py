@@ -1,0 +1,1 @@
+# This file makes verbalized_sampling a Python package. 
