@@ -7,7 +7,7 @@ MODELS=(
 )
 MODEL=openai/o4-mini
 MODEL=google/gemini-2.0-flash-001
-# MODEL=openai/gpt-4.1
+MODEL=openai/gpt-4.1
 MODEL=google/gemini-2.5-flash-preview-05-20
 
 # MODEL=meta-llama/llama-3.3-70b-instruct
@@ -19,7 +19,7 @@ SIM_TYPE=sampling
 TEMPERATURE=1.0
 TOP_P=1.0
 MODEL_NAME=$(basename $MODEL)
-TASK=rand_num
+TASK=story
 FORMATS=("direct" "seq" "structure" "structure_with_prob")
 # FORMATS=("structure")
 FORMATS=("seq" "structure_with_prob")
