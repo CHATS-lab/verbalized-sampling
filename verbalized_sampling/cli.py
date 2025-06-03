@@ -60,8 +60,8 @@ def analyze_results(
     sizes: List[int] = typer.Option([1, 3, 5, 10, 50], help="Sampling sizes to analyze"),
 ):
     """Analyze experiment results."""
-    from verbalized_sampling.analysis.plots import plot_histograms
-    from verbalized_sampling.analysis.metrics import evaluate_chi_square
+    from verbalized_sampling.analysis.plotting import plot_histograms
+    from verbalized_sampling.evals.chi_square import evaluate_chi_square
     import json
     
     console.print(f"Analyzing results from {target_dir}")
