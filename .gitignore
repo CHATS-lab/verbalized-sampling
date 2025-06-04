@@ -65,6 +65,9 @@ log/
 
 # Output files
 output/
+outputs/
 results/
 *.png
 *.jsonl
+*.env
+archive/

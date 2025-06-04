@@ -1,30 +1,15 @@
 from .base import BaseTask
-from verbalized_sampling.prompts.rand_num import (
-    QUESTION,
-    SAMPLE_QUESTION,
-    SEQUENCE_PROMPT,
-    FORMAT_WITHOUT_PROBABILITY_PROMPT,
-    FORMAT_WITH_PROBABILITY_PROMPT,
-)
+from typing import Any
 
 class RandomNumberTask(BaseTask):
     """Task for generating random numbers."""
     
     def __init__(self, format: str = "direct"):
         self.format = format
-        self.prompt_factory = {
-            "direct": lambda question: question,
-            "seq": lambda question: question + "\n\n" + SEQUENCE_PROMPT,
-            "structure": lambda question: question + "\n\n" + FORMAT_WITHOUT_PROBABILITY_PROMPT,
-            "structure_with_prob": lambda question: question + "\n\n" + FORMAT_WITH_PROBABILITY_PROMPT,
-        }
-    
+
     def get_prompt(self, num_samples: int = 1) -> str:
         """Get the prompt for the task."""
-        if self.format == "direct":
-            return QUESTION
-        prompt = SAMPLE_QUESTION.format(num_samples=num_samples)
-        return self.prompt_factory[self.format](prompt)
+        return "Generate a random number between 0 and 100."
     
     def parse_response(self, response: str) -> Any:
         """Parse the model's response."""
