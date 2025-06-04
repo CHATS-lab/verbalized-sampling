@@ -3,39 +3,57 @@ from pathlib import Path
 from typing import Any, Dict, List
 import json
 from rich.progress import Progress
-from verbalized_sampling.prompts import PromptFactory, PromptTemplate, SamplingPromptTemplate, Method
+from verbalized_sampling.prompts import (
+    PromptFactory, 
+    Method
+)
 from verbalized_sampling.llms import BaseLLM
 
 class BaseTask(ABC):
     """Base class for all tasks."""
     
-    @abstractmethod
-    def get_prompt(self, method: Method, num_samples: int = 1) -> str:
+    def __init__(self,
+                 model: BaseLLM,
+                 method: Method,
+                 num_responses: int = 3,
+                 num_samples: int = 1,
+                 sample_size: int = 1,
+                 random_seed: int = 42,
+                 ):
+        self.model = model
+        self.method = method
+        self.num_responses = num_responses
+        self.num_samples = num_samples
+        self.sample_size = sample_size
+        self.random_seed = random_seed
+        
+    def get_prompt(self) -> List[List[Dict[str, str]]]:
         """Get the prompt for the task."""
-        pass
+        return PromptFactory.get_prompt(
+            self.task_type, 
+            self.method, 
+            num_samplings=self.num_samples,
+            sample_size=self.sample_size,
+            random_seed=self.random_seed
+        )
     
     @abstractmethod
-    def parse_response(self, method: Method, response: str) -> Any:
+    def parse_response(self, response: str) -> Any:
         """Parse the model's response."""
         pass
     
     def run(
         self,
-        model: BaseLLM,
-        method: Method,
-        num_responses: int = 3,
-        num_samples: int = 1,
-        num_workers: int = 128,
         progress: Progress = None,
         task_id: int = None,
     ) -> List[Any]:
         """Run the task with the given model."""
         
-        prompts = [self.get_prompt(method, num_samples)] * num_responses
-        results = model.chat(prompts)
+        prompts = [prompt for prompt in self.get_prompt() for _ in range(self.num_responses)]
+        results = self.model.chat(prompts)
         parsed_results = []
         for result in results:
-            parsed = self.parse_response(method, result)
+            parsed = self.parse_response(result)
             if parsed is not None:
                 parsed_results.append(parsed)
             else:

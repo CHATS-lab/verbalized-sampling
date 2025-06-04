@@ -23,6 +23,8 @@ def run_experiment(
     num_workers: int = typer.Option(128, help="Number of parallel workers"),
     output_file: Path = typer.Option("responses.jsonl", help="Output file path"),
     use_vllm: bool = typer.Option(False, help="Whether to use vLLM"),
+    sample_size: int = typer.Option(1, help="Number of samples to generate"),
+    random_seed: int = typer.Option(42, help="Random seed"),
 ):
     """Run a verbalized sampling experiment."""
     from verbalized_sampling.tasks import get_task
@@ -31,8 +33,12 @@ def run_experiment(
     console.print(f"Running experiment for task: {task}")
     console.print(f"Using model: {model_name}")
     
+    kwargs = {}
+    if task in [Task.POEM, Task.SPEECH]:
+        kwargs["sample_size"] = sample_size
+        kwargs["random_seed"] = random_seed
+    
     # Get task and model
-    task_instance = get_task(task)
     model = get_model(
         model_name=model_name,
         method=method,
@@ -40,16 +46,19 @@ def run_experiment(
         use_vllm=use_vllm,
         num_workers=num_workers
     )
+    task_instance = get_task(
+        task, 
+        model=model,
+        method=method,
+        num_responses=num_responses,
+        num_samples=num_samples,
+        sample_size=sample_size,
+        random_seed=random_seed)
     
     # Run experiment
     with Progress() as progress:
         task = progress.add_task("[cyan]Running experiment...", total=num_responses)
         results = task_instance.run(
-            model=model,
-            method=method,
-            num_responses=num_responses,
-            num_samples=num_samples,
-            num_workers=num_workers,
             progress=progress,
             task_id=task
         )

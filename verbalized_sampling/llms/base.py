@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Callable, T
 import concurrent.futures
 from pydantic import BaseModel
+from tqdm import tqdm
 
 class VerbalizedSamplingResponse(BaseModel):
     response: str
@@ -56,13 +57,21 @@ class BaseLLM(ABC):
             # Initialize results list with None
             results = [None] * len(messages_list)
             
-            # As futures complete, put them in the correct position
-            for future in concurrent.futures.as_completed(future_to_index):
-                index = future_to_index[future]
-                try:
-                    results[index] = future.result()
-                except Exception as e:
-                    print(f"Error processing message {index}: {e}")
-                    results[index] = None
+            # As futures complete, put them in the correct position with tqdm progress
+            with tqdm(
+                total=len(messages_list), 
+                desc="Processing messages",
+                unit="msg",
+                bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}]"
+            ) as pbar:
+                for future in concurrent.futures.as_completed(future_to_index):
+                    index = future_to_index[future]
+                    try:
+                        results[index] = future.result()
+                        pbar.set_postfix({"completed": f"#{index}"})
+                    except Exception as e:
+                        pbar.write(f"Error processing message {index}: {e}")
+                        results[index] = None
+                    pbar.update(1)
             
             return results

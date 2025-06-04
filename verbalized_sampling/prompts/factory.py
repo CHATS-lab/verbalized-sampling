@@ -57,9 +57,46 @@ class SamplingPromptTemplate(PromptTemplate):
 class PromptFactory:
     """Factory for creating prompts for different models and tasks."""
     
+    PROMPT_MAP = {
+        Method.SEQUENCE: SEQUENCE_PROMPT,
+        Method.STRUCTURE: STRUCTURE_RESPONSE_ONLY_PROMPT,
+        Method.STRUCTURE_WITH_PROB: STRUCTURE_WITH_PROBABILITY_PROMPT,
+        Method.CHAIN_OF_THOUGHT: CHAIN_OF_THOUGHT_PROMPT,
+        Method.SELF_REFLECTION: SELF_REFLECTION_PROMPT,
+        Method.TEMPERATURE_SAMPLING: TEMPERATURE_SAMPLING_PROMPT,
+        Method.MULTI_TURN: MULTI_TURN_INITIAL_PROMPT,
+    }
     @staticmethod
-    def get_prompt(task: str, method: Method, **kwargs) -> List[Dict[str, str]]:
-        """Get a prompt for a specific task and format."""
+    def pack_prompt(
+        method: Method,
+        prompt: str,
+        chat_history: List[Dict[str, str]] = None,
+        num_samplings: int = 5,
+    ) -> List[Dict[str, str]]:
+        
+        """Pack a prompt for a specific method."""
+        if method == Method.DIRECT:
+            return [{"role": "user", "content": prompt}]
+        else:
+            system_prompt = PromptFactory.PROMPT_MAP[method].format(num_samplings=num_samplings)
+            return [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": prompt}
+            ]
+    
+    @staticmethod
+    def get_prompt(
+        task: str, 
+        method: Method, 
+        num_samplings: int = 5,
+        sample_size: int = None,
+        random_seed: int = None,
+    ) -> List[List[Dict[str, str]]]:
+        """Get a prompt for a specific task and format.
+        
+        Returns:
+            List[List[Dict[str, str]]]: A list of prompts, each containing a system and user message.
+        """
         prompt_path = f"data/{task}.txt"
 
         if not os.path.exists(prompt_path):
@@ -70,59 +107,16 @@ class PromptFactory:
                 prompts.append(line)
         
         # TODO add selection of prompts
-        target_prompt = random.choice(prompts)
-
-        if method == Method.DIRECT:
-            return [
-                {"role": "user", "content": target_prompt}
-            ]
-        elif method == Method.SEQUENCE:
-            formatted_prompt = SEQUENCE_PROMPT.format(num_samplings=kwargs.get("num_samplings", 5))
-            return [
-                {"role": "system", "content": formatted_prompt},
-                {"role": "user", "content": target_prompt}
-            ]
-        elif method == Method.STRUCTURE:
-            formatted_prompt = STRUCTURE_RESPONSE_ONLY_PROMPT.format(num_samplings=kwargs.get("num_samplings", 5))
-            return [
-                {"role": "system", "content": formatted_prompt},
-                {"role": "user", "content": target_prompt}
-            ]
-        elif method == Method.STRUCTURE_WITH_PROB:
-            formatted_prompt = STRUCTURE_WITH_PROBABILITY_PROMPT.format(num_samplings=kwargs.get("num_samplings", 5))
-            return [
-                {"role": "system", "content": formatted_prompt},
-                {"role": "user", "content": target_prompt}
-            ]
-        elif method == Method.CHAIN_OF_THOUGHT:
-            formatted_prompt = CHAIN_OF_THOUGHT_PROMPT.format(num_samplings=kwargs.get("num_samplings", 5))
-            return [
-                {"role": "system", "content": formatted_prompt},
-                {"role": "user", "content": target_prompt}
-            ]
-        elif method == Method.SELF_REFLECTION:
-            formatted_prompt = SELF_REFLECTION_PROMPT.format(num_samplings=kwargs.get("num_samplings", 5))
-            return [
-                {"role": "system", "content": formatted_prompt},
-                {"role": "user", "content": target_prompt}
-            ]
-        elif method == Method.TEMPERATURE_SAMPLING:
-            formatted_prompt = TEMPERATURE_SAMPLING_PROMPT.format(num_samplings=kwargs.get("num_samplings", 5))
-            return [
-                {"role": "system", "content": formatted_prompt},
-                {"role": "user", "content": target_prompt}
-            ]
-        elif method == Method.MULTI_TURN:
-            formatted_prompt = MULTI_TURN_INITIAL_PROMPT.format(num_samplings=kwargs.get("num_samplings", 5))
-            return [
-                {"role": "system", "content": formatted_prompt},
-                {"role": "user", "content": target_prompt}
-            ]
+        if (sample_size is not None) and (random_seed is not None):
+            random.seed(random_seed)
+            prompts = random.sample(prompts, sample_size)
         else:
-            raise ValueError(f"Unsupported method: {method}")
+            prompts = random.sample(prompts, 1)
+
+        return [PromptFactory.pack_prompt(method, prompt) for prompt in prompts]
 
     @staticmethod
-    def get_multi_turn_continuation(turn_number: int, total_turns: int, original_prompt: str) -> List[Dict[str, str]]:
+    def get_multi_turn_continuation(turn_number: int, total_turns: int, chat_history: List[Dict[str, str]]) -> List[Dict[str, str]]:
         """Get continuation prompt for multi-turn sampling."""
         if turn_number == total_turns:
             continuation_prompt = MULTI_TURN_FINAL_PROMPT.format(
@@ -135,6 +129,4 @@ class PromptFactory:
                 total_turns=total_turns
             )
         
-        return [
-            {"role": "user", "content": f"{continuation_prompt}\n\nOriginal prompt: {original_prompt}"}
-        ]
+        return chat_history + [{"role": "user", "content": continuation_prompt}]
