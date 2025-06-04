@@ -1,14 +1,29 @@
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Callable, T
 import concurrent.futures
+from pydantic import BaseModel
+
+class VerbalizedSamplingResponse(BaseModel):
+    response: str
+    probability: float
+
+class VerbalizedSamplingResponseList(BaseModel):
+    responses: List[VerbalizedSamplingResponse]
+
+def get_json_schema_from_pydantic(model: BaseModel) -> Dict[str, Any]:
+    return model.model_json_schema()
 
 class BaseLLM(ABC):
     """Base class for all LLM interfaces."""
     
-    def __init__(self, model_name: str, config: Dict[str, Any], parallel_workers: int = 1, is_structured: bool = False):
+    def __init__(self, 
+                 model_name: str, 
+                 config: Dict[str, Any], 
+                 num_workers: int = 1, 
+                 is_structured: bool = False):
         self.model_name = model_name
         self.config = config
-        self.parallel_workers = parallel_workers
+        self.num_workers = num_workers
         self.is_structured = is_structured
     
     @abstractmethod
@@ -23,7 +38,7 @@ class BaseLLM(ABC):
     
     def chat(self, messages: List) -> List[str]:
         CHAT_FUNC = self._chat_with_format if self.is_structured else self._chat
-        if self.parallel_workers > 1:
+        if self.num_workers > 1:
             return self._parallel_execute(CHAT_FUNC, messages)
         else:
             return [CHAT_FUNC(message) for message in messages] 
@@ -31,7 +46,7 @@ class BaseLLM(ABC):
 
     def _parallel_execute(self, func: Callable[[List[Dict[str, str]]], T], messages_list: List[List[Dict[str, str]]]) -> List[T]:
         """Execute function in parallel while maintaining order of responses."""
-        with concurrent.futures.ThreadPoolExecutor(max_workers=self.parallel_workers) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=self.num_workers) as executor:
             # Submit all tasks and keep track of their order
             future_to_index = {
                 executor.submit(func, messages): i 

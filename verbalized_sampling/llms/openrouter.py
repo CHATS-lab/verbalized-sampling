@@ -1,8 +1,7 @@
 from typing import Any, Dict, List, Callable, TypeVar
-import openrouter
 from .base import BaseLLM, VerbalizedSamplingResponseList, get_json_schema_from_pydantic
 import json
-import concurrent.futures
+from openai import OpenAI
 import os
 
 T = TypeVar('T')
@@ -22,19 +21,18 @@ OPENROUTER_MODELS_MAPPING = {
 class OpenRouterLLM(BaseLLM):
     """OpenRouter implementation for various models."""
     
-    def __init__(self, model_name: str, sim_type: str, config: Dict[str, Any], **kwargs):
-        super().__init__(model_name, sim_type, config)
+    def __init__(self, model_name: str, config: Dict[str, Any], num_workers: int = 1, is_structured: bool = False):
+        super().__init__(model_name, config, num_workers, is_structured)
         
         if model_name in OPENROUTER_MODELS_MAPPING:
             self.model_name = OPENROUTER_MODELS_MAPPING[model_name]
             
-        self.client = openrouter.Client()
-        self.parallel_workers = kwargs.get("parallel_workers", 1)
-        
+        self.client = OpenAI(
+            base_url="https://openrouter.ai/api/v1",
+            api_key=os.environ.get("OPENROUTER_API_KEY"),
+        )
         # Set up response format for structured output
-        self.response_format = None
-        if sim_type == "sampling":
-            self.response_format = get_json_schema_from_pydantic(VerbalizedSamplingResponseList)
+        self.response_format = None if not self.is_structured else get_json_schema_from_pydantic(VerbalizedSamplingResponseList)
 
     def _chat(self, messages: List[Dict[str, str]]) -> str:
         """Basic chat functionality without structured response format."""
@@ -80,7 +78,7 @@ class OpenRouterLLM(BaseLLM):
                 parsed = json.loads(response)
                 return [
                     {
-                        "text": resp["text"],
+                        "response": resp["response"],
                         "probability": resp["probability"]
                     }
                     for resp in parsed.get("responses", [])
@@ -88,4 +86,4 @@ class OpenRouterLLM(BaseLLM):
         except Exception as e:
             print(f"Error parsing response: {e}")
             # If parsing fails, return a single response with probability 1.0
-            return [{"text": response, "probability": 1.0}]
+            return [{"response": response, "probability": 1.0}]

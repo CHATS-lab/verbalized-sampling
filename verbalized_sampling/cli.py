@@ -1,17 +1,21 @@
 import typer
 from pathlib import Path
-from typing import List, Optional
+from typing import List
 from rich.console import Console
 from rich.progress import Progress
+from verbalized_sampling.tasks import Task
+from verbalized_sampling.prompts import Method
+import json
 
 app = typer.Typer(help="Verbalized Sampling Experiment CLI")
 console = Console()
 
+
 @app.command()
 def run_experiment(
-    task: str = typer.Option(..., help="Task to run (rand_num or story)"),
+    task: Task = typer.Option(..., help="Task to run (rand_num or story)"),
     model_name: str = typer.Option("meta-llama/Llama-3.1-70B-Instruct", help="Model name to use"),
-    format: str = typer.Option(..., help="Sampling format (direct, seq, structure, structure_with_prob)"),
+    method: Method = typer.Option(..., help="Sampling method (direct, seq, structure, structure_with_prob)"),
     temperature: float = typer.Option(0.7, help="Sampling temperature"),
     top_p: float = typer.Option(0.9, help="Top-p sampling parameter"),
     num_responses: int = typer.Option(3, help="Number of responses to generate"),
@@ -28,12 +32,13 @@ def run_experiment(
     console.print(f"Using model: {model_name}")
     
     # Get task and model
-    task_instance = get_task(task, format=format)
+    task_instance = get_task(task)
     model = get_model(
         model_name=model_name,
-        sim_type=format,
+        method=method,
         config={"temperature": temperature, "top_p": top_p},
-        use_vllm=use_vllm
+        use_vllm=use_vllm,
+        num_workers=num_workers
     )
     
     # Run experiment
@@ -41,6 +46,7 @@ def run_experiment(
         task = progress.add_task("[cyan]Running experiment...", total=num_responses)
         results = task_instance.run(
             model=model,
+            method=method,
             num_responses=num_responses,
             num_samples=num_samples,
             num_workers=num_workers,
@@ -51,6 +57,37 @@ def run_experiment(
     # Save results
     output_file.parent.mkdir(parents=True, exist_ok=True)
     task_instance.save_results(results, output_file)
+    console.print(f"Results saved to {output_file}")
+
+@app.command()
+def evaluate(
+    metric: str = typer.Option(..., help="Metric to evaluate"),
+    task: Task = typer.Option(..., help="Task to evaluate"),
+    input_file: Path = typer.Option(..., help="Input file path"),
+    output_file: Path = typer.Option(..., help="Output file path"),
+):
+    """Evaluate the results of an experiment."""
+    from verbalized_sampling.evals import get_evaluator
+    from verbalized_sampling.tasks import get_task
+    
+    console.print(f"Evaluating {metric} for task: {task}")
+    console.print(f"Using output file: {output_file}")
+
+    # Get task and evaluator
+    task_instance = get_task(task)
+    evaluator = get_evaluator(metric)
+
+    with open(input_file) as f:
+        responses = [json.loads(line) for line in f]
+
+    results = evaluator.evaluate(
+        responses,
+        responses,
+        task_instance.get_metadata())
+
+    # Save results
+    output_file.parent.mkdir(parents=True, exist_ok=True)
+    evaluator.save_results(results, output_file)
     console.print(f"Results saved to {output_file}")
 
 @app.command()
@@ -101,4 +138,4 @@ def analyze_results(
     console.print(f"Metrics saved to {metrics_dir}")
 
 if __name__ == "__main__":
-    app() 
+    app()

@@ -6,13 +6,13 @@ import json
 class VLLMOpenAI(BaseLLM):
     """vLLM implementation for OpenAI compatible requests."""
     
-    def __init__(self, model_name: str, config: Dict[str, Any], **kwargs):
-        super().__init__(model_name, config)
+    def __init__(self, model_name: str, config: Dict[str, Any], num_workers: int = 1, is_structured: bool = False):
+        super().__init__(model_name, config, num_workers, is_structured)
         self.client = OpenAI(
             base_url=config.get("base_url", "http://localhost:8000/v1"),
         )
-        self.response_format = VerbalizedSamplingResponseList
-        self.parallel_workers = kwargs.get("parallel_workers", 1)
+        if self.is_structured:
+            self.response_format = VerbalizedSamplingResponseList
 
     def _chat(self, messages: List[Dict[str, str]]) -> str:
         """Basic chat functionality without structured response format."""
