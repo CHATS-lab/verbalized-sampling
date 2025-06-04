@@ -89,3 +89,19 @@ All `.sh` scripts are in the `scripts/` directory. Run them as needed:
 ```bash
 bash scripts/run.sh
 ``` 
+
+### TODO
+- LLMs
+    <!-- - Add back the parallel workers -->
+    - handle multi-turn conversations
+- Tasks
+    - Refine for the story task
+    - New tasks for creativity index
+- Prompts
+    - prompt factory
+- Generation methods
+    - Direct
+    - Sequence
+    - Structure
+    - Structure with probability
+    - Multi-turn conversation

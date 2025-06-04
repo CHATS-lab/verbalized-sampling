@@ -1,9 +1,10 @@
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any, Optional, Union
 import torch
 import numpy as np
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
 import os
+import json
 
 from .base import BaseEvaluator, EvalResult
 from verbalized_sampling.llms import get_embedding_model
@@ -11,8 +12,8 @@ from verbalized_sampling.llms import get_embedding_model
 class DiversityEvaluator(BaseEvaluator):
     """Evaluator for measuring response diversity using embeddings and cosine similarity."""
     
-    def __init__(self, model_name: str = "text-embedding-3-small"):
-        super().__init__("diversity")
+    def __init__(self, model_name: str = "text-embedding-3-small", num_workers: int = 128):
+        super().__init__("diversity", num_workers)
         self.model_name = model_name
         self.device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
         self.embedding_model = get_embedding_model(model_name)
@@ -27,10 +28,11 @@ class DiversityEvaluator(BaseEvaluator):
         return {
             "response_length": len(response.split()),
             "unique_words": len(set(response.split())),
-            "vocabulary_richness": len(set(response.split())) / len(response.split())
+            "vocabulary_richness": len(set(response.split())) / len(response.split()),
+            "response": response
         }
     
-    def aggregate_metrics(self, instance_metrics: List[Dict[str, float]]) -> Dict[str, float]:
+    def aggregate_metrics(self, instance_metrics: List[Dict[str, float]]) -> Dict[str, Any]:
         """Compute diversity metrics across all responses."""
         if len(instance_metrics) <= 1:
             return {
@@ -38,9 +40,10 @@ class DiversityEvaluator(BaseEvaluator):
                 "min_similarity": 0.0,
                 "max_similarity": 0.0,
                 "std_similarity": 0.0,
-                "average_response_length": np.mean([m["response_length"] for m in instance_metrics]),
-                "average_unique_words": np.mean([m["unique_words"] for m in instance_metrics]),
-                "average_vocabulary_richness": np.mean([m["vocabulary_richness"] for m in instance_metrics])
+                "average_response_length": 0.0,
+                "average_unique_words": 0.0,
+                "average_vocabulary_richness": 0.0,
+                "pairwise_similarities": []
             }
         
         # Get all responses
@@ -69,16 +72,26 @@ class DiversityEvaluator(BaseEvaluator):
         indices = torch.triu_indices(len(responses), len(responses), offset=1)
         similarities = similarity_matrix[indices[0], indices[1]].cpu().numpy()
         
-        return {
+        # Create list of pairwise similarities with response pairs
+        pairwise_similarities = []
+        for i, j in zip(indices[0].cpu().numpy(), indices[1].cpu().numpy()):
+            pairwise_similarities.append(float(similarity_matrix[i, j].cpu().numpy()))
+        
+        # Convert all numpy values to Python native types
+        metrics = {
             "average_similarity": float(similarities.mean()),
             "min_similarity": float(similarities.min()),
             "max_similarity": float(similarities.max()),
             "std_similarity": float(similarities.std()),
-            "average_response_length": np.mean([m["response_length"] for m in instance_metrics]),
-            "average_unique_words": np.mean([m["unique_words"] for m in instance_metrics]),
-            "average_vocabulary_richness": np.mean([m["vocabulary_richness"] for m in instance_metrics]),
-            "total_cost": total_cost
+            "average_response_length": float(np.mean([m["response_length"] for m in instance_metrics])),
+            "average_unique_words": float(np.mean([m["unique_words"] for m in instance_metrics])),
+            "average_vocabulary_richness": float(np.mean([m["vocabulary_richness"] for m in instance_metrics])),
+            "total_cost": float(total_cost),
+            "pairwise_similarities": pairwise_similarities
         }
+        
+        # Ensure all values are Python native types
+        return {k: float(v) if isinstance(v, (np.floating, np.integer)) else v for k, v in metrics.items()}
     
     def evaluate(self, 
                 prompts: List[str], 
@@ -95,3 +108,26 @@ class DiversityEvaluator(BaseEvaluator):
         })
         
         return super().evaluate(prompts, responses, metadata)
+
+    def save_results(self, result: EvalResult, output_path: str):
+        """Save evaluation results to a file."""        
+        # Convert to dictionary first
+        result_dict = {
+            "instance_metrics": result.instance_metrics,
+            "overall_metrics": {
+                k: float(v) if isinstance(v, (np.floating, np.integer)) else v 
+                for k, v in result.overall_metrics.items()
+            },
+            "metadata": result.metadata
+        }
+        
+        with open(output_path, 'w') as f:
+            json.dump(result_dict, f, indent=2)
+
+    @classmethod
+    def load_results(cls, input_path: str) -> EvalResult:
+        """Load evaluation results from a file."""        
+        with open(input_path, 'r') as f:
+            result_dict = json.load(f)
+        
+        return EvalResult(**result_dict)

@@ -65,6 +65,7 @@ def evaluate(
     task: Task = typer.Option(..., help="Task to evaluate"),
     input_file: Path = typer.Option(..., help="Input file path"),
     output_file: Path = typer.Option(..., help="Output file path"),
+    num_workers: int = typer.Option(128, help="Number of parallel workers"),
 ):
     """Evaluate the results of an experiment."""
     from verbalized_sampling.evals import get_evaluator
@@ -75,15 +76,21 @@ def evaluate(
 
     # Get task and evaluator
     task_instance = get_task(task)
-    evaluator = get_evaluator(metric)
+    evaluator = get_evaluator(metric, num_workers=num_workers)
 
     with open(input_file) as f:
-        responses = [json.loads(line) for line in f]
+        responses = []
+        for line in f:
+            try:
+                responses.append(json.loads(line))
+            except json.JSONDecodeError:
+                responses.append(line)
 
     results = evaluator.evaluate(
         responses,
         responses,
-        task_instance.get_metadata())
+        {}
+        )
 
     # Save results
     output_file.parent.mkdir(parents=True, exist_ok=True)
