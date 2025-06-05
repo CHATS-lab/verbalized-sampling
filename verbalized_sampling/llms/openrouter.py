@@ -88,4 +88,4 @@ class OpenRouterLLM(BaseLLM):
         except Exception as e:
             print(f"Error parsing response: {e}")
             # If parsing fails, return a single response with probability 1.0
-            return [{"response": response, "probability": 1.0}
+            return [{"response": response, "probability": 1.0}]
