@@ -26,11 +26,43 @@ class TTCTEvaluator(BaseEvaluator):
             return {
                 "error": "Failed to parse judge response",
                 "raw_response": result,
-                "fluency_score": 0.0,
-                "flexibility_score": 0.0,
-                "originality_score": 0.0,
-                "elaboration_score": 0.0,
-                "creativity_score": 0.0
+                "fluency": {
+                    "score": 0.0,
+                    "meaningful_responses_count": 0,
+                    "total_responses": 0,
+                    "analysis": "",
+                    "justification": ""
+                },
+                "flexibility": {
+                    "score": 0.0,
+                    "categories_identified": [],
+                    "category_count": 0,
+                    "analysis": "",
+                    "justification": ""
+                },
+                "originality": {
+                    "score": 0.0,
+                    "unique_elements": [],
+                    "commonality_assessment": "",
+                    "novel_connections": [],
+                    "analysis": "",
+                    "justification": ""
+                },
+                "elaboration": {
+                    "score": 0.0,
+                    "detail_level": "",
+                    "descriptive_elements": [],
+                    "development_quality": "",
+                    "analysis": "",
+                    "justification": ""
+                },
+                "overall": {
+                    "creativity_score": 0.0,
+                    "normalized_score": 0.0,
+                    "strengths": [],
+                    "areas_for_improvement": [],
+                    "overall_assessment": ""
+                }
             }
     
     def _create_evaluation_prompt(self, prompt: str, response: str) -> str:
@@ -158,6 +190,16 @@ REQUIRED JSON OUTPUT FORMAT:
 
 Be thorough, specific, and evidence-based in your analysis. Provide concrete examples from the responses to support your scores."""
 
+    def aggregate_metrics(self, instance_metrics: List[Dict[str, float]]) -> Dict[str, float]:
+        """Aggregate instance-level metrics into overall metrics."""
+        return {
+            "fluency": sum(metric["fluency"]["score"] for metric in instance_metrics) / len(instance_metrics),
+            "flexibility": sum(metric["flexibility"]["score"] for metric in instance_metrics) / len(instance_metrics),
+            "originality": sum(metric["originality"]["score"] for metric in instance_metrics) / len(instance_metrics),
+            "elaboration": sum(metric["elaboration"]["score"] for metric in instance_metrics) / len(instance_metrics),
+            "overall": sum(metric["overall"]["creativity_score"] for metric in instance_metrics) / len(instance_metrics)
+        }
+    
     def evaluate(self, prompts: List[str], responses: List[str], 
                 metadata: Optional[Dict[str, Any]] = None) -> EvalResult:
         """Evaluate responses using TTCT framework."""

@@ -1,0 +1,47 @@
+from typing import Dict, List, Any, Optional
+import tiktoken
+from .base import BaseEvaluator, EvalResult
+
+class LengthEvaluator(BaseEvaluator):
+    """Simple evaluator for computing token length of text responses using OpenAI tokenizer."""
+    
+    def __init__(self, model_name: str = "gpt-4"):
+        super().__init__("length")
+        # Get the tokenizer for the specified model
+        self.tokenizer = tiktoken.encoding_for_model(model_name)
+    
+    def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, float]:
+        """Compute token length for a single response."""
+        token_count = len(self.tokenizer.encode(response))
+        return {
+            "token_length": float(token_count)
+        }
+    
+    def aggregate_metrics(self, instance_metrics: List[Dict[str, float]]) -> Dict[str, float]:
+        """Aggregate token lengths across all instances."""
+        if not instance_metrics:
+            return {}
+        
+        token_lengths = [metric["token_length"] for metric in instance_metrics]
+        
+        return {
+            "mean_token_length": sum(token_lengths) / len(token_lengths),
+            "min_token_length": min(token_lengths),
+            "max_token_length": max(token_lengths),
+            "total_tokens": sum(token_lengths),
+            "num_responses": len(instance_metrics)
+        }
+    
+    def evaluate(self, prompts: List[str], responses: List[str], 
+                metadata: Optional[Dict[str, Any]] = None) -> EvalResult:
+        """Evaluate responses for token length."""
+        if metadata is None:
+            metadata = {}
+            
+        metadata.update({
+            "evaluation_type": "token_length",
+            "tokenizer_model": self.tokenizer.name,
+            "num_responses": len(responses)
+        })
+        
+        return super().evaluate(prompts, responses, metadata)
