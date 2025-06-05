@@ -15,6 +15,8 @@ class EvalResultEncoder(json.JSONEncoder):
             return float(obj)
         elif isinstance(obj, np.ndarray):
             return obj.tolist()
+        elif hasattr(obj, 'to_dict'):  # Handle EvalResult objects
+            return obj.to_dict()
         return super().default(obj)
 
 @dataclass
@@ -72,7 +74,7 @@ class BaseEvaluator(ABC):
     def save_results(self, result: EvalResult, output_path: Union[str, Path]):
         """Save evaluation results to a file."""
         with open(output_path, "w") as f:
-            json.dump(result, f, indent=4)
+            json.dump(result.to_dict(), f, indent=4, cls=EvalResultEncoder)
 
     @classmethod
     def load_results(cls, input_path: Union[str, Path]) -> EvalResult:

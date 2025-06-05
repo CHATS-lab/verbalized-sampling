@@ -5,10 +5,10 @@ from .base import BaseEvaluator, EvalResult
 class LengthEvaluator(BaseEvaluator):
     """Simple evaluator for computing token length of text responses using OpenAI tokenizer."""
     
-    def __init__(self, model_name: str = "gpt-4"):
-        super().__init__("length")
+    def __init__(self, num_workers: int = 128):
+        super().__init__("length", num_workers)
         # Get the tokenizer for the specified model
-        self.tokenizer = tiktoken.encoding_for_model(model_name)
+        self.tokenizer = tiktoken.get_encoding("o200k_base")
     
     def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, float]:
         """Compute token length for a single response."""

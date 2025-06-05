@@ -50,8 +50,9 @@ class CreativityIndexEvaluator(BaseEvaluator):
                  threshold: float = 0.95,  # For semantic matching
                  embed_model: str = "meta-llama/Meta-Llama-3-8B-Instruct",
                  api_url: str = "https://api.infini-gram.io/",
-                 embed_table_path: str = None):
-        super().__init__("creativity_index")
+                 embed_table_path: str = None,
+                 num_workers: int = 128):
+        super().__init__("creativity_index", num_workers)
         self.method = method
         self.corpus = corpus
         self.min_ngram = min_ngram

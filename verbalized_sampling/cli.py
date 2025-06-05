@@ -153,5 +153,66 @@ def analyze_results(
         json.dump(metrics, f, indent=2)
     console.print(f"Metrics saved to {metrics_dir}")
 
+# Add to verbalized_sampling/cli.py
+@app.command()
+def compare_evaluations(
+    results_dir: Path = typer.Option(..., help="Directory containing evaluation result files"),
+    output_dir: Path = typer.Option("comparison_plots", help="Output directory for plots"),
+    evaluator_type: str = typer.Option("auto", help="Type of evaluator"),
+    pattern: str = typer.Option("*_results.json", help="File pattern to match")
+):
+    """Compare evaluation results across different formats."""
+    from verbalized_sampling.evals import plot_evaluation_comparison
+    
+    # Find all result files
+    result_files = list(results_dir.glob(pattern))
+    
+    if not result_files:
+        console.print(f"No result files found matching pattern '{pattern}' in {results_dir}")
+        return
+    
+    # Create results dict from files (extract format name from filename)
+    results = {}
+    for file_path in result_files:
+        format_name = file_path.stem.replace("_results", "")
+        results[format_name] = file_path
+    
+    console.print(f"Comparing {len(results)} evaluation results...")
+    plot_evaluation_comparison(results, output_dir, evaluator_type)
+    console.print(f"Comparison plots saved to {output_dir}")
+    
+@app.command()
+def run_pipeline(
+    config_file: Path = typer.Option(..., help="Pipeline configuration file (YAML/JSON)"),
+    output_dir: Path = typer.Option("pipeline_output", help="Base output directory"),
+    skip_existing: bool = typer.Option(True, help="Skip existing files"),
+    num_workers: int = typer.Option(128, help="Number of workers")
+):
+    """Run the complete generation → evaluation → plotting pipeline."""
+    from verbalized_sampling.pipeline import run_pipeline_cli
+    
+    console.print("[bold blue]🚀 Starting Complete Pipeline[/bold blue]")
+    results = run_pipeline_cli(config_file, output_dir, skip_existing, num_workers)
+    console.print("[bold green]✅ Pipeline completed successfully![/bold green]")
+
+@app.command()
+def quick_compare(
+    task: Task = typer.Option(..., help="Task to compare"),
+    model_name: str = typer.Option("openai/gpt-4", help="Model to use"),
+    output_dir: Path = typer.Option("quick_comparison", help="Output directory"),
+    num_responses: int = typer.Option(10, help="Number of responses per method"),
+    metrics: List[str] = typer.Option(["diversity", "length"], help="Metrics to evaluate")
+):
+    """Quick comparison of all available methods for a task."""
+    from verbalized_sampling.pipeline import run_quick_comparison
+    from verbalized_sampling.prompts import Method
+    
+    # Use all available methods
+    methods = [Method.DIRECT, Method.SEQ, Method.STRUCTURE, Method.STRUCTURE_WITH_PROB]
+    
+    console.print(f"[bold blue]🏃‍♂️ Quick comparison: {task.value} with {model_name}[/bold blue]")
+    results = run_quick_comparison(task, methods, model_name, metrics, output_dir, num_responses)
+    console.print("[bold green]✅ Quick comparison completed![/bold green]")
+
 if __name__ == "__main__":
     app()

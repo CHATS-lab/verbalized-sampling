@@ -12,11 +12,11 @@ from verbalized_sampling.llms import get_embedding_model
 class DiversityEvaluator(BaseEvaluator):
     """Evaluator for measuring response diversity using embeddings and cosine similarity."""
     
-    def __init__(self, model_name: str = "text-embedding-3-small", num_workers: int = 128):
+    def __init__(self, embed_model: str = "text-embedding-3-small", num_workers: int = 128):
         super().__init__("diversity", num_workers)
-        self.model_name = model_name
+        self.embed_model = embed_model
         self.device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
-        self.embedding_model = get_embedding_model(model_name)
+        self.embedding_model = get_embedding_model(embed_model)
     
     def compute_embedding(self, text: str) -> tuple[np.ndarray, float]:
         """Compute embedding for a text."""
@@ -103,14 +103,14 @@ class DiversityEvaluator(BaseEvaluator):
             
         # Add model information to metadata
         metadata.update({
-            "embedding_model": self.model_name,
+            "embedding_model": self.embed_model,
             "device": str(self.device)
         })
         
         return super().evaluate(prompts, responses, metadata)
 
     def save_results(self, result: EvalResult, output_path: str):
-        """Save evaluation results to a file."""        
+        """Save evaluation results to a file."""
         # Convert to dictionary first
         result_dict = {
             "instance_metrics": result.instance_metrics,
