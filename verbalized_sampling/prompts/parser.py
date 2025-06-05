@@ -30,10 +30,10 @@ class ResponseParser:
             return ResponseParser.parse_structure_with_probability(response)
         elif method == "multi_turn":
             return ResponseParser.parse_multi_turn(response)
-        elif method == "chain_of_thought":
-            return ResponseParser.parse_chain_of_thought(response)
-        elif method == "self_reflection":
-            return ResponseParser.parse_self_reflection(response)
+        # elif method == "chain_of_thought":
+        #     return ResponseParser.parse_chain_of_thought(response)
+        # elif method == "self_reflection":
+        #     return ResponseParser.parse_self_reflection(response)
         elif method == "temperature_sampling":
             return ResponseParser.parse_temperature_sampling(response)
         else:

@@ -9,6 +9,8 @@ from dataclasses import dataclass
 from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn
 import typer
+import shutil
+import datetime
 
 from verbalized_sampling.tasks import Task, get_task
 from verbalized_sampling.prompts import Method
@@ -46,6 +48,12 @@ class PipelineConfig:
     output_base_dir: Path
     num_workers: int = 128
     skip_existing: bool = True
+    rerun: bool = False
+    create_backup: bool = True
+    
+    def _should_backup(self) -> bool:
+        """Determine if backup should be created."""
+        return self.create_backup
 
 class Pipeline:
     """End-to-end pipeline for generation, evaluation, and plotting."""
@@ -54,7 +62,38 @@ class Pipeline:
         self.config = config
         self.results = {}
         
+    def _handle_rerun(self) -> None:
+        """Handle rerun logic - clean up existing outputs."""
+        if self.config.output_base_dir.exists():
+            console.print(f"[bold yellow]🧹 Rerun mode: Cleaning up existing outputs in {self.config.output_base_dir}[/bold yellow]")
+            
+            # Create backup if enabled (but don't ask for confirmation)
+            if self.config.create_backup:
+                backup_dir = self.config.output_base_dir.parent / f"{self.config.output_base_dir.name}_backup_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}"
+                try:
+                    console.print(f"📦 Creating backup at: {backup_dir}")
+                    shutil.copytree(self.config.output_base_dir, backup_dir)
+                    console.print("✅ Backup created successfully")
+                except Exception as e:
+                    console.print(f"[yellow]⚠️  Backup failed: {str(e)} - continuing anyway[/yellow]")
+            
+            try:
+                # Remove existing directory without confirmation
+                console.print("🗑️  Removing existing output directory...")
+                shutil.rmtree(self.config.output_base_dir)
+                console.print("✅ Cleanup complete")
+                
+            except Exception as e:
+                console.print(f"[bold red]❌ Error during cleanup: {str(e)}[/bold red]")
+                console.print("Continuing with pipeline...")
+        
+        # Override skip_existing for rerun mode
+        self.config.skip_existing = False
+        
     def run_complete_pipeline(self) -> Dict[str, Any]:
+        if self.config.rerun:
+            self._handle_rerun()
+            
         """Run the complete pipeline: generation → evaluation → plotting."""
         console.print("[bold blue]🚀 Starting Complete Pipeline[/bold blue]")
         
@@ -392,7 +431,9 @@ def run_pipeline_cli(
     config_file: Path = typer.Option(..., help="Pipeline configuration file (YAML/JSON)"),
     output_dir: Path = typer.Option("pipeline_output", help="Base output directory"),
     skip_existing: bool = typer.Option(True, help="Skip existing files"),
-    num_workers: int = typer.Option(128, help="Number of workers")
+    num_workers: int = typer.Option(128, help="Number of workers"),
+    rerun: bool = typer.Option(False, help="Rerun everything from scratch"),
+    create_backup: bool = typer.Option(True, help="Create backup before cleaning")
 ):
     """Run the complete pipeline from a configuration file."""
     
@@ -427,12 +468,19 @@ def run_pipeline_cli(
         num_workers=config_data['evaluation'].get('num_workers', 128)
     )
     
+    # Handle rerun override
+    if rerun:
+        skip_existing = False
+        console.print("[bold yellow]🔄 Rerun mode enabled - will overwrite existing results[/bold yellow]")
+    
     pipeline_config = PipelineConfig(
         experiments=experiments,
         evaluation=evaluation_config,
         output_base_dir=output_dir,
         num_workers=num_workers,
-        skip_existing=skip_existing
+        skip_existing=skip_existing,
+        rerun=rerun,
+        create_backup=create_backup
     )
     
     # Run pipeline
@@ -449,6 +497,8 @@ def run_quick_comparison(
     metrics: List[str],
     output_dir: Path,
     num_responses: int = 10,
+    rerun: bool = False,
+    create_backup: bool = True,
     **kwargs
 ) -> Dict[str, Any]:
     """Quick comparison between different methods for a single task."""
@@ -469,7 +519,10 @@ def run_quick_comparison(
     pipeline_config = PipelineConfig(
         experiments=experiments,
         evaluation=evaluation_config,
-        output_base_dir=output_dir
+        output_base_dir=output_dir,
+        skip_existing=not rerun,
+        rerun=rerun,
+        create_backup=create_backup
     )
     
     pipeline = Pipeline(pipeline_config)

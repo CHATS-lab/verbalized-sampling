@@ -1,0 +1,26 @@
+# Example: Compare different prompting methods for diversity
+experiments:
+  - name: "direct_prompting"
+    task: "poem"
+    method: "direct"
+    model_name: "openai/gpt-4"
+    num_responses: 20
+    temperature: 0.7
+    
+  - name: "chain_of_thought"
+    task: "poem" 
+    method: "seq"
+    model_name: "openai/gpt-4"
+    num_responses: 20
+    temperature: 0.7
+    
+  - name: "structure_with_prob"
+    task: "poem"
+    method: "structure_with_prob"
+    model_name: "openai/gpt-4"
+    num_responses: 20
+    temperature: 0.7
+
+evaluation:
+  metrics: ["diversity", "length", "ttct"]
+  num_workers: 64 

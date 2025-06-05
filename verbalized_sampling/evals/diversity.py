@@ -15,7 +15,13 @@ class DiversityEvaluator(BaseEvaluator):
     def __init__(self, embed_model: str = "text-embedding-3-small", num_workers: int = 128):
         super().__init__("diversity", num_workers)
         self.embed_model = embed_model
-        self.device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
+        # Check for CUDA first, then MPS, then fall back to CPU
+        if torch.cuda.is_available():
+            self.device = torch.device("cuda")
+        elif torch.backends.mps.is_available():
+            self.device = torch.device("mps")
+        else:
+            self.device = torch.device("cpu")
         self.embedding_model = get_embedding_model(embed_model)
     
     def compute_embedding(self, text: str) -> tuple[np.ndarray, float]:

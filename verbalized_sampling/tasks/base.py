@@ -55,7 +55,10 @@ class BaseTask(ABC):
         for result in results:
             parsed = self.parse_response(result)
             if parsed is not None:
-                parsed_results.append(parsed)
+                if isinstance(parsed, list):
+                    parsed_results.extend(parsed)
+                else:
+                    parsed_results.append(parsed)
             else:
                 parsed_results.append(result)
             if progress and task_id is not None:

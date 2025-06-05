@@ -186,13 +186,29 @@ def run_pipeline(
     config_file: Path = typer.Option(..., help="Pipeline configuration file (YAML/JSON)"),
     output_dir: Path = typer.Option("pipeline_output", help="Base output directory"),
     skip_existing: bool = typer.Option(True, help="Skip existing files"),
-    num_workers: int = typer.Option(128, help="Number of workers")
+    num_workers: int = typer.Option(128, help="Number of workers"),
+    rerun: bool = typer.Option(False, help="Rerun everything from scratch (ignores skip_existing)"),
+    create_backup: bool = typer.Option(True, help="Create backup before cleaning (only with --rerun)"),
+    force: bool = typer.Option(False, help="Force rerun without any prompts (implies --rerun)")
 ):
     """Run the complete generation → evaluation → plotting pipeline."""
     from verbalized_sampling.pipeline import run_pipeline_cli
     
+    # Handle force flag
+    if force:
+        rerun = True
+        create_backup = False  # Skip backup for force mode
+        console.print("[bold red]🚨 FORCE MODE: Rerunning without backup![/bold red]")
+    elif rerun:
+        console.print("[bold yellow]🔄 RERUN MODE: All existing results will be overwritten![/bold yellow]")
+        if create_backup:
+            console.print("[dim]💾 Backup will be created automatically[/dim]")
+        else:
+            console.print("[dim]⚠️  No backup will be created[/dim]")
+    
+    # No confirmation needed - user explicitly requested rerun
     console.print("[bold blue]🚀 Starting Complete Pipeline[/bold blue]")
-    results = run_pipeline_cli(config_file, output_dir, skip_existing, num_workers)
+    results = run_pipeline_cli(config_file, output_dir, skip_existing, num_workers, rerun, create_backup)
     console.print("[bold green]✅ Pipeline completed successfully![/bold green]")
 
 @app.command()
@@ -201,17 +217,28 @@ def quick_compare(
     model_name: str = typer.Option("openai/gpt-4", help="Model to use"),
     output_dir: Path = typer.Option("quick_comparison", help="Output directory"),
     num_responses: int = typer.Option(10, help="Number of responses per method"),
-    metrics: List[str] = typer.Option(["diversity", "length"], help="Metrics to evaluate")
+    metrics: List[str] = typer.Option(["diversity", "length"], help="Metrics to evaluate"),
+    rerun: bool = typer.Option(False, help="Rerun everything from scratch"),
+    create_backup: bool = typer.Option(True, help="Create backup before cleaning"),
+    force: bool = typer.Option(False, help="Force rerun without prompts or backup")
 ):
     """Quick comparison of all available methods for a task."""
     from verbalized_sampling.pipeline import run_quick_comparison
     from verbalized_sampling.prompts import Method
     
+    # Handle force flag
+    if force:
+        rerun = True
+        create_backup = False
+        console.print(f"[bold red]🚨 FORCE MODE: Fresh comparison without backup[/bold red]")
+    elif rerun:
+        console.print(f"[bold yellow]🔄 RERUN MODE: Starting fresh comparison[/bold yellow]")
+    
     # Use all available methods
     methods = [Method.DIRECT, Method.SEQ, Method.STRUCTURE, Method.STRUCTURE_WITH_PROB]
     
     console.print(f"[bold blue]🏃‍♂️ Quick comparison: {task.value} with {model_name}[/bold blue]")
-    results = run_quick_comparison(task, methods, model_name, metrics, output_dir, num_responses)
+    results = run_quick_comparison(task, methods, model_name, metrics, output_dir, num_responses, rerun, create_backup)
     console.print("[bold green]✅ Quick comparison completed![/bold green]")
 
 if __name__ == "__main__":

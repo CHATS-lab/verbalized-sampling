@@ -32,7 +32,11 @@ class OpenRouterLLM(BaseLLM):
             api_key=os.environ.get("OPENROUTER_API_KEY"),
         )
         # Set up response format for structured output
-        self.response_format = None if not self.is_structured else get_json_schema_from_pydantic(VerbalizedSamplingResponseList)
+        if self.is_structured:
+            schema = get_json_schema_from_pydantic(VerbalizedSamplingResponseList)
+            self.response_format = {"type": "json_object", "schema": schema}
+        else:
+            self.response_format = None
 
     def _chat(self, messages: List[Dict[str, str]]) -> str:
         """Basic chat functionality without structured response format."""
@@ -49,27 +53,25 @@ class OpenRouterLLM(BaseLLM):
 
     def _chat_with_format(self, messages: List[Dict[str, str]]) -> List[Dict[str, Any]]:
         """Chat with structured response format."""
-        try:
-            if "claude" in self.model_name:
-                # Claude doesn't support structured output format in OpenRouter
-                response = self._chat(messages)
-                return self._parse_response(response)
-            else:
-                # For Gemini and other models that support structured output
-                completion = self.client.chat.completions.create(
-                    model=self.model_name,
-                    messages=messages,
-                    temperature=self.config.get("temperature", 0.7),
-                    top_p=self.config.get("top_p", 0.9),
-                    response_format=self.response_format,
-                )
-                response = completion.choices[0].message.content
-                return self._parse_response(response)
-        except Exception as e:
-            print(f"Error in _chat_with_format: {e}")
-            # Fallback to regular chat if parsing fails
-            response = self._chat(messages)
-            return self._parse_response(response)
+        # TODO: add support for structured output
+        response = self._chat(messages)
+        return self._parse_response(response)
+        #     else:
+        #         # For Gemini and other models that support structured output
+        #         completion = self.client.chat.completions.create(
+        #             model=self.model_name,
+        #             messages=messages,
+        #             temperature=self.config.get("temperature", 0.7),
+        #             top_p=self.config.get("top_p", 0.9),
+        #             response_format=self.response_format,
+        #         )
+        #         response = completion.choices[0].message.content
+        #         return self._parse_response(response)
+        # except Exception as e:
+        #     print(f"Error in _chat_with_format: {e}")
+        #     # Fallback to regular chat if parsing fails
+        #     response = self._chat(messages)
+        #     return self._parse_response(response)
 
     def _parse_response(self, response: str) -> List[Dict[str, Any]]:
         """Parse the response into a list of text and probability pairs."""
@@ -86,4 +88,4 @@ class OpenRouterLLM(BaseLLM):
         except Exception as e:
             print(f"Error parsing response: {e}")
             # If parsing fails, return a single response with probability 1.0
-            return [{"response": response, "probability": 1.0}]
+            return [{"response": response, "probability": 1.0}
