@@ -11,3 +11,8 @@ numpy>=1.24.0
 scipy>=1.10.0
 tqdm>=4.65.0
 openai
+nltk
+unidecode
+sacremoses
+seaborn
+dedent
