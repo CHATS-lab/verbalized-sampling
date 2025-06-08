@@ -70,6 +70,7 @@ class DiversityEvaluator(BaseEvaluator):
                     pbar.update(1)
         
         # Convert to tensor and compute similarities
+        print(f"Running with {self.embed_model} on {self.device}")
         embeddings = torch.from_numpy(np.array(embeddings_list)).float().to(self.device)
         embeddings = torch.nn.functional.normalize(embeddings, p=2, dim=1)
         similarity_matrix = torch.mm(embeddings, embeddings.t())

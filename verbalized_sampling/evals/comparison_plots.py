@@ -147,7 +147,7 @@ class ComparisonPlotter:
             order=labels,
             palette=palette,
             scale="width",
-            inner=None,
+            # inner=None,
             cut=0,
             alpha=0.6
         )
@@ -304,7 +304,7 @@ class ComparisonPlotter:
             comparison_data, "pairwise_similarities",
             output_dir / "pairwise_similarities_distribution.png",
             title="Pairwise Similarity Distribution Comparison",
-            plot_type="histogram"
+            plot_type="violin"
         )
         
         # Response length distribution (from instance_metrics)
@@ -375,7 +375,7 @@ class ComparisonPlotter:
             comparison_data, "token_length",
             output_dir / "token_length_distribution.png",
             title="Token Length Distribution Comparison",
-            plot_type="histogram"
+            plot_type="kde"
         )
         
         # Aggregate metrics

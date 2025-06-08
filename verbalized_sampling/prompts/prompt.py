@@ -19,6 +19,7 @@ Output in JSON format with the following structure:
 Only output the JSON object, no other text or markdown formatting.
 """
 
+# Bias might come from the examples
 STRUCTURE_WITH_PROBABILITY_PROMPT = """
 Generate {num_samplings} different responses to the given prompt.
 Output in JSON format with the following structure:

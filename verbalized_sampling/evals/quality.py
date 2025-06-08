@@ -6,8 +6,8 @@ from verbalized_sampling.llms import get_model
 class TTCTEvaluator(BaseEvaluator):
     """Comprehensive Torrance Tests of Creative Thinking evaluator in a single LLM call."""
     
-    def __init__(self, judge_model: str = "gpt-4-turbo"):
-        super().__init__("ttct")
+    def __init__(self, judge_model: str = "gpt-4-turbo", num_workers=64):
+        super().__init__("ttct", num_workers=num_workers)
         self.judge_model = get_model(judge_model, method="direct", config={})
     
     def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, float]:

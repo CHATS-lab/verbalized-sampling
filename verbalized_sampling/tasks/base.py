@@ -16,7 +16,7 @@ class BaseTask(ABC):
                  model: BaseLLM,
                  method: Method,
                  num_responses: int = 3,
-                 num_samples: int = 1,
+                 num_samples: int = 5,
                  sample_size: int = 1,
                  random_seed: int = 42,
                  ):
@@ -34,7 +34,7 @@ class BaseTask(ABC):
             self.method, 
             num_samplings=self.num_samples,
             sample_size=self.sample_size,
-            random_seed=self.random_seed
+            random_seed=self.random_seed,
         )
     
     @abstractmethod

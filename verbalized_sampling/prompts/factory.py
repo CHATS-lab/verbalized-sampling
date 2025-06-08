@@ -35,7 +35,8 @@ def is_method_structured(method: Method) -> bool:
         Method.STRUCTURE_WITH_PROB,
         Method.CHAIN_OF_THOUGHT,
         Method.SELF_REFLECTION,
-        Method.TEMPERATURE_SAMPLING
+        Method.TEMPERATURE_SAMPLING,
+        # Method.SEQUENCE
     ]
 
 def is_method_multi_turn(method: Method) -> bool:
@@ -113,7 +114,8 @@ class PromptFactory:
         else:
             prompts = random.sample(prompts, 1)
 
-        return [PromptFactory.pack_prompt(method, prompt) for prompt in prompts]
+        print(f"Num samplings: {num_samplings}, Method: {method}, Sample size: {sample_size}, Random seed: {random_seed}")
+        return [PromptFactory.pack_prompt(method, prompt, num_samplings=num_samplings) for prompt in prompts]
 
     @staticmethod
     def get_multi_turn_continuation(turn_number: int, total_turns: int, chat_history: List[Dict[str, str]]) -> List[Dict[str, str]]:

@@ -6,12 +6,13 @@ from pathlib import Path
 # Quick comparison
 results = run_quick_comparison(
     task=Task.POEM,
-    # methods=[Method.DIRECT, Method.STRUCTURE, Method.STRUCTURE_WITH_PROB],
-    methods=[Method.STRUCTURE_WITH_PROB],
+    methods=[Method.DIRECT, Method.STRUCTURE, Method.STRUCTURE_WITH_PROB, Method.SEQUENCE],
+    # methods=[Method.SEQUENCE],
     model_name="openai/gpt-4.1",
-    metrics=["diversity", "length"],
+    metrics=["diversity", "length", "quality"],
     output_dir=Path("comparison_results"),
-    num_responses=200,
+    num_responses=50,
+    num_samples=5,
     rerun=True,
 )
 
