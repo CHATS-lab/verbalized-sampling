@@ -1,103 +1,91 @@
+import os
+import json
+import random
 from .base import BaseTask
-from typing import Any
-import dedent
+from textwrap import dedent
+from typing import Any, List, Dict
+from verbalized_sampling.prompts import Method
+from verbalized_sampling.prompts.factory import PromptFactory
+
 
 class StateNameTask(BaseTask):
-    """Task for generating random numbers."""
-    
-    def __init__(self, format: str = "direct"):
-        self.format = format
+    """Task for generating random state names."""
 
-    def get_prompt(self, num_samples: int = 1) -> str:
-        """Get the prompt for the task."""
-        FORMAT_SYSTEM_PROMPT_NON_SAMPLING = dedent("""
-        You are simulating answers to a given question.
-        """).strip()
-
-        FORMAT_SYSTEM_PROMPT_SAMPLING = dedent("""
-        You are simulating answers to a given question.
-        Randomly generate {num_samples} plausible and diverse responses to the user's question, also providing the empirical probability of each response.
-        """).strip()
-
-        FORMAT_USER_PROMPT = dedent("""
-        Question: {question}
-
-        Return the output in JSON format with the key "responses", which should be a list of dictionaries. Each dictionary must include:
-        - "text": the {name_type} named in the response
-        - "probability": the empirical probability of that response (value between 0 and 1)
-
-        Only output the JSON object—no additional explanation or text.
-        """).strip()
-
-        if self.format == "direct":
-            return FORMAT_SYSTEM_PROMPT_NON_SAMPLING + FORMAT_USER_PROMPT
-        else:
-            return FORMAT_SYSTEM_PROMPT_SAMPLING + FORMAT_USER_PROMPT
-    
-
-    def parse_response(self, response: str) -> Any:
-        """Parse the model's response."""
-        import json
+    def __init__(self, **kwargs):
+        """
+        Initialize the StateNameTask.
         
-        if self.format in ["structure", "structure_with_prob"]:
+        Args:
+            sample_size: Number of prompts to randomly sample from the dataset
+            random_seed: Random seed for reproducible sampling
+        """
+        super().__init__(**kwargs)
+        self._metadata = {
+            "task_type": "state_name",
+            "total_prompts": 0,
+            "sample_size": self.sample_size,
+            "random_seed": self.random_seed,
+            "description": "Generate a state name randomly."
+        }
+    
+    def parse_response(self, method: Method, response: str) -> Any:
+        """Parse the model's response based on the method."""
+        if method in [Method.STRUCTURE, Method.STRUCTURE_WITH_PROB]:
+            # Try to parse as JSON for structured methods
             try:
-                if isinstance(response, str):
-                    # Remove markdown code block wrappers if present
-                    json_block = "```json"
-                    code_block = "```"
-                    
-                    # Find the actual JSON content
-                    if json_block in response:
-                        content = response[response.find(json_block) + len(json_block):]
-                        if code_block in content:
-                            content = content[:content.find(code_block)]
-                    elif code_block in response:
-                        content = response[response.find(code_block) + len(code_block):]
-                        if code_block in content:
-                            content = content[:content.rfind(code_block)]
-                    else:
-                        content = response
-                    
-                    # Clean up the content
-                    content = content.strip()
-                    
-                    # Try to find the first { and last } to get just the JSON object
-                    start = content.find('{')
-                    end = content.rfind('}') + 1
-                    if start != -1 and end != 0:
-                        content = content[start:end]
-                    
-                    # Remove trailing commas before closing brackets/braces
-                    content = content.replace(',\n    ]', '\n    ]')
-                    content = content.replace(',\n    }', '\n    }')
-                    content = content.replace(',\n]', '\n]')
-                    content = content.replace(',\n}', '\n}')
-                    
-                    return json.loads(content)
-                return response
+                # Clean up response if it contains markdown code blocks
+                if "```json" in response:
+                    start = response.find("```json") + 7
+                    end = response.find("```", start)
+                    if end != -1:
+                        response = response[start:end].strip()
+                elif "```" in response:
+                    start = response.find("```") + 3
+                    end = response.rfind("```")
+                    if end != -1 and end > start:
+                        response = response[start:end].strip()
+                
+                # Try to parse as JSON
+                parsed = json.loads(response)
+                if isinstance(parsed, dict) and "responses" in parsed:
+                    return parsed["responses"]
+                return parsed
             except json.JSONDecodeError:
-                return None
-        elif self.format == "seq":
-            try:
-                if isinstance(response, str):
-                    # First try to parse as JSON array
-                    start = response.find('[')
-                    end = response.rfind(']') + 1
-                    if start != -1 and end != 0:
-                        try:
-                            return json.loads(response[start:end])
-                        except json.JSONDecodeError:
-                            pass
-            except ValueError:
-                pass
-            return None
-        elif self.format == "direct":
-            if isinstance(response, str):
-                try:
-                    if ":" in response:
-                        return response.split(":")[1].strip()
-                    else:
-                        return response.strip()
-                except ValueError:
-                    return None
-            return None 
+                # If JSON parsing fails, return the raw response
+                return response
+        
+        # For direct and sequence methods, return as-is
+        return response
+    
+    
+    @property
+    def task_type(self) -> str:
+        return "state_name"
+    
+
+    # def get_prompt(self, num_samples: int = 1) -> str:
+    #     """Get the prompt for the task."""
+    #     FORMAT_SYSTEM_PROMPT_NON_SAMPLING = dedent("""
+    #     You are simulating answers to a given question.
+    #     """).strip()
+
+    #     FORMAT_SYSTEM_PROMPT_SAMPLING = dedent("""
+    #     You are simulating answers to a given question.
+    #     Randomly generate {num_samples} plausible and diverse responses to the user's question, also providing the empirical probability of each response.
+    #     """).strip()
+
+    #     FORMAT_USER_PROMPT = dedent("""
+    #     Question: {question}
+
+    #     Return the output in JSON format with the key "responses", which should be a list of dictionaries. Each dictionary must include:
+    #     - "text": the {name_type} named in the response
+    #     - "probability": the empirical probability of that response (value between 0 and 1)
+
+    #     Only output the JSON object—no additional explanation or text.
+    #     """).strip()
+
+    #     if self.format == "direct":
+    #         return FORMAT_SYSTEM_PROMPT_NON_SAMPLING + FORMAT_USER_PROMPT
+    #     else:
+    #         return FORMAT_SYSTEM_PROMPT_SAMPLING + FORMAT_USER_PROMPT
+    
