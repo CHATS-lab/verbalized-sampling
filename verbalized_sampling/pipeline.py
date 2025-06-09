@@ -244,7 +244,12 @@ class Pipeline:
                         try:
                             data = json.loads(line)
                             if isinstance(data, dict):
-                                responses.append(data.get('text', str(data)))
+                                if "text" in data:
+                                    responses.append(data['text'])
+                                elif "response" in data:
+                                    responses.append(data['response'])
+                                else:
+                                    responses.append(str(data))
                                 prompts.append(data.get('prompt', ''))
                             else:
                                 responses.append(str(data))

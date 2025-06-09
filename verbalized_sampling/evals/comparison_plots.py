@@ -52,6 +52,8 @@ class ComparisonPlotter:
         colors = []
         
         for i, data in enumerate(comparison_data):
+            if data is None:
+                continue
             values = self._extract_metric_values(data, metric_name)
             
             if values:

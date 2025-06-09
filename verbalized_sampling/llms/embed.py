@@ -4,6 +4,7 @@ from openai import OpenAI
 import os
 import signal
 from functools import wraps
+import time
 
 @dataclass
 class EmbeddingResponse:
@@ -86,42 +87,41 @@ class OpenAIEmbeddingModel:
             cost=cost
         )
     
-    def get_embedding(self, text: str, max_retries: int = 3) -> EmbeddingResponse:
-        """Get embedding for a text with timeout and retry logic.
+    def _get_embedding_direct(self, text: str) -> EmbeddingResponse:
+        """Internal method to get embedding without timeout protection."""
+        response = self.client.embeddings.create(
+            model=self.model_name,
+            input=text
+        )
         
-        Args:
-            text: The text to get embedding for.
-            max_retries: Maximum number of retries on timeout. Defaults to 3.
-            
-        Returns:
-            EmbeddingResponse containing the embedding vector and cost.
-            
-        Raises:
-            TimeoutError: If all retry attempts timeout.
-            Exception: Other API errors.
-        """
+        # Calculate cost based on token count
+        token_count = response.usage.total_tokens
+        cost = (token_count / 1000) * self.cost_per_1k_tokens.get(self.model_name, 0.00002)
+        
+        return EmbeddingResponse(
+            embedding=response.data[0].embedding,
+            cost=cost
+        )
+    
+    def get_embedding(self, text: str, max_retries: int = 3) -> EmbeddingResponse:
+        """Get embedding for a text with retry logic."""
         last_exception = None
         
         for attempt in range(max_retries + 1):
             try:
-                return self._get_embedding_with_timeout(text)
+                return self._get_embedding_direct(text)
                 
-            except TimeoutError as e:
+            except Exception as e:
                 last_exception = e
-                if attempt < max_retries:
-                    print(f"Embedding request timed out (attempt {attempt + 1}/{max_retries + 1}). Retrying...")
+                if attempt < max_retries and ("timeout" in str(e).lower() or "timed out" in str(e).lower()):
+                    print(f"Embedding request failed (attempt {attempt + 1}/{max_retries + 1}): {e}. Retrying...")
+                    time.sleep(2 ** attempt)  # Exponential backoff
                     continue
                 else:
-                    print(f"All {max_retries + 1} embedding attempts timed out after {self.timeout} seconds each.")
-                    raise TimeoutError(f"Embedding request failed after {max_retries + 1} attempts due to timeout")
-                    
-            except Exception as e:
-                # For non-timeout errors, don't retry
-                print(f"Embedding request failed with error: {e}")
-                raise e
+                    print(f"Embedding request failed: {e}")
+                    raise e
         
-        # This should never be reached, but just in case
-        raise last_exception or TimeoutError("Unknown error in embedding request")
+        raise last_exception
 
 def get_embedding_model(model_name: str = "text-embedding-3-small", timeout: int = 128) -> OpenAIEmbeddingModel:
     """Get an embedding model instance.
