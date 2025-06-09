@@ -4,18 +4,12 @@ import os
 import random
 from pydantic import BaseModel
 from .prompt import (
-    SEQUENCE_PROMPT,
-    STRUCTURE_RESPONSE_ONLY_PROMPT,
-    STRUCTURE_WITH_PROBABILITY_PROMPT,
-    MULTI_TURN_INITIAL_PROMPT,
+    STANDARD_PROMPT,
+    STANDARD_ALL_POSSIBLE_PROMPT,
+    SEQUENCE_FORMAT_PROMPT,
+    STRUCTURE_FORMAT_PROMPT,
+    STRUCTURE_WITH_PROBABILITY_FORMAT_PROMPT,
     MULTI_TURN_CONTINUE_PROMPT,
-    MULTI_TURN_FINAL_PROMPT,
-    CHAIN_OF_THOUGHT_PROMPT,
-    SELF_REFLECTION_PROMPT,
-    TEMPERATURE_SAMPLING_PROMPT,
-    # Legacy imports for backward compatibility
-    FORMAT_WITHOUT_PROBABILITY_PROMPT,
-    FORMAT_WITH_PROBABILITY_PROMPT,
 )
 
 class Method(str, Enum):
@@ -24,9 +18,6 @@ class Method(str, Enum):
     STRUCTURE = "structure"
     STRUCTURE_WITH_PROB = "structure_with_prob"
     MULTI_TURN = "multi_turn"
-    CHAIN_OF_THOUGHT = "chain_of_thought"
-    SELF_REFLECTION = "self_reflection"
-    TEMPERATURE_SAMPLING = "temperature_sampling"
 
 def is_method_structured(method: Method) -> bool:
     """Check if a method requires structured JSON output."""
@@ -36,7 +27,6 @@ def is_method_structured(method: Method) -> bool:
         Method.CHAIN_OF_THOUGHT,
         Method.SELF_REFLECTION,
         Method.TEMPERATURE_SAMPLING,
-        # Method.SEQUENCE
     ]
 
 def is_method_multi_turn(method: Method) -> bool:
@@ -59,31 +49,60 @@ class PromptFactory:
     """Factory for creating prompts for different models and tasks."""
     
     PROMPT_MAP = {
-        Method.SEQUENCE: SEQUENCE_PROMPT,
-        Method.STRUCTURE: STRUCTURE_RESPONSE_ONLY_PROMPT,
-        Method.STRUCTURE_WITH_PROB: STRUCTURE_WITH_PROBABILITY_PROMPT,
-        Method.CHAIN_OF_THOUGHT: CHAIN_OF_THOUGHT_PROMPT,
-        Method.SELF_REFLECTION: SELF_REFLECTION_PROMPT,
-        Method.TEMPERATURE_SAMPLING: TEMPERATURE_SAMPLING_PROMPT,
-        Method.MULTI_TURN: MULTI_TURN_INITIAL_PROMPT,
+        Method.SEQUENCE: SEQUENCE_FORMAT_PROMPT,
+        Method.STRUCTURE: STRUCTURE_FORMAT_PROMPT,
+        Method.STRUCTURE_WITH_PROB: STRUCTURE_WITH_PROBABILITY_FORMAT_PROMPT,
+        # Method.CHAIN_OF_THOUGHT: CHAIN_OF_THOUGHT_PROMPT,
+        # Method.SELF_REFLECTION: SELF_REFLECTION_PROMPT,
+        # Method.TEMPERATURE_SAMPLING: TEMPERATURE_SAMPLING_PROMPT,
     }
+
     @staticmethod
     def pack_prompt(
         method: Method,
         prompt: str,
         chat_history: List[Dict[str, str]] = None,
         num_samplings: int = 5,
+        all_possible: bool = False,
+        strict_json: bool = False,
     ) -> List[Dict[str, str]]:
         
-        """Pack a prompt for a specific method."""
         if method == Method.DIRECT:
             return [{"role": "user", "content": prompt}]
+        
+        if all_possible:
+            system_prompt = STANDARD_ALL_POSSIBLE_PROMPT
         else:
-            system_prompt = PromptFactory.PROMPT_MAP[method].format(num_samplings=num_samplings)
+            system_prompt = STANDARD_PROMPT.format(num_samplings=num_samplings)
+        
+        if strict_json:
             return [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": prompt}
             ]
+        elif method == Method.MULTI_TURN:
+            if len(chat_history) == 0:
+                return [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": prompt}
+                ]
+            else:
+                return PromptFactory.get_multi_turn_continuation(chat_history)
+        elif method in PromptFactory.PROMPT_MAP:
+            system_prompt = f"{system_prompt}\n\n{PromptFactory.PROMPT_MAP[method]}"
+        else:
+            raise ValueError(f"Method {method} not supported.")
+
+        return [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": prompt}
+        ]
+
+    @staticmethod
+    def get_multi_turn_continuation(chat_history: List[Dict[str, str]]) -> List[Dict[str, str]]:
+        """Get continuation prompt for multi-turn sampling."""
+        continuation_prompt = MULTI_TURN_CONTINUE_PROMPT
+        return chat_history + [{"role": "user", "content": continuation_prompt}]
     
     @staticmethod
     def get_prompt(
@@ -116,19 +135,3 @@ class PromptFactory:
 
         print(f"Num samplings: {num_samplings}, Method: {method}, Sample size: {sample_size}, Random seed: {random_seed}")
         return [PromptFactory.pack_prompt(method, prompt, num_samplings=num_samplings) for prompt in prompts]
-
-    @staticmethod
-    def get_multi_turn_continuation(turn_number: int, total_turns: int, chat_history: List[Dict[str, str]]) -> List[Dict[str, str]]:
-        """Get continuation prompt for multi-turn sampling."""
-        if turn_number == total_turns:
-            continuation_prompt = MULTI_TURN_FINAL_PROMPT.format(
-                current_turn=turn_number, 
-                total_turns=total_turns
-            )
-        else:
-            continuation_prompt = MULTI_TURN_CONTINUE_PROMPT.format(
-                current_turn=turn_number, 
-                total_turns=total_turns
-            )
-        
-        return chat_history + [{"role": "user", "content": continuation_prompt}]

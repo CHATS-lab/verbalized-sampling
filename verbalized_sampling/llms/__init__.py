@@ -16,12 +16,12 @@ def get_model(model_name: str,
               method: Method,
               config: dict, 
               use_vllm: bool = False,
-              num_workers: int = 128) -> BaseLLM:
+              num_workers: int = 128,
+              strict_json: bool = False) -> BaseLLM:
     """Get a model instance."""
     model_class: Type[BaseLLM] = LLM_REGISTRY["vllm" if use_vllm else "openrouter"]
-    is_structured = is_method_structured(method)
     return model_class(model_name=model_name, 
                        config=config, 
                        num_workers=num_workers,
-                       is_structured=is_structured
+                       strict_json=strict_json
                        ) 

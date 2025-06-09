@@ -33,6 +33,7 @@ class ExperimentConfig:
     sample_size: int = 5
     random_seed: int = 42
     use_vllm: bool = False
+    strict_json: bool = False # If True, the request would enable JSON mode
 
 @dataclass
 class EvaluationConfig:
@@ -164,7 +165,8 @@ class Pipeline:
                         "top_p": exp_config.top_p
                     },
                     use_vllm=exp_config.use_vllm,
-                    num_workers=self.config.num_workers
+                    num_workers=self.config.num_workers,
+                    strict_json=exp_config.strict_json
                 )
                 
                 task_kwargs = {}
