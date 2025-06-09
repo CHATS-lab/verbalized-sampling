@@ -4,8 +4,21 @@ import random
 from .base import BaseTask
 from textwrap import dedent
 from typing import Any, List, Dict
+from rich.progress import Progress
 from verbalized_sampling.prompts import Method
 from verbalized_sampling.prompts.factory import PromptFactory
+
+from abc import ABC, abstractmethod
+from pathlib import Path
+from typing import Any, Dict, List
+import json
+from rich.progress import Progress
+from verbalized_sampling.prompts import (
+    PromptFactory, 
+    Method
+)
+from verbalized_sampling.llms import BaseLLM
+from verbalized_sampling.prompts.schema import get_schema
 
 
 class StateNameTask(BaseTask):
@@ -20,7 +33,7 @@ class StateNameTask(BaseTask):
             random_seed: Random seed for reproducible sampling
         """
         super().__init__(**kwargs)
-        self._metadata = {
+        self.metadata = {
             "task_type": "state_name",
             "total_prompts": 0,
             "sample_size": self.sample_size,
@@ -28,40 +41,13 @@ class StateNameTask(BaseTask):
             "description": "Generate a state name randomly."
         }
     
-    def parse_response(self, method: Method, response: str) -> Any:
-        """Parse the model's response based on the method."""
-        if method in [Method.STRUCTURE, Method.STRUCTURE_WITH_PROB]:
-            # Try to parse as JSON for structured methods
-            try:
-                # Clean up response if it contains markdown code blocks
-                if "```json" in response:
-                    start = response.find("```json") + 7
-                    end = response.find("```", start)
-                    if end != -1:
-                        response = response[start:end].strip()
-                elif "```" in response:
-                    start = response.find("```") + 3
-                    end = response.rfind("```")
-                    if end != -1 and end > start:
-                        response = response[start:end].strip()
-                
-                # Try to parse as JSON
-                parsed = json.loads(response)
-                if isinstance(parsed, dict) and "responses" in parsed:
-                    return parsed["responses"]
-                return parsed
-            except json.JSONDecodeError:
-                # If JSON parsing fails, return the raw response
-                return response
-        
-        # For direct and sequence methods, return as-is
-        return response
-    
     
     @property
     def task_type(self) -> str:
         return "state_name"
+
     
+
 
     # def get_prompt(self, num_samples: int = 1) -> str:
     #     """Get the prompt for the task."""

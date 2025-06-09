@@ -44,18 +44,29 @@ class BaseTask(ABC):
             strict_json=self.strict_json
         )
     
-    def parse_response(self, response: str) -> Any:
-        """Parse the model's response."""
-        if isinstance(response, str):
-            try:
-                parsed = json.loads(response)
-                if isinstance(parsed, dict):
-                    parsed = parsed["responses"]
-                return parsed
-            except Exception as e:
-                return response
-        else:
+    def parse_response(self, response: Any) -> Any:
+        """Parse the model's response.
+        
+        Args:
+            response: Can be either a string (JSON) or a list of responses
+            
+        Returns:
+            Parsed response in the expected format
+        """
+        # If response is already a list, return it directly
+        if isinstance(response, list):
             return response
+            
+        # If response is a string, try to parse it as JSON
+        try:
+            parsed = json.loads(response)
+            if isinstance(parsed, dict):
+                parsed = parsed["responses"]
+            return parsed
+        except Exception as e:
+            print(f"Error parsing response: {e}")
+            return response
+            
     
     def run(
         self,
