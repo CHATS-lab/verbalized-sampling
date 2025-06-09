@@ -46,13 +46,15 @@ class BaseTask(ABC):
     
     def parse_response(self, response: str) -> Any:
         """Parse the model's response."""
-        try:
-            parsed = json.loads(response)
-            if isinstance(parsed, dict):
-                parsed = parsed["responses"]
-            return parsed
-        except Exception as e:
-            print(f"Error parsing response: {e}")
+        if isinstance(response, str):
+            try:
+                parsed = json.loads(response)
+                if isinstance(parsed, dict):
+                    parsed = parsed["responses"]
+                return parsed
+            except Exception as e:
+                return response
+        else:
             return response
     
     def run(

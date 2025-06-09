@@ -17,7 +17,7 @@ class ComparisonData:
 class ComparisonPlotter:
     """Plotter for comparing evaluation results across different formats."""
     
-    def __init__(self, style: str = "seaborn-v0_8", figsize: tuple = (12, 8)):
+    def __init__(self, style: str = "seaborn-v0_8", figsize: tuple = (15, 8)):
         plt.style.use(style)
         self.figsize = figsize
         self.colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', 
@@ -196,13 +196,26 @@ class ComparisonPlotter:
                                 metric_names: List[str],
                                 output_path: Union[str, Path],
                                 title: Optional[str] = None,
-                                plot_type: str = "bar") -> None:
-        """Create bar chart comparison of aggregate metrics."""
+                                plot_type: str = "bar",
+                                figsize: Optional[tuple] = None,
+                                colors: Optional[List[str]] = None,
+                                patterns: Optional[List[str]] = None) -> None:
+        """Create bar chart comparison of aggregate metrics with improved styling."""
         
         if plot_type not in ["bar", "line"]:
             raise ValueError("plot_type must be 'bar' or 'line'")
         
-        plt.figure(figsize=self.figsize)
+        # Use provided figsize or default
+        fig_size = figsize or self.figsize
+        plt.figure(figsize=fig_size)
+        
+        # Enhanced color palette (similar to your reference image)
+        if colors is None:
+            colors = ['#8B8B8B', '#B8C5E1', '#5A5A5A', '#7CB8D4', '#003F7F']
+        
+        # Patterns for additional distinction (like the hatching in your image)
+        if patterns is None:
+            patterns = ['', '', '', '', '///']
         
         # Prepare data
         format_names = [data.name for data in comparison_data]
@@ -226,43 +239,75 @@ class ComparisonPlotter:
                 metric_values[metric].append(float(value) if value is not None else 0.0)
         
         if plot_type == "bar":
-            # Create grouped bar chart
-            x = np.arange(len(format_names))
-            width = 0.8 / len(metric_names)
+            # Create grouped bar chart with improved styling
+            x = np.arange(len(metric_names))  # Position of metrics on x-axis
+            width = 0.15  # Width of individual bars
             
-            for i, metric in enumerate(metric_names):
-                offset = (i - len(metric_names)/2 + 0.5) * width
-                color = self.colors[i % len(self.colors)]
-                plt.bar(x + offset, metric_values[metric], width, 
-                       label=metric.replace('_', ' ').title(), color=color, alpha=0.8)
+            # Create bars for each format/method
+            for i, (format_name, data) in enumerate(zip(format_names, comparison_data)):
+                values = [metric_values[metric][i] for metric in metric_names]
+                offset = (i - len(format_names)/2 + 0.5) * width
+                
+                color = data.color or colors[i % len(colors)]
+                pattern = patterns[i % len(patterns)] if patterns else ''
+                
+                bars = plt.bar(x + offset, values, width, 
+                              label=format_name, 
+                              color=color, 
+                              alpha=0.8,
+                              hatch=pattern,
+                              edgecolor='white',
+                              linewidth=0.5)
             
-            plt.xlabel('Format')
-            plt.ylabel('Score')
-            plt.xticks(x, format_names)
+            # Styling to match your reference image
+            plt.xlabel('Metrics', fontsize=12, fontweight='bold')
+            plt.ylabel('Accuracy (%)', fontsize=12, fontweight='bold')
+            plt.xticks(x, [metric.replace('_', ' ').title() for metric in metric_names], fontsize=11)
+            
+            # Improved legend (positioned like in your image)
+            plt.legend(loc='upper right', bbox_to_anchor=(0.98, 0.98), 
+                      frameon=True, fancybox=True, shadow=True, 
+                      fontsize=10, framealpha=0.9)
+            
+            # Remove grid for cleaner look
+            plt.grid(False)
+            
+            # Set y-axis to start from 0 and add some padding at top
+            plt.ylim(0, max(max(metric_values[metric]) for metric in metric_names) * 1.1)
             
         else:  # line plot
-            # Define line styles for variety
-            line_styles = ['-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--']
+            # Enhanced line plot styling
+            line_styles = ['-', '--', '-.', ':', '-']
+            markers = ['o', 's', '^', 'D', 'v']
             
-            for i, metric in enumerate(metric_names):
-                color = self.colors[i % len(self.colors)]
+            for i, format_name in enumerate(format_names):
+                values = [metric_values[metric][i] for metric in metric_names]
+                color = colors[i % len(colors)]
                 linestyle = line_styles[i % len(line_styles)]
-                plt.plot(format_names, metric_values[metric], 
-                        marker='o', label=metric.replace('_', ' ').title(), 
+                marker = markers[i % len(markers)]
+                
+                plt.plot(metric_names, values, 
+                        marker=marker, label=format_name, 
                         color=color, linewidth=2.5, markersize=8, 
                         linestyle=linestyle, markerfacecolor='white', 
                         markeredgewidth=2, markeredgecolor=color)
             
-            plt.xlabel('Format')
-            plt.ylabel('Score')
-            plt.xticks(rotation=45)
+            plt.xlabel('Metrics', fontsize=12, fontweight='bold')
+            plt.ylabel('Score', fontsize=12, fontweight='bold')
+            plt.xticks(rotation=45, fontsize=11)
+            plt.legend(loc='best', fontsize=10)
+            plt.grid(True, alpha=0.3)
         
-        plt.title(title or f'Aggregate Metrics Comparison')
-        plt.legend()
-        plt.grid(True, alpha=0.3)
+        # Enhanced title styling
+        if title:
+            plt.title(title, fontsize=14, fontweight='bold', pad=20)
         
+        # Clean layout
         plt.tight_layout()
-        plt.savefig(output_path, dpi=300, bbox_inches='tight')
+        
+        # Save with high quality
+        plt.savefig(output_path, dpi=300, bbox_inches='tight', 
+                    facecolor='white', edgecolor='none')
         plt.close()
     
     def create_comprehensive_comparison(self,
@@ -381,13 +426,13 @@ class ComparisonPlotter:
             comparison_data, "token_length",
             output_dir / "token_length_distribution.png",
             title="Token Length Distribution Comparison",
-            plot_type="kde"
+            plot_type="violin"
         )
         
         # Aggregate metrics
         self.compare_aggregate_metrics(
             comparison_data,
-            ["mean_token_length", "min_token_length", "max_token_length"],
+            ["mean_token_length"],
             output_dir / "length_metrics.png",
             title="Length Metrics Comparison"
         )
@@ -441,6 +486,102 @@ class ComparisonPlotter:
                 output_dir / "aggregate_metrics.png",
                 title="Aggregate Metrics Comparison"
             )
+
+    def create_performance_comparison_chart(self,
+                                          comparison_data: List[ComparisonData],
+                                          task_metrics: Dict[str, List[str]],
+                                          output_path: Union[str, Path],
+                                          title: Optional[str] = None,
+                                          subplot_titles: Optional[List[str]] = None) -> None:
+        """Create multi-subplot comparison chart like in your reference image."""
+        
+        n_tasks = len(task_metrics)
+        fig, axes = plt.subplots(1, n_tasks, figsize=(6 * n_tasks, 6))
+        
+        if n_tasks == 1:
+            axes = [axes]
+        
+        # Enhanced colors for consistency
+        colors = ['#8B8B8B', '#B8C5E1', '#5A5A5A', '#7CB8D4', '#003F7F']
+        patterns = ['', '', '', '', '///']
+        
+        format_names = [data.name for data in comparison_data]
+        
+        for task_idx, (task_name, metrics) in enumerate(task_metrics.items()):
+            ax = axes[task_idx]
+            
+            # Prepare data for this task
+            metric_values = {metric: [] for metric in metrics}
+            
+            for data in comparison_data:
+                for metric in metrics:
+                    # Extract metric value
+                    value = data.result.overall_metrics
+                    for key in metric.split('.'):
+                        if isinstance(value, dict) and key in value:
+                            value = value[key]
+                        else:
+                            value = 0.0
+                            break
+                    
+                    if isinstance(value, (list, tuple)):
+                        value = np.mean(value) if value else 0.0
+                    
+                    metric_values[metric].append(float(value) if value is not None else 0.0)
+            
+            # Create bars
+            x = np.arange(len(metrics))
+            width = 0.15
+            
+            for i, (format_name, data) in enumerate(zip(format_names, comparison_data)):
+                values = [metric_values[metric][i] for metric in metrics]
+                offset = (i - len(format_names)/2 + 0.5) * width
+                
+                color = data.color or colors[i % len(colors)]
+                pattern = patterns[i % len(patterns)]
+                
+                bars = ax.bar(x + offset, values, width,
+                             label=format_name if task_idx == 0 else "",  # Only show legend on first subplot
+                             color=color,
+                             alpha=0.8,
+                             hatch=pattern,
+                             edgecolor='white',
+                             linewidth=0.5)
+            
+            # Styling
+            ax.set_xlabel('Metrics', fontsize=11, fontweight='bold')
+            if task_idx == 0:
+                ax.set_ylabel('Accuracy (%)', fontsize=11, fontweight='bold')
+            
+            ax.set_xticks(x)
+            ax.set_xticklabels([m.replace('_', ' ').title() for m in metrics], fontsize=10)
+            
+            # Subplot title
+            subplot_title = subplot_titles[task_idx] if subplot_titles else task_name
+            ax.set_title(subplot_title, fontsize=12, fontweight='bold')
+            
+            # Remove grid
+            ax.grid(False)
+            
+            # Set y limits
+            ax.set_ylim(0, max(max(metric_values[metric]) for metric in metrics) * 1.1)
+        
+        # Add shared legend
+        if format_names:
+            fig.legend(format_names, loc='upper center', bbox_to_anchor=(0.5, 0.02),
+                      ncol=len(format_names), fontsize=10, frameon=True)
+        
+        # Overall title
+        if title:
+            fig.suptitle(title, fontsize=16, fontweight='bold', y=0.95)
+        
+        plt.tight_layout()
+        if title:
+            plt.subplots_adjust(top=0.85, bottom=0.15)
+        
+        plt.savefig(output_path, dpi=300, bbox_inches='tight',
+                    facecolor='white', edgecolor='none')
+        plt.close()
 
 # Convenience function for easy usage
 def plot_evaluation_comparison(results: Dict[str, Union[EvalResult, str, Path]],

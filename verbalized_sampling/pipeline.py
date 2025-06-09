@@ -49,7 +49,7 @@ class PipelineConfig:
     evaluation: EvaluationConfig
     output_base_dir: Path
     num_workers: int = 128
-    skip_existing: bool = False
+    skip_existing: bool = True
     rerun: bool = False
     create_backup: bool = False
     

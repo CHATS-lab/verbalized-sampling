@@ -5,6 +5,7 @@ from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
 import json
 import numpy as np
+from tqdm import tqdm
 
 class EvalResultEncoder(json.JSONEncoder):
     """Custom JSON encoder for EvalResult."""
@@ -64,9 +65,13 @@ class BaseEvaluator(ABC):
     def evaluate(self, prompts: List[str], responses: List[str], metadata: Optional[Dict[str, Any]] = None) -> EvalResult:
         """Evaluate a list of prompts and responses."""
         with ThreadPoolExecutor(max_workers=self.num_workers) as executor:
-            instance_metrics = list(executor.map(
-                lambda x: self.compute_instance_metric(x[0], x[1]),
-                zip(prompts, responses)
+            instance_metrics = list(tqdm(
+                executor.map(
+                    lambda x: self.compute_instance_metric(x[0], x[1]),
+                    zip(prompts, responses)
+                ),
+                total=len(prompts),
+                desc=f"Computing {self.name} metrics"
             ))
         overall_metrics = self.aggregate_metrics(instance_metrics)
         return EvalResult(instance_metrics, overall_metrics, metadata)

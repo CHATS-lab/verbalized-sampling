@@ -38,6 +38,8 @@ def create_ablation_experiments():
         # Skip invalid combinations
         if params['method'] == Method.DIRECT and params['strict_json']:
             continue
+        elif params['method'] == Method.SEQUENCE and (not params['strict_json']):
+            continue
         
         # Create name
         name = f"{params['method'].value}_{'strict' if params['strict_json'] else 'normal'}"
@@ -64,8 +66,9 @@ def run_ablation():
     # Setup and run
     config = PipelineConfig(
         experiments=experiments,
-        evaluation=EvaluationConfig(metrics=["diversity", "length"]),
+        evaluation=EvaluationConfig(metrics=["diversity", "length", "creativity_index"]),
         output_base_dir=Path("ablation_results"),
+        skip_existing=True,
         # rerun=True
     )
     

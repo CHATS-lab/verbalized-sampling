@@ -82,7 +82,7 @@ class DiversityEvaluator(BaseEvaluator):
         # Create list of pairwise similarities with response pairs
         pairwise_similarities = []
         for i, j in zip(indices[0].cpu().numpy(), indices[1].cpu().numpy()):
-            pairwise_similarities.append(float(similarity_matrix[i, j].cpu().numpy()))
+            pairwise_similarities.append(1 - float(similarity_matrix[i, j].cpu().numpy()))
         
         # Convert all numpy values to Python native types
         metrics = {
