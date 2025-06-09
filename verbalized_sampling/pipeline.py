@@ -180,7 +180,7 @@ class Pipeline:
                 )
                 
                 task_kwargs = {}
-                if exp_config.task in [Task.POEM, Task.SPEECH]:
+                if exp_config.task in [Task.POEM, Task.SPEECH, Task.STATE_NAME]:
                     task_kwargs.update({
                         "sample_size": exp_config.sample_size,
                         "random_seed": exp_config.random_seed
@@ -202,7 +202,6 @@ class Pipeline:
                     f"[cyan]{exp_config.name}[/cyan]", 
                     total=exp_config.num_responses
                 )
-                
                 results = task_instance.run(progress=progress, task_id=gen_task)
                 task_instance.save_results(results, output_file)
                 
@@ -512,7 +511,7 @@ def run_quick_comparison(
     output_dir: Path,
     num_responses: int = 10,
     rerun: bool = False,
-    create_backup: bool = True,
+    create_backup: bool = False,
     **kwargs
 ) -> Dict[str, Any]:
     """Quick comparison between different methods for a single task."""

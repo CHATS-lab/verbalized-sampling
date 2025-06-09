@@ -6,7 +6,7 @@ from pathlib import Path
 # Quick comparison
 results = run_quick_comparison(
     task=Task.POEM,
-    methods=[Method.DIRECT, Method.STRUCTURE, Method.STRUCTURE_WITH_PROB, Method.SEQUENCE],
+    methods=[Method.DIRECT], # Method.STRUCTURE, Method.STRUCTURE_WITH_PROB, Method.SEQUENCE
     model_name="openai/gpt-4.1",
     metrics=["diversity"],
     output_dir=Path("comparison_results"),
@@ -15,17 +15,17 @@ results = run_quick_comparison(
     rerun=True,
 )
 
-results = run_quick_comparison(
-    task=Task.POEM,
-    methods=[Method.STRUCTURE, Method.STRUCTURE_WITH_PROB, Method.SEQUENCE],
-    model_name="openai/gpt-4.1",
-    metrics=["diversity"],
-    output_dir=Path("comparison_results_strict_json"),
-    num_responses=20,
-    num_samples=5,
-    strict_json=True,
-    rerun=True,
-)
+# results = run_quick_comparison(
+#     task=Task.POEM,
+#     methods=[Method.STRUCTURE, Method.STRUCTURE_WITH_PROB, Method.SEQUENCE],
+#     model_name="openai/gpt-4.1",
+#     metrics=["diversity"],
+#     output_dir=Path("comparison_results_strict_json"),
+#     num_responses=20,
+#     num_samples=5,
+#     strict_json=True,
+#     rerun=True,
+# )
 
 # Results will include:
 # - Generated responses for each method

@@ -10,9 +10,12 @@ results = run_quick_comparison(
     # methods=[Method.DIRECT, Method.STRUCTURE, Method.STRUCTURE_WITH_PROB],
     methods=[Method.STRUCTURE_WITH_PROB],
     model_name="openai/gpt-4.1",
-    metrics=["diversity"], # diversity, ttct, creativity_index, length
+    metrics=["response_count"], # diversity, ttct, creativity_index, length
     output_dir=Path("comparison_results"),
-    num_responses=200,
+    num_responses=20,
+    num_samples=5, # how many times to sample from the model
+    sample_size=1, # how many samples from the prompt dataset to generate
+    strict_json=True,
     rerun=True,
 )
 
