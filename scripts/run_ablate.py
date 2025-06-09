@@ -26,6 +26,8 @@ def create_ablation_experiments():
     compare = {
         'method': [Method.DIRECT, Method.STRUCTURE, Method.STRUCTURE_WITH_PROB, Method.SEQUENCE],
         'strict_json': [False, True],
+        # 'method': [Method.STRUCTURE_WITH_PROB],
+        # 'strict_json': [False],
     }
     
     # Generate experiments

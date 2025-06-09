@@ -25,10 +25,6 @@ class PoemTask(BaseTask):
             "description": "Poetry generation task with starting line prompts"
         }
     
-    def parse_response(self, response: str) -> Any:
-        """Parse the model's response."""
-        return response
-    
     @property
     def task_type(self) -> str:
         return "poem"

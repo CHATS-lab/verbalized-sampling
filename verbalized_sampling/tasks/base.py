@@ -44,7 +44,6 @@ class BaseTask(ABC):
             strict_json=self.strict_json
         )
     
-    @abstractmethod
     def parse_response(self, response: str) -> Any:
         """Parse the model's response."""
         try:
@@ -52,7 +51,8 @@ class BaseTask(ABC):
             if isinstance(parsed, dict):
                 parsed = parsed["responses"]
             return parsed
-        except json.JSONDecodeError:
+        except Exception as e:
+            print(f"Error parsing response: {e}")
             return response
     
     def run(
