@@ -47,7 +47,13 @@ class BaseTask(ABC):
     @abstractmethod
     def parse_response(self, response: str) -> Any:
         """Parse the model's response."""
-        pass
+        try:
+            parsed = json.loads(response)
+            if isinstance(parsed, dict):
+                parsed = parsed["responses"]
+            return parsed
+        except json.JSONDecodeError:
+            return response
     
     def run(
         self,

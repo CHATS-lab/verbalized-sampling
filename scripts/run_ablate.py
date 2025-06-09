@@ -16,7 +16,7 @@ def create_ablation_experiments():
     base = {
         'task': Task.POEM,
         'model_name': "openai/gpt-4.1",
-        'num_responses': 20,
+        'num_responses': 100,
         'num_samples': 5,
         'sample_size': 5,
         'temperature': 0.7,
@@ -24,7 +24,7 @@ def create_ablation_experiments():
     
     # What you want to compare (keep this small - 3-5 dimensions max)
     compare = {
-        'method': [Method.DIRECT, Method.STRUCTURE, Method.STRUCTURE_WITH_PROB],
+        'method': [Method.DIRECT, Method.STRUCTURE, Method.STRUCTURE_WITH_PROB, Method.SEQUENCE],
         'strict_json': [False, True],
     }
     
@@ -62,9 +62,9 @@ def run_ablation():
     # Setup and run
     config = PipelineConfig(
         experiments=experiments,
-        evaluation=EvaluationConfig(metrics=["diversity", "creativity_index"]),
+        evaluation=EvaluationConfig(metrics=["diversity", "length"]),
         output_base_dir=Path("ablation_results"),
-        rerun=True
+        # rerun=True
     )
     
     pipeline = Pipeline(config)

@@ -29,7 +29,7 @@ class ComparisonPlotter:
                             output_path: Union[str, Path],
                             title: Optional[str] = None,
                             plot_type: str = "histogram",
-                            bins: int = 30,
+                            bins: int = 100,
                             alpha: float = 0.7) -> None:
         """
         Create distribution comparison plots that can handle both instance and overall metrics.
@@ -241,11 +241,17 @@ class ComparisonPlotter:
             plt.xticks(x, format_names)
             
         else:  # line plot
+            # Define line styles for variety
+            line_styles = ['-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--']
+            
             for i, metric in enumerate(metric_names):
                 color = self.colors[i % len(self.colors)]
+                linestyle = line_styles[i % len(line_styles)]
                 plt.plot(format_names, metric_values[metric], 
                         marker='o', label=metric.replace('_', ' ').title(), 
-                        color=color, linewidth=2, markersize=8)
+                        color=color, linewidth=2.5, markersize=8, 
+                        linestyle=linestyle, markerfacecolor='white', 
+                        markeredgewidth=2, markeredgecolor=color)
             
             plt.xlabel('Format')
             plt.ylabel('Score')

@@ -51,7 +51,7 @@ class PipelineConfig:
     num_workers: int = 128
     skip_existing: bool = False
     rerun: bool = False
-    create_backup: bool = True
+    create_backup: bool = False
     
     def _should_backup(self) -> bool:
         """Determine if backup should be created."""
@@ -186,12 +186,14 @@ class Pipeline:
                         "random_seed": exp_config.random_seed
                     })
                 
+                num_samples = exp_config.num_samples if exp_config.method != Method.DIRECT else 1
+                num_responses = exp_config.num_responses // num_samples
                 task_instance = get_task(
                     exp_config.task,
                     model=model,
                     method=exp_config.method,
-                    num_responses=exp_config.num_responses,
-                    num_samples=exp_config.num_samples,
+                    num_responses=num_responses,
+                    num_samples=num_samples,
                     **task_kwargs
                 )
                 
@@ -442,7 +444,7 @@ class Pipeline:
 def run_pipeline_cli(
     config_file: Path = typer.Option(..., help="Pipeline configuration file (YAML/JSON)"),
     output_dir: Path = typer.Option("pipeline_output", help="Base output directory"),
-    skip_existing: bool = typer.Option(True, help="Skip existing files"),
+    skip_existing: bool = typer.Option(False, help="Skip existing files"),
     num_workers: int = typer.Option(128, help="Number of workers"),
     rerun: bool = typer.Option(False, help="Rerun everything from scratch"),
     create_backup: bool = typer.Option(True, help="Create backup before cleaning")
