@@ -1,18 +1,17 @@
 from typing import Any, Dict, List
-from .base import BaseLLM, VerbalizedSamplingResponseList, get_json_schema_from_pydantic
+from .base import BaseLLM
 from openai import OpenAI
 import json
+from pydantic import BaseModel
 
 class VLLMOpenAI(BaseLLM):
     """vLLM implementation for OpenAI compatible requests."""
     
-    def __init__(self, model_name: str, config: Dict[str, Any], num_workers: int = 1, is_structured: bool = False):
-        super().__init__(model_name, config, num_workers, is_structured)
+    def __init__(self, model_name: str, config: Dict[str, Any], num_workers: int = 1, strict_json: bool = False):
+        super().__init__(model_name, config, num_workers, strict_json)
         self.client = OpenAI(
             base_url=config.get("base_url", "http://localhost:8000/v1"),
         )
-        if self.is_structured:
-            self.response_format = VerbalizedSamplingResponseList
 
     def _chat(self, messages: List[Dict[str, str]]) -> str:
         """Basic chat functionality without structured response format."""
@@ -26,13 +25,14 @@ class VLLMOpenAI(BaseLLM):
             response = response.replace("\n", "")
         return response
 
-    def _chat_with_format(self, messages: List[Dict[str, str]]) -> List[Dict[str, Any]]:
+    def _chat_with_format(self, messages: List[Dict[str, str]], schema: BaseModel) -> List[Dict[str, Any]]:
         """Chat with structured response format using guided decoding."""
         try:
+            schema_json = schema.model_json_schema()
             completion = self.client.beta.chat.completions.parse(
                 model=self.model_name,
                 messages=messages,
-                response_format=self.response_format,
+                response_format=schema_json,
                 extra_body=dict(guided_decoding_backend="auto"),
                 **self.config
             )

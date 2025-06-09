@@ -33,6 +33,7 @@ class ExperimentConfig:
     sample_size: int = 5
     random_seed: int = 42
     use_vllm: bool = False
+    all_possible: bool = False # If True, the request would enable all possible responses
     strict_json: bool = False # If True, the request would enable JSON mode
 
 @dataclass
@@ -48,7 +49,7 @@ class PipelineConfig:
     evaluation: EvaluationConfig
     output_base_dir: Path
     num_workers: int = 128
-    skip_existing: bool = True
+    skip_existing: bool = False
     rerun: bool = False
     create_backup: bool = True
     
@@ -61,8 +62,17 @@ class Pipeline:
     
     def __init__(self, config: PipelineConfig):
         self.config = config
+        self.validate_config()
         self.results = {}
+    
+    def validate_config(self) -> None:
+        """Validate the configuration."""
+        if self.config.rerun and self.config.skip_existing:
+            raise ValueError("Rerun mode and skip_existing cannot be True at the same time.")
         
+        if self.config.create_backup and not self.config.rerun:
+            raise ValueError("Create backup is only allowed in rerun mode.")
+
     def _handle_rerun(self) -> None:
         """Handle rerun logic - clean up existing outputs."""
         if self.config.output_base_dir.exists():

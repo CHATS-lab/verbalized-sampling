@@ -111,6 +111,7 @@ class PromptFactory:
         num_samplings: int = 5,
         sample_size: int = None,
         random_seed: int = None,
+        **kwargs,
     ) -> List[List[Dict[str, str]]]:
         """Get a prompt for a specific task and format.
         
@@ -134,4 +135,4 @@ class PromptFactory:
             prompts = random.sample(prompts, 1)
 
         print(f"Num samplings: {num_samplings}, Method: {method}, Sample size: {sample_size}, Random seed: {random_seed}")
-        return [PromptFactory.pack_prompt(method, prompt, num_samplings=num_samplings) for prompt in prompts]
+        return [PromptFactory.pack_prompt(method, prompt, num_samplings=num_samplings, **kwargs) for prompt in prompts]

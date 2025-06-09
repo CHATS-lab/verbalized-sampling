@@ -3,16 +3,7 @@ from typing import Any, Dict, List, Callable, T
 import concurrent.futures
 from pydantic import BaseModel
 from tqdm import tqdm
-
-class VerbalizedSamplingResponse(BaseModel):
-    response: str
-    probability: float
-
-class VerbalizedSamplingResponseList(BaseModel):
-    responses: List[VerbalizedSamplingResponse]
-
-def get_json_schema_from_pydantic(model: BaseModel) -> Dict[str, Any]:
-    return model.model_json_schema()
+from functools import partial
 
 class BaseLLM(ABC):
     """Base class for all LLM interfaces."""
@@ -21,11 +12,11 @@ class BaseLLM(ABC):
                  model_name: str, 
                  config: Dict[str, Any], 
                  num_workers: int = 1, 
-                 is_structured: bool = False):
+                 strict_json: bool = False):
         self.model_name = model_name
         self.config = config
         self.num_workers = num_workers
-        self.is_structured = is_structured
+        self.strict_json = strict_json
     
     @abstractmethod
     def _chat(self, message: List[Dict[str, str]]) -> str:
@@ -33,12 +24,17 @@ class BaseLLM(ABC):
         pass
 
     @abstractmethod
-    def _chat_with_format(self, message: List[Dict[str, str]]) -> str:
+    def _chat_with_format(self, message: List[Dict[str, str]], schema: BaseModel) -> str:
         """Send a single message to the model and get the response in JSON format."""
         pass
     
-    def chat(self, messages: List) -> List[str]:
-        CHAT_FUNC = self._chat_with_format if self.is_structured else self._chat
+    def chat(self, messages: List, schema: BaseModel = None) -> List[str]:
+        if not self.strict_json:
+            CHAT_FUNC = self._chat
+        else:
+            if schema is None:
+                raise ValueError("Schema is required for strict JSON mode.")
+            CHAT_FUNC = partial(self._chat_with_format, schema=schema)
         if self.num_workers > 1:
             return self._parallel_execute(CHAT_FUNC, messages)
         else:

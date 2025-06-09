@@ -1,8 +1,9 @@
 from typing import Any, Dict, List, Callable, TypeVar
-from .base import BaseLLM, VerbalizedSamplingResponseList, get_json_schema_from_pydantic
+from .base import BaseLLM
 import json
 from openai import OpenAI
 import os
+from pydantic import BaseModel
 
 T = TypeVar('T')
 
@@ -21,8 +22,8 @@ OPENROUTER_MODELS_MAPPING = {
 class OpenRouterLLM(BaseLLM):
     """OpenRouter implementation for various models."""
     
-    def __init__(self, model_name: str, config: Dict[str, Any], num_workers: int = 1, is_structured: bool = False):
-        super().__init__(model_name, config, num_workers, is_structured)
+    def __init__(self, model_name: str, config: Dict[str, Any], num_workers: int = 1, strict_json: bool = False):
+        super().__init__(model_name, config, num_workers, strict_json)
         
         if model_name in OPENROUTER_MODELS_MAPPING:
             self.model_name = OPENROUTER_MODELS_MAPPING[model_name]
@@ -31,12 +32,6 @@ class OpenRouterLLM(BaseLLM):
             base_url="https://openrouter.ai/api/v1",
             api_key=os.environ.get("OPENROUTER_API_KEY"),
         )
-        # Set up response format for structured output
-        if self.is_structured:
-            schema = get_json_schema_from_pydantic(VerbalizedSamplingResponseList)
-            self.response_format = {"type": "json_object", "schema": schema}
-        else:
-            self.response_format = None
 
     def _chat(self, messages: List[Dict[str, str]]) -> str:
         """Basic chat functionality without structured response format."""
@@ -51,37 +46,91 @@ class OpenRouterLLM(BaseLLM):
             response = response.replace("\n", "")
         return response
 
-    def _chat_with_format(self, messages: List[Dict[str, str]]) -> List[Dict[str, Any]]:
+    def _chat_with_format(self, messages: List[Dict[str, str]], schema: BaseModel) -> List[Dict[str, Any]]:
         """Chat with structured response format."""
-        # TODO: add support for structured output
-        response = self._chat(messages)
-        return self._parse_response(response)
-        #     else:
-        #         # For Gemini and other models that support structured output
-        #         completion = self.client.chat.completions.create(
-        #             model=self.model_name,
-        #             messages=messages,
-        #             temperature=self.config.get("temperature", 0.7),
-        #             top_p=self.config.get("top_p", 0.9),
-        #             response_format=self.response_format,
-        #         )
-        #         response = completion.choices[0].message.content
-        #         return self._parse_response(response)
-        # except Exception as e:
-        #     print(f"Error in _chat_with_format: {e}")
-        #     # Fallback to regular chat if parsing fails
-        #     response = self._chat(messages)
-        #     return self._parse_response(response)
+        schema_json = schema.model_json_schema()
+        
+        completion = self.client.chat.completions.create(
+            model=self.model_name,
+            messages=messages,
+            temperature=self.config.get("temperature", 0.7),
+            top_p=self.config.get("top_p", 0.9),
+            response_format={
+                "type": "json_schema",
+                "json_schema": {
+                    "name": schema.__name__,
+                    "schema": schema_json
+                }
+            }
+        )
+        
+        response = completion.choices[0].message.content
+        if response:
+            parsed_response = self._parse_response_with_schema(response, schema)
+            return parsed_response
+        return []
+
+    def _parse_response_with_schema(self, response: str, schema: BaseModel) -> List[Dict[str, Any]]:
+        """Parse the response based on the provided schema."""
+        try:
+            if isinstance(response, str):
+                parsed = json.loads(response)
+                
+                # Validate the parsed response against the schema
+                validated_data = schema(**parsed)
+                
+                # Handle different schema types
+                if hasattr(validated_data, 'responses'):
+                    # For schemas with a 'responses' field (SequenceResponse, StructuredResponseList, etc.)
+                    responses = validated_data.responses
+                    
+                    if isinstance(responses, list):
+                        result = []
+                        for resp in responses:
+                            if hasattr(resp, 'text') and hasattr(resp, 'probability'):
+                                # ResponseWithProbability
+                                result.append({
+                                    "response": resp.text,
+                                    "probability": resp.probability
+                                })
+                            elif hasattr(resp, 'text'):
+                                # Response
+                                result.append({
+                                    "response": resp.text,
+                                    "probability": 1.0
+                                })
+                            elif isinstance(resp, str):
+                                # SequenceResponse (list of strings)
+                                result.append({
+                                    "response": resp,
+                                    "probability": 1.0
+                                })
+                        return result
+                else:
+                    # For direct response schemas (Response)
+                    if hasattr(validated_data, 'text'):
+                        return [{
+                            "response": validated_data.text,
+                            "probability": getattr(validated_data, 'probability', 1.0)
+                        }]
+                    
+                # Fallback: return the raw validated data
+                return [{"response": str(validated_data), "probability": 1.0}]
+                
+        except Exception as e:
+            print(f"Error parsing response with schema: {e}")
+            # If parsing fails, return a single response with probability 1.0
+            return [{"response": response, "probability": 1.0}]
 
     def _parse_response(self, response: str) -> List[Dict[str, Any]]:
-        """Parse the response into a list of text and probability pairs."""
+        """Legacy parse method - kept for backward compatibility."""
         try:
             if isinstance(response, str):
                 parsed = json.loads(response)
                 return [
                     {
-                        "response": resp["response"],
-                        "probability": resp["probability"]
+                        "response": resp["text"],
+                        "probability": resp["probability"] if "probability" in resp else 1.0
                     }
                     for resp in parsed.get("responses", [])
                 ]

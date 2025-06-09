@@ -8,6 +8,7 @@ from verbalized_sampling.prompts import (
     Method
 )
 from verbalized_sampling.llms import BaseLLM
+from verbalized_sampling.prompts.schema import get_schema
 
 class BaseTask(ABC):
     """Base class for all tasks."""
@@ -19,6 +20,8 @@ class BaseTask(ABC):
                  num_samples: int = 5,
                  sample_size: int = 1,
                  random_seed: int = 42,
+                 all_possible: bool = False,
+                 strict_json: bool = False,
                  ):
         self.model = model
         self.method = method
@@ -26,6 +29,8 @@ class BaseTask(ABC):
         self.num_samples = num_samples
         self.sample_size = sample_size
         self.random_seed = random_seed
+        self.all_possible = all_possible
+        self.strict_json = strict_json
         
     def get_prompt(self) -> List[List[Dict[str, str]]]:
         """Get the prompt for the task."""
@@ -35,6 +40,8 @@ class BaseTask(ABC):
             num_samplings=self.num_samples,
             sample_size=self.sample_size,
             random_seed=self.random_seed,
+            all_possible=self.all_possible,
+            strict_json=self.strict_json
         )
     
     @abstractmethod
@@ -50,7 +57,7 @@ class BaseTask(ABC):
         """Run the task with the given model."""
         
         prompts = [prompt for prompt in self.get_prompt() for _ in range(self.num_responses)]
-        results = self.model.chat(prompts)
+        results = self.model.chat(prompts, schema=get_schema(self.method))
         parsed_results = []
         for result in results:
             parsed = self.parse_response(result)

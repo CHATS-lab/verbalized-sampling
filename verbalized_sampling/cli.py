@@ -25,6 +25,8 @@ def run_experiment(
     use_vllm: bool = typer.Option(False, help="Whether to use vLLM"),
     sample_size: int = typer.Option(1, help="Number of samples to generate"),
     random_seed: int = typer.Option(42, help="Random seed"),
+    all_possible: bool = typer.Option(False, help="Whether to use all possible responses"),
+    strict_json: bool = typer.Option(False, help="Whether to use strict JSON mode"),
 ):
     """Run a verbalized sampling experiment."""
     from verbalized_sampling.tasks import get_task
@@ -44,7 +46,8 @@ def run_experiment(
         method=method,
         config={"temperature": temperature, "top_p": top_p},
         use_vllm=use_vllm,
-        num_workers=num_workers
+        num_workers=num_workers,
+        strict_json=strict_json
     )
     task_instance = get_task(
         task, 
@@ -53,7 +56,10 @@ def run_experiment(
         num_responses=num_responses,
         num_samples=num_samples,
         sample_size=sample_size,
-        random_seed=random_seed)
+        random_seed=random_seed,
+        all_possible=all_possible,
+        strict_json=strict_json
+    )
     
     # Run experiment
     with Progress() as progress:
