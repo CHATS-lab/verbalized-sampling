@@ -45,8 +45,8 @@ class CreativityIndexEvaluator(BaseEvaluator):
     
     def __init__(self, 
                  method: str = "exact",  # "exact" or "semantic"
-                 corpus: str = "v4_rpj_llama_s4",  # Infini-gram corpus
-                 min_ngram: int = 8,
+                 corpus: str = "v4_dolma-v1_7_llama",  # Infini-gram corpus
+                 min_ngram: int = 5,
                  threshold: float = 0.95,  # For semantic matching
                  embed_model: str = "meta-llama/Meta-Llama-3-8B-Instruct",
                  api_url: str = "https://api.infini-gram.io/",

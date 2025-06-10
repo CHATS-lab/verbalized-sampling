@@ -375,14 +375,14 @@ class ComparisonPlotter:
                 plot_type="violin"
             )
         
-        # # Aggregate metrics
-        # self.compare_aggregate_metrics(
-        #     comparison_data,
-        #     ["creative_writing_v3"],
-        #     output_dir / "creative_writing_v3_metrics.png",
-        #     title="Creative Writing v3 Metrics Comparison",
-        #     plot_type="bar"
-        # )
+        # Aggregate metrics
+        self.compare_aggregate_metrics(
+            comparison_data,
+            ["creative_writing_v3"],
+            output_dir / "creative_writing_v3_metrics.png",
+            title="Creative Writing v3 Metrics Comparison",
+            plot_type="bar"
+        )
     
     def _create_diversity_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
         """Create diversity-specific plots."""
