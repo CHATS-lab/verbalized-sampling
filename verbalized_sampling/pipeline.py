@@ -178,6 +178,8 @@ class Pipeline:
                     num_workers=self.config.num_workers,
                     strict_json=exp_config.strict_json
                 )
+                print("temperature: ", exp_config.temperature)
+                print("top_p: ", exp_config.top_p)
                 
                 task_kwargs = {}
                 if exp_config.task in [Task.POEM, Task.SPEECH, Task.STATE_NAME]:

@@ -17,7 +17,7 @@ class ResponseCountEvaluator(BaseEvaluator):
             responses = ast.literal_eval(responses)
             
         list_of_responses = [
-            response.get('response', response).replace('.', '')
+            response.get('response', response).replace('.', '').replace(' ', '').lower()
             for response in responses
         ]
         self.counter.update(list_of_responses)

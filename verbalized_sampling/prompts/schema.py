@@ -12,11 +12,75 @@ class ResponseWithProbability(BaseModel):
 class SequenceResponse(BaseModel):
     responses: List[str] = Field(..., description="List of responses")
 
-class StructuredResponseList(BaseModel):
-    responses: List[Response] = Field(..., description="List of responses")
+# class StructuredResponseList(BaseModel):
+#     responses: List[Response] = Field(..., description="List of responses")
 
-class StructuredResponseListWithProbability(BaseModel):
-    responses: List[ResponseWithProbability] = Field(..., description="List of responses with probabilities")
+# class StructuredResponseListWithProbability(BaseModel):
+    # responses: List[ResponseWithProbability] = Field(..., description="List of responses with probabilities")
+
+StructuredResponseList = {
+    "type": "json_schema",  # Required for OpenRouter
+    "json_schema": {
+        "name": "responses_schema",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "responses": {
+                    "type": "array",
+                    "description": "A list of different possible responses to the interlocutor's message, each with a response text and a probability.",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "text": {
+                                "type": "string",
+                                "description": "The text of the response."
+                            },
+                        },
+                        "required": ["text"],
+                        "additionalProperties": False
+                    }
+                }
+            },
+            "required": ["responses"],
+            "additionalProperties": False
+        },
+        "strict": True
+    }
+}
+
+StructuredResponseListWithProbability = {
+    "type": "json_schema",  # Required for OpenRouter
+    "json_schema": {
+        "name": "responses_schema",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "responses": {
+                    "type": "array",
+                    "description": "A list of different possible responses to the interlocutor's message, each with a response text and a probability.",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "text": {
+                                "type": "string",
+                                "description": "The text of the response."
+                            },
+                            "probability": {
+                                "type": "number",
+                                "description": "How likely each response would be (value between 0 and 1)"
+                            }
+                        },
+                        "required": ["text", "probability"],
+                        "additionalProperties": False
+                    }
+                }
+            },
+            "required": ["responses"],
+            "additionalProperties": False
+        },
+        "strict": True
+    }
+}
 
 def get_schema(method: Method) -> BaseModel:
     if method == Method.SEQUENCE:

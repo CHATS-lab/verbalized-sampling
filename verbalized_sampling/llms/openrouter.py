@@ -48,20 +48,14 @@ class OpenRouterLLM(BaseLLM):
 
     def _chat_with_format(self, messages: List[Dict[str, str]], schema: BaseModel) -> List[Dict[str, Any]]:
         """Chat with structured response format."""
-        schema_json = schema.model_json_schema()
+        # schema_json = schema.model_json_schema()
         
         completion = self.client.chat.completions.create(
             model=self.model_name,
             messages=messages,
             temperature=self.config.get("temperature", 0.7),
             top_p=self.config.get("top_p", 0.9),
-            response_format={
-                "type": "json_schema",
-                "json_schema": {
-                    "name": schema.__name__,
-                    "schema": schema_json
-                }
-            }
+            response_format=schema
         )
         
         response = completion.choices[0].message.content
@@ -77,26 +71,26 @@ class OpenRouterLLM(BaseLLM):
                 parsed = json.loads(response)
                 
                 # Validate the parsed response against the schema
-                validated_data = schema(**parsed)
+                # validated_data = schema(**parsed)
                 
                 # Handle different schema types
-                if hasattr(validated_data, 'responses'):
+                if "responses" in parsed:
                     # For schemas with a 'responses' field (SequenceResponse, StructuredResponseList, etc.)
-                    responses = validated_data.responses
+                    responses = parsed["responses"]
                     
                     if isinstance(responses, list):
                         result = []
                         for resp in responses:
-                            if hasattr(resp, 'text') and hasattr(resp, 'probability'):
+                            if isinstance(resp, dict) and "text" in resp and "probability" in resp:
                                 # ResponseWithProbability
                                 result.append({
-                                    "response": resp.text,
-                                    "probability": resp.probability
+                                    "response": resp["text"],
+                                    "probability": resp["probability"]
                                 })
-                            elif hasattr(resp, 'text'):
+                            elif isinstance(resp, dict) and "text" in resp:
                                 # Response
                                 result.append({
-                                    "response": resp.text,
+                                    "response": resp["text"],
                                     "probability": 1.0
                                 })
                             elif isinstance(resp, str):
@@ -108,19 +102,20 @@ class OpenRouterLLM(BaseLLM):
                         return result
                 else:
                     # For direct response schemas (Response)
-                    if hasattr(validated_data, 'text'):
+                    if "text" in parsed:
                         return [{
-                            "response": validated_data.text,
-                            "probability": getattr(validated_data, 'probability', 1.0)
+                            "response": parsed["text"],
+                            "probability": parsed.get("probability", 1.0)
                         }]
                     
                 # Fallback: return the raw validated data
-                return [{"response": str(validated_data), "probability": 1.0}]
+                return [{"response": str(parsed), "probability": 1.0}]
                 
         except Exception as e:
             print(f"Error parsing response with schema: {e}")
             # If parsing fails, return a single response with probability 1.0
             return [{"response": response, "probability": 1.0}]
+
 
     def _parse_response(self, response: str) -> List[Dict[str, Any]]:
         """Legacy parse method - kept for backward compatibility."""

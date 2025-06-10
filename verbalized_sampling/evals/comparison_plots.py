@@ -6,6 +6,8 @@ import seaborn as sns
 import pandas as pd
 from dataclasses import dataclass
 from .base import EvalResult
+from scipy.stats import chisquare
+import numpy as np
 
 @dataclass
 class ComparisonData:
@@ -483,11 +485,32 @@ class ComparisonPlotter:
         )
 
 
+    def _generate_uniform_state_sample(self, n_trials=500, n_states=50, seed=42):
+        """Generate what a truly uniform state selection would look like."""
+        if seed:
+            np.random.seed(seed)
+        
+        # Simulate uniform random selection
+        state_selections = np.random.choice(range(n_states), size=n_trials, replace=True)
+        
+        # Count frequencies
+        unique_states, counts = np.unique(state_selections, return_counts=True)
+        
+        # Create full array (including states with 0 counts)
+        full_counts = np.zeros(n_states)
+        full_counts[unique_states] = counts
+        
+        return sorted([int(count) for count in full_counts], reverse=True)
+
+
     def _create_response_count_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
         """Create response count-specific plots."""
         response_counter = comparison_data[0].result.overall_metrics["response_distribution"]
-        values = list(response_counter.values())
-        labels = list(response_counter.keys())
+        
+        # Sort values and labels by count in descending order
+        sorted_items = sorted(response_counter.items(), key=lambda x: x[1], reverse=True)
+        values = [item[1] for item in sorted_items]
+        labels = [item[0] for item in sorted_items]
         
         # Create histogram plot
         plt.figure(figsize=self.figsize)
@@ -498,29 +521,49 @@ class ComparisonPlotter:
             'Count': values
         })
         
-        # Create color palette
-        palette = {label: color for label, color in zip(labels, self.colors[:len(labels)])}
-        
         # Create histogram using seaborn
         ax = sns.barplot(
             data=df,
             x='Response Type',
             y='Count',
-            palette=palette,
-            alpha=0.7
+            palette=[self.colors[0]],  # Use palette instead of color for consistent coloring
+            alpha=0.7,
+            legend=False
         )
         
         # Add labels and title
-        plt.xticks(rotation=0)
+        plt.xticks(rotation=45)  # Rotate labels for better readability
         plt.xlabel('Name of the State')
         plt.ylabel('Count')
         plt.title('State Name Distribution')
+        plt.ylim(0, 500)
+
         
         # Add value labels on top of bars
         for i, v in enumerate(values):
             ax.text(i, v, f'{int(v)}', ha='center', va='bottom')
         
         plt.tight_layout()
+
+        total_trials = sum(values)
+        num_states_appearing = len(values)
+        values = values + [0] * (50 - num_states_appearing)
+
+        # Generate expected frequencies with the same total number of trials
+        expected_frequencies = self._generate_uniform_state_sample(n_trials=total_trials, n_states=50, seed=42)
+        print(values)
+        print(expected_frequencies)
+        
+        # Perform chi-square goodness-of-fit test
+        chi2_stat, p_value = chisquare(f_obs=values, f_exp=expected_frequencies)
+        
+        # Add results to plot
+        plt.text(0.98, 0.98, f'Chi-square: {chi2_stat:.2f}', 
+                transform=plt.gca().transAxes, 
+                verticalalignment='top',
+                horizontalalignment='right',
+                bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+
         plt.savefig(output_dir / "response_count_distribution.png", dpi=300, bbox_inches='tight',
                     facecolor='white', edgecolor='none')
         plt.close()
