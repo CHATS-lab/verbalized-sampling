@@ -67,7 +67,7 @@ class PromptFactory:
         strict_json: bool = False,
     ) -> List[Dict[str, str]]:
         
-        if method == Method.DIRECT:
+        if method in [Method.DIRECT, Method.MULTI_TURN]:
             return [{"role": "user", "content": prompt}]
         
         if all_possible:

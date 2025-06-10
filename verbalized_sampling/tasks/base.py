@@ -8,8 +8,10 @@ from verbalized_sampling.prompts import (
     Method,
     is_method_multi_turn
 )
+import concurrent.futures
 from verbalized_sampling.llms import BaseLLM
 from verbalized_sampling.prompts.schema import get_schema
+from tqdm import trange
 
 class BaseTask(ABC):
     """Base class for all tasks."""
@@ -33,7 +35,7 @@ class BaseTask(ABC):
         self.random_seed = random_seed
         self.all_possible = all_possible
         self.strict_json = strict_json
-        self.max_turns = num_responses
+        self.max_turns = num_samples
         
     def get_prompt(self) -> List[List[Dict[str, str]]]:
         """Get the prompt for the task."""
@@ -76,92 +78,39 @@ class BaseTask(ABC):
         task_id: int = None,
     ) -> List[Any]:
         """Run multi-turn conversations."""
-        initial_prompts = self.get_prompt()
+        initial_prompts = [prompt for prompt in self.get_prompt() for _ in range(self.num_responses)]
         all_results = []
         
-        for conv_id, initial_prompt in enumerate(initial_prompts):
-            # Initialize conversation with the first prompt
+        def _run_whole_conversation(initial_prompt: List[Dict[str, str]]):
             chat_history = initial_prompt.copy()
-            
+            turn_responses = []
             for turn in range(self.max_turns):
                 if turn == 0:
-                    # First turn: use the initial prompt as-is
-                    current_prompts = [initial_prompt for _ in range(self.num_responses)]
+                    current_prompts = initial_prompt
                 else:
-                    # Subsequent turns: get continuation prompts
                     continuation_prompt = PromptFactory.get_multi_turn_continuation(chat_history)
-                    current_prompts = [continuation_prompt for _ in range(self.num_responses)]
+                    current_prompts = continuation_prompt
                 
-                # Get responses for this turn
-                results = self.model.chat(current_prompts, schema=get_schema(self.method))
-                
-                # Process results for this turn
-                turn_responses = []
-                for i, result in enumerate(results):
-                    initial_prompt_content = initial_prompt[-1]["content"]
-                    # prompt_content = current_prompts[i][-1]["content"]
-                    parsed = self.parse_response(result)
-                    
-                    if parsed is not None:
-                        if isinstance(parsed, list):
-                            for item in parsed:
-                                if isinstance(item, dict):
-                                    item.update({
-                                        "prompt": initial_prompt_content,
-                                        "turn": turn + 1,
-                                        "conversation_id": conv_id,
-                                        "response_id": i
-                                    })
-                                    turn_responses.append(item)
-                                    all_results.append(item)
-                                else:
-                                    response_data = {
-                                        "prompt": initial_prompt_content, 
-                                        "response": item,
-                                        "turn": turn + 1,
-                                        "conversation_id": conv_id,
-                                        "response_id": i
-                                    }
-                                    turn_responses.append(response_data)
-                                    all_results.append(response_data)
-                        elif isinstance(parsed, dict):
-                            parsed.update({
-                                "prompt": initial_prompt_content,
-                                "turn": turn + 1,
-                                "conversation_id": conv_id,
-                                "response_id": i
-                            })
-                            turn_responses.append(parsed)
-                            all_results.append(parsed)
-                        else:
-                            response_data = {
-                                "prompt": initial_prompt_content, 
-                                "response": parsed,
-                                "turn": turn + 1,
-                                "conversation_id": conv_id,
-                                "response_id": i
-                            }
-                            turn_responses.append(response_data)
-                            all_results.append(response_data)
-                    else:
-                        response_data = {
-                            "prompt": initial_prompt_content, 
-                            "response": result,
-                            "turn": turn + 1,
-                            "conversation_id": conv_id,
-                            "response_id": i
-                        }
-                        turn_responses.append(response_data)
-                        all_results.append(response_data)
-                    
-                    if progress and task_id is not None:
-                        progress.update(task_id, advance=1)
-                
-                # Use the first response to continue the conversation
-                if turn_responses:
-                    first_response = turn_responses[0]
-                    response_text = first_response.get("response", str(first_response.get("text", "")))
-                    chat_history.append({"role": "assistant", "content": str(response_text)})
+                result = self.model._chat(current_prompts)
+
+                initial_prompt_content = initial_prompt[-1]["content"]
+                response_data = {
+                    "prompt": initial_prompt_content,
+                    "response": result,
+                    "turn": turn + 1,
+                }
+                turn_responses.append(response_data)
+                chat_history.append({"role": "assistant", "content": str(result)})
+
+            return turn_responses
+        
+        with concurrent.futures.ThreadPoolExecutor(max_workers=128) as executor:
+            futures = [executor.submit(_run_whole_conversation, initial_prompt) for initial_prompt in initial_prompts]
+            for future in concurrent.futures.as_completed(futures):
+                turn_responses = future.result()
+                all_results.extend(turn_responses)
+                if progress and task_id is not None:
+                    progress.update(task_id, advance=len(turn_responses))
         
         return all_results
 
