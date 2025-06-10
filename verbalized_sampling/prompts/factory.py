@@ -81,7 +81,7 @@ class PromptFactory:
                 {"role": "user", "content": prompt}
             ]
         elif method == Method.MULTI_TURN:
-            if len(chat_history) == 0:
+            if (not chat_history) or (len(chat_history) == 0):
                 return [
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": prompt}
