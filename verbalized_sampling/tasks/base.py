@@ -77,30 +77,43 @@ class BaseTask(ABC):
         
         prompts = [prompt for prompt in self.get_prompt() for _ in range(self.num_responses)]
         results = self.model.chat(prompts, schema=get_schema(self.method))
+        # print(results)
         parsed_results = []
+        current_batch = []
+        
         for prompt, result in zip(prompts, results):
             prompt = prompt[-1]["content"]
             parsed = self.parse_response(result)
+            
             if parsed is not None:
                 if isinstance(parsed, list):
                     for item in parsed:
                         if isinstance(item, dict):
                             item["prompt"] = prompt
-                            parsed_results.append(item)
+                            current_batch.append(item)
                         else:
-                            parsed_results.append({"prompt": prompt, "response": item})
+                            current_batch.append({"prompt": prompt, "response": item})
                 elif isinstance(parsed, dict):
                     parsed["prompt"] = prompt
-                    parsed_results.append(parsed)
+                    current_batch.append(parsed)
                 else:
-                    parsed_results.append({"prompt": prompt, "response": parsed})
+                    current_batch.append({"prompt": prompt, "response": parsed})
             else:
-                parsed_results.append({"prompt": prompt, "response": result})
+                current_batch.append({"prompt": prompt, "response": result})
+                
+            # When we have collected num_samples items, add the batch to results
+            if len(current_batch) == self.num_samples:
+                parsed_results.append(current_batch)
+                current_batch = []
+                
             if progress and task_id is not None:
                 progress.update(task_id, advance=1)
         
+        # print(parsed_results)
+
         return parsed_results
     
+
     def save_results(self, results: List[Any], output_file: Path):
         """Save the results to a file."""
         output_file.parent.mkdir(parents=True, exist_ok=True)

@@ -203,7 +203,6 @@ class Pipeline:
                     total=exp_config.num_responses
                 )
                 results = task_instance.run(progress=progress, task_id=gen_task)
-                print(results)
                 task_instance.save_results(results, output_file)
                 
                 generation_results[exp_config.name] = output_file
