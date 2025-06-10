@@ -251,7 +251,9 @@ class Pipeline:
                         except json.JSONDecodeError:
                             responses.append(line.strip())
                             prompts.append('')
-                
+
+                # print(responses)
+
                 # Run each metric
                 for metric in self.config.evaluation.metrics:
                     eval_dir = self.config.output_base_dir / "evaluation" / exp_name

@@ -105,7 +105,9 @@ class ComparisonPlotter:
         # If no values found in instance_metrics, try overall_metrics
         if not values:
             overall_value = data.result.overall_metrics
+            print(overall_value)
             for key in metric_name.split('.'):
+                print(key)
                 if isinstance(overall_value, dict) and key in overall_value:
                     overall_value = overall_value[key]
                 else:
@@ -288,6 +290,8 @@ class ComparisonPlotter:
                 evaluator_type = "creativity_index"
             elif "mean_token_length" in first_result.overall_metrics:
                 evaluator_type = "length"
+            elif "response_distribution" in first_result.overall_metrics:
+                evaluator_type = "response_count"
             else:
                 evaluator_type = "generic"
         
@@ -300,6 +304,8 @@ class ComparisonPlotter:
             self._create_creativity_index_plots(comparison_data, output_dir)
         elif evaluator_type == "length":
             self._create_length_plots(comparison_data, output_dir)
+        elif evaluator_type == "response_count":
+            self._create_response_count_plots(comparison_data, output_dir)
         else:
             self._create_generic_plots(comparison_data, output_dir)
     
@@ -381,7 +387,7 @@ class ComparisonPlotter:
             comparison_data, "token_length",
             output_dir / "token_length_distribution.png",
             title="Token Length Distribution Comparison",
-            plot_type="kde"
+            plot_type="histogram"
         )
         
         # Aggregate metrics
@@ -391,7 +397,27 @@ class ComparisonPlotter:
             output_dir / "length_metrics.png",
             title="Length Metrics Comparison"
         )
-    
+
+    def _create_response_count_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
+        """Create response count-specific plots."""
+        print(comparison_data[0])
+
+        # Response count distribution
+        self.compare_distributions(
+            comparison_data, "response_distribution",
+            output_dir / "response_count_distribution.png",
+            title="Response Count Distribution Comparison",
+            plot_type="histogram"
+        )
+
+        # Aggregate metrics
+        self.compare_aggregate_metrics(
+            comparison_data,
+            ["min_responses", "max_responses", "num_responses"],
+            output_dir / "response_count_metrics.png",
+            title="Response Count Metrics Comparison"
+        )
+        
     def _create_generic_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
         """Create generic plots for unknown evaluator types."""
         first_result = comparison_data[0].result
