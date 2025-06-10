@@ -60,10 +60,21 @@ class BaseTask(ABC):
         """
         # If response is already a list, return it directly
         if isinstance(response, list):
-            return response
+            if len(response) == 1:
+                response = response[0]
+                if "response" in response:
+                    response = response["response"]
+            else:
+                return response
             
         # If response is a string, try to parse it as JSON
         try:
+            # Check if response contains code block markers
+            if "```" in response:
+                # Remove code block markers and any language specifiers
+                response = response.replace("```json", "").replace("```", "").strip()
+            # elif response.startswith("[") and response.endswith("]"):
+            #     response = response[1:-1]
             parsed = json.loads(response)
             if isinstance(parsed, dict):
                 parsed = parsed["responses"]
@@ -141,8 +152,14 @@ class BaseTask(ABC):
                         else:
                             parsed_results.append({"prompt": prompt, "response": item})
                 elif isinstance(parsed, dict):
-                    parsed["prompt"] = prompt
-                    parsed_results.append(parsed)
+                    if ("response" in parsed) and (isinstance(parsed["response"], list)):
+                        for item in parsed["response"]:
+                            item["prompt"] = prompt
+                            parsed_results.append(item)
+                    else:
+                        parsed["prompt"] = prompt
+                        parsed_results.append(parsed)
+                    # parsed_results.append(parsed)
                 else:
                     parsed_results.append({"prompt": prompt, "response": parsed})
             else:

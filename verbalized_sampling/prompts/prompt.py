@@ -28,7 +28,6 @@ Give ONLY the JSON object, no explanations or extra text.
 
 MULTI_TURN_CONTINUE_PROMPT = """
 Generate an alternative response to the original input prompt.
-Make it different from your previous response(s) while maintaining quality and relevance.
 """
 
 # Chain-of-Thought Sampling Prompts

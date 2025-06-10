@@ -67,7 +67,7 @@ class CreativityIndexEvaluator(BaseEvaluator):
                  embed_table_path: str = None,
                  reference_corpus_path: str = None,  # For semantic matching
                  timeout: int = 30,  # Timeout for earth mover computation
-                 num_workers: int = 128):
+                 num_workers: int = 24):
         super().__init__("creativity_index", num_workers)
         self.method = method
         self.corpus = corpus

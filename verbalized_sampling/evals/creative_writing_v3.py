@@ -96,7 +96,7 @@ class CreativeWritingV3Evaluator(BaseEvaluator):
         scores = parse_judge_scores_creative(judge_response)
         
         # Add the raw judge response for debugging if needed
-        scores["_judge_response"] = judge_response
+        scores["Average_Score"] = sum(scores.values()) / len(scores)
         
         return scores
     
@@ -126,7 +126,10 @@ class CreativeWritingV3Evaluator(BaseEvaluator):
             if values:
                 aggregated[f"avg_{metric_name.lower().replace(' ', '_')}"] = sum(values) / len(values)
 
-        
+        if aggregated:  # Only calculate average if there are aggregated metrics
+            aggregated["Average_Score"] = sum(aggregated.values()) / len(aggregated)
+        else:
+            aggregated["Average_Score"] = 0.0
         return aggregated
     
     def evaluate(self, prompts: List[str], responses: List[str], 

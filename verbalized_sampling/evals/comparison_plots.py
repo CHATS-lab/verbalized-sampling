@@ -67,6 +67,8 @@ class ComparisonPlotter:
         # Create the appropriate plot type
         if plot_type == "histogram":
             self._plot_histogram(all_data, labels, colors, bins, alpha)
+        elif plot_type == "sns_histogram":
+            self._plot_sns_histogram(all_data, labels, colors, bins, alpha)
         elif plot_type == "violin":
             self._plot_violin(all_data, labels, colors)
         elif plot_type == "kde":
@@ -128,6 +130,11 @@ class ComparisonPlotter:
         plt.hist(all_data, bins=bins, alpha=alpha, label=labels, color=colors)
         plt.ylabel('Frequency')
     
+    def _plot_sns_histogram(self, all_data: List[List[float]], labels: List[str], colors: List[str], bins: int, alpha: float):
+        """Create histogram plot."""
+        sns.histplot(all_data, alpha=alpha, color=colors, kde=True)
+        plt.ylabel('Frequency')
+    
     def _plot_violin(self, all_data: List[List[float]], labels: List[str], colors: List[str]):
         """Create violin plot similar to your notebook example."""
         # Prepare data for seaborn
@@ -175,11 +182,17 @@ class ComparisonPlotter:
     
     def _plot_box(self, all_data: List[List[float]], labels: List[str], colors: List[str]):
         """Create box plot."""
-        box_plot = plt.boxplot(all_data, labels=labels, patch_artist=True)
+        box_plot = plt.boxplot(all_data, labels=labels, patch_artist=True, vert=False)  # vert=False rotates the plot
         for patch, color in zip(box_plot['boxes'], colors):
             patch.set_facecolor(color)
             patch.set_alpha(0.7)
-        plt.ylabel('Value')
+        
+        # Make the median lines more bold
+        for median in box_plot['medians']:
+            median.set_linewidth(3)  # Make median line thicker
+            median.set_color('black')  # Make it black for better visibility
+        
+        plt.xlabel('Value')  # Changed from ylabel to xlabel since we rotated
     
     def compare_instance_metrics(self, 
                                comparison_data: List[ComparisonData],
@@ -364,7 +377,8 @@ class ComparisonPlotter:
             "emotionally_engaging",
             "consistent_voicetone_of_writing",
             "sentences_flow_naturally",
-            "overall_reader_engagement"
+            "overall_reader_engagement",
+            "Average_Score"
         ]
         
         for metric in metrics:

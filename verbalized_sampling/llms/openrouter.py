@@ -35,16 +35,20 @@ class OpenRouterLLM(BaseLLM):
 
     def _chat(self, messages: List[Dict[str, str]]) -> str:
         """Basic chat functionality without structured response format."""
-        response = self.client.chat.completions.create(
-            model=self.model_name,
-            messages=messages,
-            temperature=self.config.get("temperature", 0.7),
-            top_p=self.config.get("top_p", 0.9),
-        )
-        response = response.choices[0].message.content
-        if response:
-            response = response.replace("\n", "")
-        return response
+        try:
+            response = self.client.chat.completions.create(
+                model=self.model_name,
+                messages=messages,
+                temperature=self.config.get("temperature", 0.7),
+                top_p=self.config.get("top_p", 0.9),
+            )
+            response = response.choices[0].message.content
+            if response:
+                response = response.replace("\n", "")
+            return response
+        except Exception as e:
+            print(f"Error in OpenRouter chat: {e}")
+            return ""
 
     def _chat_with_format(self, messages: List[Dict[str, str]], schema: BaseModel) -> List[Dict[str, Any]]:
         """Chat with structured response format."""
