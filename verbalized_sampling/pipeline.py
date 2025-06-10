@@ -204,6 +204,8 @@ class Pipeline:
                 )
                 results = task_instance.run(progress=progress, task_id=gen_task)
                 task_instance.save_results(results, output_file)
+
+                print("Generation results: ", results)
                 
                 generation_results[exp_config.name] = output_file
                 progress.remove_task(gen_task)
@@ -242,6 +244,7 @@ class Pipeline:
                     for line in f:
                         try:
                             data = json.loads(line)
+                            # print("Loaded data: ", data)
                             if isinstance(data, dict):
                                 if "response" in data:
                                     responses.append(data['response'])
@@ -257,7 +260,8 @@ class Pipeline:
                             responses.append(line.strip())
                             prompts.append('')
 
-                # print(responses)
+                # print("Loaded full responses: ", responses)
+                # print("Loaded full prompts: ", prompts)
 
                 # Run each metric
                 for metric in self.config.evaluation.metrics:

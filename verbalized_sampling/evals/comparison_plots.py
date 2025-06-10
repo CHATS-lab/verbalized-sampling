@@ -107,10 +107,8 @@ class ComparisonPlotter:
         # If no values found in instance_metrics, try overall_metrics
         if not values:
             overall_value = data.result.overall_metrics
-            print(overall_value)
             for key in metric_name.split('.'):
-                print(key)
-                if isinstance(overall_value, dict) and key in overall_value:
+                if isinstance(overall_value, dict) and key in overall_value.keys():
                     overall_value = overall_value[key]
                 else:
                     overall_value = None
@@ -121,7 +119,11 @@ class ComparisonPlotter:
                     values = [float(v) for v in overall_value if v is not None]
                 elif isinstance(overall_value, (int, float)):
                     values = [float(overall_value)]
-        
+                elif isinstance(overall_value, dict):
+                    values = [float(v) for v in overall_value.values() if v is not None]
+            
+            print(values)
+
         return values
     
     def _plot_histogram(self, all_data: List[List[float]], labels: List[str], 
@@ -480,25 +482,49 @@ class ComparisonPlotter:
             title="Length Metrics Comparison"
         )
 
+
     def _create_response_count_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
         """Create response count-specific plots."""
-        print(comparison_data[0])
-
-        # Response count distribution
-        self.compare_distributions(
-            comparison_data, "response_distribution",
-            output_dir / "response_count_distribution.png",
-            title="Response Count Distribution Comparison",
-            plot_type="histogram"
+        response_counter = comparison_data[0].result.overall_metrics["response_distribution"]
+        values = list(response_counter.values())
+        labels = list(response_counter.keys())
+        
+        # Create histogram plot
+        plt.figure(figsize=self.figsize)
+        
+        # Create histogram using seaborn
+        df = pd.DataFrame({
+            'Response Type': labels,
+            'Count': values
+        })
+        
+        # Create color palette
+        palette = {label: color for label, color in zip(labels, self.colors[:len(labels)])}
+        
+        # Create histogram using seaborn
+        ax = sns.barplot(
+            data=df,
+            x='Response Type',
+            y='Count',
+            palette=palette,
+            alpha=0.7
         )
+        
+        # Add labels and title
+        plt.xticks(rotation=0)
+        plt.xlabel('Name of the State')
+        plt.ylabel('Count')
+        plt.title('State Name Distribution')
+        
+        # Add value labels on top of bars
+        for i, v in enumerate(values):
+            ax.text(i, v, f'{int(v)}', ha='center', va='bottom')
+        
+        plt.tight_layout()
+        plt.savefig(output_dir / "response_count_distribution.png", dpi=300, bbox_inches='tight',
+                    facecolor='white', edgecolor='none')
+        plt.close()
 
-        # Aggregate metrics
-        self.compare_aggregate_metrics(
-            comparison_data,
-            ["min_responses", "max_responses", "num_responses"],
-            output_dir / "response_count_metrics.png",
-            title="Response Count Metrics Comparison"
-        )
         
     def _create_generic_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
         """Create generic plots for unknown evaluator types."""
