@@ -1,11 +1,11 @@
 from typing import Dict, Type
 from .base import BaseTask
-from .rand_num import RandomNumberTask
-from .story import CreativeStoryTask
-from .book import BookTask
-from .poem import PoemTask
-from .speech import SpeechTask
-from .state_name import StateNameTask
+from .creativity.story import CreativeStoryTask
+from .creativity.book import BookTask
+from .creativity.poem import PoemTask
+from .creativity.speech import SpeechTask
+from .bias.rand_num import RandomNumberTask
+from .bias.state_name import StateNameTask
 from enum import Enum
 
 class Task(str, Enum):

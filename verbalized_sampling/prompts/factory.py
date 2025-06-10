@@ -13,11 +13,11 @@ from .prompt import (
 )
 
 class Method(str, Enum):
-    DIRECT = "direct"
-    SEQUENCE = "sequence" 
-    STRUCTURE = "structure"
-    STRUCTURE_WITH_PROB = "structure_with_prob"
-    MULTI_TURN = "multi_turn"
+    DIRECT = "Direct (Baseline)"
+    SEQUENCE = "Sequence (Baseline)" 
+    STRUCTURE = "Structure"
+    STRUCTURE_WITH_PROB = "Verbalized Sampling (Ours)"
+    MULTI_TURN = "Multi-turn (Baseline)"
 
 def is_method_structured(method: Method) -> bool:
     """Check if a method requires structured JSON output."""

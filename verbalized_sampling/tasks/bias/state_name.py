@@ -1,7 +1,7 @@
 import os
 import json
 import random
-from .base import BaseTask
+from ..base import BaseTask
 from textwrap import dedent
 from typing import Any, List, Dict
 from rich.progress import Progress

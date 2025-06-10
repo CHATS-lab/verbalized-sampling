@@ -225,9 +225,10 @@ class ComparisonPlotter:
         format_names = [data.name for data in comparison_data]
         metric_values = {metric: [] for metric in metric_names}
         
+        # Extract and process metric values
         for data in comparison_data:
             for metric in metric_names:
-                # Handle nested metrics
+                # Navigate nested metrics structure
                 value = data.result.overall_metrics
                 for key in metric.split('.'):
                     if isinstance(value, dict) and key in value:
@@ -236,81 +237,79 @@ class ComparisonPlotter:
                         value = 0.0
                         break
                 
-                # If it's a list (like pairwise_similarities), take the mean
+                # Handle list/tuple values by taking mean
                 if isinstance(value, (list, tuple)):
                     value = np.mean(value) if value else 0.0
                 
                 metric_values[metric].append(float(value) if value is not None else 0.0)
         
         if plot_type == "bar":
-            # Create grouped bar chart with improved styling
-            x = np.arange(len(metric_names))  # Position of metrics on x-axis
-            width = 0.15  # Width of individual bars
+            # Setup bar chart parameters
+            x = np.arange(len(metric_names))
+            width = 0.15
             
-            # Create bars for each format/method
+            # Create grouped bars with enhanced styling
             for i, (format_name, data) in enumerate(zip(format_names, comparison_data)):
                 values = [metric_values[metric][i] for metric in metric_names]
                 offset = (i - len(format_names)/2 + 0.5) * width
                 
+                # Apply visual styling
                 color = data.color or colors[i % len(colors)]
                 pattern = patterns[i % len(patterns)] if patterns else ''
                 
-                bars = plt.bar(x + offset, values, width, 
-                              label=format_name, 
-                              color=color, 
-                              alpha=0.8,
-                              hatch=pattern,
-                              edgecolor='white',
-                              linewidth=0.5)
+                plt.bar(x + offset, values, width,
+                       label=format_name,
+                       color=color,
+                       alpha=0.8,
+                       hatch=pattern,
+                       edgecolor='white',
+                       linewidth=0.5)
             
-            # Styling to match your reference image
+            # Apply bar chart styling
             plt.xlabel('Metrics', fontsize=12, fontweight='bold')
             plt.ylabel('Accuracy (%)', fontsize=12, fontweight='bold')
             plt.xticks(x, [metric.replace('_', ' ').title() for metric in metric_names], fontsize=11)
             
-            # Improved legend (positioned like in your image)
-            plt.legend(loc='upper right', bbox_to_anchor=(0.98, 0.98), 
-                      frameon=True, fancybox=True, shadow=True, 
+            # Position and style legend
+            plt.legend(loc='upper right', bbox_to_anchor=(0.98, 0.98),
+                      frameon=True, fancybox=True, shadow=True,
                       fontsize=10, framealpha=0.9)
             
-            # Remove grid for cleaner look
             plt.grid(False)
-            
-            # Set y-axis to start from 0 and add some padding at top
             plt.ylim(0, max(max(metric_values[metric]) for metric in metric_names) * 1.1)
             
         else:  # line plot
-            # Enhanced line plot styling
+            # Define line plot styling elements
             line_styles = ['-', '--', '-.', ':', '-']
             markers = ['o', 's', '^', 'D', 'v']
             
+            # Create line plot with enhanced styling
             for i, format_name in enumerate(format_names):
                 values = [metric_values[metric][i] for metric in metric_names]
                 color = colors[i % len(colors)]
                 linestyle = line_styles[i % len(line_styles)]
                 marker = markers[i % len(markers)]
                 
-                plt.plot(metric_names, values, 
-                        marker=marker, label=format_name, 
-                        color=color, linewidth=2.5, markersize=8, 
-                        linestyle=linestyle, markerfacecolor='white', 
+                plt.plot(metric_names, values,
+                        marker=marker, label=format_name,
+                        color=color, linewidth=2.5, markersize=8,
+                        linestyle=linestyle, markerfacecolor='white',
                         markeredgewidth=2, markeredgecolor=color)
             
+            # Apply line plot styling
             plt.xlabel('Metrics', fontsize=12, fontweight='bold')
             plt.ylabel('Score', fontsize=12, fontweight='bold')
             plt.xticks(rotation=45, fontsize=11)
             plt.legend(loc='best', fontsize=10)
             plt.grid(True, alpha=0.3)
         
-        # Enhanced title styling
+        # Add title if provided
         if title:
             plt.title(title, fontsize=14, fontweight='bold', pad=20)
         
-        # Clean layout
+        # Finalize plot
         plt.tight_layout()
-        
-        # Save with high quality
-        plt.savefig(output_path, dpi=300, bbox_inches='tight', 
+        plt.savefig(output_path, dpi=300, bbox_inches='tight',
                     facecolor='white', edgecolor='none')
         plt.close()
     
@@ -349,6 +348,8 @@ class ComparisonPlotter:
             self._create_ttct_plots(comparison_data, output_dir)
         elif evaluator_type == "creativity_index":
             self._create_creativity_index_plots(comparison_data, output_dir)
+        elif evaluator_type == "creative_writing_v3":
+            self._create_creative_writing_v3_plots(comparison_data, output_dir)
         elif evaluator_type == "length":
             self._create_length_plots(comparison_data, output_dir)
         elif evaluator_type == "response_count":
@@ -356,13 +357,46 @@ class ComparisonPlotter:
         else:
             self._create_generic_plots(comparison_data, output_dir)
     
+    def _create_creative_writing_v3_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
+        """Create creative writing v3-specific plots."""
+        # Creative writing v3 distribution
+        # Plot distributions for each creative writing metric
+        metrics = [
+            "imagery_and_descriptive_quality",
+            "nuanced_characters", 
+            "emotionally_complex",
+            "elegant_prose",
+            "well_earned_lightness_or_darkness",
+            "emotionally_engaging",
+            "consistent_voicetone_of_writing",
+            "sentences_flow_naturally",
+            "overall_reader_engagement"
+        ]
+        
+        for metric in metrics:
+            self.compare_distributions(
+                comparison_data, metric,
+                output_dir / f"{metric}_distribution.png",
+                title=f"{metric.replace('_', ' ').title()} Distribution Comparison",
+                plot_type="violin"
+            )
+        
+        # # Aggregate metrics
+        # self.compare_aggregate_metrics(
+        #     comparison_data,
+        #     ["creative_writing_v3"],
+        #     output_dir / "creative_writing_v3_metrics.png",
+        #     title="Creative Writing v3 Metrics Comparison",
+        #     plot_type="bar"
+        # )
+    
     def _create_diversity_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
         """Create diversity-specific plots."""
         # Pairwise similarities distribution (from overall_metrics)
         self.compare_distributions(
-            comparison_data, "pairwise_similarities",
-            output_dir / "pairwise_similarities_distribution.png",
-            title="Pairwise Similarity Distribution Comparison",
+            comparison_data, "pairwise_diversities",
+            output_dir / "pairwise_diversities_distribution.png",
+            title="Pairwise Diversity Distribution Comparison",
             plot_type="violin"
         )
         
@@ -385,9 +419,10 @@ class ComparisonPlotter:
         # Aggregate metrics summary
         self.compare_aggregate_metrics(
             comparison_data,
-            ["average_similarity", "std_similarity", "average_response_length"],
+            ["average_diversity", "min_diversity", "max_diversity", "std_diversity", "average_response_length", "average_unique_words", "average_vocabulary_richness", "total_cost", "pairwise_diversities"],
             output_dir / "diversity_metrics.png",
-            title="Diversity Metrics Comparison"
+            title="Diversity Metrics Comparison",
+            plot_type="bar"
         )
     
     def _create_ttct_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
