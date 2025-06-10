@@ -2,13 +2,41 @@ from typing import Dict, List, Any, Optional
 import json
 from .base import BaseEvaluator, EvalResult
 from verbalized_sampling.llms import get_model
+from pydantic import BaseModel
 
+class FluencyCriteria(BaseModel):
+    score: int
+    justification: str
+
+class FlexibilityCriteria(BaseModel):
+    score: int
+    justification: str
+
+class OriginalityCriteria(BaseModel):
+    score: int
+    justification: str
+
+class ElaborationCriteria(BaseModel):
+    score: int
+    justification: str
+    
+class OverallCriteria(BaseModel):
+    creativity_score: float
+    normalized_score: float
+    
+class TTCTCriteria(BaseModel):
+    fluency: FluencyCriteria
+    flexibility: FlexibilityCriteria
+    originality: OriginalityCriteria
+    elaboration: ElaborationCriteria
+    overall: OverallCriteria
+    
 class TTCTEvaluator(BaseEvaluator):
     """Comprehensive Torrance Tests of Creative Thinking evaluator in a single LLM call."""
     
-    def __init__(self, judge_model: str = "gpt-4-turbo", num_workers=64):
+    def __init__(self, judge_model: str = "openai/gpt-4.1", num_workers=64):
         super().__init__("ttct", num_workers=num_workers)
-        self.judge_model = get_model(judge_model, method="direct", config={})
+        self.judge_model = get_model(judge_model, method="direct", config={}, strict_json=True)
     
     def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, float]:
         
@@ -16,54 +44,14 @@ class TTCTEvaluator(BaseEvaluator):
         
         # Get evaluation from judge model
         messages = [{"role": "user", "content": evaluation_prompt}]
-        result = self.judge_model._chat([messages])[0]
+        result = self.judge_model._chat(messages)
 
         try:
-            parsed_result = json.loads(result)
-            return parsed_result
+            result_in_schema = json.loads(result)
+            return result_in_schema
         except json.JSONDecodeError:
-            # Fallback if JSON parsing fails
-            return {
-                "error": "Failed to parse judge response",
-                "raw_response": result,
-                "fluency": {
-                    "score": 0.0,
-                    "meaningful_responses_count": 0,
-                    "total_responses": 0,
-                    "analysis": "",
-                    "justification": ""
-                },
-                "flexibility": {
-                    "score": 0.0,
-                    "categories_identified": [],
-                    "category_count": 0,
-                    "analysis": "",
-                    "justification": ""
-                },
-                "originality": {
-                    "score": 0.0,
-                    "unique_elements": [],
-                    "commonality_assessment": "",
-                    "novel_connections": [],
-                    "analysis": "",
-                    "justification": ""
-                },
-                "elaboration": {
-                    "score": 0.0,
-                    "detail_level": "",
-                    "descriptive_elements": [],
-                    "development_quality": "",
-                    "analysis": "",
-                    "justification": ""
-                },
-                "overall": {
-                    "creativity_score": 0.0,
-                    "normalized_score": 0.0,
-                    "strengths": [],
-                    "areas_for_improvement": [],
-                    "overall_assessment": ""
-                }
-            }
+            print(f"Error: {result}")
+            return None
     
     def _create_evaluation_prompt(self, prompt: str, response: str) -> str:
         
@@ -77,59 +65,56 @@ RESPONSES TO EVALUATE:
 EVALUATION RUBRICS:
 
 ## 1. FLUENCY
-**Definition**: Total count of meaningful, relevant responses that demonstrate productive thinking.
+**Definition**: Quality and relevance of the response content that demonstrates productive thinking.
 
 **Scoring Criteria (1-5 scale)**:
-- **5 (Exceptional)**: All responses are highly meaningful, directly relevant, and demonstrate clear understanding. Ideas flow naturally and abundantly.
-- **4 (Strong)**: Most responses are meaningful and relevant with minor gaps. Good productive output.
-- **3 (Adequate)**: About half the responses are truly meaningful and relevant. Some off-topic or unclear elements.
-- **2 (Limited)**: Few responses are both meaningful and relevant. Many are tangential or poorly developed.
-- **1 (Poor)**: Very few or no responses meet basic relevance and meaning criteria.
+- **5 (Exceptional)**: Response is highly meaningful, directly relevant, and demonstrates clear understanding. Ideas are well-expressed and coherent.
+- **4 (Strong)**: Response is meaningful and relevant with only minor gaps. Good productive content.
+- **3 (Adequate)**: Response has some meaningful and relevant elements. Some off-topic or unclear aspects.
+- **2 (Limited)**: Response has few meaningful and relevant elements. Largely tangential or poorly developed.
+- **1 (Poor)**: Response fails to meet basic relevance and meaning criteria.
 
-**Evaluate**: Count meaningful responses, assess relevance to any implicit prompt/theme, and rate overall productive fluency.
+**Evaluate**: Assess meaningfulness, relevance to the prompt, and overall coherence of the single response.
 
 ## 2. FLEXIBILITY
-**Definition**: Number of distinct categories, approaches, or conceptual shifts demonstrated across responses.
+**Definition**: Breadth of thinking and conceptual diversity demonstrated within the response.
 
 **Scoring Criteria (1-5 scale)**:
-- **5 (Exceptional)**: 4+ distinct conceptual categories/approaches. Clear evidence of perspective shifts, multiple thinking styles.
-- **4 (Strong)**: 3-4 distinct categories. Good variety in approaches or themes with some conceptual shifts.
-- **3 (Adequate)**: 2-3 categories. Moderate variety but some clustering around similar concepts.
-- **2 (Limited)**: 1-2 categories. Most responses follow similar patterns with little conceptual variation.
-- **1 (Poor)**: Single category or approach. Responses are very similar in theme and execution.
+- **5 (Exceptional)**: Response demonstrates multiple distinct perspectives, approaches, or conceptual frameworks. Clear evidence of diverse thinking styles.
+- **4 (Strong)**: Response shows good variety in approaches or themes with some conceptual diversity.
+- **3 (Adequate)**: Response shows moderate variety but tends toward similar concepts or approaches.
+- **2 (Limited)**: Response follows a narrow pattern with little conceptual variation.
+- **1 (Poor)**: Response demonstrates rigid, single-approach thinking with no conceptual diversity.
 
-**Evaluate**: Identify distinct themes/categories, note conceptual shifts, assess thinking flexibility and adaptability.
+**Evaluate**: Identify different themes/approaches within the response, note perspective shifts, assess thinking flexibility.
 
 ## 3. ORIGINALITY
-**Definition**: Statistical rarity and uniqueness of responses compared to what would be typical or expected.
+**Definition**: Statistical rarity and uniqueness of the response compared to what would be typical or expected.
 
 **Scoring Criteria (1-5 scale)**:
-- **5 (Exceptional)**: Highly unique, unexpected responses that show novel connections. Ideas that would be statistically rare.
-- **4 (Strong)**: Several uncommon or surprising elements. Good departure from conventional thinking.
-- **3 (Adequate)**: Mix of common and less common ideas. Some original elements but also predictable ones.
-- **2 (Limited)**: Mostly conventional responses with occasional less common elements.
-- **1 (Poor)**: Highly predictable, common responses that most people would generate.
+- **5 (Exceptional)**: Highly unique, unexpected response that shows novel connections. Ideas that would be statistically rare.
+- **4 (Strong)**: Response contains several uncommon or surprising elements. Good departure from conventional thinking.
+- **3 (Adequate)**: Response mixes common and less common ideas. Some original elements but also predictable ones.
+- **2 (Limited)**: Response is mostly conventional with occasional less common elements.
+- **1 (Poor)**: Highly predictable, common response that most people would generate.
 
-**Evaluate**: Compare against your knowledge of typical responses, assess novelty and unexpectedness, identify unique connections or perspectives.
+**Evaluate**: Compare against typical responses, assess novelty and unexpectedness, identify unique connections or perspectives.
 
 ## 4. ELABORATION
-**Definition**: Degree of detail, development, and descriptive richness added beyond the basic concept.
+**Definition**: Degree of detail, development, and descriptive richness in the response.
 
 **Scoring Criteria (1-5 scale)**:
 - **5 (Exceptional)**: Rich, detailed development with vivid descriptions, specific examples, sensory details, and thorough exploration of ideas.
-- **4 (Strong)**: Good level of detail and development. Ideas are expanded with supporting elements and some specificity.
+- **4 (Strong)**: Good level of detail and development. Ideas are expanded with supporting elements and specificity.
 - **3 (Adequate)**: Moderate detail. Basic ideas are somewhat developed but could be richer.
 - **2 (Limited)**: Minimal detail beyond basic concepts. Ideas are stated but not developed or elaborated.
-- **1 (Poor)**: Bare-bones responses with little to no elaboration or detail.
+- **1 (Poor)**: Bare-bones response with little to no elaboration or detail.
 
 **Evaluate**: Assess depth of development, richness of description, use of specific details, examples, and sensory elements.
 
 EVALUATION INSTRUCTIONS:
-1. Read all responses carefully
-2. For each dimension, provide:
-   - Detailed analysis and evidence
-   - Specific examples from the responses
-   - Score (1-5) with clear justification
+1. Read the response carefully
+2. For each dimension, provide a score (1-5) with clear justification based on the single response
 3. Calculate an overall creativity score as weighted average:
    - Fluency: 20%
    - Flexibility: 30% 
@@ -140,58 +125,41 @@ REQUIRED JSON OUTPUT FORMAT:
 {{
     "fluency": {{
         "score": <1-5>,
-        "meaningful_responses_count": <number>,
-        "total_responses": <number>,
-        "analysis": "Detailed analysis with specific examples...",
         "justification": "Why this score was assigned..."
     }},
     "flexibility": {{
         "score": <1-5>,
-        "categories_identified": ["category1", "category2", ...],
-        "category_count": <number>,
-        "conceptual_shifts": ["shift1", "shift2", ...],
-        "analysis": "Detailed analysis of variety and shifts...",
         "justification": "Why this score was assigned..."
     }},
     "originality": {{
         "score": <1-5>,
-        "unique_elements": ["element1", "element2", ...],
-        "commonality_assessment": "common|mixed|uncommon|rare|unique",
-        "novel_connections": ["connection1", "connection2", ...],
-        "analysis": "Detailed analysis of uniqueness and rarity...",
         "justification": "Why this score was assigned..."
     }},
     "elaboration": {{
         "score": <1-5>,
-        "detail_level": "minimal|basic|moderate|rich|exceptional",
-        "descriptive_elements": ["element1", "element2", ...],
-        "development_quality": "shallow|adequate|good|thorough|exceptional",
-        "analysis": "Detailed analysis of richness and development...",
         "justification": "Why this score was assigned..."
     }},
     "overall": {{
         "creativity_score": <weighted average>,
         "normalized_score": <0-1>,
-        "strengths": ["strength1", "strength2", ...],
-        "areas_for_improvement": ["area1", "area2", ...],
-        "overall_assessment": "Comprehensive summary of creative performance..."
     }},
-    "response_breakdown": [
-        {{
-            "response_id": 1,
-            "fluency_contribution": "meaningful|unclear|irrelevant",
-            "flexibility_category": "category_name",
-            "originality_level": "common|uncommon|rare|unique",
-            "elaboration_quality": "minimal|basic|moderate|rich|exceptional"
-        }},
-        ...
-    ]
 }}
 
 Be thorough, specific, and evidence-based in your analysis. Provide concrete examples from the responses to support your scores."""
 
     def aggregate_metrics(self, instance_metrics: List[Dict[str, float]]) -> Dict[str, float]:
         """Aggregate instance-level metrics into overall metrics."""
+        # Filter out any empty metrics
+        instance_metrics = [metric for metric in instance_metrics if metric]
+        
+        if not instance_metrics:
+            return {
+                "fluency": 0.0,
+                "flexibility": 0.0,
+                "originality": 0.0,
+                "elaboration": 0.0,
+                "overall": 0.0
+            }
         return {
             "fluency": sum(metric["fluency"]["score"] for metric in instance_metrics) / len(instance_metrics),
             "flexibility": sum(metric["flexibility"]["score"] for metric in instance_metrics) / len(instance_metrics),
