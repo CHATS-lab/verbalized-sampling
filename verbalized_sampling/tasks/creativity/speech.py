@@ -1,4 +1,4 @@
-from .base import BaseTask
+from ..base import BaseTask
 from typing import Any, List, Dict
 import random
 import os

@@ -78,15 +78,24 @@ class BaseTask(ABC):
         prompts = [prompt for prompt in self.get_prompt() for _ in range(self.num_responses)]
         results = self.model.chat(prompts, schema=get_schema(self.method))
         parsed_results = []
-        for result in results:
+        for prompt, result in zip(prompts, results):
+            prompt = prompt[-1]["content"]
             parsed = self.parse_response(result)
             if parsed is not None:
                 if isinstance(parsed, list):
-                    parsed_results.extend(parsed)
-                else:
+                    for item in parsed:
+                        if isinstance(item, dict):
+                            item["prompt"] = prompt
+                            parsed_results.append(item)
+                        else:
+                            parsed_results.append({"prompt": prompt, "response": item})
+                elif isinstance(parsed, dict):
+                    parsed["prompt"] = prompt
                     parsed_results.append(parsed)
+                else:
+                    parsed_results.append({"prompt": prompt, "response": parsed})
             else:
-                parsed_results.append(result)
+                parsed_results.append({"prompt": prompt, "response": result})
             if progress and task_id is not None:
                 progress.update(task_id, advance=1)
         

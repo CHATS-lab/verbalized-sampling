@@ -35,34 +35,43 @@ class DiversityEvaluator(BaseEvaluator):
             "response_length": len(response.split()),
             "unique_words": len(set(response.split())),
             "vocabulary_richness": len(set(response.split())) / len(response.split()),
-            "response": response
+            "response": response,
+            "prompt": prompt
         }
     
     def aggregate_metrics(self, instance_metrics: List[Dict[str, float]]) -> Dict[str, Any]:
         """Compute diversity metrics across all responses."""
         if len(instance_metrics) <= 1:
             return {
-                "average_similarity": 0.0,
-                "min_similarity": 0.0,
-                "max_similarity": 0.0,
-                "std_similarity": 0.0,
+                "average_diversity": 0.0,
+                "min_diversity": 0.0,
+                "max_diversity": 0.0,
+                "std_diversity": 0.0,
                 "average_response_length": 0.0,
                 "average_unique_words": 0.0,
                 "average_vocabulary_richness": 0.0,
-                "pairwise_similarities": []
+                "pairwise_diversities": []
             }
         
-        # Get all responses
-        responses = [m["response"] for m in instance_metrics]
+        # Group responses by prompt for intra-class diversity calculation
+        prompt_groups = {}
+        for i, m in enumerate(instance_metrics):
+            prompt = m["prompt"]
+            if prompt not in prompt_groups:
+                prompt_groups[prompt] = []
+            prompt_groups[prompt].append((i, m["response"]))
+        
+        # Get all responses for embedding computation
+        all_responses = [m["response"] for m in instance_metrics]
         
         # Compute embeddings in parallel
         embeddings_list = []
         total_cost = 0.0
         
         with ThreadPoolExecutor(max_workers=os.cpu_count() or 4) as executor:
-            futures = [executor.submit(self.compute_embedding, response) for response in responses]
+            futures = [executor.submit(self.compute_embedding, response) for response in all_responses]
             
-            with tqdm(total=len(responses), desc="Computing embeddings") as pbar:
+            with tqdm(total=len(all_responses), desc="Computing embeddings") as pbar:
                 for future in as_completed(futures):
                     embedding, cost = future.result()
                     embeddings_list.append(embedding)
@@ -75,27 +84,53 @@ class DiversityEvaluator(BaseEvaluator):
         embeddings = torch.nn.functional.normalize(embeddings, p=2, dim=1)
         similarity_matrix = torch.mm(embeddings, embeddings.t())
         
-        # Get upper triangle indices (excluding diagonal)
-        indices = torch.triu_indices(len(responses), len(responses), offset=1)
-        similarities = similarity_matrix[indices[0], indices[1]].cpu().numpy()
+        # Calculate intra-class (same prompt) pairwise diversities (1 - similarity)
+        all_diversities = []
+        pairwise_diversities = []
         
-        # Create list of pairwise similarities with response pairs
-        pairwise_similarities = []
-        for i, j in zip(indices[0].cpu().numpy(), indices[1].cpu().numpy()):
-            pairwise_similarities.append(float(similarity_matrix[i, j].cpu().numpy()))
+        for prompt, indices_responses in prompt_groups.items():
+            if len(indices_responses) > 1:  # Need at least 2 responses for diversity
+                indices = [idx for idx, _ in indices_responses]
+                responses = [resp for _, resp in indices_responses]
+                
+                # Get all pairs within this prompt group
+                for i in range(len(indices)):
+                    for j in range(i + 1, len(indices)):
+                        idx_i, idx_j = indices[i], indices[j]
+                        similarity = float(similarity_matrix[idx_i, idx_j].cpu().numpy())
+                        diversity = 1.0 - similarity  # Convert similarity to diversity
+                        all_diversities.append(diversity)
+                        
+                        # Store detailed pairwise information
+                        pairwise_diversities.append(diversity)
         
-        # Convert all numpy values to Python native types
-        metrics = {
-            "average_similarity": float(similarities.mean()),
-            "min_similarity": float(similarities.min()),
-            "max_similarity": float(similarities.max()),
-            "std_similarity": float(similarities.std()),
-            "average_response_length": float(np.mean([m["response_length"] for m in instance_metrics])),
-            "average_unique_words": float(np.mean([m["unique_words"] for m in instance_metrics])),
-            "average_vocabulary_richness": float(np.mean([m["vocabulary_richness"] for m in instance_metrics])),
-            "total_cost": float(total_cost),
-            "pairwise_similarities": pairwise_similarities
-        }
+        # Calculate statistics from intra-class diversities
+        if all_diversities:
+            diversities_array = np.array(all_diversities)
+            metrics = {
+                "average_diversity": float(diversities_array.mean()),
+                "min_diversity": float(diversities_array.min()),
+                "max_diversity": float(diversities_array.max()),
+                "std_diversity": float(diversities_array.std()),
+                "average_response_length": float(np.mean([m["response_length"] for m in instance_metrics])),
+                "average_unique_words": float(np.mean([m["unique_words"] for m in instance_metrics])),
+                "average_vocabulary_richness": float(np.mean([m["vocabulary_richness"] for m in instance_metrics])),
+                "total_cost": float(total_cost),
+                "pairwise_diversities": pairwise_diversities
+            }
+        else:
+            # No valid pairs found (all prompts have only 1 response)
+            metrics = {
+                "average_diversity": 0.0,
+                "min_diversity": 0.0,
+                "max_diversity": 0.0,
+                "std_diversity": 0.0,
+                "average_response_length": float(np.mean([m["response_length"] for m in instance_metrics])),
+                "average_unique_words": float(np.mean([m["unique_words"] for m in instance_metrics])),
+                "average_vocabulary_richness": float(np.mean([m["vocabulary_richness"] for m in instance_metrics])),
+                "total_cost": float(total_cost),
+                "pairwise_diversities": []
+            }
         
         # Ensure all values are Python native types
         return {k: float(v) if isinstance(v, (np.floating, np.integer)) else v for k, v in metrics.items()}
