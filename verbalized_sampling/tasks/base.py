@@ -152,7 +152,6 @@ class BaseTask(ABC):
         # Original single-turn logic
         prompts = [prompt for prompt in self.get_prompt() for _ in range(self.num_responses)]
         results = self.model.chat(prompts, schema=get_schema(self.method))
-        print("Results: ", results)
         parsed_results = []
         current_batch = []
         

@@ -184,7 +184,7 @@ StructuredResponseList = {
             "properties": {
                 "responses": {
                     "type": "array",
-                    "description": "A list of different possible responses to the interlocutor's message, each with a response text and a probability.",
+                    "description": "A list of dicts, each with a 'text' field, representing possible responses to the input prompt.",
                     "items": {
                         "type": "object",
                         "properties": {
@@ -214,7 +214,7 @@ StructuredResponseListWithProbability = {
             "properties": {
                 "responses": {
                     "type": "array",
-                    "description": "A list of different possible responses to the interlocutor's message, each with a response text and a probability.",
+                    "description": "A list of dicts, each with a 'text' and 'probability' field, representing possible responses to the input prompt and corresponding probabilities of each response.",
                     "items": {
                         "type": "object",
                         "properties": {

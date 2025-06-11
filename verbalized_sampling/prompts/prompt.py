@@ -17,14 +17,14 @@ Output ONLY the list, no explanations or extra text.
 
 STRUCTURE_FORMAT_PROMPT = """
 Return the output in JSON format with keys: "responses" (list of dicts with 'text'). Each dictionary must include:
-- 'text': the response string.
+- 'text': the response string (no explanation or extra text).
 
 Give ONLY the JSON object, no explanations or extra text.
 """
 
 STRUCTURE_WITH_PROBABILITY_FORMAT_PROMPT = """
 Return the output in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
-- 'text': the response string.
+- 'text': the response string (no explanation or extra text).
 - 'probability': Assign probabilities representing how likely each response would be (value between 0 and 1).
 
 Give ONLY the JSON object, no explanations or extra text.
