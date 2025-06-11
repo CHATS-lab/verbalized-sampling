@@ -14,11 +14,12 @@ from .prompt import (
 )
 
 class Method(str, Enum):
-    DIRECT = "Direct (Baseline)"
-    SEQUENCE = "Sequence (Baseline)" 
-    STRUCTURE = "Structure"
-    STRUCTURE_WITH_PROB = "Verbalized Sampling (Ours)"
-    MULTI_TURN = "Multi-turn (Baseline)"
+    """Available sampling methods for verbalized sampling experiments."""
+    DIRECT = "direct"
+    SEQUENCE = "sequence" 
+    STRUCTURE = "structure"
+    STRUCTURE_WITH_PROB = "structure_with_prob"
+    MULTI_TURN = "multi_turn"
 
 def is_method_structured(method: Method) -> bool:
     """Check if a method requires structured JSON output."""
@@ -68,7 +69,7 @@ class PromptFactory:
         strict_json: bool = False,
     ) -> List[Dict[str, str]]:
         
-        if method in [Method.DIRECT, Method.MULTI_TURN]:
+        if (method == Method.DIRECT) or (method == Method.MULTI_TURN):
             system_prompt = BASE_PROMPT
             return [
                 {"role": "system", "content": system_prompt},
@@ -85,14 +86,6 @@ class PromptFactory:
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": prompt}
             ]
-        elif method == Method.MULTI_TURN:
-            if (not chat_history) or (len(chat_history) == 0):
-                return [
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": prompt}
-                ]
-            else:
-                return PromptFactory.get_multi_turn_continuation(chat_history)
         elif method in PromptFactory.PROMPT_MAP:
             system_prompt = f"{system_prompt}\n\n{PromptFactory.PROMPT_MAP[method]}"
         else:
