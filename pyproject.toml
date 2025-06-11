@@ -1,0 +1,72 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "verbalized-sampling"
+version = "0.1.0"
+description = "A library for running controlled experiments with LLMs using different sampling methods"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+authors = [
+    { name = "Simon Yu", email = "yu.chi@northeastern.edu" },
+    { name = "Jiayi Zhang", email = "zhang.jiayi12@northeastern.edu" }
+]
+dependencies = [
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+    "vllm>=0.8.0",
+    "openrouter>=0.1.0",
+    "matplotlib>=3.7.0",
+    "numpy>=1.24.0",
+    "scipy>=1.10.0",
+    "tqdm>=4.65.0",
+    "openai",
+    "nltk",
+    "unidecode",
+    "sacremoses",
+    "seaborn",
+    "dedent",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "black>=23.0",
+    "isort>=5.0",
+    "mypy>=1.0",
+    "ruff>=0.1.0",
+    "sphinx>=7.0",
+    "sphinx-rtd-theme>=1.0",
+    "sphinx-autodoc-typehints>=1.0",
+    "myst-parser>=2.0",
+]
+
+[project.scripts]
+verbalize = "verbalized_sampling.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["verbalized_sampling"]
+
+[tool.black]
+line-length = 100
+target-version = ["py38"]
+
+[tool.isort]
+profile = "black"
+line_length = 100
+multi_line_output = 3
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py38"
+select = ["E", "F", "B", "I"]
+ignore = [] 

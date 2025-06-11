@@ -1,5 +1,108 @@
 # Verbalized Sampling
 
+A library for running controlled experiments with LLMs using different sampling methods.
+
+## Installation
+
+```bash
+# Install in development mode
+pip install -e .
+
+# Install with development dependencies
+pip install -e ".[dev]"
+```
+
+## Usage
+
+### Command Line Interface
+
+The package provides a command-line interface for running experiments:
+
+```bash
+# List available tasks
+verbalize list-tasks
+
+# List available sampling methods
+verbalize list-methods
+
+# Run an experiment
+verbalize run \
+    --task JOKE \
+    --model "anthropic/claude-sonnet-4" \
+    --methods DIRECT STRUCTURE_WITH_PROB \
+    --num-responses 50 \
+    --metrics diversity length ngram
+```
+
+### Python API
+
+You can also use the package in your Python code:
+
+```python
+from verbalized_sampling.pipeline import run_quick_comparison
+from verbalized_sampling.tasks import Task
+from verbalized_sampling.prompts import Method
+from pathlib import Path
+
+# Run a quick comparison
+results = run_quick_comparison(
+    task=Task.JOKE,
+    methods=[Method.DIRECT, Method.STRUCTURE_WITH_PROB],
+    model_name="anthropic/claude-sonnet-4",
+    metrics=["diversity", "length", "ngram"],
+    output_dir=Path("results"),
+    num_responses=50,
+    num_samples=5,
+    sample_size=1,
+    strict_json=False,
+    temperature=0.7,
+    top_p=1.0,
+)
+```
+
+### Example Scripts
+
+The package includes example scripts in the `verbalized_sampling/scripts` directory:
+
+```python
+from verbalized_sampling.scripts.run_state_name import run_state_name_example
+
+# Run the state name example
+run_state_name_example()
+```
+
+## Development
+
+1. Install development dependencies:
+   ```bash
+   pip install -e ".[dev]"
+   ```
+
+2. Run tests:
+   ```bash
+   pytest
+   ```
+
+3. Format code:
+   ```bash
+   black .
+   isort .
+   ```
+
+4. Type checking:
+   ```bash
+   mypy .
+   ```
+
+5. Linting:
+   ```bash
+   ruff check .
+   ```
+
+## License
+
+MIT
+
 ## Summary
 This repository contains experiments for testing how verbalized sampling can reduce and mitigate mode collapse in LLMs on tasks that require simulation of popularity and diversity. The project includes:
 
@@ -29,12 +132,6 @@ This repository contains experiments for testing how verbalized sampling can red
 - `analysis/`: Analysis results
     - `plots/`: Generated plots
     - `metrics/`: Statistical metrics
-
-## Installation
-
-```bash
-pip install -r requirements.txt
-```
 
 ## Usage
 
