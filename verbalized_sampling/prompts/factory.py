@@ -4,6 +4,7 @@ import os
 import random
 from pydantic import BaseModel
 from .prompt import (
+    BASE_PROMPT,
     STANDARD_PROMPT,
     STANDARD_ALL_POSSIBLE_PROMPT,
     SEQUENCE_FORMAT_PROMPT,
@@ -68,7 +69,11 @@ class PromptFactory:
     ) -> List[Dict[str, str]]:
         
         if method in [Method.DIRECT, Method.MULTI_TURN]:
-            return [{"role": "user", "content": prompt}]
+            system_prompt = BASE_PROMPT
+            return [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": prompt}
+            ]
         
         if all_possible:
             system_prompt = STANDARD_ALL_POSSIBLE_PROMPT

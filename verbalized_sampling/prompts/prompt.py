@@ -1,3 +1,7 @@
+BASE_PROMPT = """
+Generate a response to the input prompt. Output ONLY the response, no explanations or extra text.
+"""
+
 STANDARD_PROMPT = """
 Generate {num_samplings} different responses to the input prompt. Try to be as creative and diverse as possible.
 """
@@ -8,18 +12,18 @@ Generate all possible responses to the input prompt. Try to be as creative and d
 
 SEQUENCE_FORMAT_PROMPT = """
 Give your responses in a Python list of strings format like: ["response1", "response2", "response3", ...]
-Output the list, no explanations or extra text.
+Output ONLY the list, no explanations or extra text.
 """
 
 STRUCTURE_FORMAT_PROMPT = """
-Return the output in JSON format with keys: "responses" (list of dicts with "text"). Each dictionary must include:
+Return the output in JSON format with keys: "responses" (list of dicts with 'text'). Each dictionary must include:
 - 'text': the response string.
 
 Give ONLY the JSON object, no explanations or extra text.
 """
 
 STRUCTURE_WITH_PROBABILITY_FORMAT_PROMPT = """
-Return the output in JSON format with keys: "responses" (list of dicts with "text" and "probability"). Each dictionary must include:
+Return the output in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
 - 'text': the response string.
 - 'probability': Assign probabilities representing how likely each response would be (value between 0 and 1).
 
@@ -45,7 +49,7 @@ Give ONLY the JSON object, no explanations or extra text.
 SELF_REFLECTION_PROMPT = """
 Generate {num_samplings} different responses with self-reflection and confidence scoring.
 For each response, provide the response, reflect on its quality, and assign a confidence score.
-Return the output in JSON format with keys: "responses" (list of dicts with "response", "reflection", and "confidence"). Each dictionary must include:
+Return the output in JSON format with keys: "responses" (list of dicts with 'response', 'reflection', and 'confidence'). Each dictionary must include:
 - 'response': the response string.
 - 'reflection': the analysis of response quality and appropriateness.
 - 'confidence': the confidence score between 0.0 and 1.0.
@@ -57,7 +61,7 @@ Give ONLY the JSON object, no explanations or extra text.
 TEMPERATURE_SAMPLING_PROMPT = """
 Generate {num_samplings} responses with varying creativity levels.
 Create responses ranging from conservative/safe to creative/bold.
-Return the output in JSON format with keys: "responses" (list of dicts with "response", "creativity_level", and "temperature"). Each dictionary must include:
+Return the output in JSON format with keys: "responses" (list of dicts with 'response', 'creativity_level', and 'temperature'). Each dictionary must include:
 - 'response': the response string.
 - 'creativity_level': the creativity level of the response (conservative, moderate, creative, bold).
 - 'temperature': the temperature of the response (value between 0 and 1).

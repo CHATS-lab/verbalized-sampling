@@ -1,5 +1,6 @@
 from typing import List, Dict, Any, Optional
 import json
+import ast
 from collections import Counter
 from .base import BaseEvaluator, EvalResult
 
@@ -10,38 +11,34 @@ class ResponseCountEvaluator(BaseEvaluator):
         super().__init__(name=name, num_workers=num_workers)
         self.counter = Counter()
     
-    def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, float]:
-        try:
-            # If response is already a list, use it directly
-            if isinstance(response, list):
-                response_count = len(response)
-            else:
-                # Try to parse as JSON if it's a string
-                response_data = json.loads(response)
-                response_count = len(response_data.get('text', []))
+    def compute_instance_metric(self, prompt: str, responses: Any) -> List[Dict[str, float]]:
+        """Compute the count of responses."""
+        if isinstance(responses, str):
+            responses = ast.literal_eval(responses)
             
-            self.counter.update([response_count])  # Update counter with the count
-            return {
-                "response_count": float(response_count)
-            }
-        except (json.JSONDecodeError, AttributeError, TypeError):
-            # If response is not valid JSON or doesn't have expected structure
-            return {
-                "response_count": 0.0
-            }
+        list_of_responses = [
+            response.get('response', response).replace('.', '').replace(' ', '').lower()
+            for response in responses
+        ]
+        self.counter.update(list_of_responses)
+        
+        return [{"response_count": self.counter[text]} for text in list_of_responses]
     
+
     def aggregate_metrics(self, instance_metrics: List[Dict[str, float]]) -> Dict[str, float]:
+        """Aggregate metrics across all instances."""
         if not instance_metrics:
             return {}
         
-        response_counts = [metric["response_count"] for metric in instance_metrics]
+        # print(instance_metrics)
         
         return {
-            "min_responses": min(response_counts),
-            "max_responses": max(response_counts),
-            "num_responses": sum(response_counts),
-            "response_distribution": dict(self.counter)  # Convert Counter to dict for JSON serialization
+            "min_responses_per_category": min(self.counter.values()),
+            "max_responses_per_category": max(self.counter.values()),
+            "num_responses": len(instance_metrics) * len(instance_metrics[0]),
+            "response_distribution": dict(self.counter)
         }
+
 
     def evaluate(self, prompts: List[str], responses: List[str], 
                 metadata: Optional[Dict[str, Any]] = None) -> EvalResult:

@@ -6,6 +6,8 @@ import seaborn as sns
 import pandas as pd
 from dataclasses import dataclass
 from .base import EvalResult
+from scipy.stats import chisquare
+import numpy as np
 
 @dataclass
 class ComparisonData:
@@ -110,7 +112,7 @@ class ComparisonPlotter:
         if not values:
             overall_value = data.result.overall_metrics
             for key in metric_name.split('.'):
-                if isinstance(overall_value, dict) and key in overall_value:
+                if isinstance(overall_value, dict) and key in overall_value.keys():
                     overall_value = overall_value[key]
                 else:
                     overall_value = None
@@ -121,7 +123,11 @@ class ComparisonPlotter:
                     values = [float(v) for v in overall_value if v is not None]
                 elif isinstance(overall_value, (int, float)):
                     values = [float(overall_value)]
-        
+                elif isinstance(overall_value, dict):
+                    values = [float(v) for v in overall_value.values() if v is not None]
+            
+            print(values)
+
         return values
     
     def _plot_histogram(self, all_data: List[List[float]], labels: List[str], 
@@ -376,6 +382,8 @@ class ComparisonPlotter:
                 evaluator_type = "length"
             elif "average_ngram_diversity" in first_result.overall_metrics:
                 evaluator_type = "ngram"
+            elif "response_distribution" in first_result.overall_metrics:
+                evaluator_type = "response_count"
             else:
                 evaluator_type = "generic"
         
@@ -392,6 +400,8 @@ class ComparisonPlotter:
             self._create_length_plots(comparison_data, output_dir)
         elif evaluator_type == "ngram":
             self._create_ngram_plots(comparison_data, output_dir)
+        elif evaluator_type == "response_count":
+            self._create_response_count_plots(comparison_data, output_dir)
         else:
             self._create_generic_plots(comparison_data, output_dir)
     
@@ -518,7 +528,92 @@ class ComparisonPlotter:
             output_dir / "length_metrics.png",
             title="Length Metrics Comparison"
         )
-    
+
+
+    def _generate_uniform_state_sample(self, n_trials=500, n_states=50, seed=42):
+        """Generate what a truly uniform state selection would look like."""
+        if seed:
+            np.random.seed(seed)
+        
+        # Simulate uniform random selection
+        state_selections = np.random.choice(range(n_states), size=n_trials, replace=True)
+        
+        # Count frequencies
+        unique_states, counts = np.unique(state_selections, return_counts=True)
+        
+        # Create full array (including states with 0 counts)
+        full_counts = np.zeros(n_states)
+        full_counts[unique_states] = counts
+        
+        return sorted([int(count) for count in full_counts], reverse=True)
+
+
+    def _create_response_count_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
+        """Create response count-specific plots."""
+        response_counter = comparison_data[0].result.overall_metrics["response_distribution"]
+        
+        # Sort values and labels by count in descending order
+        sorted_items = sorted(response_counter.items(), key=lambda x: x[1], reverse=True)
+        values = [item[1] for item in sorted_items]
+        labels = [item[0] for item in sorted_items]
+        
+        # Create histogram plot
+        plt.figure(figsize=self.figsize)
+        
+        # Create histogram using seaborn
+        df = pd.DataFrame({
+            'Response Type': labels,
+            'Count': values
+        })
+        
+        # Create histogram using seaborn
+        ax = sns.barplot(
+            data=df,
+            x='Response Type',
+            y='Count',
+            palette=[self.colors[0]],  # Use palette instead of color for consistent coloring
+            alpha=0.7,
+            legend=False
+        )
+        
+        # Add labels and title
+        plt.xticks(rotation=45)  # Rotate labels for better readability
+        plt.xlabel('Name of the State')
+        plt.ylabel('Count')
+        plt.title('State Name Distribution')
+        plt.ylim(0, 500)
+
+        
+        # Add value labels on top of bars
+        for i, v in enumerate(values):
+            ax.text(i, v, f'{int(v)}', ha='center', va='bottom')
+        
+        plt.tight_layout()
+
+        total_trials = sum(values)
+        num_states_appearing = len(values)
+        values = values + [0] * (50 - num_states_appearing)
+
+        # Generate expected frequencies with the same total number of trials
+        expected_frequencies = self._generate_uniform_state_sample(n_trials=total_trials, n_states=50, seed=42)
+        print(values)
+        print(expected_frequencies)
+        
+        # Perform chi-square goodness-of-fit test
+        chi2_stat, p_value = chisquare(f_obs=values, f_exp=expected_frequencies)
+        
+        # Add results to plot
+        plt.text(0.98, 0.98, f'Chi-square: {chi2_stat:.2f}', 
+                transform=plt.gca().transAxes, 
+                verticalalignment='top',
+                horizontalalignment='right',
+                bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+
+        plt.savefig(output_dir / "response_count_distribution.png", dpi=300, bbox_inches='tight',
+                    facecolor='white', edgecolor='none')
+        plt.close()
+
+        
     def _create_generic_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
         """Create generic plots for unknown evaluator types."""
         first_result = comparison_data[0].result
