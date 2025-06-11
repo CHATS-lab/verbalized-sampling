@@ -31,10 +31,17 @@ class DiversityEvaluator(BaseEvaluator):
     
     def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, float]:
         """Compute diversity metrics for a single response."""
+        words = response.split()
+        word_count = len(words)
+        unique_words = len(set(words))
+        
+        # Calculate vocabulary richness safely
+        vocabulary_richness = unique_words / word_count if word_count > 0 else 0.0
+        
         return {
-            "response_length": len(response.split()),
-            "unique_words": len(set(response.split())),
-            "vocabulary_richness": len(set(response.split())) / len(response.split()),
+            "response_length": word_count,
+            "unique_words": unique_words,
+            "vocabulary_richness": vocabulary_richness,
             "response": response,
             "prompt": prompt
         }

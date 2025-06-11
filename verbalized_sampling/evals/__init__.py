@@ -5,6 +5,7 @@ from .length import LengthEvaluator
 from .comparison_plots import ComparisonPlotter, plot_evaluation_comparison
 from .response_count import ResponseCountEvaluator
 from .creative_writing_v3 import CreativeWritingV3Evaluator
+from .ngram import NgramEvaluator
 
 __all__ = [
     "DiversityEvaluator", 
@@ -15,6 +16,7 @@ __all__ = [
     "CreativeWritingV3Evaluator",
     "ComparisonPlotter", 
     "plot_evaluation_comparison",
+    "NgramEvaluator",
 ]
 
 def get_evaluator(metric: str, **kwargs):
@@ -30,5 +32,7 @@ def get_evaluator(metric: str, **kwargs):
         return ResponseCountEvaluator(**kwargs)
     elif metric == "creative_writing_v3" or metric == "cwv3":
         return CreativeWritingV3Evaluator(**kwargs)
+    elif metric == "ngram":
+        return NgramEvaluator(**kwargs)
     else:
-        raise ValueError(f"Evaluator {metric} not found. Available evaluators: diversity, ttct, creativity_index, length, response_count, creative_writing_v3")
+        raise ValueError(f"Evaluator {metric} not found. Available evaluators: diversity, ttct, creativity_index, length, response_count, creative_writing_v3, ngram")

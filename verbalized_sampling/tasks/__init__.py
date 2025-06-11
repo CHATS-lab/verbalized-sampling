@@ -1,20 +1,73 @@
+"""
+Task definitions for verbalized sampling experiments.
+"""
+
 from typing import Dict, Type
 from .base import BaseTask
 from .creativity.story import CreativeStoryTask
 from .creativity.book import BookTask
 from .creativity.poem import PoemTask
 from .creativity.speech import SpeechTask
+from .creativity.joke import JokeTask
 from .bias.rand_num import RandomNumberTask
 from .bias.state_name import StateNameTask
 from enum import Enum
 
 class Task(str, Enum):
+    """Available tasks for verbalized sampling experiments.
+    
+    Each task represents a different type of generation task that can be used
+    to evaluate LLM sampling methods.
+    """
+    
     RANDOM_NUM = "rand_num"
+    """Random number generation task.
+    
+    Generates random numbers within a specified range. Used to test basic
+    sampling capabilities and uniformity of distribution.
+    """
+    
     CREATIVE_STORY = "creative_story"
+    """Creative story generation task.
+    
+    Generates creative stories based on prompts. Tests narrative coherence
+    and creativity in longer-form text generation.
+    """
+    
     BOOK = "book"
+    """Book continuation task.
+    
+    Generates continuations of book excerpts. Tests long-form narrative
+    coherence and style consistency.
+    """
+    
     POEM = "poem"
+    """Poetry generation task.
+    
+    Generates poems based on starting lines. Tests creative expression
+    and adherence to poetic forms.
+    """
+    
     SPEECH = "speech"
+    """Speech generation task.
+    
+    Generates speeches based on opening sentences. Tests rhetorical
+    effectiveness and persuasive writing.
+    """
+    
     STATE_NAME = "state_name"
+    """State name generation task.
+    
+    Generates names for fictional states/countries. Tests creative
+    naming and world-building capabilities.
+    """
+    
+    JOKE = "joke"
+    """Joke generation task.
+    
+    Generates jokes based on prompts. Tests humor and creative
+    wordplay capabilities.
+    """
 
 TASK_REGISTRY: Dict[str, Type[BaseTask]] = {
     "rand_num": RandomNumberTask,
@@ -23,6 +76,7 @@ TASK_REGISTRY: Dict[str, Type[BaseTask]] = {
     "poem": PoemTask,
     "speech": SpeechTask,
     "state_name": StateNameTask,
+    "joke": JokeTask,
 }
 
 def get_task(task_name: Task, **kwargs) -> BaseTask:
