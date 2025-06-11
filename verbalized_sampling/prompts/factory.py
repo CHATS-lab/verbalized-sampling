@@ -130,7 +130,7 @@ class PromptFactory:
         # TODO add selection of prompts
         if (sample_size is not None) and (random_seed is not None):
             random.seed(random_seed)
-            prompts = random.sample(prompts, sample_size)
+            prompts = random.sample(prompts, min(sample_size, len(prompts)))
         else:
             prompts = random.sample(prompts, 1)
 

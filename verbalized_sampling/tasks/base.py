@@ -21,7 +21,7 @@ class BaseTask(ABC):
                  method: Method,
                  num_responses: int = 3,
                  num_samples: int = 5,
-                 sample_size: int = 1,
+                 sample_size: int = 5,
                  random_seed: int = 42,
                  all_possible: bool = False,
                  strict_json: bool = False,
@@ -132,6 +132,14 @@ class BaseTask(ABC):
     ) -> List[Any]:
         """Run the task with the given model."""
         
+        print("Task parameters:")
+        print(f"  task_type: {self.task_type}")
+        print(f"  method: {self.method}")
+        print(f"  num_responses: {self.num_responses}")
+        print(f"  sample_size: {self.sample_size}")
+        print(f"  random_seed: {self.random_seed}")
+        print(f"  max_turns: {self.max_turns}")
+        print(f"  model: {self.model}")
         # Check if this is a multi-turn method
         if is_method_multi_turn(self.method):
             return self._run_multi_turn(progress, task_id)

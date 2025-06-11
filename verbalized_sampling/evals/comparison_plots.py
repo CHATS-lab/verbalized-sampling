@@ -324,6 +324,33 @@ class ComparisonPlotter:
                     facecolor='white', edgecolor='none')
         plt.close()
     
+    def _create_ngram_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
+        """Create ROUGE-L specific plots."""
+        # ROUGE-L score distribution
+        self.compare_distributions(
+            comparison_data, "pairwise_rouge_l_scores",
+            output_dir / "rouge_l_scores_distribution.png",
+            title="ROUGE-L Score Distribution Comparison",
+            plot_type="violin"
+        )
+        
+        # Response length distribution
+        self.compare_distributions(
+            comparison_data, "response_length",
+            output_dir / "response_length_distribution.png",
+            title="Response Length Distribution Comparison",
+            plot_type="histogram"
+        )
+        
+        # Aggregate metrics summary
+        self.compare_aggregate_metrics(
+            comparison_data,
+            ["average_rouge_l"],
+            output_dir / "rouge_l_metrics.png",
+            title="ROUGE-L Metrics Comparison",
+            plot_type="bar"
+        )
+
     def create_comprehensive_comparison(self,
                                       comparison_data: List[ComparisonData],
                                       output_dir: Union[str, Path],
@@ -347,6 +374,8 @@ class ComparisonPlotter:
                 evaluator_type = "creativity_index"
             elif "mean_token_length" in first_result.overall_metrics:
                 evaluator_type = "length"
+            elif "average_ngram_diversity" in first_result.overall_metrics:
+                evaluator_type = "ngram"
             else:
                 evaluator_type = "generic"
         
@@ -361,6 +390,8 @@ class ComparisonPlotter:
             self._create_creative_writing_v3_plots(comparison_data, output_dir)
         elif evaluator_type == "length":
             self._create_length_plots(comparison_data, output_dir)
+        elif evaluator_type == "ngram":
+            self._create_ngram_plots(comparison_data, output_dir)
         else:
             self._create_generic_plots(comparison_data, output_dir)
     

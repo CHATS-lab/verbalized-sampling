@@ -4,6 +4,7 @@ from .creativity.story import CreativeStoryTask
 from .creativity.book import BookTask
 from .creativity.poem import PoemTask
 from .creativity.speech import SpeechTask
+from .creativity.joke import JokeTask
 from .bias.rand_num import RandomNumberTask
 from .bias.state_name import StateNameTask
 from enum import Enum
@@ -15,6 +16,7 @@ class Task(str, Enum):
     POEM = "poem"
     SPEECH = "speech"
     STATE_NAME = "state_name"
+    JOKE = "joke"
 
 TASK_REGISTRY: Dict[str, Type[BaseTask]] = {
     "rand_num": RandomNumberTask,
@@ -23,6 +25,7 @@ TASK_REGISTRY: Dict[str, Type[BaseTask]] = {
     "poem": PoemTask,
     "speech": SpeechTask,
     "state_name": StateNameTask,
+    "joke": JokeTask,
 }
 
 def get_task(task_name: Task, **kwargs) -> BaseTask:
