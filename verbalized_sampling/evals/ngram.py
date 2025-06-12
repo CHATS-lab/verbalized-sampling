@@ -7,6 +7,17 @@ import ast
 class NgramEvaluator(BaseEvaluator):
     """Evaluator for measuring ROUGE-L scores across responses with the same prompt."""
     
+    instance_plot_metrics = [
+        ("pairwise_rouge_l_scores", "violin"),
+        ("response_length", "histogram")
+    ]
+    aggregate_plot_metrics = [
+        "average_rouge_l"
+    ]
+    key_plot_metrics = [
+        ("average_rouge_l", "N-gram (ROUGE-L)"),
+    ]
+    
     def __init__(self, num_workers: int = 128):
         super().__init__("ngram", num_workers)
     

@@ -55,7 +55,18 @@ def timeout_handler(signum, frame):
 
 class CreativityIndexEvaluator(BaseEvaluator):
     """Evaluator for measuring creativity by analyzing overlap with pretraining data."""
-    
+    instance_plot_metrics = [
+        ("creativity_index", "violin")
+    ]
+    aggregate_plot_metrics = [
+        "average_creativity_index",
+        "average_coverage",
+        "match_rate"
+    ]
+    key_plot_metrics = [
+        ("average_creativity_index", "Creativity (Infini-gram)"),
+    ]
+
     def __init__(self, 
                  method: str = "exact",  # "exact" or "semantic"
                  corpus: str = "v4_dolma-v1_7_llama",  # Infini-gram corpus

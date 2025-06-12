@@ -2,10 +2,15 @@ from .diversity import DiversityEvaluator
 from .quality import TTCTEvaluator
 from .creativity_index import CreativityIndexEvaluator
 from .length import LengthEvaluator
-from .comparison_plots import ComparisonPlotter, plot_evaluation_comparison
+from .comparison_plots import (
+    ComparisonPlotter, 
+    plot_evaluation_comparison,
+    plot_comparison_chart
+)
 from .response_count import ResponseCountEvaluator
 from .creative_writing_v3 import CreativeWritingV3Evaluator
 from .ngram import NgramEvaluator
+from .base import BaseEvaluator
 
 __all__ = [
     "DiversityEvaluator", 
@@ -17,6 +22,8 @@ __all__ = [
     "ComparisonPlotter", 
     "plot_evaluation_comparison",
     "NgramEvaluator",
+    "BaseEvaluator",
+    "plot_comparison_chart"
 ]
 
 def get_evaluator(metric: str, **kwargs):

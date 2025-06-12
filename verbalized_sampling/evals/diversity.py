@@ -11,6 +11,24 @@ from verbalized_sampling.llms import get_embedding_model
 
 class DiversityEvaluator(BaseEvaluator):
     """Evaluator for measuring response diversity using embeddings and cosine similarity."""
+
+    
+    instance_plot_metrics = [
+        ("pairwise_diversities", "violin"),
+        ("vocabulary_richness", "histogram")
+    ]
+    aggregate_plot_metrics = [
+        "average_diversity",
+        "min_diversity",
+        "max_diversity",
+        "std_diversity",
+        "average_response_length",
+        "average_unique_words",
+        "average_vocabulary_richness"
+    ]
+    key_plot_metrics = [
+        ("average_diversity", "Diversity (Pairwise)"),
+    ]
     
     def __init__(self, embed_model: str = "text-embedding-3-small", num_workers: int = 128):
         super().__init__("diversity", num_workers)

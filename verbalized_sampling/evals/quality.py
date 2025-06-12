@@ -35,6 +35,25 @@ class TTCTCriteria(BaseModel):
 class TTCTEvaluator(BaseEvaluator):
     """Comprehensive Torrance Tests of Creative Thinking evaluator in a single LLM call."""
     
+    instance_plot_metrics = [
+        ("fluency.score", "violin"),
+        ("flexibility.score", "violin"),
+        ("originality.score", "violin"),
+        ("elaboration.score", "violin"),
+    ]
+
+    aggregate_plot_metrics = [
+        "fluency",
+        "flexibility",
+        "originality",
+        "elaboration",
+        "overall",
+    ]
+    
+    key_plot_metrics = [
+        ("overall", "Quality (TTCT)")
+    ]
+
     def __init__(self, judge_model: str = "gpt-4.1", num_workers=64):
         super().__init__("ttct", num_workers=num_workers)
         self.judge_model = get_model(judge_model, method="direct", config={}, strict_json=True)

@@ -5,6 +5,15 @@ import ast
 
 class LengthEvaluator(BaseEvaluator):
     """Simple evaluator for computing token length of text responses using OpenAI tokenizer."""
+    instance_plot_metrics = [
+        ("token_length", "violin")
+    ]
+    aggregate_plot_metrics = [
+        "mean_token_length"
+    ]
+    key_plot_metrics = [
+        ("mean_token_length", "Length (Token)"),
+    ]
     
     def __init__(self, num_workers: int = 128):
         super().__init__("length", num_workers)

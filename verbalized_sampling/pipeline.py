@@ -300,8 +300,19 @@ class Pipeline:
         return evaluation_results
     
     def create_plots(self, evaluation_results: Dict[str, Dict[str, Path]]) -> Dict[str, Path]:
-        """Create comparison plots for each metric."""
-        from verbalized_sampling.evals import plot_evaluation_comparison
+        """Create comparison plots for each metric.
+        
+        Args:
+            evaluation_results: Dict[str, Dict[str, Path]]
+                The evaluation results to plot.
+                Each key is the metric name, and the value is a dictionary with the following keys:
+                - "exp_name": The name of the experiment.
+                - "result_file": The path to the result file.
+
+        Returns:
+            Dict[str, Path]
+        """
+        from verbalized_sampling.evals import plot_evaluation_comparison, plot_comparison_chart
         
         plot_results = {}
         plots_base_dir = self.config.output_base_dir / "plots"
@@ -317,7 +328,7 @@ class Pipeline:
                     metric_results[metric] = {}
                 metric_results[metric][exp_name] = result_file
         
-        # Create plots for each metric
+        # Create plots for each metric between methods
         for metric, results in metric_results.items():
             if not results:
                 continue
@@ -333,11 +344,11 @@ class Pipeline:
             )
             plot_results[metric] = plot_dir
             console.print(f"✅ {metric}: Plots saved to {plot_dir}")
-                
-            # except Exception as e:
-            #     console.print(f"❌ {metric}: Plot error - {str(e)}")
-            #     plot_results[metric] = None
         
+        plot_dir = plots_base_dir / "comparison_chart"
+        plot_dir.mkdir(parents=True, exist_ok=True)
+        plot_comparison_chart(metric_results, plot_dir)
+
         return plot_results
     
     def generate_report(self, evaluation_results: Dict[str, Dict[str, Path]], 

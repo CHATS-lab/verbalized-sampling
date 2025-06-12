@@ -329,33 +329,6 @@ class ComparisonPlotter:
                     facecolor='white', edgecolor='none')
         plt.close()
     
-    def _create_ngram_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
-        """Create ROUGE-L specific plots."""
-        # ROUGE-L score distribution
-        self.compare_distributions(
-            comparison_data, "pairwise_rouge_l_scores",
-            output_dir / "rouge_l_scores_distribution.png",
-            title="ROUGE-L Score Distribution Comparison",
-            plot_type="violin"
-        )
-        
-        # Response length distribution
-        self.compare_distributions(
-            comparison_data, "response_length",
-            output_dir / "response_length_distribution.png",
-            title="Response Length Distribution Comparison",
-            plot_type="histogram"
-        )
-        
-        # Aggregate metrics summary
-        self.compare_aggregate_metrics(
-            comparison_data,
-            ["average_rouge_l"],
-            output_dir / "rouge_l_metrics.png",
-            title="ROUGE-L Metrics Comparison",
-            plot_type="bar"
-        )
-
     def create_comprehensive_comparison(self,
                                       comparison_data: List[ComparisonData],
                                       output_dir: Union[str, Path],
@@ -384,150 +357,42 @@ class ComparisonPlotter:
             elif "response_distribution" in first_result.overall_metrics:
                 evaluator_type = "response_count"
             else:
-                evaluator_type = "generic"
+                raise ValueError(f"Unknown evaluator type: {evaluator_type}")
         
-        # Create plots based on evaluator type
-        if evaluator_type == "diversity":
-            self._create_diversity_plots(comparison_data, output_dir)
-        elif evaluator_type == "ttct":
-            self._create_ttct_plots(comparison_data, output_dir)
-        elif evaluator_type == "creativity_index":
-            self._create_creativity_index_plots(comparison_data, output_dir)
-        elif evaluator_type == "creative_writing_v3":
-            self._create_creative_writing_v3_plots(comparison_data, output_dir)
-        elif evaluator_type == "length":
-            self._create_length_plots(comparison_data, output_dir)
-        elif evaluator_type == "ngram":
-            self._create_ngram_plots(comparison_data, output_dir)
-        elif evaluator_type == "response_count":
-            self._create_response_count_plots(comparison_data, output_dir)
-        else:
-            self._create_generic_plots(comparison_data, output_dir)
-    
-    def _create_creative_writing_v3_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
-        """Create creative writing v3-specific plots."""
-        # Creative writing v3 distribution
-        # Plot distributions for each creative writing metric
-        metrics = [
-            "imagery_and_descriptive_quality",
-            "nuanced_characters", 
-            "emotionally_complex",
-            "elegant_prose",
-            "well_earned_lightness_or_darkness",
-            "emotionally_engaging",
-            "consistent_voicetone_of_writing",
-            "sentences_flow_naturally",
-            "overall_reader_engagement",
-            "Average_Score"
-        ]
-        
-        for metric in metrics:
-            self.compare_distributions(
-                comparison_data, metric,
-                output_dir / f"{metric}_distribution.png",
-                title=f"{metric.replace('_', ' ').title()} Distribution Comparison",
-                plot_type="violin"
-            )
-        
-        # Aggregate metrics
-        self.compare_aggregate_metrics(
-            comparison_data,
-            ["creative_writing_v3"],
-            output_dir / "creative_writing_v3_metrics.png",
-            title="Creative Writing v3 Metrics Comparison",
-            plot_type="bar"
-        )
-    
-    def _create_diversity_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
-        """Create diversity-specific plots."""
-        # Pairwise similarities distribution (from overall_metrics)
-        self.compare_distributions(
-            comparison_data, "pairwise_diversities",
-            output_dir / "pairwise_diversities_distribution.png",
-            title="Pairwise Diversity Distribution Comparison",
-            plot_type="violin"
-        )
-        
-        # # Response length distribution (from instance_metrics)
-        # self.compare_distributions(
-        #     comparison_data, "response_length",
-        #     output_dir / "response_length_distribution.png",
-        #     title="Response Length Distribution Comparison",
-        #     plot_type="histogram"
-        # )
-        
-        # Vocabulary richness distribution (from instance_metrics)
-        self.compare_distributions(
-            comparison_data, "vocabulary_richness",
-            output_dir / "vocabulary_richness_distribution.png",
-            title="Vocabulary Richness Distribution Comparison",
-            plot_type="histogram"
-        )
-        
-        # Aggregate metrics summary
-        self.compare_aggregate_metrics(
-            comparison_data,
-            ["average_diversity", "min_diversity", "max_diversity", "std_diversity", "average_response_length", "average_unique_words", "average_vocabulary_richness", "total_cost", "pairwise_diversities"],
-            output_dir / "diversity_metrics.png",
-            title="Diversity Metrics Comparison",
-            plot_type="bar"
-        )
-    
-    def _create_ttct_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
-        """Create TTCT-specific plots."""
-        # Individual TTCT dimensions
-        for dimension in ["fluency", "flexibility", "originality", "elaboration"]:
-            self.compare_distributions(
-                comparison_data, f"{dimension}.score",
-                output_dir / f"{dimension}_distribution.png",
-                title=f"{dimension.title()} Score Distribution",
-                plot_type="violin"
-            )
-        
-        # Aggregate comparison
-        self.compare_aggregate_metrics(
-            comparison_data,
-            ["fluency", "flexibility", "originality", "elaboration", "overall"],
-            output_dir / "ttct_metrics.png",
-            title="TTCT Dimensions Comparison"
-        )
-    
-    def _create_creativity_index_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
-        """Create creativity index-specific plots."""
-        # Creativity index distribution
-        self.compare_distributions(
-            comparison_data, "creativity_index",
-            output_dir / "creativity_index_distribution.png",
-            title="Creativity Index Distribution Comparison",
-            plot_type="violin"
-        )
-        
-        # Aggregate metrics
-        self.compare_aggregate_metrics(
-            comparison_data,
-            ["average_creativity_index", "average_coverage", "match_rate"],
-            output_dir / "creativity_index_metrics.png",
-            title="Creativity Index Metrics Comparison"
-        )
-    
-    def _create_length_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
-        """Create length-specific plots."""
-        # Token length distribution
-        self.compare_distributions(
-            comparison_data, "token_length",
-            output_dir / "token_length_distribution.png",
-            title="Token Length Distribution Comparison",
-            plot_type="violin"
-        )
-        
-        # Aggregate metrics
-        self.compare_aggregate_metrics(
-            comparison_data,
-            ["mean_token_length"],
-            output_dir / "length_metrics.png",
-            title="Length Metrics Comparison"
-        )
+        self._create_comprehensive_comparison(evaluator_type, comparison_data, output_dir)
 
+    def _create_comprehensive_comparison(self,
+                                    evaluator_type: str,
+                                    comparison_data: List[ComparisonData],
+                                    output_dir: Union[str, Path]) -> None:
+        """Create a comprehensive set of comparison plots."""
+        from verbalized_sampling.evals import get_evaluator
+        evaluator_class = get_evaluator(evaluator_type)
+        output_dir = Path(output_dir)
+        output_dir.mkdir(parents=True, exist_ok=True)
+        
+        if not comparison_data:
+            raise ValueError("No comparison data provided")
+        
+        # Create instance metric plots
+        for metric_name, plot_type in evaluator_class.instance_plot_metrics:
+            self.compare_distributions(
+                comparison_data,
+                metric_name,
+                output_dir / f"{metric_name}_distribution.png",
+                title=f"{metric_name.replace('_', ' ').title()} Distribution Comparison",
+                plot_type=plot_type
+            )
+        
+        # Create aggregate metric plots
+        if evaluator_class.aggregate_plot_metrics:
+            self.compare_aggregate_metrics(
+                comparison_data,
+                evaluator_class.aggregate_plot_metrics,
+                output_dir / "aggregate_metrics.png",
+                title=f"{evaluator_class.name.replace('_', ' ').title()} Metrics Comparison",
+                plot_type="bar"
+            )
 
     def _generate_uniform_state_sample(self, n_trials=500, n_states=50, seed=42):
         """Generate what a truly uniform state selection would look like."""
@@ -546,219 +411,102 @@ class ComparisonPlotter:
         
         return sorted([int(count) for count in full_counts], reverse=True)
 
-
-    def _create_response_count_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
-        """Create response count-specific plots."""
-        response_counter = comparison_data[0].result.overall_metrics["response_distribution"]
-        
-        # Sort values and labels by count in descending order
-        sorted_items = sorted(response_counter.items(), key=lambda x: x[1], reverse=True)
-        values = [item[1] for item in sorted_items]
-        labels = [item[0] for item in sorted_items]
-        
-        # Create histogram plot
-        plt.figure(figsize=self.figsize)
-        
-        # Create histogram using seaborn
-        df = pd.DataFrame({
-            'Response Type': labels,
-            'Count': values
-        })
-        
-        # Create histogram using seaborn
-        ax = sns.barplot(
-            data=df,
-            x='Response Type',
-            y='Count',
-            palette=[self.colors[0]],  # Use palette instead of color for consistent coloring
-            alpha=0.7,
-            legend=False
-        )
-        
-        # Add labels and title
-        plt.xticks(rotation=45)  # Rotate labels for better readability
-        plt.xlabel('Name of the State')
-        plt.ylabel('Count')
-        plt.title('State Name Distribution')
-        plt.ylim(0, 500)
-
-        
-        # Add value labels on top of bars
-        for i, v in enumerate(values):
-            ax.text(i, v, f'{int(v)}', ha='center', va='bottom')
-        
-        plt.tight_layout()
-
-        total_trials = sum(values)
-        num_states_appearing = len(values)
-        values = values + [0] * (50 - num_states_appearing)
-
-        # Generate expected frequencies with the same total number of trials
-        expected_frequencies = self._generate_uniform_state_sample(n_trials=total_trials, n_states=50, seed=42)
-        print(values)
-        print(expected_frequencies)
-        
-        # Perform chi-square goodness-of-fit test
-        chi2_stat, p_value = chisquare(f_obs=values, f_exp=expected_frequencies)
-        
-        # Add results to plot
-        plt.text(0.98, 0.98, f'Chi-square: {chi2_stat:.2f}', 
-                transform=plt.gca().transAxes, 
-                verticalalignment='top',
-                horizontalalignment='right',
-                bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
-
-        plt.savefig(output_dir / "response_count_distribution.png", dpi=300, bbox_inches='tight',
-                    facecolor='white', edgecolor='none')
-        plt.close()
-
-        
-    def _create_generic_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
-        """Create generic plots for unknown evaluator types."""
-        first_result = comparison_data[0].result
-        
-        # Try to create plots for all available metrics
-        instance_metrics = set()
-        overall_metrics = first_result.overall_metrics
-        
-        # Collect all possible instance metrics - now handling list format
-        for instance in first_result.instance_metrics:
-            if isinstance(instance, dict):
-                instance_metrics.update(instance.keys())
-            elif isinstance(instance, (int, float)):
-                instance_metrics.add('value')  # Add a generic metric name for numeric values
-        
-        # Create plots for numeric instance metrics
-        for metric in instance_metrics:
-            try:
-                self.compare_distributions(
-                    comparison_data, metric,
-                    output_dir / f"{metric}_distribution.png",
-                    title=f"{metric.replace('_', ' ').title()} Distribution",
-                    plot_type="histogram"
-                )
-            except (ValueError, TypeError):
-                continue  # Skip non-numeric metrics
-        
-        # Create plots for list-type overall metrics
-        for metric, value in overall_metrics.items():
-            if isinstance(value, (list, tuple)) and value:
-                try:
-                    self.compare_distributions(
-                        comparison_data, metric,
-                        output_dir / f"{metric}_distribution.png",
-                        title=f"{metric.replace('_', ' ').title()} Distribution",
-                        plot_type="violin"
-                    )
-                except (ValueError, TypeError):
-                    continue
-        
-        # Create aggregate metrics plot for scalar values
-        numeric_aggregates = []
-        for metric, value in overall_metrics.items():
-            if isinstance(value, (int, float)):
-                numeric_aggregates.append(metric)
-        
-        if numeric_aggregates:
-            self.compare_aggregate_metrics(
-                comparison_data, numeric_aggregates,
-                output_dir / "aggregate_metrics.png",
-                title="Aggregate Metrics Comparison"
-            )
-
     def create_performance_comparison_chart(self,
-                                          comparison_data: List[ComparisonData],
-                                          task_metrics: Dict[str, List[str]],
+                                          comparison_data: Dict[str, EvalResult],
+                                          key_metric_names: List[tuple[str, str]],
                                           output_path: Union[str, Path],
                                           title: Optional[str] = None,
                                           subplot_titles: Optional[List[str]] = None) -> None:
         """Create multi-subplot comparison chart like in your reference image."""
         
-        n_tasks = len(task_metrics)
-        fig, axes = plt.subplots(1, n_tasks, figsize=(6 * n_tasks, 6))
-        
-        if n_tasks == 1:
-            axes = [axes]
+        plt.figure(figsize=(4 * len(key_metric_names), 8))
         
         # Enhanced colors for consistency
         colors = ['#8B8B8B', '#B8C5E1', '#5A5A5A', '#7CB8D4', '#003F7F']
         patterns = ['', '', '', '', '///']
         
-        format_names = [data.name for data in comparison_data]
+        # Get method names from comparison_data keys
+        method_names = list(comparison_data.keys())
         
-        for task_idx, (task_name, metrics) in enumerate(task_metrics.items()):
-            ax = axes[task_idx]
+        # Setup bar chart parameters
+        x = np.arange(len(key_metric_names))
+        width = 0.8 / len(method_names)  # Adjust width based on number of methods
+        
+        # Create grouped bars
+        for i, method_name in enumerate(method_names):
+            print(f"Method name: {method_name}")
+            eval_result = comparison_data[method_name]
+            values = []
             
-            # Prepare data for this task
-            metric_values = {metric: [] for metric in metrics}
-            
-            for data in comparison_data:
-                for metric in metrics:
-                    # Extract metric value
-                    value = data.result.overall_metrics
-                    for key in metric.split('.'):
-                        if isinstance(value, dict) and key in value:
-                            value = value[key]
-                        else:
-                            value = 0.0
-                            break
-                    
-                    if isinstance(value, (list, tuple)):
-                        value = np.mean(value) if value else 0.0
-                    
-                    metric_values[metric].append(float(value) if value is not None else 0.0)
-            
-            # Create bars
-            x = np.arange(len(metrics))
-            width = 0.15
-            
-            for i, (format_name, data) in enumerate(zip(format_names, comparison_data)):
-                values = [metric_values[metric][i] for metric in metrics]
-                offset = (i - len(format_names)/2 + 0.5) * width
+            # Extract values for each metric
+            for metric_name, plot_title in key_metric_names:
+                value = eval_result.overall_metrics
+                for key in metric_name.split('.'):
+                    if isinstance(value, dict) and key in value:
+                        value = value[key]
+                    else:
+                        value = 0.0
+                        break
                 
-                color = data.color or colors[i % len(colors)]
-                pattern = patterns[i % len(patterns)]
+                # Handle list/tuple values by taking mean
+                if isinstance(value, (list, tuple)):
+                    value = np.mean(value) if value else 0.0
                 
-                bars = ax.bar(x + offset, values, width,
-                             label=format_name if task_idx == 0 else "",  # Only show legend on first subplot
-                             color=color,
-                             alpha=0.8,
-                             hatch=pattern,
-                             edgecolor='white',
-                             linewidth=0.5)
+                values.append(float(value) if value is not None else 0.0)
             
-            # Styling
-            ax.set_xlabel('Metrics', fontsize=11, fontweight='bold')
-            if task_idx == 0:
-                ax.set_ylabel('Accuracy (%)', fontsize=11, fontweight='bold')
+            # Calculate offset for grouped bars
+            offset = (i - len(method_names)/2 + 0.5) * width
             
-            ax.set_xticks(x)
-            ax.set_xticklabels([m.replace('_', ' ').title() for m in metrics], fontsize=10)
+            # Create bars for this method
+            color = colors[i % len(colors)]
+            pattern = patterns[i % len(patterns)] if patterns else ''
             
-            # Subplot title
-            subplot_title = subplot_titles[task_idx] if subplot_titles else task_name
-            ax.set_title(subplot_title, fontsize=12, fontweight='bold')
+            plt.bar(x + offset, values, width,
+                   label=method_name,
+                   color=color,
+                   alpha=0.8,
+                   hatch=pattern,
+                   edgecolor='white',
+                   linewidth=0.5)
             
-            # Remove grid
-            ax.grid(False)
-            
-            # Set y limits
-            ax.set_ylim(0, max(max(metric_values[metric]) for metric in metrics) * 1.1)
+        # Styling
+        plt.xlabel('Metrics', fontsize=12, fontweight='bold')
+        plt.ylabel('Score', fontsize=12, fontweight='bold')
+        plt.xticks(x, [plot_title for _, plot_title in key_metric_names], fontsize=11)
         
-        # Add shared legend
-        if format_names:
-            fig.legend(format_names, loc='upper center', bbox_to_anchor=(0.5, 0.02),
-                      ncol=len(format_names), fontsize=10, frameon=True)
+        # Add legend
+        plt.legend(loc='upper right', bbox_to_anchor=(0.98, 0.98),
+                  frameon=True, fancybox=True, shadow=True,
+                  fontsize=10, framealpha=0.9)
         
-        # Overall title
+        # Add title if provided
         if title:
-            fig.suptitle(title, fontsize=16, fontweight='bold', y=0.95)
+            plt.title(title, fontsize=14, fontweight='bold', pad=20)
         
+        plt.grid(False)
+        
+        # Set y limits
+        all_values = []
+        for method_name in method_names:
+            eval_result = comparison_data[method_name]
+            for metric_name, plot_title in key_metric_names:
+                value = eval_result.overall_metrics
+                for key in metric_name.split('.'):
+                    if isinstance(value, dict) and key in value:
+                        value = value[key]
+                    else:
+                        value = 0.0
+                        break
+                if isinstance(value, (list, tuple)):
+                    value = np.mean(value) if value else 0.0
+                all_values.append(float(value) if value is not None else 0.0)
+        
+        if all_values:
+            plt.ylim(0, max(all_values) * 1.1)
+        
+        # Finalize plot
         plt.tight_layout()
-        if title:
-            plt.subplots_adjust(top=0.85, bottom=0.15)
-        
-        plt.savefig(output_path, dpi=300, bbox_inches='tight',
+        plt.savefig(output_path / "comparison_chart.png", dpi=300, bbox_inches='tight',
                     facecolor='white', edgecolor='none')
         plt.close()
 
@@ -793,3 +541,38 @@ def plot_evaluation_comparison(results: Dict[str, Union[EvalResult, str, Path]],
         comparison_data.append(ComparisonData(name=name, result=eval_result))
     
     plotter.create_comprehensive_comparison(comparison_data, output_dir, evaluator_type) 
+
+def plot_comparison_chart(results: Dict[str, Union[EvalResult, str, Path]],
+                          output_path: Union[str, Path],
+                          **kwargs) -> None:
+    """Create a performance comparison chart."""
+    plotter = ComparisonPlotter(**kwargs)
+    print(f"Starting to plot comparison chart...")
+    comparison_data = {} # {exp_name: EvalResult}
+    key_metric_names = []
+    for metric, results in results.items():
+        from verbalized_sampling.evals import get_evaluator
+        evaluator_class = get_evaluator(metric)
+        if evaluator_class.key_plot_metrics:
+            key_metric_names.extend(evaluator_class.key_plot_metrics)
+        
+        for exp_name, result in results.items():
+            if isinstance(result, (str, Path)):
+                # Load from file
+                with open(result, 'r') as f:
+                    import json
+                    result_dict = json.load(f)
+                    eval_result = EvalResult.from_dict(result_dict)
+            else:
+                eval_result = result
+            if exp_name not in comparison_data:
+                comparison_data[exp_name] = eval_result
+            else:
+                comparison_data[exp_name] = comparison_data[exp_name] + eval_result
+    print(f"Number of experiments: {len(comparison_data)}")
+    print(f"Plotting comparison chart...")
+    plotter.create_performance_comparison_chart(
+            comparison_data, 
+            key_metric_names,
+            output_path)
+        

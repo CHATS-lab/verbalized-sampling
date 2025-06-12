@@ -74,6 +74,24 @@ def normalize_metric_name(metric_name: str) -> str:
 
 class CreativeWritingV3Evaluator(BaseEvaluator):
     """Evaluator for creative writing using expert judge scoring on 10 key metrics."""
+    instance_plot_metrics = [
+        ("imagery_and_descriptive_quality", "violin"),
+        ("nuanced_characters", "violin"),
+        ("emotionally_complex", "violin"),
+        ("elegant_prose", "violin"),
+        ("well_earned_lightness_or_darkness", "violin"),
+        ("emotionally_engaging", "violin"),
+        ("consistent_voicetone_of_writing", "violin"),
+        ("sentences_flow_naturally", "violin"),
+        ("overall_reader_engagement", "violin"),
+        ("Average_Score", "violin")
+    ]
+    aggregate_plot_metrics = [
+        "Average_Score",
+    ]
+    key_plot_metrics = [
+        ("Average_Score", "Quality (LLM-as-Judge)"),
+    ]
     
     def __init__(self, judge_model: str = "anthropic/claude-sonnet-4", num_workers: int = 64):
         super().__init__("creative_writing_v3", num_workers=num_workers)
