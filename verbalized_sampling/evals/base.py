@@ -62,8 +62,16 @@ class BaseEvaluator(ABC):
         """Aggregate instance-level metrics into overall metrics."""
         pass
 
-    def evaluate(self, prompts: List[str], responses: List[str], metadata: Optional[Dict[str, Any]] = None) -> EvalResult:
-        """Evaluate a list of prompts and responses."""
+    def evaluate(self, prompts: List[str], responses: List[Dict], metadata: Optional[Dict[str, Any]] = None) -> EvalResult:
+        """Evaluate a list of prompts and responses.
+        
+        Args:
+            prompts: List of prompts
+            responses: List of responses, [{'text': 'response', 'index': 0, 'probability'(optional): 0.5}]
+            metadata: Additional metadata about the evaluation
+            
+        Returns:
+        """
         with ThreadPoolExecutor(max_workers=self.num_workers) as executor:
             instance_metrics = list(tqdm(
                 executor.map(

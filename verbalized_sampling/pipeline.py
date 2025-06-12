@@ -249,26 +249,14 @@ class Pipeline:
                     responses = []
                     prompts = []
                     for line in f:
-                        try:
-                            data = json.loads(line)
-                            # print("Loaded data: ", data)
-                            if isinstance(data, dict):
-                                if "response" in data:
-                                    responses.append(data['response'])
-                                elif "text" in data:
-                                    responses.append(data['text'])
-                                else:
-                                    responses.append(str(data))
-                                prompts.append(data.get('prompt', ''))
-                            else:
-                                responses.append(str(data))
-                                prompts.append('')
-                        except json.JSONDecodeError:
-                            responses.append(line.strip())
-                            prompts.append('')
-
-                # print("Loaded full responses: ", responses)
-                # print("Loaded full prompts: ", prompts)
+                        # Each line is expected to be a JSON object
+                        data = json.loads(line)
+                        prompt = data["prompt"]
+                        responses_list = data["responses"]
+                        for i, response in enumerate(responses_list):
+                            response['index'] = i
+                            responses.append(response)
+                            prompts.append(prompt)
 
                 # Run each metric
                 for metric in self.config.evaluation.metrics:
@@ -290,11 +278,9 @@ class Pipeline:
                             metric, 
                             num_workers=self.config.evaluation.num_workers
                         )
-                        # print("Prompts: ", prompts)
-                        # print("Responses: ", responses)
                         
                         result = evaluator.evaluate(
-                            prompts or responses,  # Use responses as prompts if no prompts available
+                            prompts,
                             responses,
                             metadata={"experiment": exp_name, "metric": metric}
                         )

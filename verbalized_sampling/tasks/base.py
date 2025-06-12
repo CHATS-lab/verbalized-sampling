@@ -48,44 +48,34 @@ class BaseTask(ABC):
             strict_json=self.strict_json
         )
     
-    def parse_response(self, response: Any) -> Any:
-        """Parse the model's response.
+    # def parse_response(self, response: Any) -> Any:
+    #     """Parse the model's response.
         
-        Args:
-            response: Can be either a string (JSON) or a list of responses
+    #     Args:
+    #         response: Can be either a string (JSON) or a list of responses
             
-        Returns:
-            Parsed response in the expected format
-        """
+    #     Returns:
+    #         Parsed response in the expected format
+    #     """
 
-        # Old code by Simon
-        # If response is already a list, return it directly
-        # if isinstance(response, list):
-        #     if len(response) == 1:
-        #         response = response[0]
-        #         if "response" in response:
-        #             response = response["response"]
-        #     else:
-        #         return response
-
-        if isinstance(response, (list, dict)):
-            return response
+    #     if isinstance(response, (list, dict)):
+    #         return response
             
-        # If response is a string, try to parse it as JSON
-        try:
-            # Check if response contains code block markers
-            if "```" in response:
-                # Remove code block markers and any language specifiers
-                response = response.replace("```json", "").replace("```", "").strip()
-            # elif response.startswith("[") and response.endswith("]"):
-            #     response = response[1:-1]
-            parsed = json.loads(response)
-            if isinstance(parsed, dict):
-                parsed = parsed["responses"]
-            return parsed
-        except Exception as e:
-            print(f"Error parsing response: {e}")
-            return response
+    #     # If response is a string, try to parse it as JSON
+    #     try:
+    #         # Check if response contains code block markers
+    #         if "```" in response:
+    #             # Remove code block markers and any language specifiers
+    #             response = response.replace("```json", "").replace("```", "").strip()
+    #         # elif response.startswith("[") and response.endswith("]"):
+    #         #     response = response[1:-1]
+    #         parsed = json.loads(response)
+    #         if isinstance(parsed, dict):
+    #             parsed = parsed["responses"]
+    #         return parsed
+    #     except Exception as e:
+    #         print(f"Error parsing response: {e}")
+    #         return response
     
     def _run_multi_turn(
         self,
@@ -111,7 +101,7 @@ class BaseTask(ABC):
                 initial_prompt_content = initial_prompt[-1]["content"]
                 response_data = {
                     "prompt": initial_prompt_content,
-                    "response": result,
+                    "text": result,
                     "turn": turn + 1,
                 }
                 turn_responses.append(response_data)
@@ -152,7 +142,6 @@ class BaseTask(ABC):
         prompts = [prompt for prompt in self.get_prompt() for _ in range(self.num_responses)]
         results = self.model.chat(prompts, schema=get_schema(self.method))
         parsed_results = []
-        current_batch = []
         
         for prompt, result in zip(prompts, results):
             prompt_text = prompt[-1]["content"]

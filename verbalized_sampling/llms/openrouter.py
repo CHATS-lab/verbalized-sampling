@@ -31,6 +31,7 @@ class OpenRouterLLM(BaseLLM):
         self.client = OpenAI(
             base_url="https://openrouter.ai/api/v1",
             api_key=os.environ.get("OPENROUTER_API_KEY"),
+            # api_key=os.environ.get("OPENAI_API_KEY"),
         )
 
     def _chat(self, messages: List[Dict[str, str]]) -> str:

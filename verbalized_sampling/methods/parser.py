@@ -8,6 +8,12 @@ import ast
 from typing import Any, Dict, List, Union, Optional
 from .factory import Method
 
+def maybe_rename_response(response: Dict) -> Dict:
+    if "response" in response:
+        response["text"] = response["response"]
+        del response["response"]
+    return response
+
 class ParseError(Exception):
     """Exception raised when parsing fails."""
     pass
@@ -60,52 +66,20 @@ class ResponseParser:
     @staticmethod
     def parse_structure_response_only(response: str) -> List[Dict]:
         """Parse structured response with response field only."""
-        if isinstance(response, list):
-            return [{'text': item} for item in response]
-        elif isinstance(response, dict):
-            response_list = response["responses"]
-            return [{'text': item} for item in response_list]
-        else:
-            assert False, f"Invalid response format: {response}"
+        return ResponseParser.parse_structure_with_probability(response)
     
     @staticmethod
     def parse_structure_with_probability(response: str) -> List[Dict[str, Union[str, float]]]:
         """Parse structured response with response and probability fields."""
-        try:
-            parsed_json = ResponseParser._extract_json(response)
-            
-            if isinstance(parsed_json, dict) and "responses" in parsed_json:
-                responses = parsed_json["responses"]
-                if isinstance(responses, list):
-                    parsed_responses = []
-                    total_prob = 0.0
-                    
-                    for item in responses:
-                        if isinstance(item, dict):
-                            prob = item.get("probability", 1.0 / len(responses))
-                            parsed_responses.append({
-                                "response": item.get("response", ""),
-                                "probability": float(prob)
-                            })
-                            total_prob += float(prob)
-                        else:
-                            parsed_responses.append({
-                                "response": str(item),
-                                "probability": 1.0 / len(responses)
-                            })
-                    
-                    # Normalize probabilities if they don't sum to 1
-                    if abs(total_prob - 1.0) > 0.01 and total_prob > 0:
-                        for item in parsed_responses:
-                            item["probability"] = item["probability"] / total_prob
-                    
-                    return parsed_responses
-            
-            # Fallback parsing
-            return [{"response": response, "probability": 1.0}]
-            
-        except Exception as e:
-            return [{"response": response, "probability": 1.0}]
+        if isinstance(response, list):
+            return [maybe_rename_response(item) for item in response]
+        elif isinstance(response, dict):
+            response_list = response["responses"]
+            return [maybe_rename_response(item) for item in response_list]
+        else:
+            # non-strict json
+            response = ResponseParser._extract_json(response)
+            return response['responses']
     
     @staticmethod
     def parse_multi_turn(response: str) -> str:

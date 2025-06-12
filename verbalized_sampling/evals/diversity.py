@@ -29,49 +29,36 @@ class DiversityEvaluator(BaseEvaluator):
         response = self.embedding_model.get_embedding(text)
         return np.array(response.embedding), response.cost
     
-    def compute_instance_metric(self, prompts: Any, responses: Any) -> List[Dict[str, float]]:
+    def compute_instance_metric(self, prompt: str, response: Dict) -> Dict[str, float]:
         """Compute diversity metrics for a single response."""
-        if isinstance(responses, str):
-            responses = ast.literal_eval(responses)
-            
-        list_of_responses = [
-            response.get('response', response)
-            for response in responses
-        ]
-        list_of_prompts = [
-            response.get('prompt', response)
-            for response in responses
-        ]
+        response_text = response.get('text', response)
 
         word_count_list = []
         unique_words_list = []
         vocabulary_richness_list = []
         
-        for response in list_of_responses:
-            words = response.split()
-            word_count = len(words)
-            unique_words = len(set(words))
-            
-            # Calculate vocabulary richness safely
-            vocabulary_richness = unique_words / word_count if word_count > 0 else 0.0
-            word_count_list.append(word_count)
-            unique_words_list.append(unique_words)
-            vocabulary_richness_list.append(vocabulary_richness)
+        words = response_text.split()
+        word_count = len(words)
+        unique_words = len(set(words))
         
-        return [{
+        # Calculate vocabulary richness safely
+        vocabulary_richness = unique_words / word_count if word_count > 0 else 0.0
+        word_count_list.append(word_count)
+        unique_words_list.append(unique_words)
+        vocabulary_richness_list.append(vocabulary_richness)
+        
+        return {
             "response_length": word_count,
             "unique_words": unique_words,
             "vocabulary_richness": vocabulary_richness,
-            "response": response,
+            "response": response_text,
             "prompt": prompt
-        } for response, word_count, unique_words, vocabulary_richness, prompt in zip(list_of_responses, word_count_list, unique_words_list, vocabulary_richness_list, list_of_prompts)]
+        }
     
-    def aggregate_metrics(self, instance_metrics: List[List[Dict[str, float]]]) -> Dict[str, Any]:
+    def aggregate_metrics(self, instance_metrics: List[Dict[str, float]]) -> Dict[str, Any]:
         """Compute diversity metrics across all responses."""
-        # Flatten the list of lists into a single list of metrics
-        flattened_metrics = [metric for metrics_list in instance_metrics for metric in metrics_list]
         
-        if len(flattened_metrics) <= 1:
+        if len(instance_metrics) <= 1:
             return {
                 "average_diversity": 0.0,
                 "min_diversity": 0.0,
@@ -85,14 +72,14 @@ class DiversityEvaluator(BaseEvaluator):
         
         # Group responses by prompt for intra-class diversity calculation
         prompt_groups = {}
-        for i, m in enumerate(flattened_metrics):
+        for i, m in enumerate(instance_metrics):
             prompt = m["prompt"]
             if prompt not in prompt_groups:
                 prompt_groups[prompt] = []
             prompt_groups[prompt].append((i, m["response"]))
         
         # Get all responses for embedding computation
-        all_responses = [m["response"] for m in flattened_metrics]
+        all_responses = [m["response"] for m in instance_metrics]
         
         # Compute embeddings in parallel
         embeddings_list = []
@@ -142,9 +129,9 @@ class DiversityEvaluator(BaseEvaluator):
                 "min_diversity": float(diversities_array.min()),
                 "max_diversity": float(diversities_array.max()),
                 "std_diversity": float(diversities_array.std()),
-                "average_response_length": float(np.mean([m["response_length"] for m in flattened_metrics])),
-                "average_unique_words": float(np.mean([m["unique_words"] for m in flattened_metrics])),
-                "average_vocabulary_richness": float(np.mean([m["vocabulary_richness"] for m in flattened_metrics])),
+                "average_response_length": float(np.mean([m["response_length"] for m in instance_metrics])),
+                "average_unique_words": float(np.mean([m["unique_words"] for m in instance_metrics])),
+                "average_vocabulary_richness": float(np.mean([m["vocabulary_richness"] for m in instance_metrics])),
                 "total_cost": float(total_cost),
                 "pairwise_diversities": pairwise_diversities
             }
@@ -155,9 +142,9 @@ class DiversityEvaluator(BaseEvaluator):
                 "min_diversity": 0.0,
                 "max_diversity": 0.0,
                 "std_diversity": 0.0,
-                "average_response_length": float(np.mean([m["response_length"] for m in flattened_metrics])),
-                "average_unique_words": float(np.mean([m["unique_words"] for m in flattened_metrics])),
-                "average_vocabulary_richness": float(np.mean([m["vocabulary_richness"] for m in flattened_metrics])),
+                "average_response_length": float(np.mean([m["response_length"] for m in instance_metrics])),
+                "average_unique_words": float(np.mean([m["unique_words"] for m in instance_metrics])),
+                "average_vocabulary_richness": float(np.mean([m["vocabulary_richness"] for m in instance_metrics])),
                 "total_cost": float(total_cost),
                 "pairwise_diversities": []
             }

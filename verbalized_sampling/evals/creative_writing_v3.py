@@ -79,13 +79,13 @@ class CreativeWritingV3Evaluator(BaseEvaluator):
         super().__init__("creative_writing_v3", num_workers=num_workers)
         self.judge_model = get_model(judge_model, method="direct", config={})
         
-    def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, float]:
+    def compute_instance_metric(self, prompt: str, response: Dict) -> Dict[str, float]:
         """Compute creative writing metrics for a single prompt-response pair."""
         
         # Create evaluation prompt using the rubric
         evaluation_prompt = JUDGE_RUBRIC.format(
             writing_prompt=prompt,
-            response=response
+            response=response['text']
         )
         
         # Get evaluation from judge model
