@@ -2,6 +2,7 @@ from typing import Dict, List, Any, Optional
 import numpy as np
 from collections import defaultdict
 from .base import BaseEvaluator, EvalResult
+import ast
 
 class NgramEvaluator(BaseEvaluator):
     """Evaluator for measuring ROUGE-L scores across responses with the same prompt."""
@@ -46,17 +47,32 @@ class NgramEvaluator(BaseEvaluator):
             return 0.0
         return 2 * precision * recall / (precision + recall)
     
-    def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, float]:
+    def compute_instance_metric(self, prompts: Any, responses: Any) -> List[Dict[str, float]]:
         """Compute ROUGE-L metrics for a single response."""
-        return {
-            "response": response,
-            "prompt": prompt,
-            "response_length": len(response.split())
-        }
+        if isinstance(responses, str):
+            responses = ast.literal_eval(responses)
+
+        list_of_responses = [
+            response.get('response', response)
+            for response in responses
+        ]
+        list_of_prompts = [
+            response.get('prompt', response)
+            for response in responses
+        ]
+
+        return [
+            {
+                "response": response,
+                "prompt": prompt,
+                "response_length": len(response.split())
+            } for response, prompt in zip(list_of_responses, list_of_prompts)
+        ]
     
-    def aggregate_metrics(self, instance_metrics: List[Dict[str, float]]) -> Dict[str, Any]:
+    def aggregate_metrics(self, instance_metrics: List[List[Dict[str, float]]]) -> Dict[str, Any]:
         """Compute ROUGE-L metrics across all responses."""
         if len(instance_metrics) <= 1:
+            instance_metrics = [metric for instance_list in instance_metrics for metric in instance_list if metric]
             return {
                 "average_rouge_l": 0.0,
                 "min_rouge_l": 0.0,
@@ -66,9 +82,12 @@ class NgramEvaluator(BaseEvaluator):
                 "pairwise_rouge_l_scores": []
             }
         
+        # Flatten the nested list structure
+        flattened_metrics = [metric for instance_list in instance_metrics for metric in instance_list if metric]
+        
         # Group responses by prompt
         prompt_groups = defaultdict(list)
-        for i, m in enumerate(instance_metrics):
+        for i, m in enumerate(flattened_metrics):
             prompt_groups[m["prompt"]].append((i, m["response"]))
         
         # Calculate metrics for each prompt group
@@ -92,7 +111,7 @@ class NgramEvaluator(BaseEvaluator):
                 "min_rouge_l": float(scores_array.min()),
                 "max_rouge_l": float(scores_array.max()),
                 "std_rouge_l": float(scores_array.std()),
-                "average_response_length": float(np.mean([m["response_length"] for m in instance_metrics])),
+                "average_response_length": float(np.mean([m["response_length"] for m in flattened_metrics])),
                 "pairwise_rouge_l_scores": pairwise_scores
             }
         else:
@@ -101,7 +120,7 @@ class NgramEvaluator(BaseEvaluator):
                 "min_rouge_l": 0.0,
                 "max_rouge_l": 0.0,
                 "std_rouge_l": 0.0,
-                "average_response_length": float(np.mean([m["response_length"] for m in instance_metrics])),
+                "average_response_length": float(np.mean([m["response_length"] for m in flattened_metrics])),
                 "pairwise_rouge_l_scores": []
             }
         

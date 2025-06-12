@@ -624,9 +624,12 @@ class ComparisonPlotter:
         instance_metrics = set()
         overall_metrics = first_result.overall_metrics
         
-        # Collect all possible instance metrics
+        # Collect all possible instance metrics - now handling list format
         for instance in first_result.instance_metrics:
-            instance_metrics.update(instance.keys())
+            if isinstance(instance, dict):
+                instance_metrics.update(instance.keys())
+            elif isinstance(instance, (int, float)):
+                instance_metrics.add('value')  # Add a generic metric name for numeric values
         
         # Create plots for numeric instance metrics
         for metric in instance_metrics:

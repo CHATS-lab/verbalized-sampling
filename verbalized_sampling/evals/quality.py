@@ -3,6 +3,7 @@ import json
 from .base import BaseEvaluator, EvalResult
 from verbalized_sampling.llms import get_model
 from pydantic import BaseModel
+import ast
 
 class FluencyCriteria(BaseModel):
     score: int
@@ -38,20 +39,35 @@ class TTCTEvaluator(BaseEvaluator):
         super().__init__("ttct", num_workers=num_workers)
         self.judge_model = get_model(judge_model, method="direct", config={}, strict_json=True)
     
-    def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, float]:
-        
-        evaluation_prompt = self._create_evaluation_prompt(prompt, response)
-        
-        # Get evaluation from judge model
-        messages = [{"role": "user", "content": evaluation_prompt}]
-        result = self.judge_model._chat(messages)
+    def compute_instance_metric(self, prompts: Any, responses: Any) -> List[Dict[str, float]]:
+        if isinstance(responses, str):
+            responses = ast.literal_eval(responses)
+            
+        list_of_responses = [
+            response.get('response', response)
+            for response in responses
+        ]
+        list_of_prompts = [
+            response.get('prompt', response)
+            for response in responses
+        ]
 
-        try:
-            result_in_schema = json.loads(result)
-            return result_in_schema
-        except json.JSONDecodeError:
-            print(f"Error: {result}")
-            return None
+        result_list = []
+        for prompt, response in zip(list_of_prompts, list_of_responses):
+            evaluation_prompt = self._create_evaluation_prompt(prompt, response)
+            
+            # Get evaluation from judge model
+            messages = [{"role": "user", "content": evaluation_prompt}]
+            result = self.judge_model._chat(messages)
+
+            try:
+                result_in_schema = json.loads(result)
+                result_list.append(result_in_schema)
+            except json.JSONDecodeError:
+                print(f"Error: {result}")
+                result_list.append(None)
+
+        return result_list
     
     def _create_evaluation_prompt(self, prompt: str, response: str) -> str:
         
@@ -147,10 +163,10 @@ REQUIRED JSON OUTPUT FORMAT:
 
 Be thorough, specific, and evidence-based in your analysis. Provide concrete examples from the responses to support your scores."""
 
-    def aggregate_metrics(self, instance_metrics: List[Dict[str, float]]) -> Dict[str, float]:
+    def aggregate_metrics(self, instance_metrics: List[List[Dict[str, float]]]) -> Dict[str, float]:
         """Aggregate instance-level metrics into overall metrics."""
         # Filter out any empty metrics
-        instance_metrics = [metric for metric in instance_metrics if metric]
+        instance_metrics = [metric for instance_list in instance_metrics for metric in instance_list if metric]
         
         if not instance_metrics:
             return {
