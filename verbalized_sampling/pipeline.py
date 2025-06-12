@@ -52,6 +52,7 @@ class PipelineConfig:
     skip_existing: bool = True
     rerun: bool = False
     create_backup: bool = False
+    title: Optional[str] = None
     
     def _should_backup(self) -> bool:
         """Determine if backup should be created."""
@@ -118,7 +119,7 @@ class Pipeline:
         
         # Step 3: Create plots
         console.print("\n[bold green]Step 3: Creating Comparison Plots[/bold green]")
-        plot_results = self.create_plots(evaluation_results)
+        plot_results = self.create_plots(evaluation_results, title=self.config.title)
         
         # Step 4: Generate summary report
         console.print("\n[bold green]Step 4: Generating Summary Report[/bold green]")
@@ -299,7 +300,7 @@ class Pipeline:
         
         return evaluation_results
     
-    def create_plots(self, evaluation_results: Dict[str, Dict[str, Path]]) -> Dict[str, Path]:
+    def create_plots(self, evaluation_results: Dict[str, Dict[str, Path]], title: Optional[str] = None) -> Dict[str, Path]:
         """Create comparison plots for each metric.
         
         Args:
@@ -347,7 +348,7 @@ class Pipeline:
         
         plot_dir = plots_base_dir / "comparison_chart"
         plot_dir.mkdir(parents=True, exist_ok=True)
-        plot_comparison_chart(metric_results, plot_dir)
+        plot_comparison_chart(metric_results, plot_dir, title=title)
 
         return plot_results
     
@@ -381,22 +382,38 @@ class Pipeline:
     
     def _generate_html_report(self, results: Dict[str, Dict[str, Any]], 
                             plot_results: Dict[str, Path]) -> str:
-        """Generate HTML report content."""
+        """Generate HTML report content with embedded plots."""
+        import base64
+        import io
+        
+        # Define metrics that should be excluded from the table due to their length
+        EXCLUDED_METRICS = {
+            'pairwise_diversities', 'pairwise_similarities', 'pairwise_rouge_l_scores',
+            'detailed_results', 'raw_responses', 'embeddings', 'similarity_matrix'
+        }
+        
         html = f"""
         <!DOCTYPE html>
         <html>
         <head>
             <title>Pipeline Results Report</title>
             <style>
-                body {{ font-family: Arial, sans-serif; margin: 40px; }}
-                .header {{ background: #f0f0f0; padding: 20px; border-radius: 8px; }}
+                body {{ font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }}
+                .header {{ background: #f0f0f0; padding: 20px; border-radius: 8px; margin-bottom: 30px; }}
                 .experiment {{ margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }}
                 .metric {{ margin: 10px 0; }}
-                .plots {{ margin: 20px 0; }}
-                table {{ border-collapse: collapse; width: 100%; }}
+                .plots {{ margin: 30px 0; }}
+                .plot-container {{ margin: 30px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background: #fafafa; }}
+                .plot-image {{ max-width: 100%; height: auto; display: block; margin: 20px auto; border: 1px solid #ccc; border-radius: 4px; }}
+                table {{ border-collapse: collapse; width: 100%; margin: 20px 0; }}
                 th, td {{ border: 1px solid #ddd; padding: 8px; text-align: left; }}
-                th {{ background-color: #f2f2f2; }}
+                th {{ background-color: #f2f2f2; font-weight: bold; }}
                 .number {{ text-align: right; }}
+                .excluded-note {{ font-style: italic; color: #666; margin-top: 10px; }}
+                h1 {{ color: #333; }}
+                h2 {{ color: #444; border-bottom: 2px solid #eee; padding-bottom: 10px; }}
+                h3 {{ color: #555; }}
+                .metric-section {{ margin-bottom: 40px; }}
             </style>
         </head>
         <body>
@@ -415,9 +432,10 @@ class Pipeline:
             html += f"<tr><td>{exp.name}</td><td>{exp.task.value}</td><td>{exp.method.value}</td><td>{exp.model_name}</td><td class='number'>{exp.num_responses}</td><td class='number'>{exp.temperature}</td></tr>"
         html += "</table>"
         
-        # Results summary
+        # Results summary with embedded plots
         html += "<h2>📊 Results Summary</h2>"
         for metric in self.config.evaluation.metrics:
+            html += f"<div class='metric-section'>"
             html += f"<h3>{metric.title()} Results</h3>"
             html += "<table><tr><th>Experiment</th>"
             
@@ -429,7 +447,10 @@ class Pipeline:
                     break
             
             if first_result:
-                metric_keys = list(first_result.overall_metrics.keys())
+                # Filter out excluded metrics (long arrays/lists)
+                metric_keys = [key for key in first_result.overall_metrics.keys() 
+                              if key not in EXCLUDED_METRICS]
+                
                 for key in metric_keys:
                     html += f"<th>{key.replace('_', ' ').title()}</th>"
                 html += "</tr>"
@@ -445,15 +466,67 @@ class Pipeline:
                             else:
                                 html += f"<td>{value}</td>"
                         html += "</tr>"
+                
+                # Add note about excluded metrics if any were filtered out
+                excluded_in_this_metric = [key for key in first_result.overall_metrics.keys() 
+                                         if key in EXCLUDED_METRICS]
+                if excluded_in_this_metric:
+                    html += f"<div class='excluded-note'>Note: Detailed arrays excluded from table: {', '.join(excluded_in_this_metric)}</div>"
+                    
             html += "</table>"
+            
+            # Embed plots for this metric
+            if metric in plot_results and plot_results[metric]:
+                html += self._embed_plots_for_metric(metric, plot_results[metric])
+            
+            html += "</div>"
         
-        # Plot links
-        html += "<h2>📈 Visualization Links</h2>"
-        for metric, plot_dir in plot_results.items():
-            if plot_dir:
-                html += f"<p><strong>{metric.title()}:</strong> <a href='{plot_dir.relative_to(self.config.output_base_dir)}'>{plot_dir.relative_to(self.config.output_base_dir)}</a></p>"
+        # Overall comparison chart
+        comparison_chart_dir = plot_results.get("comparison_chart")
+        if comparison_chart_dir:
+            html += "<h2>📈 Overall Comparison</h2>"
+            html += self._embed_plots_for_metric("comparison_chart", comparison_chart_dir)
         
         html += "</body></html>"
+        return html
+    
+    def _embed_plots_for_metric(self, metric_name: str, plot_dir: Path) -> str:
+        """Embed all plots for a given metric into HTML."""
+        import base64
+        
+        html = f"<div class='plot-container'>"
+        html += f"<h4>📈 {metric_name.replace('_', ' ').title()} Visualizations</h4>"
+        
+        # Find all PNG files in the plot directory
+        if plot_dir.exists():
+            png_files = list(plot_dir.glob("*.png"))
+            
+            if png_files:
+                for png_file in sorted(png_files):
+                    try:
+                        # Read and encode the image
+                        with open(png_file, "rb") as img_file:
+                            img_data = img_file.read()
+                            img_base64 = base64.b64encode(img_data).decode('utf-8')
+                        
+                        # Create a nice title from filename
+                        plot_title = png_file.stem.replace('_', ' ').title()
+                        
+                        html += f"<div style='margin: 20px 0;'>"
+                        html += f"<h5 style='text-align: center; color: #666; margin-bottom: 10px;'>{plot_title}</h5>"
+                        html += f"<img src='data:image/png;base64,{img_base64}' class='plot-image' alt='{plot_title}' />"
+                        html += f"</div>"
+                        
+                    except Exception as e:
+                        console.print(f"Warning: Could not embed plot {png_file}: {e}")
+                        # Fallback to link
+                        html += f"<p><a href='{png_file.relative_to(self.config.output_base_dir)}'>View {png_file.name}</a></p>"
+            else:
+                html += f"<p><em>No plots found in {plot_dir}</em></p>"
+        else:
+            html += f"<p><em>Plot directory not found: {plot_dir}</em></p>"
+        
+        html += "</div>"
         return html
 
 # CLI Integration

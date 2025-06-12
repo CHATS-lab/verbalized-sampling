@@ -78,8 +78,12 @@ class ResponseParser:
             return [maybe_rename_response(item) for item in response_list]
         else:
             # non-strict json
-            response = ResponseParser._extract_json(response)
-            return response['responses']
+            try:
+                response = ResponseParser._extract_json(response)
+                return response['responses']
+            except Exception as e:
+                # Fallback: treat as a single string
+                return [{'text': ""}]
     
     @staticmethod
     def parse_multi_turn(response: str) -> str:

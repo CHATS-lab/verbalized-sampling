@@ -473,7 +473,8 @@ class ComparisonPlotter:
         plt.xlabel('Metrics', fontsize=12, fontweight='bold')
         plt.ylabel('Score', fontsize=12, fontweight='bold')
         plt.xticks(x, [plot_title for _, plot_title in key_metric_names], fontsize=11)
-        
+        plt.ylim(0, 1)
+
         # Add legend
         plt.legend(loc='upper right', bbox_to_anchor=(0.98, 0.98),
                   frameon=True, fancybox=True, shadow=True,
@@ -501,8 +502,8 @@ class ComparisonPlotter:
                     value = np.mean(value) if value else 0.0
                 all_values.append(float(value) if value is not None else 0.0)
         
-        if all_values:
-            plt.ylim(0, max(all_values) * 1.1)
+        # if all_values:
+        #     plt.ylim(0, max(all_values) * 1.1)
         
         # Finalize plot
         plt.tight_layout()
@@ -544,6 +545,7 @@ def plot_evaluation_comparison(results: Dict[str, Union[EvalResult, str, Path]],
 
 def plot_comparison_chart(results: Dict[str, Union[EvalResult, str, Path]],
                           output_path: Union[str, Path],
+                          title: Optional[str] = None,
                           **kwargs) -> None:
     """Create a performance comparison chart."""
     plotter = ComparisonPlotter(**kwargs)
@@ -574,5 +576,6 @@ def plot_comparison_chart(results: Dict[str, Union[EvalResult, str, Path]],
     plotter.create_performance_comparison_chart(
             comparison_data, 
             key_metric_names,
-            output_path)
+            output_path,
+            title=title)
         
