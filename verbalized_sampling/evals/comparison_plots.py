@@ -94,19 +94,21 @@ class ComparisonPlotter:
         values = []
         
         # First, try to find in instance_metrics
-        for instance in data.result.instance_metrics:
-            value = instance
-            for key in metric_name.split('.'):
-                if isinstance(value, dict) and key in value:
-                    value = value[key]
-                else:
-                    value = None
-                    break
-            if value is not None:
-                if isinstance(value, (list, tuple)):
-                    values.extend([float(v) for v in value if v is not None])
-                else:
-                    values.append(float(value))
+        for instance_list in data.result.instance_metrics:
+            for instance in instance_list:
+                # print("instance: ", instance)
+                value = instance
+                for key in metric_name.split('.'):
+                    if isinstance(value, dict) and key in value:
+                        value = value[key]
+                    else:
+                        value = None
+                        break
+                if value is not None:
+                    if isinstance(value, (list, tuple)):
+                        values.extend([float(v) for v in value if v is not None])
+                    else:
+                        values.append(float(value))
         
         # If no values found in instance_metrics, try overall_metrics
         if not values:
@@ -449,13 +451,13 @@ class ComparisonPlotter:
             plot_type="violin"
         )
         
-        # Response length distribution (from instance_metrics)
-        self.compare_distributions(
-            comparison_data, "response_length",
-            output_dir / "response_length_distribution.png",
-            title="Response Length Distribution Comparison",
-            plot_type="histogram"
-        )
+        # # Response length distribution (from instance_metrics)
+        # self.compare_distributions(
+        #     comparison_data, "response_length",
+        #     output_dir / "response_length_distribution.png",
+        #     title="Response Length Distribution Comparison",
+        #     plot_type="histogram"
+        # )
         
         # Vocabulary richness distribution (from instance_metrics)
         self.compare_distributions(

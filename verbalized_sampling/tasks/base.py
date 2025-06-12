@@ -154,6 +154,9 @@ class BaseTask(ABC):
         results = self.model.chat(prompts, schema=get_schema(self.method))
         parsed_results = []
         current_batch = []
+
+        # print("Prompts: ", prompts)
+        # print("Results: ", results)
         
         for prompt, result in zip(prompts, results):
             prompt = prompt[-1]["content"]

@@ -4,8 +4,8 @@ from verbalized_sampling.prompts import Method
 from pathlib import Path
 import sys
 
-NUM_RESPONSES = 500
-NUM_SAMPLES = 40
+NUM_RESPONSES = 5
+NUM_SAMPLES = 5
 
 MODEL_PARAMS = {
     "temperature": 1,
@@ -43,7 +43,7 @@ results = run_quick_comparison(
 )
 
 
-# # Structure with probability
+# # Structure with probabilitys
 # results = run_quick_comparison(
 #     task=Task.STATE_NAME,
 #     methods=[Method.STRUCTURE_WITH_PROB], # Method.STRUCTURE, Method.STRUCTURE_WITH_PROB

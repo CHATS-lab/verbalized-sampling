@@ -11,7 +11,7 @@ class ResponseCountEvaluator(BaseEvaluator):
         super().__init__(name=name, num_workers=num_workers)
         self.counter = Counter()
     
-    def compute_instance_metric(self, prompt: str, responses: Any) -> List[Dict[str, float]]:
+    def compute_instance_metric(self, prompt: str, responses: Any) -> List[Dict[str, int]]:
         """Compute the count of responses."""
         if isinstance(responses, str):
             responses = ast.literal_eval(responses)
@@ -25,7 +25,7 @@ class ResponseCountEvaluator(BaseEvaluator):
         return [{"response_count": self.counter[text]} for text in list_of_responses]
     
 
-    def aggregate_metrics(self, instance_metrics: List[Dict[str, float]]) -> Dict[str, float]:
+    def aggregate_metrics(self, instance_metrics: List[List[Dict[str, int]]]) -> Dict[str, float]:
         """Aggregate metrics across all instances."""
         if not instance_metrics:
             return {}

@@ -187,6 +187,11 @@ class Pipeline:
                         "sample_size": exp_config.sample_size,
                         "random_seed": exp_config.random_seed
                     })
+
+                # The num_samples must be smaller than num_responses
+                if exp_config.num_samples > exp_config.num_responses:
+                    raise ValueError(f"Error: num_samples must be smaller than num_responses for {exp_config.name}")
+                
                 
                 num_samples = exp_config.num_samples if exp_config.method != Method.DIRECT else 1
                 num_responses = exp_config.num_responses // num_samples
@@ -198,7 +203,7 @@ class Pipeline:
                     num_samples=num_samples,
                     **task_kwargs
                 )
-                
+
                 # Run generation
                 gen_task = progress.add_task(
                     f"[cyan]{exp_config.name}[/cyan]", 
@@ -285,6 +290,8 @@ class Pipeline:
                             metric, 
                             num_workers=self.config.evaluation.num_workers
                         )
+                        # print("Prompts: ", prompts)
+                        # print("Responses: ", responses)
                         
                         result = evaluator.evaluate(
                             prompts or responses,  # Use responses as prompts if no prompts available
@@ -523,6 +530,8 @@ def run_quick_comparison(
     metrics: List[str],
     output_dir: Path,
     num_responses: int = 10,
+    num_samples: int = 1,
+    sample_size: int = 5,
     rerun: bool = False,
     create_backup: bool = False,
     **kwargs
@@ -537,6 +546,8 @@ def run_quick_comparison(
             method=method,
             model_name=model_name,
             num_responses=num_responses,
+            num_samples=num_samples,
+            sample_size=sample_size,
             **kwargs
         ))
     
