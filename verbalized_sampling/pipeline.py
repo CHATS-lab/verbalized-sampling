@@ -178,11 +178,9 @@ class Pipeline:
                     num_workers=self.config.num_workers,
                     strict_json=exp_config.strict_json
                 )
-                print("temperature: ", exp_config.temperature)
-                print("top_p: ", exp_config.top_p)
                 
                 task_kwargs = {}
-                if exp_config.task in [Task.POEM, Task.SPEECH, Task.STATE_NAME]:
+                if exp_config.task in [Task.POEM, Task.SPEECH, Task.STATE_NAME, Task.SIMPLE_QA]:
                     task_kwargs.update({
                         "sample_size": exp_config.sample_size,
                         "random_seed": exp_config.random_seed
@@ -537,6 +535,18 @@ def run_quick_comparison(
     **kwargs
 ) -> Dict[str, Any]:
     """Quick comparison between different methods for a single task."""
+    print("Running quick comparison with the following parameters:")
+    print(f"Task: {task}")
+    print(f"Methods: {methods}")
+    print(f"Model: {model_name}")
+    print(f"Metrics: {metrics}")
+    print(f"Output dir: {output_dir}")
+    print(f"Num responses: {num_responses}")
+    print(f"Num samples: {num_samples}")
+    print(f"Sample size: {sample_size}")
+    print(f"Rerun: {rerun}")
+    print(f"Create backup: {create_backup}")
+    print(f"**kwargs: {kwargs}")
     
     experiments = []
     for method in methods:

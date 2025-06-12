@@ -69,6 +69,9 @@ class BaseTask(ABC):
         #     else:
         #         return response
 
+        # print("Response: ", response)
+        # print("Type: ", type(response))
+
         if isinstance(response, (list, dict)):
             return response
             
@@ -140,11 +143,13 @@ class BaseTask(ABC):
         print("Task parameters:")
         print(f"  task_type: {self.task_type}")
         print(f"  method: {self.method}")
+        print(f"  model: {self.model}")
         print(f"  num_responses: {self.num_responses}")
+        print(f"  num_samples: {self.num_samples}")
         print(f"  sample_size: {self.sample_size}")
         print(f"  random_seed: {self.random_seed}")
         print(f"  max_turns: {self.max_turns}")
-        print(f"  model: {self.model}")
+        
         # Check if this is a multi-turn method
         if is_method_multi_turn(self.method):
             return self._run_multi_turn(progress, task_id)
@@ -160,7 +165,6 @@ class BaseTask(ABC):
         
         for prompt, result in zip(prompts, results):
             prompt = prompt[-1]["content"]
-            parsed = self.parse_response(result)
             # Old code by Simon
             # if parsed is not None:
             #     if isinstance(parsed, list):
