@@ -13,7 +13,7 @@ import shutil
 import datetime
 
 from verbalized_sampling.tasks import Task, get_task
-from verbalized_sampling.prompts import Method
+from verbalized_sampling.methods import Method
 from verbalized_sampling.llms import get_model
 from verbalized_sampling.evals import get_evaluator
 

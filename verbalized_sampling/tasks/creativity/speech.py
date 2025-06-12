@@ -2,8 +2,8 @@ from ..base import BaseTask
 from typing import Any, List, Dict
 import random
 import os
-from verbalized_sampling.prompts import Method
-from verbalized_sampling.prompts.factory import PromptFactory
+from verbalized_sampling.methods import Method
+from verbalized_sampling.methods.factory import PromptFactory
 
 class SpeechTask(BaseTask):
     """Task for generating speeches from starting sentence prompts."""

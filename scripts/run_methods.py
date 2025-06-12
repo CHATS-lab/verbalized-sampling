@@ -4,7 +4,7 @@ Script for testing specific method variations and configurations.
 
 from verbalized_sampling.pipeline import Pipeline, PipelineConfig, ExperimentConfig, EvaluationConfig
 from verbalized_sampling.tasks import Task
-from verbalized_sampling.prompts import Method
+from verbalized_sampling.methods import Method
 from pathlib import Path
 from typing import List, Dict, Any
 

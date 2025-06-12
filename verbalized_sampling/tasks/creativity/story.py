@@ -1,7 +1,7 @@
 from ..base import BaseTask
 from typing import Any, List, Dict
-from verbalized_sampling.prompts import Method
-from verbalized_sampling.prompts.factory import PromptFactory
+from verbalized_sampling.methods import Method
+from verbalized_sampling.methods.factory import PromptFactory
 
 class CreativeStoryTask(BaseTask):
     """Task for generating creative stories."""

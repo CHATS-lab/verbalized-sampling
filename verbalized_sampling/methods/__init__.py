@@ -3,7 +3,7 @@ Sampling method definitions for verbalized sampling experiments.
 """
 
 from .factory import PromptFactory, PromptTemplate, SamplingPromptTemplate, Method, is_method_structured, is_method_multi_turn
-from .parser import ResponseParser, parse_response_by_method
+from .parser import ResponseParser
 
 __all__ = [
     'PromptFactory', 
@@ -13,5 +13,4 @@ __all__ = [
     'is_method_structured',
     'is_method_multi_turn',
     'ResponseParser',
-    'parse_response_by_method'
 ]

@@ -5,20 +5,20 @@ from ..base import BaseTask
 from textwrap import dedent
 from typing import Any, List, Dict
 from rich.progress import Progress
-from verbalized_sampling.prompts import Method
-from verbalized_sampling.prompts.factory import PromptFactory
+from verbalized_sampling.methods import Method
+from verbalized_sampling.methods.factory import PromptFactory
 
 from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Any, Dict, List
 import json
 from rich.progress import Progress
-from verbalized_sampling.prompts import (
+from verbalized_sampling.methods import (
     PromptFactory, 
     Method
 )
 from verbalized_sampling.llms import BaseLLM
-from verbalized_sampling.prompts.schema import get_schema
+from verbalized_sampling.methods.schema import get_schema
 
 
 class StateNameTask(BaseTask):

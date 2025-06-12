@@ -10,7 +10,7 @@ This script demonstrates:
 """
 
 from verbalized_sampling.tasks import get_task, Task
-from verbalized_sampling.prompts import Method
+from verbalized_sampling.methods import Method
 
 def demo_book_task():
     """Demo the BookTask with different configurations."""

@@ -4,7 +4,7 @@ Unified experiment runner that can handle ablation studies, grid searches, and t
 
 from verbalized_sampling.pipeline import Pipeline, PipelineConfig, ExperimentConfig, EvaluationConfig
 from verbalized_sampling.tasks import Task
-from verbalized_sampling.prompts import Method
+from verbalized_sampling.methods import Method
 from pathlib import Path
 import itertools
 from typing import List, Dict, Any, Optional

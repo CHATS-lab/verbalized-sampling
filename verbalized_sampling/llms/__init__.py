@@ -2,7 +2,7 @@ from typing import Dict, Type
 from .base import BaseLLM
 from .vllm import VLLMOpenAI
 from .openrouter import OpenRouterLLM
-from verbalized_sampling.prompts import Method, is_method_structured
+from verbalized_sampling.methods import Method, is_method_structured
 from .embed import get_embedding_model
 
 __all__ = ["get_model", "get_embedding_model"]

@@ -4,7 +4,7 @@ Example script for running state name experiments.
 
 from verbalized_sampling.pipeline import run_quick_comparison
 from verbalized_sampling.tasks import Task
-from verbalized_sampling.prompts import Method
+from verbalized_sampling.methods import Method
 from pathlib import Path
 
 def run_state_name_example():

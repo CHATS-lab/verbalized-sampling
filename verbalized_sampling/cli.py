@@ -10,7 +10,7 @@ from typing import List, Optional
 
 from verbalized_sampling.pipeline import run_quick_comparison
 from verbalized_sampling.tasks import Task
-from verbalized_sampling.prompts import Method
+from verbalized_sampling.methods import Method
 
 app = typer.Typer(help="Run controlled experiments with LLMs using different sampling methods")
 console = Console()
