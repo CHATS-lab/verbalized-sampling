@@ -13,7 +13,7 @@ class BookTask(BaseTask):
         Initialize the BookTask.
         
         Args:
-            sample_size: Number of prompts to randomly sample from the dataset
+            num_prompts: Number of prompts to randomly sample from the dataset
             random_seed: Random seed for reproducible sampling
         """
         super().__init__(**kwargs)
@@ -23,7 +23,7 @@ class BookTask(BaseTask):
         return {
             "task_type": "book",
             "total_prompts": len(self._prompts) if self._prompts else 0,
-            "sample_size": self.sample_size,
+            "num_prompts": self.num_prompts,
             "random_seed": self.random_seed,
             "description": "Novel/book continuation task with prompts from literary works"
         } 

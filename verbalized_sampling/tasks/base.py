@@ -21,7 +21,7 @@ class BaseTask(ABC):
                  method: Method,
                  num_responses: int = 3,
                  num_samples: int = 5,
-                 sample_size: int = 5,
+                 num_prompts: int = 5,
                  random_seed: int = 42,
                  all_possible: bool = False,
                  strict_json: bool = False,
@@ -31,7 +31,7 @@ class BaseTask(ABC):
         self.method = method
         self.num_responses = num_responses
         self.num_samples = num_samples
-        self.sample_size = sample_size
+        self.num_prompts = num_prompts
         self.random_seed = random_seed
         self.all_possible = all_possible
         self.strict_json = strict_json
@@ -43,7 +43,7 @@ class BaseTask(ABC):
             self.task_type, 
             self.method, 
             num_samplings=self.num_samples,
-            sample_size=self.sample_size,
+            num_prompts=self.num_prompts,
             random_seed=self.random_seed,
             all_possible=self.all_possible,
             strict_json=self.strict_json
@@ -141,7 +141,7 @@ class BaseTask(ABC):
         print(f"  task_type: {self.task_type}")
         print(f"  method: {self.method}")
         print(f"  num_responses: {self.num_responses}")
-        print(f"  sample_size: {self.sample_size}")
+        print(f"  num_prompts: {self.num_prompts}")
         print(f"  random_seed: {self.random_seed}")
         print(f"  max_turns: {self.max_turns}")
         print(f"  model: {self.model}")

@@ -30,7 +30,7 @@ class ExperimentConfig:
     top_p: float = 0.9
     num_responses: int = 10
     num_samples: int = 1
-    sample_size: int = 5
+    num_prompts: int = 5
     random_seed: int = 42
     use_vllm: bool = False
     all_possible: bool = False # If True, the request would enable all possible responses
@@ -184,7 +184,7 @@ class Pipeline:
                 task_kwargs = {}
                 if exp_config.task in [Task.POEM, Task.SPEECH, Task.STATE_NAME]:
                     task_kwargs.update({
-                        "sample_size": exp_config.sample_size,
+                        "num_prompts": exp_config.num_prompts,
                         "random_seed": exp_config.random_seed
                     })
 
@@ -491,7 +491,7 @@ def run_pipeline_cli(
             top_p=exp_data.get('top_p', 0.9),
             num_responses=exp_data.get('num_responses', 10),
             num_samples=exp_data.get('num_samples', 1),
-            sample_size=exp_data.get('sample_size', 5),
+            num_prompts=exp_data.get('num_prompts', 5),
             random_seed=exp_data.get('random_seed', 42),
             use_vllm=exp_data.get('use_vllm', False)
         ))
@@ -531,7 +531,7 @@ def run_quick_comparison(
     output_dir: Path,
     num_responses: int = 10,
     num_samples: int = 1,
-    sample_size: int = 5,
+    num_prompts: int = 5,
     rerun: bool = False,
     create_backup: bool = False,
     **kwargs
@@ -547,7 +547,7 @@ def run_quick_comparison(
             model_name=model_name,
             num_responses=num_responses,
             num_samples=num_samples,
-            sample_size=sample_size,
+            num_prompts=num_prompts,
             **kwargs
         ))
     

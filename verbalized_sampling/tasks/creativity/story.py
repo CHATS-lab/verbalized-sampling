@@ -11,7 +11,7 @@ class CreativeStoryTask(BaseTask):
         self.metadata = {
             "task_type": "creative_story",
             "total_prompts": 0,
-            "sample_size": self.sample_size,
+            "num_prompts": self.num_prompts,
             "random_seed": self.random_seed,
             "description": "Creative story generation task with prompts from literary works"
         }

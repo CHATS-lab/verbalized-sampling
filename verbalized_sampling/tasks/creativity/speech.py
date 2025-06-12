@@ -13,7 +13,7 @@ class SpeechTask(BaseTask):
         Initialize the SpeechTask.
         
         Args:
-            sample_size: Number of prompts to randomly sample from the dataset
+            num_prompts: Number of prompts to randomly sample from the dataset
             random_seed: Random seed for reproducible sampling
         """
         super().__init__(**kwargs)
@@ -53,7 +53,7 @@ class SpeechTask(BaseTask):
         return {
             "task_type": "speech",
             "total_prompts": len(self._prompts) if self._prompts else 0,
-            "sample_size": self.sample_size,
+            "num_prompts": self.num_prompts,
             "random_seed": self.random_seed,
             "description": "Speech generation task with starting sentence prompts"
         } 

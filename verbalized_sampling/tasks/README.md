@@ -30,7 +30,7 @@ Generates novel/book continuations from literary prompts.
 
 ```python
 # Basic usage
-task = get_task(Task.BOOK, sample_size=10, random_seed=42)
+task = get_task(Task.BOOK, num_prompts=10, random_seed=42)
 prompt = task.get_prompt(Method.DIRECT, prompt_index=0)
 
 # With structured output
@@ -45,7 +45,7 @@ Generates poems from starting line prompts.
 
 ```python
 # Sample 5 prompts with specific seed for reproducibility
-task = get_task(Task.POEM, sample_size=5, random_seed=123)
+task = get_task(Task.POEM, num_prompts=5, random_seed=123)
 
 # Get different starting lines
 for i in range(len(task.get_prompts())):
@@ -60,7 +60,7 @@ Generates speeches from starting sentence prompts.
 
 ```python
 # Large sample for extensive experiments
-task = get_task(Task.SPEECH, sample_size=50, random_seed=456)
+task = get_task(Task.SPEECH, num_prompts=50, random_seed=456)
 prompt = task.get_prompt(Method.SEQUENCE, num_samples=3, prompt_index=10)
 ```
 
@@ -71,12 +71,12 @@ All new tasks support reproducible random sampling through the `random_seed` par
 
 ```python
 # Same results every time
-task1 = get_task(Task.BOOK, sample_size=5, random_seed=42)
-task2 = get_task(Task.BOOK, sample_size=5, random_seed=42)
+task1 = get_task(Task.BOOK, num_prompts=5, random_seed=42)
+task2 = get_task(Task.BOOK, num_prompts=5, random_seed=42)
 assert task1.get_prompts() == task2.get_prompts()  # True
 
 # Different results
-task3 = get_task(Task.BOOK, sample_size=5, random_seed=999)
+task3 = get_task(Task.BOOK, num_prompts=5, random_seed=999)
 assert task1.get_prompts() != task3.get_prompts()  # True
 ```
 
@@ -85,20 +85,20 @@ Control how many prompts to sample from each dataset:
 
 ```python
 # Sample 10 prompts randomly
-task = get_task(Task.POEM, sample_size=10, random_seed=42)
+task = get_task(Task.POEM, num_prompts=10, random_seed=42)
 
 # Load all available prompts
-task = get_task(Task.POEM, sample_size=0)  # or omit sample_size
+task = get_task(Task.POEM, num_prompts=0)  # or omit num_prompts
 
-# If sample_size > available prompts, loads all prompts
-task = get_task(Task.SPEECH, sample_size=10000)  # loads all 235 prompts
+# If num_prompts > available prompts, loads all prompts
+task = get_task(Task.SPEECH, num_prompts=10000)  # loads all 235 prompts
 ```
 
 ### Multiple Prompt Access
 Access individual prompts by index:
 
 ```python
-task = get_task(Task.BOOK, sample_size=5, random_seed=42)
+task = get_task(Task.BOOK, num_prompts=5, random_seed=42)
 
 # Iterate through all sampled prompts
 for i in range(len(task.get_prompts())):
@@ -110,14 +110,14 @@ for i in range(len(task.get_prompts())):
 Get information about the task and loaded data:
 
 ```python
-task = get_task(Task.POEM, sample_size=10, random_seed=42)
+task = get_task(Task.POEM, num_prompts=10, random_seed=42)
 metadata = task.get_metadata()
 
 print(metadata)
 # {
 #     "task_type": "poem",
 #     "total_prompts": 10,
-#     "sample_size": 10,
+#     "num_prompts": 10,
 #     "random_seed": 42,
 #     "description": "Poetry generation task with starting line prompts"
 # }
@@ -135,7 +135,7 @@ All tasks support the standard verbalized sampling methods:
 Example with different methods:
 
 ```python
-task = get_task(Task.SPEECH, sample_size=3, random_seed=42)
+task = get_task(Task.SPEECH, num_prompts=3, random_seed=42)
 
 # Direct usage
 direct_prompt = task.get_prompt(Method.DIRECT, prompt_index=0)
@@ -175,7 +175,7 @@ from verbalized_sampling.tasks import get_task, Task
 from verbalized_sampling.prompts import Method
 
 # Set up reproducible experiment
-task = get_task(Task.BOOK, sample_size=20, random_seed=42)
+task = get_task(Task.BOOK, num_prompts=20, random_seed=42)
 
 prompts = []
 for i in range(len(task.get_prompts())):
@@ -188,17 +188,17 @@ for i in range(len(task.get_prompts())):
 ### Comparative Analysis
 ```python
 # Compare different domains
-book_task = get_task(Task.BOOK, sample_size=10, random_seed=42)
-poem_task = get_task(Task.POEM, sample_size=10, random_seed=42)
-speech_task = get_task(Task.SPEECH, sample_size=10, random_seed=42)
+book_task = get_task(Task.BOOK, num_prompts=10, random_seed=42)
+poem_task = get_task(Task.POEM, num_prompts=10, random_seed=42)
+speech_task = get_task(Task.SPEECH, num_prompts=10, random_seed=42)
 
 # Generate responses for each domain and compare
 ```
 
 ### Batch Processing
 ```python
-def process_task(task_name, sample_size=50, random_seed=42):
-    task = get_task(task_name, sample_size=sample_size, random_seed=random_seed)
+def process_task(task_name, num_prompts=50, random_seed=42):
+    task = get_task(task_name, num_prompts=num_prompts, random_seed=random_seed)
     results = []
     
     for i in range(len(task.get_prompts())):
@@ -221,7 +221,7 @@ speech_results = process_task(Task.SPEECH)
 The tasks include proper error handling for common issues:
 
 ```python
-task = get_task(Task.BOOK, sample_size=5, random_seed=42)
+task = get_task(Task.BOOK, num_prompts=5, random_seed=42)
 
 # Handle index out of range
 try:
@@ -260,7 +260,7 @@ from verbalized_sampling.tasks import get_task, Task
 from verbalized_sampling.evals import get_evaluator
 
 # Generate responses
-task = get_task(Task.POEM, sample_size=20, random_seed=42)
+task = get_task(Task.POEM, num_prompts=20, random_seed=42)
 responses = []
 prompts = []
 
@@ -283,7 +283,7 @@ creativity_result = creativity_eval.evaluate(prompts, responses)
 ## Best Practices
 
 1. **Always set random_seed** for reproducible experiments
-2. **Use appropriate sample_size** based on your computational resources
+2. **Use appropriate num_prompts** based on your computational resources
 3. **Iterate through all prompts** when possible for comprehensive evaluation
 4. **Handle parsing errors** gracefully, especially for structured methods
 5. **Save task metadata** along with results for experiment tracking
@@ -308,8 +308,8 @@ from typing import Any, List
 from verbalized_sampling.prompts import Method
 
 class MyNewTask(BaseTask):
-    def __init__(self, sample_size: int = 1, random_seed: int = 42):
-        self.sample_size = sample_size
+    def __init__(self, num_prompts: int = 1, random_seed: int = 42):
+        self.num_prompts = num_prompts
         self.random_seed = random_seed
         # Load your data...
     

@@ -21,7 +21,7 @@ def create_method_experiments(
         'model_name': model_name,
         'num_responses': 50,
         'num_samples': 5,
-        'sample_size': 10,
+        'num_prompts': 10,
         'temperature': 0.7,
         'random_seed': 42,
     }

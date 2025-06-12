@@ -53,7 +53,7 @@ results = run_quick_comparison(
     output_dir=Path("results"),
     num_responses=50,
     num_samples=5,
-    sample_size=1,
+    num_prompts=1,
     strict_json=False,
     temperature=0.7,
     top_p=1.0,
@@ -234,7 +234,7 @@ The framework supports multiple task types with reproducible sampling:
 
 **Key Features:**
 - ✅ Reproducible sampling with `random_seed` parameter
-- ✅ Configurable `sample_size` for dataset subsampling
+- ✅ Configurable `num_prompts` for dataset subsampling
 - ✅ Multiple prompt access via `prompt_index`
 - ✅ Task metadata and statistics
 - ✅ Integration with all sampling methods
@@ -322,7 +322,7 @@ from verbalized_sampling.tasks import get_task, Task
 from verbalized_sampling.prompts import Method
 
 # Create reproducible task
-task = get_task(Task.BOOK, sample_size=10, random_seed=42)
+task = get_task(Task.BOOK, num_prompts=10, random_seed=42)
 
 # Generate with different methods
 direct_prompt = task.get_prompt(Method.DIRECT, prompt_index=0)

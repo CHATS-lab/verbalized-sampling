@@ -29,14 +29,14 @@ class StateNameTask(BaseTask):
         Initialize the StateNameTask.
         
         Args:
-            sample_size: Number of prompts to randomly sample from the dataset
+            num_prompts: Number of prompts to randomly sample from the dataset
             random_seed: Random seed for reproducible sampling
         """
         super().__init__(**kwargs)
         self.metadata = {
             "task_type": "state_name",
             "total_prompts": 0,
-            "sample_size": self.sample_size,
+            "num_prompts": self.num_prompts,
             "random_seed": self.random_seed,
             "description": "Generate a state name randomly."
         }

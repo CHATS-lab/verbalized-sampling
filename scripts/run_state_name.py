@@ -21,7 +21,7 @@ MODEL_PARAMS = {
 #     metrics=["response_count"], # diversity, ttct, creativity_index, length
 #     output_dir=Path("comparison_results/direct"),
 #     num_responses=NUM_RESPONSES,
-#     sample_size=1, # how many samples from the prompt dataset to generate
+#     num_prompts=1, # how many samples from the prompt dataset to generate
 #     strict_json=False,
 #     rerun=True,
 #     **MODEL_PARAMS
@@ -36,7 +36,7 @@ results = run_quick_comparison(
     output_dir=Path("comparison_results/sequence"),
     num_responses=NUM_RESPONSES,
     num_samples=NUM_SAMPLES, # how many times to sample from the model
-    sample_size=1, # how many samples from the prompt dataset to generate
+    num_prompts=1, # how many samples from the prompt dataset to generate
     strict_json=True,
     rerun=True,
     **MODEL_PARAMS
@@ -52,7 +52,7 @@ results = run_quick_comparison(
 #     output_dir=Path("comparison_results/sequence_with_prob"),
 #     num_responses=NUM_RESPONSES,
 #     num_samples=NUM_SAMPLES, # how many times to sample from the model
-#     sample_size=1, # how many samples from the prompt dataset to generate
+#     num_prompts=1, # how many samples from the prompt dataset to generate
 #     strict_json=True,
 #     rerun=True,
 #     **MODEL_PARAMS
