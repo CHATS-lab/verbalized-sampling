@@ -286,7 +286,7 @@ class Pipeline:
                         # Get evaluator and run evaluation
                         evaluator = get_evaluator(
                             metric, 
-                            num_workers=self.config.evaluation.num_workers
+                            num_workers=self.config.evaluation.num_workers,
                         )
                         # print("Prompts: ", prompts)
                         # print("Responses: ", responses)

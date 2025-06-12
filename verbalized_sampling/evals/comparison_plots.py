@@ -386,6 +386,8 @@ class ComparisonPlotter:
                 evaluator_type = "ngram"
             elif "response_distribution" in first_result.overall_metrics:
                 evaluator_type = "response_count"
+            elif "accuracy_given_attempted" in first_result.overall_metrics:
+                evaluator_type = "factuality"
             else:
                 evaluator_type = "generic"
         
@@ -404,6 +406,8 @@ class ComparisonPlotter:
             self._create_ngram_plots(comparison_data, output_dir)
         elif evaluator_type == "response_count":
             self._create_response_count_plots(comparison_data, output_dir)
+        elif evaluator_type == "factuality":
+            self._create_factuality_plots(comparison_data, output_dir)
         else:
             self._create_generic_plots(comparison_data, output_dir)
     
@@ -552,68 +556,95 @@ class ComparisonPlotter:
 
     def _create_response_count_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
         """Create response count-specific plots."""
+        # Extract and sort data
         response_counter = comparison_data[0].result.overall_metrics["response_distribution"]
-        
-        # Sort values and labels by count in descending order
         sorted_items = sorted(response_counter.items(), key=lambda x: x[1], reverse=True)
-        values = [item[1] for item in sorted_items]
-        labels = [item[0] for item in sorted_items]
+        values, labels = zip(*sorted_items)
         
-        # Create histogram plot
+        # Create plot
         plt.figure(figsize=self.figsize)
+        ax = sns.barplot(data=pd.DataFrame({'Response Type': labels, 'Count': values}),
+                        x='Response Type', y='Count', palette=[self.colors[0]], alpha=0.7)
         
-        # Create histogram using seaborn
-        df = pd.DataFrame({
-            'Response Type': labels,
-            'Count': values
-        })
-        
-        # Create histogram using seaborn
-        ax = sns.barplot(
-            data=df,
-            x='Response Type',
-            y='Count',
-            palette=[self.colors[0]],  # Use palette instead of color for consistent coloring
-            alpha=0.7,
-            legend=False
-        )
-        
-        # Add labels and title
-        plt.xticks(rotation=45)  # Rotate labels for better readability
+        # Style plot
+        plt.xticks(rotation=45)
         plt.xlabel('Name of the State')
         plt.ylabel('Count')
         plt.title('State Name Distribution')
         plt.ylim(0, 500)
-
         
-        # Add value labels on top of bars
+        # Add value labels
         for i, v in enumerate(values):
             ax.text(i, v, f'{int(v)}', ha='center', va='bottom')
-        
         plt.tight_layout()
-
+        
+        # Chi-square test
         total_trials = sum(values)
-        num_states_appearing = len(values)
-        values = values + [0] * (50 - num_states_appearing)
-
-        # Generate expected frequencies with the same total number of trials
+        values_extended = list(values) + [0] * (50 - len(values))
         expected_frequencies = self._generate_uniform_state_sample(n_trials=total_trials, n_states=50, seed=42)
-        print(values)
-        print(expected_frequencies)
+        chi2_stat, _ = chisquare(f_obs=values_extended, f_exp=expected_frequencies)
         
-        # Perform chi-square goodness-of-fit test
-        chi2_stat, p_value = chisquare(f_obs=values, f_exp=expected_frequencies)
-        
-        # Add results to plot
-        plt.text(0.98, 0.98, f'Chi-square: {chi2_stat:.2f}', 
-                transform=plt.gca().transAxes, 
-                verticalalignment='top',
-                horizontalalignment='right',
-                bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
-
+        # Add test result and save
+        plt.text(0.98, 0.98, f'Chi-square: {chi2_stat:.2f}', transform=plt.gca().transAxes,
+                va='top', ha='right', bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
         plt.savefig(output_dir / "response_count_distribution.png", dpi=300, bbox_inches='tight',
-                    facecolor='white', edgecolor='none')
+                   facecolor='white', edgecolor='none')
         plt.close()
+
+
+    def _create_factuality_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
+        """Create factuality-specific plots as horizontal stacked bar chart with percentages."""
+        # Create DataFrame from metrics
+        df = pd.DataFrame([{
+            'Method': 'GPT-4.1 (Structure w Prob)',
+            'Correct': comp.result.overall_metrics['num_is_correct'],
+            'Incorrect': comp.result.overall_metrics['num_is_incorrect'],
+            'Not attempted': comp.result.overall_metrics['num_is_not_attempted'],
+            'Total': comp.result.overall_metrics['num_responses'],
+        } for comp in comparison_data])
+
+        # Setup plot data
+        categories = ['Correct', 'Not attempted', 'Incorrect']
+        colors = ['#6C8CFF', '#23233B', '#E6E6E6']
+        for cat in categories:
+            df[cat + ' %'] = df[cat] / df['Total']
+
+        # Create plot
+        fig, ax = plt.subplots(figsize=(9, 4 + 0.5 * len(df)))
+        left = np.zeros(len(df))
+        bar_handles = []
+        
+        # Plot bars
+        for idx, cat in enumerate(categories):
+            bar = ax.barh(df['Method'], df[cat + ' %'], left=left, color=colors[idx], 
+                         label=cat, height=0.5, edgecolor='none')
+            bar_handles.append(bar)
+            left += df[cat + ' %']
+
+        # # Add labels and style
+        # for i, (method, correct_pct) in enumerate(zip(df['Method'], df['Correct %'])):
+        #     if correct_pct > 0:
+        #         ax.text(correct_pct/2, i, f"{method} Correct  {correct_pct*100:.1f}%",
+        #                va='center', ha='left', color='black', fontsize=10, fontweight='bold',
+        #                bbox=dict(facecolor='white', edgecolor='none', alpha=0.7, boxstyle='round,pad=0.2'))
+
+        # Style plot
+        ax.set_xlim(0, 1)
+        ax.set_xticks(np.linspace(0, 1, 5))
+        ax.set_xticklabels([f"{int(x*100)}%" for x in np.linspace(0, 1, 5)])
+        ax.set_yticklabels(df['Method'], fontsize=11)
+        for spine in ax.spines.values():
+            spine.set_visible(False)
+        ax.tick_params(axis='both', length=0)
+        
+        # Add legend
+        ax.legend(bar_handles, categories, loc='upper left', bbox_to_anchor=(0, 1.08),
+                 ncol=len(categories), frameon=False, fontsize=10)
+
+        plt.tight_layout()
+        plt.savefig(output_dir / "factuality_distribution.png", dpi=300, bbox_inches='tight', facecolor='white')
+        plt.close()
+
 
         
     def _create_generic_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
