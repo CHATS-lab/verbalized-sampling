@@ -53,7 +53,8 @@ class OpenRouterLLM(BaseLLM):
 
     def _chat_with_format(self, messages: List[Dict[str, str]], schema: BaseModel) -> List[Dict[str, Any]]:
         """Chat with structured response format."""
-        # schema_json = schema.model_json_schema()
+        if isinstance(schema, BaseModel):
+            schema = schema.model_json_schema()
         
         completion = self.client.chat.completions.create(
             model=self.model_name,

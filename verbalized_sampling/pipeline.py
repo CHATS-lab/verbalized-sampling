@@ -349,6 +349,7 @@ class Pipeline:
         plot_dir = plots_base_dir / "comparison_chart"
         plot_dir.mkdir(parents=True, exist_ok=True)
         plot_comparison_chart(metric_results, plot_dir, title=title)
+        plot_results["comparison_chart"] = plot_dir
 
         return plot_results
     
@@ -372,19 +373,66 @@ class Pipeline:
                     except Exception as e:
                         console.print(f"Warning: Could not load {result_file}: {e}")
         
+        # Load sample generations for each experiment
+        sample_generations = self._load_sample_generations()
+        
         # Generate HTML report
-        html_content = self._generate_html_report(loaded_results, plot_results)
+        html_content = self._generate_html_report(loaded_results, plot_results, sample_generations)
         
         with open(report_path, 'w') as f:
             f.write(html_content)
         
         return report_path
     
+    def _load_sample_generations(self, num_samples: int = 3) -> Dict[str, List[Dict[str, Any]]]:
+        """Load sample generations for each experiment to include in the report."""
+        sample_generations = {}
+        
+        for exp_config in self.config.experiments:
+            exp_name = exp_config.name
+            responses_file = self.config.output_base_dir / "generation" / exp_name / "responses.jsonl"
+            
+            if not responses_file.exists():
+                console.print(f"Warning: No responses file found for {exp_name}")
+                sample_generations[exp_name] = []
+                continue
+            
+            try:
+                samples = []
+                with open(responses_file, 'r') as f:
+                    lines = list(f)
+                    
+                    # Take samples from different prompts if possible
+                    sample_lines = lines[:num_samples] if len(lines) >= num_samples else lines
+                    
+                    for line in sample_lines:
+                        data = json.loads(line)
+                        prompt = data["prompt"]
+                        responses_list = data["responses"]
+                        
+                        # Take the first response for each sampled prompt
+                        if responses_list:
+                            sample_response = responses_list[0]
+                            samples.append({
+                                "prompt": prompt,
+                                "response": sample_response,
+                                "method": exp_config.method.value,
+                                "task": exp_config.task.value
+                            })
+                
+                sample_generations[exp_name] = samples
+                
+            except Exception as e:
+                console.print(f"Warning: Could not load samples for {exp_name}: {e}")
+                sample_generations[exp_name] = []
+        
+        return sample_generations
+    
     def _generate_html_report(self, results: Dict[str, Dict[str, Any]], 
-                            plot_results: Dict[str, Path]) -> str:
-        """Generate HTML report content with embedded plots."""
+                            plot_results: Dict[str, Path],
+                            sample_generations: Dict[str, List[Dict[str, Any]]]) -> str:
+        """Generate HTML report content with embedded plots and sample generations."""
         import base64
-        import io
         
         # Define metrics that should be excluded from the table due to their length
         EXCLUDED_METRICS = {
@@ -405,6 +453,13 @@ class Pipeline:
                 .plots {{ margin: 30px 0; }}
                 .plot-container {{ margin: 30px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background: #fafafa; }}
                 .plot-image {{ max-width: 100%; height: auto; display: block; margin: 20px auto; border: 1px solid #ccc; border-radius: 4px; }}
+                .generation-examples {{ margin: 30px 0; }}
+                .example-container {{ margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background: #f9f9f9; }}
+                .example-prompt {{ background: #e3f2fd; padding: 15px; border-radius: 5px; margin-bottom: 15px; border-left: 4px solid #2196f3; }}
+                .example-response {{ background: #f3e5f5; padding: 15px; border-radius: 5px; border-left: 4px solid #9c27b0; }}
+                .example-meta {{ font-size: 0.9em; color: #666; margin-bottom: 10px; }}
+                .prompt-label {{ font-weight: bold; color: #1976d2; margin-bottom: 8px; }}
+                .response-label {{ font-weight: bold; color: #7b1fa2; margin-bottom: 8px; }}
                 table {{ border-collapse: collapse; width: 100%; margin: 20px 0; }}
                 th, td {{ border: 1px solid #ddd; padding: 8px; text-align: left; }}
                 th {{ background-color: #f2f2f2; font-weight: bold; }}
@@ -413,7 +468,12 @@ class Pipeline:
                 h1 {{ color: #333; }}
                 h2 {{ color: #444; border-bottom: 2px solid #eee; padding-bottom: 10px; }}
                 h3 {{ color: #555; }}
+                h4 {{ color: #666; }}
                 .metric-section {{ margin-bottom: 40px; }}
+                .generation-section {{ margin-bottom: 40px; }}
+                .method-tag {{ display: inline-block; background: #e0e0e0; padding: 3px 8px; border-radius: 3px; font-size: 0.8em; margin-right: 10px; }}
+                .task-tag {{ display: inline-block; background: #c8e6c9; padding: 3px 8px; border-radius: 3px; font-size: 0.8em; }}
+                pre {{ white-space: pre-wrap; word-wrap: break-word; }}
             </style>
         </head>
         <body>
@@ -431,6 +491,42 @@ class Pipeline:
         for exp in self.config.experiments:
             html += f"<tr><td>{exp.name}</td><td>{exp.task.value}</td><td>{exp.method.value}</td><td>{exp.model_name}</td><td class='number'>{exp.num_responses}</td><td class='number'>{exp.temperature}</td></tr>"
         html += "</table>"
+        
+        # Generation Examples Section
+        html += "<h2>📝 Generation Examples</h2>"
+        html += "<div class='generation-examples'>"
+        
+        for exp_name, samples in sample_generations.items():
+            if samples:
+                html += f"<div class='generation-section'>"
+                html += f"<h3>{exp_name}</h3>"
+                
+                for i, sample in enumerate(samples, 1):
+                    html += f"<div class='example-container'>"
+                    html += f"<div class='example-meta'>"
+                    html += f"<span class='method-tag'>Method: {sample['method']}</span>"
+                    html += f"<span class='task-tag'>Task: {sample['task']}</span>"
+                    html += f"</div>"
+                    
+                    html += f"<div class='example-prompt'>"
+                    html += f"<div class='prompt-label'>Prompt:</div>"
+                    html += f"<pre>{self._escape_html(sample['prompt'])}</pre>"
+                    html += f"</div>"
+                    
+                    html += f"<div class='example-response'>"
+                    html += f"<div class='response-label'>Response:</div>"
+                    html += f"<pre>{self._escape_html(self._format_response(sample['response']))}</pre>"
+                    html += f"</div>"
+                    html += f"</div>"
+                
+                html += f"</div>"
+            else:
+                html += f"<div class='generation-section'>"
+                html += f"<h3>{exp_name}</h3>"
+                html += f"<p><em>No generation examples available</em></p>"
+                html += f"</div>"
+        
+        html += "</div>"
         
         # Results summary with embedded plots
         html += "<h2>📊 Results Summary</h2>"
@@ -489,6 +585,27 @@ class Pipeline:
         
         html += "</body></html>"
         return html
+    
+    def _format_response(self, response: Any) -> str:
+        """Format a response for display in HTML."""
+        if isinstance(response, dict):
+            # If it's a structured response, try to extract the main content
+            if 'response' in response:
+                return str(response['response'])
+            elif 'text' in response:
+                return str(response['text'])
+            elif 'content' in response:
+                return str(response['content'])
+            else:
+                # Format as JSON for structured responses
+                return json.dumps(response, indent=2, ensure_ascii=False)
+        else:
+            return str(response)
+    
+    def _escape_html(self, text: str) -> str:
+        """Escape HTML special characters."""
+        import html
+        return html.escape(text)
     
     def _embed_plots_for_metric(self, metric_name: str, plot_dir: Path) -> str:
         """Embed all plots for a given metric into HTML."""

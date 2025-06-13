@@ -101,8 +101,10 @@ class BaseTask(ABC):
                 initial_prompt_content = initial_prompt[-1]["content"]
                 response_data = {
                     "prompt": initial_prompt_content,
-                    "text": result,
-                    "turn": turn + 1,
+                    "responses": [{
+                        "text": result,
+                        "turn": turn + 1,
+                    }]
                 }
                 turn_responses.append(response_data)
                 chat_history.append({"role": "assistant", "content": str(result)})
