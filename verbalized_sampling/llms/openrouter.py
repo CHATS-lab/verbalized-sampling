@@ -31,6 +31,7 @@ class OpenRouterLLM(BaseLLM):
         self.client = OpenAI(
             base_url="https://openrouter.ai/api/v1",
             api_key=os.environ.get("OPENROUTER_API_KEY"),
+            # api_key=os.environ.get("OPENAI_API_KEY"),
         )
 
     def _chat(self, messages: List[Dict[str, str]]) -> str:
@@ -52,7 +53,8 @@ class OpenRouterLLM(BaseLLM):
 
     def _chat_with_format(self, messages: List[Dict[str, str]], schema: BaseModel) -> List[Dict[str, Any]]:
         """Chat with structured response format."""
-        # schema_json = schema.model_json_schema()
+        if isinstance(schema, BaseModel):
+            schema = schema.model_json_schema()
         
         completion = self.client.chat.completions.create(
             model=self.model_name,

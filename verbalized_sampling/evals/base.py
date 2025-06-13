@@ -6,6 +6,7 @@ from concurrent.futures import ThreadPoolExecutor
 import json
 import numpy as np
 from tqdm import tqdm
+from abc import ABC
 
 class EvalResultEncoder(json.JSONEncoder):
     """Custom JSON encoder for EvalResult."""
@@ -44,9 +45,68 @@ class EvalResult:
     def from_json(cls, json_str: str) -> 'EvalResult':
         """Create an EvalResult from a JSON string."""
         return cls.from_dict(json.loads(json_str))
+    
+    @classmethod
+    def merge(cls, results: List['EvalResult']) -> 'EvalResult':
+        """
+        Merge multiple EvalResult objects into a single result.
+        
+        Args:
+            results: List of EvalResult objects to merge
+            
+        Returns:
+            A new EvalResult containing the merged data
+            
+        Note:
+            - Instance metrics are concatenated
+            - Overall metrics are recalculated based on the combined instance metrics
+            - Metadata is merged, with later results taking precedence for overlapping keys
+        """
+        if not results:
+            raise ValueError("No results provided to merge")
+            
+        # Merge instance metrics by concatenation
+        merged_instance_metrics = []
+        for result in results:
+            merged_instance_metrics.extend(result.instance_metrics)
+            
+        # Merge metadata, with later results taking precedence
+        merged_metadata = {}
+        for result in results:
+            merged_metadata.update(result.metadata)
+            
+        # Recalculate overall metrics based on combined instance metrics
+        # This is a simplified version - you might want to customize this based on your needs
+        merged_overall_metrics = {}
+        
+        for result in results:
+            merged_overall_metrics.update(result.overall_metrics)
+        
+        return cls(
+            instance_metrics=merged_instance_metrics,
+            overall_metrics=merged_overall_metrics,
+            metadata=merged_metadata
+        )
+    
+    def __add__(self, other: 'EvalResult') -> 'EvalResult':
+        """
+        Allow merging two EvalResult objects using the + operator.
+        
+        Args:
+            other: Another EvalResult object to merge with
+            
+        Returns:
+            A new EvalResult containing the merged data
+        """
+        return self.merge([self, other])
 
 class BaseEvaluator(ABC):
     """Base class for all evaluators."""
+    
+    # Define class variables for plot metrics
+    instance_plot_metrics: List[tuple[str, str]] = []  # List of (metric_name, plot_type) tuples
+    aggregate_plot_metrics: List[str] = []  # List of metric names for aggregate plots
+    key_plot_metrics: List[tuple[str, str]] = []  # List of (metric_name, plot_title) tuples for key plots
     
     def __init__(self, name: str, num_workers: int = 128):
         self.name = name
@@ -62,8 +122,16 @@ class BaseEvaluator(ABC):
         """Aggregate instance-level metrics into overall metrics."""
         pass
 
-    def evaluate(self, prompts: List[str], responses: List[str], metadata: Optional[Dict[str, Any]] = None) -> EvalResult:
-        """Evaluate a list of prompts and responses."""
+    def evaluate(self, prompts: List[str], responses: List[Dict], metadata: Optional[Dict[str, Any]] = None) -> EvalResult:
+        """Evaluate a list of prompts and responses.
+        
+        Args:
+            prompts: List of prompts
+            responses: List of responses, [{'text': 'response', 'index': 0, 'probability'(optional): 0.5}]
+            metadata: Additional metadata about the evaluation
+            
+        Returns:
+        """
         with ThreadPoolExecutor(max_workers=self.num_workers) as executor:
             instance_metrics = list(tqdm(
                 executor.map(

@@ -11,6 +11,14 @@ from verbalized_sampling.llms import get_model
 SCORE_RANGE_MIN = 0
 SCORE_RANGE_MAX = 20
 
+def normalize_score(score: float, min_val: float = SCORE_RANGE_MIN, max_val: float = SCORE_RANGE_MAX) -> float:
+    """Normalize score from 0-20 range to 0-1 range."""
+    # First clamp the score to be within the original range
+    clamped_score = max(min_val, min(max_val, score))
+    # Then map from 0-20 to 0-1
+    normalized_score = clamped_score / max_val
+    return normalized_score
+
 def parse_judge_scores_creative(judge_model_response: str) -> Dict[str, float]:
     """Parse judge scores from the model response."""
     scores = {}
@@ -48,10 +56,9 @@ def parse_judge_scores_creative(judge_model_response: str) -> Dict[str, float]:
             
             try:
                 score = float(match[1])
-                # Add check to ensure score <= 20
-                if score <= SCORE_RANGE_MAX:
-                    scores[normalized_name] = score
-                # If score > 20, it's discarded/ignored
+                # Normalize score to be within 0-20 range
+                normalized_score = normalize_score(score)
+                scores[normalized_name] = normalized_score
             except ValueError:
                 # Skip if score cannot be converted to float
                 continue
@@ -74,18 +81,36 @@ def normalize_metric_name(metric_name: str) -> str:
 
 class CreativeWritingV3Evaluator(BaseEvaluator):
     """Evaluator for creative writing using expert judge scoring on 10 key metrics."""
+    instance_plot_metrics = [
+        ("imagery_and_descriptive_quality", "violin"),
+        ("nuanced_characters", "violin"),
+        ("emotionally_complex", "violin"),
+        ("elegant_prose", "violin"),
+        ("well_earned_lightness_or_darkness", "violin"),
+        ("emotionally_engaging", "violin"),
+        ("consistent_voicetone_of_writing", "violin"),
+        ("sentences_flow_naturally", "violin"),
+        ("overall_reader_engagement", "violin"),
+        ("Average_Score", "violin")
+    ]
+    aggregate_plot_metrics = [
+        "Average_Score",
+    ]
+    key_plot_metrics = [
+        ("Average_Score", "Quality (LLM-as-Judge)"),
+    ]
     
     def __init__(self, judge_model: str = "anthropic/claude-sonnet-4", num_workers: int = 64):
         super().__init__("creative_writing_v3", num_workers=num_workers)
         self.judge_model = get_model(judge_model, method="direct", config={})
         
-    def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, float]:
+    def compute_instance_metric(self, prompt: str, response: Dict) -> Dict[str, float]:
         """Compute creative writing metrics for a single prompt-response pair."""
         
         # Create evaluation prompt using the rubric
         evaluation_prompt = JUDGE_RUBRIC.format(
             writing_prompt=prompt,
-            response=response
+            response=response['text']
         )
         
         # Get evaluation from judge model
@@ -95,8 +120,12 @@ class CreativeWritingV3Evaluator(BaseEvaluator):
         # Parse scores from judge response
         scores = parse_judge_scores_creative(judge_response)
         
-        # Add the raw judge response for debugging if needed
-        scores["Average_Score"] = sum(scores.values()) / len(scores)
+        # Calculate and normalize average score
+        if scores:
+            avg_score = sum(scores.values()) / len(scores)
+            scores["Average_Score"] = avg_score
+        else:
+            scores["Average_Score"] = 0.0
         
         return scores
     
@@ -124,10 +153,13 @@ class CreativeWritingV3Evaluator(BaseEvaluator):
         for metric_name in all_metric_names:
             values = [metric.get(metric_name, 0.0) for metric in filtered_metrics if metric_name in metric]
             if values:
-                aggregated[f"avg_{metric_name.lower().replace(' ', '_')}"] = sum(values) / len(values)
+                avg_value = sum(values) / len(values)
+                # Normalize the aggregated average
+                aggregated[f"avg_{metric_name.lower().replace(' ', '_')}"] = avg_value
 
         if aggregated:  # Only calculate average if there are aggregated metrics
-            aggregated["Average_Score"] = sum(aggregated.values()) / len(aggregated)
+            overall_avg = sum(aggregated.values()) / len(aggregated)
+            aggregated["Average_Score"] = overall_avg
         else:
             aggregated["Average_Score"] = 0.0
         return aggregated

@@ -3,14 +3,14 @@
 Demo script for the new tasks (book, poem, speech) in the verbalized sampling framework.
 
 This script demonstrates:
-1. How to use sample_size and random_seed for reproducible sampling
+1. How to use num_prompts and random_seed for reproducible sampling
 2. How to iterate through multiple prompts from datasets
 3. How to use different methods (DIRECT, SEQUENCE, STRUCTURE, etc.)
 4. How to access task metadata
 """
 
 from verbalized_sampling.tasks import get_task, Task
-from verbalized_sampling.prompts import Method
+from verbalized_sampling.methods import Method
 
 def demo_book_task():
     """Demo the BookTask with different configurations."""
@@ -19,7 +19,7 @@ def demo_book_task():
     print("=" * 60)
     
     # Create task with specific sample size and seed
-    book_task = get_task(Task.BOOK, sample_size=3, random_seed=42)
+    book_task = get_task(Task.BOOK, num_prompts=3, random_seed=42)
     
     print(f"Task metadata: {book_task.get_metadata()}")
     print(f"Total prompts loaded: {len(book_task.get_prompts())}")
@@ -51,7 +51,7 @@ def demo_poem_task():
     print("=" * 60)
     
     # Create task with different sample size and seed
-    poem_task = get_task(Task.POEM, sample_size=5, random_seed=123)
+    poem_task = get_task(Task.POEM, num_prompts=5, random_seed=123)
     
     print(f"Task metadata: {poem_task.get_metadata()}")
     print(f"Total prompts loaded: {len(poem_task.get_prompts())}")
@@ -85,7 +85,7 @@ def demo_speech_task():
     print("=" * 60)
     
     # Create task with larger sample size
-    speech_task = get_task(Task.SPEECH, sample_size=7, random_seed=456)
+    speech_task = get_task(Task.SPEECH, num_prompts=7, random_seed=456)
     
     print(f"Task metadata: {speech_task.get_metadata()}")
     print(f"Total prompts loaded: {len(speech_task.get_prompts())}")
@@ -115,8 +115,8 @@ def demo_reproducibility():
     print("Creating two BookTasks with the same random seed:")
     
     # Create two tasks with same seed
-    task1 = get_task(Task.BOOK, sample_size=3, random_seed=999)
-    task2 = get_task(Task.BOOK, sample_size=3, random_seed=999)
+    task1 = get_task(Task.BOOK, num_prompts=3, random_seed=999)
+    task2 = get_task(Task.BOOK, num_prompts=3, random_seed=999)
     
     prompts1 = task1.get_prompts()
     prompts2 = task2.get_prompts()
@@ -127,8 +127,8 @@ def demo_reproducibility():
     print()
     
     print("Creating two BookTasks with different random seeds:")
-    task3 = get_task(Task.BOOK, sample_size=3, random_seed=111)
-    task4 = get_task(Task.BOOK, sample_size=3, random_seed=222)
+    task3 = get_task(Task.BOOK, num_prompts=3, random_seed=111)
+    task4 = get_task(Task.BOOK, num_prompts=3, random_seed=222)
     
     prompts3 = task3.get_prompts()
     prompts4 = task4.get_prompts()
@@ -144,7 +144,7 @@ def demo_error_handling():
     print("ERROR HANDLING DEMO")
     print("=" * 60)
     
-    book_task = get_task(Task.BOOK, sample_size=2, random_seed=42)
+    book_task = get_task(Task.BOOK, num_prompts=2, random_seed=42)
     
     # Test index out of range
     try:
@@ -153,8 +153,8 @@ def demo_error_handling():
         print(f"Expected error for out-of-range index: {e}")
     
     # Test sample size larger than available prompts
-    print("\nTesting with sample_size larger than available prompts:")
-    large_task = get_task(Task.POEM, sample_size=10000, random_seed=42)
+    print("\nTesting with num_prompts larger than available prompts:")
+    large_task = get_task(Task.POEM, num_prompts=10000, random_seed=42)
     print(f"Requested 10000 prompts, got: {len(large_task.get_prompts())}")
     
     print()
@@ -173,7 +173,7 @@ def demo_data_statistics():
     
     for task_name, description in tasks:
         # Load all prompts to get total count
-        task = get_task(task_name, sample_size=0)  # sample_size=0 loads all
+        task = get_task(task_name, num_prompts=0)  # num_prompts=0 loads all
         metadata = task.get_metadata()
         prompts = task.get_prompts()
         
@@ -222,7 +222,7 @@ def main():
     print("=" * 80)
     print("\nUsage examples:")
     print("1. Basic usage:")
-    print("   task = get_task(Task.BOOK, sample_size=5, random_seed=42)")
+    print("   task = get_task(Task.BOOK, num_prompts=5, random_seed=42)")
     print("   prompt = task.get_prompt(Method.DIRECT, prompt_index=0)")
     print()
     print("2. With structured output:")

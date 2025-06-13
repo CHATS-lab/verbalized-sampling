@@ -1,7 +1,7 @@
 from ..base import BaseTask
 from typing import Any, List, Dict
-from verbalized_sampling.prompts import Method
-from verbalized_sampling.prompts.factory import PromptFactory
+from verbalized_sampling.methods import Method
+from verbalized_sampling.methods.factory import PromptFactory
 
 class CreativeStoryTask(BaseTask):
     """Task for generating creative stories."""
@@ -11,7 +11,7 @@ class CreativeStoryTask(BaseTask):
         self.metadata = {
             "task_type": "creative_story",
             "total_prompts": 0,
-            "sample_size": self.sample_size,
+            "num_prompts": self.num_prompts,
             "random_seed": self.random_seed,
             "description": "Creative story generation task with prompts from literary works"
         }

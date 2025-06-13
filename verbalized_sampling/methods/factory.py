@@ -54,9 +54,6 @@ class PromptFactory:
         Method.SEQUENCE: SEQUENCE_FORMAT_PROMPT,
         Method.STRUCTURE: STRUCTURE_FORMAT_PROMPT,
         Method.STRUCTURE_WITH_PROB: STRUCTURE_WITH_PROBABILITY_FORMAT_PROMPT,
-        # Method.CHAIN_OF_THOUGHT: CHAIN_OF_THOUGHT_PROMPT,
-        # Method.SELF_REFLECTION: SELF_REFLECTION_PROMPT,
-        # Method.TEMPERATURE_SAMPLING: TEMPERATURE_SAMPLING_PROMPT,
     }
 
     @staticmethod
@@ -107,7 +104,7 @@ class PromptFactory:
         task: str, 
         method: Method, 
         num_samplings: int = 5,
-        sample_size: int = None,
+        num_prompts: int = None,
         random_seed: int = None,
         **kwargs,
     ) -> List[List[Dict[str, str]]]:
@@ -126,11 +123,11 @@ class PromptFactory:
                 prompts.append(line)
         
         # TODO add selection of prompts
-        if (sample_size is not None) and (random_seed is not None):
+        if (num_prompts is not None) and (random_seed is not None):
             random.seed(random_seed)
-            prompts = random.sample(prompts, min(sample_size, len(prompts)))
+            prompts = random.sample(prompts, min(num_prompts, len(prompts)))
         else:
             prompts = random.sample(prompts, 1)
 
-        print(f"Num samplings: {num_samplings}, Method: {method}, Sample size: {sample_size}, Random seed: {random_seed}")
+        print(f"Num samplings: {num_samplings}, Method: {method}, Sample size: {num_prompts}, Random seed: {random_seed}")
         return [PromptFactory.pack_prompt(method, prompt, num_samplings=num_samplings, **kwargs) for prompt in prompts]

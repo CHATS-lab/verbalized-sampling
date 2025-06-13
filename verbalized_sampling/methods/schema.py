@@ -11,9 +11,9 @@ class ResponseWithProbability(BaseModel):
     text: str = Field(..., description="The response text")
     probability: float = Field(..., description="The probability of the response", ge=0.0, le=1.0)
 
-class SequenceResponse(BaseModel):
-    model_config = ConfigDict(extra='forbid')
-    responses: List[str] = Field(..., description="List of responses")
+# class SequenceResponse(BaseModel):
+#     model_config = ConfigDict(extra='forbid')
+#     responses: List[str] = Field(..., description="List of responses")
 
 # class StructuredResponseList(BaseModel):
 #     model_config = ConfigDict(extra='forbid')
@@ -228,6 +228,36 @@ StructuredResponseListWithProbability = {
                             }
                         },
                         "required": ["text", "probability"],
+                        "additionalProperties": False
+                    }
+                }
+            },
+            "required": ["responses"],
+            "additionalProperties": False
+        },
+        "strict": True
+    }
+}
+
+SequenceResponse = {
+    "type": "json_schema",
+    "json_schema": {
+        "name": "sequence_response",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "responses": {
+                    "type": "array",
+                    "description": "List of response texts",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "text": {
+                                "type": "string",
+                                "description": "A single response candidate"
+                            },
+                        },
+                        "required": ["text"],
                         "additionalProperties": False
                     }
                 }

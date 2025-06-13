@@ -10,7 +10,7 @@ from typing import List, Optional
 
 from verbalized_sampling.pipeline import run_quick_comparison
 from verbalized_sampling.tasks import Task
-from verbalized_sampling.prompts import Method
+from verbalized_sampling.methods import Method
 
 app = typer.Typer(help="Run controlled experiments with LLMs using different sampling methods")
 console = Console()
@@ -42,7 +42,7 @@ def run(
     methods: List[Method] = typer.Option([Method.DIRECT], help="Methods to compare"),
     num_responses: int = typer.Option(50, help="Number of responses to generate"),
     num_samples: int = typer.Option(5, help="Number of samples per prompt"),
-    sample_size: int = typer.Option(1, help="Number of prompts to use"),
+    num_prompts: int = typer.Option(1, help="Number of prompts to use"),
     strict_json: bool = typer.Option(False, help="Use strict JSON mode"),
     metrics: List[str] = typer.Option(["diversity", "length", "ngram"], help="Metrics to evaluate"),
     output_dir: Path = typer.Option(Path("results"), help="Output directory"),
@@ -61,7 +61,7 @@ def run(
         output_dir=output_dir,
         num_responses=num_responses,
         num_samples=num_samples,
-        sample_size=sample_size,
+        num_prompts=num_prompts,
         strict_json=strict_json,
         rerun=rerun,
         temperature=temperature,

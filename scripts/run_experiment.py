@@ -4,7 +4,7 @@ Unified experiment runner that can handle ablation studies, grid searches, and t
 
 from verbalized_sampling.pipeline import Pipeline, PipelineConfig, ExperimentConfig, EvaluationConfig
 from verbalized_sampling.tasks import Task
-from verbalized_sampling.prompts import Method
+from verbalized_sampling.methods import Method
 from pathlib import Path
 import itertools
 from typing import List, Dict, Any, Optional
@@ -24,7 +24,7 @@ def create_experiments(
         'model_name': model_name,
         'num_responses': 50,
         'num_samples': 5,
-        'sample_size': 10,
+        'num_prompts': 10,
         'temperature': 0.7,
         'random_seed': 42,
     }

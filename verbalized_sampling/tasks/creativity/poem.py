@@ -2,8 +2,8 @@ from ..base import BaseTask
 from typing import Any, List, Dict
 import random
 import os
-from verbalized_sampling.prompts import Method
-from verbalized_sampling.prompts.factory import PromptFactory
+from verbalized_sampling.methods import Method
+from verbalized_sampling.methods.factory import PromptFactory
 
 class PoemTask(BaseTask):
     """Task for generating poems from starting line prompts."""
@@ -13,14 +13,14 @@ class PoemTask(BaseTask):
         Initialize the PoemTask.
         
         Args:
-            sample_size: Number of prompts to randomly sample from the dataset
+            num_prompts: Number of prompts to randomly sample from the dataset
             random_seed: Random seed for reproducible sampling
         """
         super().__init__(**kwargs)
         self.metadata = {
             "task_type": "poem",
             "total_prompts": 0,
-            "sample_size": self.sample_size,
+            "num_prompts": self.num_prompts,
             "random_seed": self.random_seed,
             "description": "Poetry generation task with starting line prompts"
         }
