@@ -356,8 +356,56 @@ class ComparisonPlotter:
                 evaluator_type = "ngram"
             elif "response_distribution" in first_result.overall_metrics:
                 evaluator_type = "response_count"
+            elif "accuracy_given_attempted" in first_result.overall_metrics:
+                evaluator_type = "factuality"
             else:
                 raise ValueError(f"Unknown evaluator type: {evaluator_type}")
+                evaluator_type = "generic"
+        
+        # Create plots based on evaluator type
+        if evaluator_type == "diversity":
+            self._create_diversity_plots(comparison_data, output_dir)
+        elif evaluator_type == "ttct":
+            self._create_ttct_plots(comparison_data, output_dir)
+        elif evaluator_type == "creativity_index":
+            self._create_creativity_index_plots(comparison_data, output_dir)
+        elif evaluator_type == "creative_writing_v3":
+            self._create_creative_writing_v3_plots(comparison_data, output_dir)
+        elif evaluator_type == "length":
+            self._create_length_plots(comparison_data, output_dir)
+        elif evaluator_type == "ngram":
+            self._create_ngram_plots(comparison_data, output_dir)
+        elif evaluator_type == "response_count":
+            self._create_response_count_plots(comparison_data, output_dir)
+        elif evaluator_type == "factuality":
+            self._create_factuality_plots(comparison_data, output_dir)
+        else:
+            self._create_generic_plots(comparison_data, output_dir)
+    
+    def _create_creative_writing_v3_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
+        """Create creative writing v3-specific plots."""
+        # Creative writing v3 distribution
+        # Plot distributions for each creative writing metric
+        metrics = [
+            "imagery_and_descriptive_quality",
+            "nuanced_characters", 
+            "emotionally_complex",
+            "elegant_prose",
+            "well_earned_lightness_or_darkness",
+            "emotionally_engaging",
+            "consistent_voicetone_of_writing",
+            "sentences_flow_naturally",
+            "overall_reader_engagement",
+            "Average_Score"
+        ]
+        
+        for metric in metrics:
+            self.compare_distributions(
+                comparison_data, metric,
+                output_dir / f"{metric}_distribution.png",
+                title=f"{metric.replace('_', ' ').title()} Distribution Comparison",
+                plot_type="violin"
+            )
         
         self._create_comprehensive_comparison(evaluator_type, comparison_data, output_dir)
 
@@ -410,6 +458,153 @@ class ComparisonPlotter:
         full_counts[unique_states] = counts
         
         return sorted([int(count) for count in full_counts], reverse=True)
+
+
+    def _create_response_count_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
+        """Create response count-specific plots."""
+        # Extract and sort data
+        response_counter = comparison_data[0].result.overall_metrics["response_distribution"]
+        sorted_items = sorted(response_counter.items(), key=lambda x: x[1], reverse=True)
+        values, labels = zip(*sorted_items)
+        
+        # Create plot
+        plt.figure(figsize=self.figsize)
+        ax = sns.barplot(data=pd.DataFrame({'Response Type': labels, 'Count': values}),
+                        x='Response Type', y='Count', palette=[self.colors[0]], alpha=0.7)
+        
+        # Style plot
+        plt.xticks(rotation=45)
+        plt.xlabel('Name of the State')
+        plt.ylabel('Count')
+        plt.title('State Name Distribution')
+        plt.ylim(0, 500)
+        
+        # Add value labels
+        for i, v in enumerate(values):
+            ax.text(i, v, f'{int(v)}', ha='center', va='bottom')
+        plt.tight_layout()
+        
+        # Chi-square test
+        total_trials = sum(values)
+        values_extended = list(values) + [0] * (50 - len(values))
+        expected_frequencies = self._generate_uniform_state_sample(n_trials=total_trials, n_states=50, seed=42)
+        chi2_stat, _ = chisquare(f_obs=values_extended, f_exp=expected_frequencies)
+        
+        # Add test result and save
+        plt.text(0.98, 0.98, f'Chi-square: {chi2_stat:.2f}', transform=plt.gca().transAxes,
+                va='top', ha='right', bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+        plt.savefig(output_dir / "response_count_distribution.png", dpi=300, bbox_inches='tight',
+                   facecolor='white', edgecolor='none')
+        plt.close()
+
+
+    def _create_factuality_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
+        """Create factuality-specific plots as horizontal stacked bar chart with percentages."""
+        # Create DataFrame from metrics
+        df = pd.DataFrame([{
+            'Method': 'GPT-4.1 (Structure w Prob)',
+            'Correct': comp.result.overall_metrics['num_is_correct'],
+            'Incorrect': comp.result.overall_metrics['num_is_incorrect'],
+            'Not attempted': comp.result.overall_metrics['num_is_not_attempted'],
+            'Total': comp.result.overall_metrics['num_responses'],
+        } for comp in comparison_data])
+
+        # Setup plot data
+        categories = ['Correct', 'Not attempted', 'Incorrect']
+        colors = ['#6C8CFF', '#23233B', '#E6E6E6']
+        for cat in categories:
+            df[cat + ' %'] = df[cat] / df['Total']
+
+        # Create plot
+        fig, ax = plt.subplots(figsize=(9, 4 + 0.5 * len(df)))
+        left = np.zeros(len(df))
+        bar_handles = []
+        
+        # Plot bars
+        for idx, cat in enumerate(categories):
+            bar = ax.barh(df['Method'], df[cat + ' %'], left=left, color=colors[idx], 
+                         label=cat, height=0.5, edgecolor='none')
+            bar_handles.append(bar)
+            left += df[cat + ' %']
+
+        # # Add labels and style
+        # for i, (method, correct_pct) in enumerate(zip(df['Method'], df['Correct %'])):
+        #     if correct_pct > 0:
+        #         ax.text(correct_pct/2, i, f"{method} Correct  {correct_pct*100:.1f}%",
+        #                va='center', ha='left', color='black', fontsize=10, fontweight='bold',
+        #                bbox=dict(facecolor='white', edgecolor='none', alpha=0.7, boxstyle='round,pad=0.2'))
+
+        # Style plot
+        ax.set_xlim(0, 1)
+        ax.set_xticks(np.linspace(0, 1, 5))
+        ax.set_xticklabels([f"{int(x*100)}%" for x in np.linspace(0, 1, 5)])
+        ax.set_yticklabels(df['Method'], fontsize=11)
+        for spine in ax.spines.values():
+            spine.set_visible(False)
+        ax.tick_params(axis='both', length=0)
+        
+        # Add legend
+        ax.legend(bar_handles, categories, loc='upper left', bbox_to_anchor=(0, 1.08),
+                 ncol=len(categories), frameon=False, fontsize=10)
+
+        plt.tight_layout()
+        plt.savefig(output_dir / "factuality_distribution.png", dpi=300, bbox_inches='tight', facecolor='white')
+        plt.close()
+
+
+        
+    def _create_generic_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
+        """Create generic plots for unknown evaluator types."""
+        first_result = comparison_data[0].result
+        
+        # Try to create plots for all available metrics
+        instance_metrics = set()
+        overall_metrics = first_result.overall_metrics
+        
+        # Collect all possible instance metrics - now handling list format
+        for instance in first_result.instance_metrics:
+            if isinstance(instance, dict):
+                instance_metrics.update(instance.keys())
+            elif isinstance(instance, (int, float)):
+                instance_metrics.add('value')  # Add a generic metric name for numeric values
+        
+        # Create plots for numeric instance metrics
+        for metric in instance_metrics:
+            try:
+                self.compare_distributions(
+                    comparison_data, metric,
+                    output_dir / f"{metric}_distribution.png",
+                    title=f"{metric.replace('_', ' ').title()} Distribution",
+                    plot_type="histogram"
+                )
+            except (ValueError, TypeError):
+                continue  # Skip non-numeric metrics
+        
+        # Create plots for list-type overall metrics
+        for metric, value in overall_metrics.items():
+            if isinstance(value, (list, tuple)) and value:
+                try:
+                    self.compare_distributions(
+                        comparison_data, metric,
+                        output_dir / f"{metric}_distribution.png",
+                        title=f"{metric.replace('_', ' ').title()} Distribution",
+                        plot_type="violin"
+                    )
+                except (ValueError, TypeError):
+                    continue
+        
+        # Create aggregate metrics plot for scalar values
+        numeric_aggregates = []
+        for metric, value in overall_metrics.items():
+            if isinstance(value, (int, float)):
+                numeric_aggregates.append(metric)
+        
+        if numeric_aggregates:
+            self.compare_aggregate_metrics(
+                comparison_data, numeric_aggregates,
+                output_dir / "aggregate_metrics.png",
+                title="Aggregate Metrics Comparison"
+            )
 
     def create_performance_comparison_chart(self,
                                           comparison_data: Dict[str, EvalResult],

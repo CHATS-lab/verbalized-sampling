@@ -11,6 +11,7 @@ from .creativity.speech import SpeechTask
 from .creativity.joke import JokeTask
 from .bias.rand_num import RandomNumberTask
 from .bias.state_name import StateNameTask
+from .fact.simple_qa import SimpleQATask
 from enum import Enum
 
 class Task(str, Enum):
@@ -69,6 +70,13 @@ class Task(str, Enum):
     wordplay capabilities.
     """
 
+    SIMPLE_QA = "simple_qa"
+    """Simple QA task.
+    
+    Generates answers to the SimpleQA dataset from OpenAI. Tests basic
+    reasoning and factual knowledge capabilities.
+    """
+
 TASK_REGISTRY: Dict[str, Type[BaseTask]] = {
     "rand_num": RandomNumberTask,
     "creative_story": CreativeStoryTask,
@@ -77,6 +85,7 @@ TASK_REGISTRY: Dict[str, Type[BaseTask]] = {
     "speech": SpeechTask,
     "state_name": StateNameTask,
     "joke": JokeTask,
+    "simple_qa": SimpleQATask,
 }
 
 def get_task(task_name: Task, **kwargs) -> BaseTask:

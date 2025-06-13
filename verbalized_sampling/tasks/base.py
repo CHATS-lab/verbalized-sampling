@@ -60,6 +60,21 @@ class BaseTask(ABC):
 
     #     if isinstance(response, (list, dict)):
     #         return response
+        # Old code by Simon
+        # If response is already a list, return it directly
+        # if isinstance(response, list):
+        #     if len(response) == 1:
+        #         response = response[0]
+        #         if "response" in response:
+        #             response = response["response"]
+        #     else:
+        #         return response
+
+        # print("Response: ", response)
+        # print("Type: ", type(response))
+
+#         if isinstance(response, (list, dict)):
+#             return response
             
     #     # If response is a string, try to parse it as JSON
     #     try:
@@ -131,11 +146,14 @@ class BaseTask(ABC):
         print("Task parameters:")
         print(f"  task_type: {self.task_type}")
         print(f"  method: {self.method}")
+        print(f"  model: {self.model}")
         print(f"  num_responses: {self.num_responses}")
         print(f"  num_prompts: {self.num_prompts}")
+        print(f"  num_samples: {self.num_samples}")
+        print(f"  sample_size: {self.sample_size}")
         print(f"  random_seed: {self.random_seed}")
         print(f"  max_turns: {self.max_turns}")
-        print(f"  model: {self.model}")
+        
         # Check if this is a multi-turn method
         if is_method_multi_turn(self.method):
             return self._run_multi_turn(progress, task_id)
@@ -163,6 +181,27 @@ class BaseTask(ABC):
         # for prompt, result in zip(prompts, results):
         #     prompt = prompt[-1]["content"]
         #     parsed = self.parse_response(result)
+        #     prompt = prompt[-1]["content"]
+            # Old code by Simon
+            # if parsed is not None:
+            #     if isinstance(parsed, list):
+            #         for item in parsed:
+            #             if isinstance(item, dict):
+            #                 item["prompt"] = prompt
+            #                 parsed_results.append(item)
+            #             else:
+            #                 parsed_results.append({"prompt": prompt, "response": item})
+            #     elif isinstance(parsed, dict):
+            #         if ("response" in parsed) and (isinstance(parsed["response"], list)):
+            #             for item in parsed["response"]:
+            #                 item["prompt"] = prompt
+            #                 parsed_results.append(item)
+            #         else:
+            #             parsed["prompt"] = prompt
+            #             parsed_results.append(parsed)
+            #         # parsed_results.append(parsed)
+            #     else:
+            #         parsed_results.append({"prompt": prompt, "response": parsed})
 
         #     if self.method == Method.DIRECT:
         #         current_batch.append({"prompt": prompt, "response": result})
