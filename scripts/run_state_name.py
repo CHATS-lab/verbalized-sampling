@@ -6,6 +6,7 @@ import sys
 
 NUM_RESPONSES = 5
 NUM_SAMPLES = 5
+NUM_PROMPTS = 1
 
 MODEL_PARAMS = {
     "temperature": 1,
@@ -21,7 +22,8 @@ MODEL_PARAMS = {
 #     metrics=["response_count"], # diversity, ttct, creativity_index, length
 #     output_dir=Path("comparison_results/direct"),
 #     num_responses=NUM_RESPONSES,
-#     num_prompts=1, # how many samples from the prompt dataset to generate
+#     num_samples=1, # how many times to sample from the model
+#     num_prompts=NUM_PROMPTS, # how many samples from the prompt dataset to generate
 #     strict_json=False,
 #     rerun=True,
 #     **MODEL_PARAMS
@@ -31,12 +33,12 @@ MODEL_PARAMS = {
 results = run_quick_comparison(
     task=Task.STATE_NAME,
     methods=[Method.STRUCTURE], # Method.STRUCTURE, Method.STRUCTURE_WITH_PROB
-    model_name="google/gemini-2.5-flash-preview", # google/gemini-2.5-flash-preview, openai/gpt-4.1
+    model_name="google/gemini-2.0-flash-001", # google/gemini-2.5-flash-preview, openai/gpt-4.1
     metrics=["response_count"], # diversity, ttct, creativity_index, length
     output_dir=Path("comparison_results/sequence"),
     num_responses=NUM_RESPONSES,
     num_samples=NUM_SAMPLES, # how many times to sample from the model
-    num_prompts=1, # how many samples from the prompt dataset to generate
+    num_prompts=NUM_PROMPTS, # how many samples from the prompt dataset to generate
     strict_json=True,
     rerun=True,
     **MODEL_PARAMS

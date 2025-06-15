@@ -11,18 +11,24 @@ class ResponseCountEvaluator(BaseEvaluator):
         super().__init__(name=name, num_workers=num_workers)
         self.counter = Counter()
     
-    def compute_instance_metric(self, prompt: str, responses: Any) -> List[Dict[str, int]]:
+    def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, int]:
         """Compute the count of responses."""
-        if isinstance(responses, str):
-            responses = ast.literal_eval(responses)
-            
+        if isinstance(response, str):
+            response = ast.literal_eval(response)
+
         list_of_responses = [
-            response.get('response', response).replace('.', '').replace(' ', '').lower()
-            for response in responses
+            response.get('text', response) if isinstance(response, dict) else response
+        ]
+        list_of_responses = [
+            response.replace('.', '').lower().rstrip() for response in list_of_responses
         ]
         self.counter.update(list_of_responses)
         
-        return [{"response_count": self.counter[text]} for text in list_of_responses]
+        return [
+            {
+                "response_count": self.counter[text]
+            } for text in list_of_responses
+        ]
     
 
     def aggregate_metrics(self, instance_metrics: List[List[Dict[str, int]]]) -> Dict[str, float]:

@@ -136,40 +136,36 @@ class FactualityEvaluator(BaseEvaluator):
         return match.group(0) if match else "C"  # Default to "NOT_ATTEMPTED" if no match
 
 
-    def compute_instance_metric(self, prompts: Any, responses: Any) -> List[Dict[str, float]]:
-        if isinstance(responses, str):
-            responses = ast.literal_eval(responses)
+    def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, Any]:
+        print("response: ", response)
+        print("type of response: ", type(response))
+        print("prompt: ", prompt)
+        print("type of prompt: ", type(prompt))
+
+        if isinstance(response, str):
+            response = ast.literal_eval(response)
 
         list_of_responses = [
-            response.get('response', response)
-            for response in responses
-        ]
-        list_of_questions = [
-            response.get('prompt', response)
-            for response in responses
+            response.get('text', response) if isinstance(response, dict) else response
         ]
 
         grade_letter_list = []
-        target_list = []
-        for question, response in zip(list_of_questions, list_of_responses):
-            target = self.get_answer_by_question(question)
+        question = prompt
+        target = self.get_answer_by_question(prompt)
+        for response in list_of_responses:
             grade_letter = self.grade_sample(question, target, response)
             grade_letter_list.append(grade_letter)
-            target_list.append(target)
         
-        return [
-            {
-                'question': question,
-                'target': target,
-                'predicted_answer': response,
-                'grade_letter': grade_letter,
-                # Metrics based on grading response
-                "is_correct": grade_letter == "A",
-                "is_incorrect": grade_letter == "B",
-                "is_not_attempted": grade_letter == "C"
-            }
-            for question, target, response, grade_letter in zip(list_of_questions, target_list, list_of_responses, grade_letter_list)
-        ]
+        return [{
+            'question': question,
+            'target': target,
+            'predicted_answer': response,
+            'grade_letter': grade_letter,
+            # Metrics based on grading response
+            "is_correct": grade_letter == "A",
+            "is_incorrect": grade_letter == "B",
+            "is_not_attempted": grade_letter == "C"
+        } for response, grade_letter in zip(list_of_responses, grade_letter_list)]
     
 
     def aggregate_metrics(self, instance_metrics: List[List[Dict[str, float]]]) -> Dict[str, float]:

@@ -148,9 +148,8 @@ class BaseTask(ABC):
         print(f"  method: {self.method}")
         print(f"  model: {self.model}")
         print(f"  num_responses: {self.num_responses}")
-        print(f"  num_prompts: {self.num_prompts}")
         print(f"  num_samples: {self.num_samples}")
-        print(f"  sample_size: {self.sample_size}")
+        print(f"  num_prompts: {self.num_prompts}")
         print(f"  random_seed: {self.random_seed}")
         print(f"  max_turns: {self.max_turns}")
         

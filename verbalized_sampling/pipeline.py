@@ -277,6 +277,9 @@ class Pipeline:
                             metric, 
                             num_workers=self.config.evaluation.num_workers,
                         )
+
+                        print("Evaluation Prompts: ", prompts)
+                        print("Evaluation Responses: ", responses)
                         
                         result = evaluator.evaluate(
                             prompts,
@@ -730,7 +733,7 @@ def run_quick_comparison(
     print(f"Output dir: {output_dir}")
     print(f"Num responses: {num_responses}")
     print(f"Num samples: {num_samples}")
-    print(f"Sample size: {sample_size}")
+    print(f"Num prompts: {num_prompts}")
     print(f"Rerun: {rerun}")
     print(f"Create backup: {create_backup}")
     print(f"**kwargs: {kwargs}")
