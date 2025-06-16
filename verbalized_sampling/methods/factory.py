@@ -68,7 +68,7 @@ class PromptFactory:
     ) -> List[Dict[str, str]]:
         
         if (method == Method.DIRECT) or (method == Method.MULTI_TURN):
-            system_prompt = BASE_PROMPT
+            system_prompt = BASE_PROMPT.format(min_words=min_words)
             return [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": prompt}

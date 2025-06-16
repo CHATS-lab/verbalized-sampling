@@ -1,5 +1,6 @@
 BASE_PROMPT = """
-Generate a response to the input prompt. Output ONLY the response, no explanations or extra text.
+Generate a response to the input prompt. The response must be at least {min_words} words long.
+Output ONLY the response, no explanations or extra text.
 """
 
 STANDARD_PROMPT = """
