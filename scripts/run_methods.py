@@ -47,7 +47,7 @@ def run_method_tests(
     task: Task,
     model_name: str,
     methods: List[Dict[str, Any]],
-    metrics: List[str] = ["diversity", "length", "ngram"],
+    metrics: List[str] = ["diversity", "length", "ngram"], # , "ngram"
     output_dir: str = "method_results",
 ) -> None:
     """Run tests for specific method variations."""

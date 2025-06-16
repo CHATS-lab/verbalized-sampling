@@ -52,6 +52,8 @@ class DiversityEvaluator(BaseEvaluator):
     def compute_instance_metric(self, prompt: str, response: Dict) -> Dict[str, float]:
         """Compute diversity metrics for a single response."""
         response_text = response.get('text', response)
+        if isinstance(response_text, dict):
+            response_text = str(response_text)
 
         word_count_list = []
         unique_words_list = []
@@ -119,7 +121,21 @@ class DiversityEvaluator(BaseEvaluator):
         print(f"Running with {self.embed_model} on {self.device}")
         embeddings = torch.from_numpy(np.array(embeddings_list)).float().to(self.device)
         embeddings = torch.nn.functional.normalize(embeddings, p=2, dim=1)
+        
+        # Verify normalization worked (all vectors should have L2 norm of 1)
+        norms = torch.norm(embeddings, p=2, dim=1)
+        if not torch.allclose(norms, torch.ones_like(norms), rtol=1e-5):
+            print("Warning: Some embeddings were not properly normalized")
+            
+        # Compute similarity matrix
         similarity_matrix = torch.mm(embeddings, embeddings.t())
+        
+        # Verify similarity matrix properties
+        if not torch.allclose(similarity_matrix.diag(), torch.ones(similarity_matrix.shape[0], device=self.device), rtol=1e-5):
+            print("Warning: Self-similarities are not exactly 1.0")
+            
+        # Ensure similarities are in valid range [-1, 1]
+        similarity_matrix = torch.clamp(similarity_matrix, min=-1.0, max=1.0)
         
         # Calculate intra-class (same prompt) pairwise diversities (1 - similarity)
         all_diversities = []
@@ -135,10 +151,14 @@ class DiversityEvaluator(BaseEvaluator):
                     for j in range(i + 1, len(indices)):
                         idx_i, idx_j = indices[i], indices[j]
                         similarity = float(similarity_matrix[idx_i, idx_j].cpu().numpy())
-                        diversity = 1.0 - similarity  # Convert similarity to diversity
-                        all_diversities.append(diversity)
                         
-                        # Store detailed pairwise information
+                        # Convert similarity to diversity score (0 to 1)
+                        # Since similarity is between -1 and 1, we map it to [0,1] by:
+                        # 1. Adding 1 to shift range to [0,2]
+                        # 2. Dividing by 2 to get [0,1]
+                        diversity = (1 - similarity) / 2
+                        
+                        all_diversities.append(diversity)
                         pairwise_diversities.append(diversity)
         
         # Calculate statistics from intra-class diversities
