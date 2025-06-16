@@ -15,7 +15,9 @@ class DiversityEvaluator(BaseEvaluator):
     
     instance_plot_metrics = [
         ("pairwise_diversities", "violin"),
-        ("vocabulary_richness", "histogram")
+        ("vocabulary_richness", "histogram"),
+        ("response_length", "histogram"),
+        ("unique_words", "histogram")
     ]
     aggregate_plot_metrics = [
         "average_diversity",
@@ -24,7 +26,7 @@ class DiversityEvaluator(BaseEvaluator):
         "std_diversity",
         "average_response_length",
         "average_unique_words",
-        "average_vocabulary_richness"
+        "average_vocabulary_richness",
     ]
     key_plot_metrics = [
         ("average_diversity", "Diversity (Pairwise)"),

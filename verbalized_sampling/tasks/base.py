@@ -48,50 +48,6 @@ class BaseTask(ABC):
             strict_json=self.strict_json
         )
     
-    # def parse_response(self, response: Any) -> Any:
-    #     """Parse the model's response.
-        
-    #     Args:
-    #         response: Can be either a string (JSON) or a list of responses
-            
-    #     Returns:
-    #         Parsed response in the expected format
-    #     """
-
-    #     if isinstance(response, (list, dict)):
-    #         return response
-        # Old code by Simon
-        # If response is already a list, return it directly
-        # if isinstance(response, list):
-        #     if len(response) == 1:
-        #         response = response[0]
-        #         if "response" in response:
-        #             response = response["response"]
-        #     else:
-        #         return response
-
-        # print("Response: ", response)
-        # print("Type: ", type(response))
-
-#         if isinstance(response, (list, dict)):
-#             return response
-            
-    #     # If response is a string, try to parse it as JSON
-    #     try:
-    #         # Check if response contains code block markers
-    #         if "```" in response:
-    #             # Remove code block markers and any language specifiers
-    #             response = response.replace("```json", "").replace("```", "").strip()
-    #         # elif response.startswith("[") and response.endswith("]"):
-    #         #     response = response[1:-1]
-    #         parsed = json.loads(response)
-    #         if isinstance(parsed, dict):
-    #             parsed = parsed["responses"]
-    #         return parsed
-    #     except Exception as e:
-    #         print(f"Error parsing response: {e}")
-    #         return response
-    
     def _run_multi_turn(
         self,
         progress: Progress = None,
@@ -176,65 +132,7 @@ class BaseTask(ABC):
                 progress.update(task_id, advance=1)
         
         return parsed_results
-
-        # for prompt, result in zip(prompts, results):
-        #     prompt = prompt[-1]["content"]
-        #     parsed = self.parse_response(result)
-        #     prompt = prompt[-1]["content"]
-            # Old code by Simon
-            # if parsed is not None:
-            #     if isinstance(parsed, list):
-            #         for item in parsed:
-            #             if isinstance(item, dict):
-            #                 item["prompt"] = prompt
-            #                 parsed_results.append(item)
-            #             else:
-            #                 parsed_results.append({"prompt": prompt, "response": item})
-            #     elif isinstance(parsed, dict):
-            #         if ("response" in parsed) and (isinstance(parsed["response"], list)):
-            #             for item in parsed["response"]:
-            #                 item["prompt"] = prompt
-            #                 parsed_results.append(item)
-            #         else:
-            #             parsed["prompt"] = prompt
-            #             parsed_results.append(parsed)
-            #         # parsed_results.append(parsed)
-            #     else:
-            #         parsed_results.append({"prompt": prompt, "response": parsed})
-
-        #     if self.method == Method.DIRECT:
-        #         current_batch.append({"prompt": prompt, "response": result})
-        #     else:
-        #         parsed = self.parse_response(result)
-                
-        #         if parsed is not None:
-        #             if isinstance(parsed, list):
-        #                 for item in parsed:
-        #                     if isinstance(item, dict):
-        #                         item["prompt"] = prompt
-        #                         current_batch.append(item)
-        #                     else:
-        #                         current_batch.append({"prompt": prompt, "response": item})
-        #             elif isinstance(parsed, dict):
-        #                 parsed["prompt"] = prompt
-        #                 current_batch.append(parsed)
-        #             else:
-        #                 current_batch.append({"prompt": prompt, "response": parsed})
-        #         else:
-        #             current_batch.append({"prompt": prompt, "response": result})
-                
-        #     # When we have collected num_samples items, add the batch to results
-        #     if len(current_batch) == self.num_samples:
-        #         parsed_results.append(current_batch)
-        #         current_batch = []
-                
-        #     if progress and task_id is not None:
-        #         progress.update(task_id, advance=1)
-        
-
-        # return parsed_results
     
-
     def save_results(self, results: List[Any], output_file: Path):
         """Save the results to a file."""
         output_file.parent.mkdir(parents=True, exist_ok=True)

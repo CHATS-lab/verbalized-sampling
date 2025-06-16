@@ -362,52 +362,39 @@ class ComparisonPlotter:
                 raise ValueError(f"Unknown evaluator type: {evaluator_type}")
                 evaluator_type = "generic"
         
-        # Create plots based on evaluator type
-        if evaluator_type == "diversity":
-            self._create_diversity_plots(comparison_data, output_dir)
-        elif evaluator_type == "ttct":
-            self._create_ttct_plots(comparison_data, output_dir)
-        elif evaluator_type == "creativity_index":
-            self._create_creativity_index_plots(comparison_data, output_dir)
-        elif evaluator_type == "creative_writing_v3":
-            self._create_creative_writing_v3_plots(comparison_data, output_dir)
-        elif evaluator_type == "length":
-            self._create_length_plots(comparison_data, output_dir)
-        elif evaluator_type == "ngram":
-            self._create_ngram_plots(comparison_data, output_dir)
-        elif evaluator_type == "response_count":
+        if evaluator_type == "response_count":
             self._create_response_count_plots(comparison_data, output_dir)
         elif evaluator_type == "factuality":
             self._create_factuality_plots(comparison_data, output_dir)
         else:
-            self._create_generic_plots(comparison_data, output_dir)
+            self._create_comprehensive_comparison(evaluator_type, comparison_data, output_dir)
     
-    def _create_creative_writing_v3_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
-        """Create creative writing v3-specific plots."""
-        # Creative writing v3 distribution
-        # Plot distributions for each creative writing metric
-        metrics = [
-            "imagery_and_descriptive_quality",
-            "nuanced_characters", 
-            "emotionally_complex",
-            "elegant_prose",
-            "well_earned_lightness_or_darkness",
-            "emotionally_engaging",
-            "consistent_voicetone_of_writing",
-            "sentences_flow_naturally",
-            "overall_reader_engagement",
-            "Average_Score"
-        ]
+    # def _create_creative_writing_v3_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
+    #     """Create creative writing v3-specific plots."""
+    #     # Creative writing v3 distribution
+    #     # Plot distributions for each creative writing metric
+    #     metrics = [
+    #         "imagery_and_descriptive_quality",
+    #         "nuanced_characters", 
+    #         "emotionally_complex",
+    #         "elegant_prose",
+    #         "well_earned_lightness_or_darkness",
+    #         "emotionally_engaging",
+    #         "consistent_voicetone_of_writing",
+    #         "sentences_flow_naturally",
+    #         "overall_reader_engagement",
+    #         "Average_Score"
+    #     ]
         
-        for metric in metrics:
-            self.compare_distributions(
-                comparison_data, metric,
-                output_dir / f"{metric}_distribution.png",
-                title=f"{metric.replace('_', ' ').title()} Distribution Comparison",
-                plot_type="violin"
-            )
+    #     for metric in metrics:
+    #         self.compare_distributions(
+    #             comparison_data, metric,
+    #             output_dir / f"{metric}_distribution.png",
+    #             title=f"{metric.replace('_', ' ').title()} Distribution Comparison",
+    #             plot_type="violin"
+    #         )
         
-        self._create_comprehensive_comparison(evaluator_type, comparison_data, output_dir)
+    #     self._create_comprehensive_comparison(evaluator_type, comparison_data, output_dir)
 
     def _create_comprehensive_comparison(self,
                                     evaluator_type: str,
