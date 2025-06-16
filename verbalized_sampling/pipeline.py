@@ -31,6 +31,7 @@ class ExperimentConfig:
     num_responses: int = 10
     num_samples: int = 1
     num_prompts: int = 5
+    min_words: int = 200 # Minimum number of words in each response
     random_seed: int = 42
     use_vllm: bool = False
     all_possible: bool = False # If True, the request would enable all possible responses
@@ -184,7 +185,7 @@ class Pipeline:
                 if exp_config.task in [Task.POEM, Task.SPEECH, Task.STATE_NAME, Task.SIMPLE_QA]:
                     task_kwargs.update({
                         "num_prompts": exp_config.num_prompts,
-                        "random_seed": exp_config.random_seed
+                        "random_seed": exp_config.random_seed,
                     })
 
                 # The num_samples must be smaller than num_responses
@@ -200,6 +201,7 @@ class Pipeline:
                     method=exp_config.method,
                     num_responses=num_responses,
                     num_samples=num_samples,
+                    min_words=exp_config.min_words,
                     **task_kwargs
                 )
 

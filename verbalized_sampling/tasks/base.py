@@ -22,6 +22,7 @@ class BaseTask(ABC):
                  num_responses: int = 3,
                  num_samples: int = 5,
                  num_prompts: int = 5,
+                 min_words: int = 200,
                  random_seed: int = 42,
                  all_possible: bool = False,
                  strict_json: bool = False,
@@ -31,6 +32,7 @@ class BaseTask(ABC):
         self.num_responses = num_responses
         self.num_samples = num_samples
         self.num_prompts = num_prompts
+        self.min_words = min_words
         self.random_seed = random_seed
         self.all_possible = all_possible
         self.strict_json = strict_json
@@ -43,6 +45,7 @@ class BaseTask(ABC):
             self.method, 
             num_samplings=self.num_samples,
             num_prompts=self.num_prompts,
+            min_words=self.min_words,
             random_seed=self.random_seed,
             all_possible=self.all_possible,
             strict_json=self.strict_json
@@ -106,6 +109,7 @@ class BaseTask(ABC):
         print(f"  num_responses: {self.num_responses}")
         print(f"  num_samples: {self.num_samples}")
         print(f"  num_prompts: {self.num_prompts}")
+        print(f"  min_words: {self.min_words}")
         print(f"  random_seed: {self.random_seed}")
         print(f"  max_turns: {self.max_turns}")
         
@@ -117,6 +121,9 @@ class BaseTask(ABC):
         prompts = [prompt for prompt in self.get_prompt() for _ in range(self.num_responses)]
         results = self.model.chat(prompts, schema=get_schema(self.method))
         parsed_results = []
+
+        print("Prompts: ", prompts)
+        print("Results: ", results)
         
         for prompt, result in zip(prompts, results):
             prompt_text = prompt[-1]["content"]

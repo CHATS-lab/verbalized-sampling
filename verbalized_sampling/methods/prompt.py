@@ -3,11 +3,13 @@ Generate a response to the input prompt. Output ONLY the response, no explanatio
 """
 
 STANDARD_PROMPT = """
-Generate {num_samplings} different responses to the input prompt. Try to be as creative and diverse as possible.
+Generate {num_samplings} different responses to the input prompt. Each response must be at least {min_words} words long.
+Try to be as creative and diverse as possible.
 """
 
 STANDARD_ALL_POSSIBLE_PROMPT = """
-Generate all possible responses to the input prompt. Try to be as creative and diverse as possible.
+Generate all possible responses to the input prompt. Each response must be at least {min_words} words long.
+Try to be as creative and diverse as possible.
 """
 
 SEQUENCE_FORMAT_PROMPT = """

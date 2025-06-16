@@ -19,9 +19,10 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 50,
-        'num_prompts': 10,
-        'temperature': 0.7,
+        'num_responses': 100,
+        'num_prompts': 5,
+        'min_words': 200,
+        'temperature': 1,
         'random_seed': 42,
     }
     
