@@ -20,10 +20,12 @@ class LengthEvaluator(BaseEvaluator):
         # Get the tokenizer for the specified model
         self.tokenizer = tiktoken.get_encoding("o200k_base")
     
-    def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, float]:
+    def compute_instance_metric(self, prompt: str, response: Dict) -> Dict[str, float]:
         """Compute token length for a single response."""
+        response_text = response.get('text', '')
+        if isinstance(response_text, dict):
+            response_text = str(response_text)
 
-        response_text = response['text']
         return {
             "response": response_text,
             "prompt": prompt,

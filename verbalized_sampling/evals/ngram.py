@@ -60,11 +60,14 @@ class NgramEvaluator(BaseEvaluator):
     
     def compute_instance_metric(self, prompt: Any, response: Dict) -> Dict[str, float]:
         """Compute ROUGE-L metrics for a single response."""
+        response_text = response.get('text', '')
+        if isinstance(response_text, dict):
+            response_text = str(response_text)
 
         return {
             "prompt": prompt,
-            "response": response['text'],
-            "response_length": len(response['text'].split())
+            "response": response_text,
+            "response_length": len(response_text.split())
         }
     
     def aggregate_metrics(self, instance_metrics: List[Dict[str, float]]) -> Dict[str, Any]:

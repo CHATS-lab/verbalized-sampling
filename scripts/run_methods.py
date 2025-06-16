@@ -20,7 +20,6 @@ def create_method_experiments(
         'task': task,
         'model_name': model_name,
         'num_responses': 50,
-        'num_samples': 5,
         'num_prompts': 10,
         'temperature': 0.7,
         'random_seed': 42,
@@ -77,6 +76,11 @@ if __name__ == "__main__":
     # Test multi-turn and JSON mode variations
     methods = [
         {
+            'method': Method.DIRECT,
+            'strict_json': False,
+            'num_samples': 1,
+        },
+        {
             'method': Method.MULTI_TURN,
             'strict_json': False,
             'num_samples': 5,
@@ -89,17 +93,12 @@ if __name__ == "__main__":
         {
             'method': Method.STRUCTURE_WITH_PROB,
             'strict_json': True,
-            'num_samples': 3,
-        },
-        {
-            'method': Method.STRUCTURE_WITH_PROB,
-            'strict_json': True,
             'num_samples': 5,
         },
     ]
     
     run_method_tests(
-        task=Task.JOKE,
-        model_name="anthropic/claude-sonnet-4",
+        task=Task.POEM,
+        model_name="google/gemini-2.0-flash-001",
         methods=methods,
     ) 
