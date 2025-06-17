@@ -624,6 +624,8 @@ class ComparisonPlotter:
             for metric_name, plot_title in key_metric_names:
                 value = eval_result.overall_metrics
                 for key in metric_name.split('.'):
+                    print(f"Key: {key}")
+                    # print(f"Value: {value}")
                     if isinstance(value, dict) and key in value:
                         value = value[key]
                     else:
@@ -658,9 +660,9 @@ class ComparisonPlotter:
         plt.ylim(0, 1)
 
         # Add legend
-        plt.legend(loc='upper right', bbox_to_anchor=(0.98, 0.98),
+        plt.legend(loc='lower center', bbox_to_anchor=(0.5, -0.15),
                   frameon=True, fancybox=True, shadow=True,
-                  fontsize=10, framealpha=0.9)
+                  fontsize=10, framealpha=0.9, ncol=len(method_names))
         
         # Add title if provided
         if title:

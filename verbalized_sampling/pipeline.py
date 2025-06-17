@@ -213,7 +213,7 @@ class Pipeline:
                 results = task_instance.run(progress=progress, task_id=gen_task)
                 task_instance.save_results(results, output_file)
 
-                print("Generation results: ", results)
+                # print("Generation results: ", results)
                 
                 generation_results[exp_config.name] = output_file
                 progress.remove_task(gen_task)
@@ -280,8 +280,8 @@ class Pipeline:
                             num_workers=self.config.evaluation.num_workers,
                         )
 
-                        print("Evaluation Prompts: ", prompts)
-                        print("Evaluation Responses: ", responses)
+                        # print("Evaluation Prompts: ", prompts)
+                        # print("Evaluation Responses: ", responses)
                         
                         result = evaluator.evaluate(
                             prompts,
