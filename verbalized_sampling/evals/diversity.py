@@ -95,7 +95,7 @@ class DiversityEvaluator(BaseEvaluator):
                 "pairwise_diversities": []
             }
         
-        # Group responses by prompt for intra-class diversity calculation
+        # 1. Group responses by same prompts
         prompt_groups = {}
         for i, m in enumerate(instance_metrics):
             prompt = m["prompt"]
@@ -107,67 +107,63 @@ class DiversityEvaluator(BaseEvaluator):
         for prompt, indices_responses in prompt_groups.items():
             print(f"Prompt group size: {len(indices_responses)}")
         
-        # Get all responses for embedding computation
-        all_responses = [m["response"] for m in instance_metrics]
+        # 2. Calculate embeddings per prompt group
+        def compute_prompt_group_embeddings(prompt_group_data):
+            """Compute embeddings for all responses in a prompt group."""
+            prompt, indices_responses = prompt_group_data
+            embeddings = []
+            costs = []
+            
+            for idx, response in indices_responses:
+                embedding, cost = self.compute_embedding(response)
+                embeddings.append(embedding)
+                costs.append(cost)
+            
+            return prompt, embeddings, costs, indices_responses
         
-        # Compute embeddings in parallel
-        embeddings_list = []
+        # 3. Calculate pairwise cosine similarity using ThreadPoolExecutor
+        all_diversities = []
+        pairwise_diversities = []
         total_cost = 0.0
         
         with ThreadPoolExecutor(max_workers=os.cpu_count() or 4) as executor:
-            futures = [executor.submit(self.compute_embedding, response) for response in all_responses]
+            # Submit embedding computation tasks for each prompt group
+            future_to_prompt = {
+                executor.submit(compute_prompt_group_embeddings, (prompt, indices_responses)): prompt 
+                for prompt, indices_responses in prompt_groups.items()
+            }
             
-            with tqdm(total=len(all_responses), desc="Computing embeddings") as pbar:
-                for future in as_completed(futures):
-                    embedding, cost = future.result()
-                    embeddings_list.append(embedding)
-                    total_cost += cost
+            # Process results as they complete
+            with tqdm(total=len(prompt_groups), desc="Computing embeddings by prompt group") as pbar:
+                for future in as_completed(future_to_prompt):
+                    prompt, embeddings, costs, indices_responses = future.result()
+                    total_cost += sum(costs)
+                    
+                    # Calculate pairwise similarities within this prompt group
+                    if len(embeddings) > 1:  # Need at least 2 responses for diversity
+                        embeddings_array = np.array(embeddings)
+                        embeddings_normalized = normalize(embeddings_array, norm='l2', axis=1)
+                        similarity_matrix = cosine_similarity(embeddings_normalized)
+                        
+                        # Verify similarity matrix properties
+                        if not np.allclose(np.diag(similarity_matrix), 1.0, rtol=1e-5):
+                            print(f"Warning: Self-similarities are not exactly 1.0 for prompt group")
+                            
+                        # Ensure similarities are in valid range [-1, 1]
+                        similarity_matrix = np.clip(similarity_matrix, -1.0, 1.0)
+                        
+                        # Calculate pairwise diversities within this prompt group
+                        for i in range(len(indices_responses)):
+                            for j in range(i + 1, len(indices_responses)):
+                                similarity = float(similarity_matrix[i, j])
+                                
+                                # Convert similarity to diversity score (0 to 1)
+                                diversity = (1 - similarity) / 2
+                                
+                                all_diversities.append(diversity)
+                                pairwise_diversities.append(diversity)
+                    
                     pbar.update(1)
-        
-        # # Simon's code
-        # print(f"Running with {self.embed_model} on {self.device}")
-        # embeddings = torch.from_numpy(np.array(embeddings_list)).float().to(self.device)
-        # embeddings = torch.nn.functional.normalize(embeddings, p=2, dim=1)
-        # Verify normalization worked (all vectors should have L2 norm of 1)
-        # norms = torch.norm(embeddings, p=2, dim=1)
-        # if not torch.allclose(norms, torch.ones_like(norms), rtol=1e-5):
-        #     print("Warning: Some embeddings were not properly normalized")
-        # # Compute similarity matrix
-        # similarity_matrix = torch.mm(embeddings, embeddings.t())
-        
-        embeddings_array = np.array(embeddings_list)
-        embeddings_normalized = normalize(embeddings_array, norm='l2', axis=1)
-        similarity_matrix = cosine_similarity(embeddings_normalized)
-        
-        # Verify similarity matrix properties
-        if not np.allclose(np.diag(similarity_matrix), 1.0, rtol=1e-5):
-            print("Warning: Self-similarities are not exactly 1.0")
-            
-        # Ensure similarities are in valid range [-1, 1]
-        similarity_matrix = np.clip(similarity_matrix, -1.0, 1.0)
-        
-        # Calculate intra-class (same prompt) pairwise diversities
-        all_diversities = []
-        pairwise_diversities = []
-        
-        for prompt, indices_responses in prompt_groups.items():
-            if len(indices_responses) > 1:  # Need at least 2 responses for diversity
-                indices = [idx for idx, _ in indices_responses]
-                responses = [resp for _, resp in indices_responses]
-                
-                # Get all pairs within this prompt group
-                for i in range(len(indices)):
-                    for j in range(i + 1, len(indices)):
-                        idx_i, idx_j = indices[i], indices[j]
-                        # Simon's code
-                        # similarity = float(similarity_matrix[idx_i, idx_j].cpu().numpy())
-                        similarity = float(similarity_matrix[idx_i, idx_j])
-                        
-                        # Convert similarity to diversity score (0 to 1)
-                        diversity = (1 - similarity) / 2
-                        
-                        all_diversities.append(diversity)
-                        pairwise_diversities.append(diversity)
         
         # Calculate statistics from intra-class diversities
         if all_diversities:
@@ -191,7 +187,6 @@ class DiversityEvaluator(BaseEvaluator):
                 "max_diversity": 0.0,
                 "std_diversity": 0.0,
                 "average_response_length": float(np.mean([m["response_length"] for m in instance_metrics])),
-                "average_unique_words": float(np.mean([m["unique_words"] for m in instance_metrics])),
                 "average_unique_words": float(np.mean([m["unique_words"] for m in instance_metrics])),
                 "average_vocabulary_richness": float(np.mean([m["vocabulary_richness"] for m in instance_metrics])),
                 "total_cost": float(total_cost),
