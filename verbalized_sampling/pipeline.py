@@ -31,7 +31,7 @@ class ExperimentConfig:
     num_responses: int = 10
     num_samples: int = 1
     num_prompts: int = 5
-    min_words: int = 200 # Minimum number of words in each response
+    target_words: int = 200 # Minimum number of words in each response
     random_seed: int = 42
     use_vllm: bool = False
     all_possible: bool = False # If True, the request would enable all possible responses
@@ -201,7 +201,7 @@ class Pipeline:
                     method=exp_config.method,
                     num_responses=num_responses,
                     num_samples=num_samples,
-                    min_words=exp_config.min_words,
+                    target_words=exp_config.target_words,
                     **task_kwargs
                 )
 

@@ -10,6 +10,7 @@ class ResponseCountEvaluator(BaseEvaluator):
     def __init__(self, name: str = "response_count", num_workers: int = 128):
         super().__init__(name=name, num_workers=num_workers)
         self.counter = Counter()
+        with open("data/CoverageQA.json", "r") as f: self.gt_data = json.load(f)
     
     def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, int]:
         """Compute the count of responses."""

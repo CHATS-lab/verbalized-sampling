@@ -62,22 +62,22 @@ class PromptFactory:
         prompt: str,
         chat_history: List[Dict[str, str]] = None,
         num_samplings: int = 5,
-        min_words: int = 200,
+        target_words: int = 200,
         all_possible: bool = False,
         strict_json: bool = False,
     ) -> List[Dict[str, str]]:
         
         if (method == Method.DIRECT) or (method == Method.MULTI_TURN):
-            system_prompt = BASE_PROMPT.format(min_words=min_words)
+            system_prompt = BASE_PROMPT.format(target_words=target_words)
             return [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": prompt}
             ]
         
         if all_possible:
-            system_prompt = STANDARD_ALL_POSSIBLE_PROMPT.format(min_words=min_words)
+            system_prompt = STANDARD_ALL_POSSIBLE_PROMPT.format(target_words=target_words)
         else:
-            system_prompt = STANDARD_PROMPT.format(num_samplings=num_samplings, min_words=min_words)
+            system_prompt = STANDARD_PROMPT.format(num_samplings=num_samplings, target_words=target_words)
         
         if strict_json:
             return [
@@ -107,7 +107,7 @@ class PromptFactory:
         num_samplings: int = 5,
         num_prompts: int = None,
         random_seed: int = None,
-        min_words: int = 200,
+        target_words: int = 200,
         **kwargs,
     ) -> List[List[Dict[str, str]]]:
         """Get a prompt for a specific task and format.
@@ -132,4 +132,4 @@ class PromptFactory:
             prompts = random.sample(prompts, 1)
 
         print(f"Num samplings: {num_samplings}, Method: {method}, Sample size: {num_prompts}, Random seed: {random_seed}")
-        return [PromptFactory.pack_prompt(method, prompt, num_samplings=num_samplings, min_words=min_words, **kwargs) for prompt in prompts]
+        return [PromptFactory.pack_prompt(method, prompt, num_samplings=num_samplings, target_words=target_words, **kwargs) for prompt in prompts]

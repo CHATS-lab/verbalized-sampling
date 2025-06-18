@@ -16,3 +16,4 @@ unidecode
 sacremoses
 seaborn
 dedent
+scikit-learn

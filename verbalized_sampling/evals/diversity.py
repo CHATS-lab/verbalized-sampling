@@ -8,6 +8,9 @@ import json
 import ast
 from .base import BaseEvaluator, EvalResult
 from verbalized_sampling.llms import get_embedding_model
+from sklearn.preprocessing import normalize
+from sklearn.metrics.pairwise import cosine_similarity
+
 
 class DiversityEvaluator(BaseEvaluator):
     """Evaluator for measuring response diversity using embeddings and cosine similarity."""
@@ -100,6 +103,10 @@ class DiversityEvaluator(BaseEvaluator):
                 prompt_groups[prompt] = []
             prompt_groups[prompt].append((i, m["response"]))
         
+        print(f"Number of prompt groups: {len(prompt_groups)}")
+        for prompt, indices_responses in prompt_groups.items():
+            print(f"Prompt group size: {len(indices_responses)}")
+        
         # Get all responses for embedding computation
         all_responses = [m["response"] for m in instance_metrics]
         
@@ -117,27 +124,29 @@ class DiversityEvaluator(BaseEvaluator):
                     total_cost += cost
                     pbar.update(1)
         
-        # Convert to tensor and compute similarities
-        print(f"Running with {self.embed_model} on {self.device}")
-        embeddings = torch.from_numpy(np.array(embeddings_list)).float().to(self.device)
-        embeddings = torch.nn.functional.normalize(embeddings, p=2, dim=1)
-        
+        # # Simon's code
+        # print(f"Running with {self.embed_model} on {self.device}")
+        # embeddings = torch.from_numpy(np.array(embeddings_list)).float().to(self.device)
+        # embeddings = torch.nn.functional.normalize(embeddings, p=2, dim=1)
         # Verify normalization worked (all vectors should have L2 norm of 1)
-        norms = torch.norm(embeddings, p=2, dim=1)
-        if not torch.allclose(norms, torch.ones_like(norms), rtol=1e-5):
-            print("Warning: Some embeddings were not properly normalized")
-            
-        # Compute similarity matrix
-        similarity_matrix = torch.mm(embeddings, embeddings.t())
+        # norms = torch.norm(embeddings, p=2, dim=1)
+        # if not torch.allclose(norms, torch.ones_like(norms), rtol=1e-5):
+        #     print("Warning: Some embeddings were not properly normalized")
+        # # Compute similarity matrix
+        # similarity_matrix = torch.mm(embeddings, embeddings.t())
+        
+        embeddings_array = np.array(embeddings_list)
+        embeddings_normalized = normalize(embeddings_array, norm='l2', axis=1)
+        similarity_matrix = cosine_similarity(embeddings_normalized)
         
         # Verify similarity matrix properties
-        if not torch.allclose(similarity_matrix.diag(), torch.ones(similarity_matrix.shape[0], device=self.device), rtol=1e-5):
+        if not np.allclose(np.diag(similarity_matrix), 1.0, rtol=1e-5):
             print("Warning: Self-similarities are not exactly 1.0")
             
         # Ensure similarities are in valid range [-1, 1]
-        similarity_matrix = torch.clamp(similarity_matrix, min=-1.0, max=1.0)
+        similarity_matrix = np.clip(similarity_matrix, -1.0, 1.0)
         
-        # Calculate intra-class (same prompt) pairwise diversities (1 - similarity)
+        # Calculate intra-class (same prompt) pairwise diversities
         all_diversities = []
         pairwise_diversities = []
         
@@ -150,12 +159,11 @@ class DiversityEvaluator(BaseEvaluator):
                 for i in range(len(indices)):
                     for j in range(i + 1, len(indices)):
                         idx_i, idx_j = indices[i], indices[j]
-                        similarity = float(similarity_matrix[idx_i, idx_j].cpu().numpy())
+                        # Simon's code
+                        # similarity = float(similarity_matrix[idx_i, idx_j].cpu().numpy())
+                        similarity = float(similarity_matrix[idx_i, idx_j])
                         
                         # Convert similarity to diversity score (0 to 1)
-                        # Since similarity is between -1 and 1, we map it to [0,1] by:
-                        # 1. Adding 1 to shift range to [0,2]
-                        # 2. Dividing by 2 to get [0,1]
                         diversity = (1 - similarity) / 2
                         
                         all_diversities.append(diversity)
@@ -183,6 +191,7 @@ class DiversityEvaluator(BaseEvaluator):
                 "max_diversity": 0.0,
                 "std_diversity": 0.0,
                 "average_response_length": float(np.mean([m["response_length"] for m in instance_metrics])),
+                "average_unique_words": float(np.mean([m["unique_words"] for m in instance_metrics])),
                 "average_unique_words": float(np.mean([m["unique_words"] for m in instance_metrics])),
                 "average_vocabulary_richness": float(np.mean([m["vocabulary_richness"] for m in instance_metrics])),
                 "total_cost": float(total_cost),

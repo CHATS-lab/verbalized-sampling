@@ -7,7 +7,8 @@ import pandas as pd
 from dataclasses import dataclass
 from .base import EvalResult
 from scipy.stats import chisquare
-import numpy as np
+from scipy.stats import chisquare, entropy
+
 
 @dataclass
 class ComparisonData:
@@ -447,41 +448,95 @@ class ComparisonPlotter:
         return sorted([int(count) for count in full_counts], reverse=True)
 
 
+    def draw_kl_from_uniform(values_extended, expected_frequencies, labels_extended, output_dir, prefix=""):
+        """Draws the KL divergence scatter and bar plots comparing observed and uniform distributions."""
+        # Calculate probabilities
+        total_trials = sum(values_extended)
+        expected_probs = np.array(expected_frequencies) / sum(expected_frequencies)
+        observed_probs = np.array(values_extended) / (sum(values_extended) if sum(values_extended) > 0 else 1)
+        epsilon = 1e-10
+        kl_div = entropy(observed_probs + epsilon, expected_probs + epsilon)
+        chi2_stat, _ = chisquare(f_obs=values_extended, f_exp=expected_frequencies)
+
+        # --- Plot 1: Discrete bar plot of observed vs uniform ---
+        plt.figure(figsize=(16, 6))
+        x = np.arange(50)
+        width = 0.35
+
+        plt.bar(x - width/2, values_extended, width, label='Observed', color="#4C72B0", alpha=0.7)
+        plt.bar(x + width/2, expected_frequencies, width, label='Uniform Expected', color='#888888', alpha=0.5)
+
+        plt.xlabel('State')
+        plt.ylabel('Count')
+        plt.title('State Name Distribution vs Uniform')
+        plt.xticks(x, labels_extended, rotation=90, fontsize=8)
+        plt.ylim(0, max(max(values_extended), max(expected_frequencies)) * 1.1)
+        plt.legend()
+        plt.tight_layout()
+
+        # Annotate bars with values
+        for i, v in enumerate(values_extended):
+            plt.text(i - width/2, v + 2, str(int(v)), ha='center', va='bottom', fontsize=7, color="#4C72B0")
+        for i, v in enumerate(expected_frequencies):
+            plt.text(i + width/2, v + 2, str(int(v)), ha='center', va='bottom', fontsize=7, color='#888888')
+
+        # Add test results
+        plt.text(0.99, 0.98, f'Chi-square: {chi2_stat:.2f}\nKL Div: {kl_div:.3f}', transform=plt.gca().transAxes,
+                va='top', ha='right', bbox=dict(boxstyle='round', facecolor='white', alpha=0.8), fontsize=10)
+        plt.savefig(output_dir / f"{prefix}response_count_vs_uniform.png", dpi=300, bbox_inches='tight',
+                    facecolor='white', edgecolor='none')
+        plt.close()
+
+        # --- Plot 2: KL scatter plot (like the attached image) ---
+        plt.figure(figsize=(6, 6))
+        plt.scatter(expected_frequencies, values_extended, color="#4C72B0", alpha=0.8)
+        plt.plot([0, max(expected_frequencies)], [0, max(expected_frequencies)], 'r--', label='y=x (Perfect Uniform)')
+        plt.xlabel('Uniform Expected Count')
+        plt.ylabel('Observed Count')
+        plt.title('Observed vs Uniform State Distribution')
+        plt.legend()
+        plt.grid(True, linestyle='--', alpha=0.5)
+
+        # Annotate KL value
+        plt.text(0.98, 0.02, f'KL Div: {kl_div:.3f}', transform=plt.gca().transAxes,
+                va='bottom', ha='right', bbox=dict(boxstyle='round', facecolor='white', alpha=0.8), fontsize=10)
+        plt.tight_layout()
+        plt.savefig(output_dir / f"{prefix}kl_scatter_vs_uniform.png", dpi=300, bbox_inches='tight',
+                    facecolor='white', edgecolor='none')
+        plt.close()
+
+
     def _create_response_count_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
-        """Create response count-specific plots."""
+        """Create response count-specific plots, including KL divergence from uniform."""
         # Extract and sort data
         response_counter = comparison_data[0].result.overall_metrics["response_distribution"]
         sorted_items = sorted(response_counter.items(), key=lambda x: x[1], reverse=True)
         values, labels = zip(*sorted_items)
-        
-        # Create plot
+
+        # Pad to 50 states if needed
+        values_extended = list(values) + [0] * (50 - len(values))
+        labels_extended = list(labels) + [f"State_{i+1}" for i in range(len(labels), 50)]
+
+        total_trials = sum(values_extended)
+        expected_frequencies = self._generate_uniform_state_sample(n_trials=total_trials, n_states=50, seed=42)
+
+        # Draw KL and bar/scatter plots
+        draw_kl_from_uniform(values_extended, expected_frequencies, labels_extended, output_dir, prefix="")
+
+        # (Optional) Also keep the original barplot for just the observed distribution
         plt.figure(figsize=self.figsize)
         ax = sns.barplot(data=pd.DataFrame({'Response Type': labels, 'Count': values}),
                         x='Response Type', y='Count', palette=[self.colors[0]], alpha=0.7)
-        
-        # Style plot
         plt.xticks(rotation=45)
         plt.xlabel('Name of the State')
         plt.ylabel('Count')
         plt.title('State Name Distribution')
         plt.ylim(0, 500)
-        
-        # Add value labels
         for i, v in enumerate(values):
             ax.text(i, v, f'{int(v)}', ha='center', va='bottom')
         plt.tight_layout()
-        
-        # Chi-square test
-        total_trials = sum(values)
-        values_extended = list(values) + [0] * (50 - len(values))
-        expected_frequencies = self._generate_uniform_state_sample(n_trials=total_trials, n_states=50, seed=42)
-        chi2_stat, _ = chisquare(f_obs=values_extended, f_exp=expected_frequencies)
-        
-        # Add test result and save
-        plt.text(0.98, 0.98, f'Chi-square: {chi2_stat:.2f}', transform=plt.gca().transAxes,
-                va='top', ha='right', bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
         plt.savefig(output_dir / "response_count_distribution.png", dpi=300, bbox_inches='tight',
-                   facecolor='white', edgecolor='none')
+                    facecolor='white', edgecolor='none')
         plt.close()
 
 
@@ -513,13 +568,6 @@ class ComparisonPlotter:
                          label=cat, height=0.5, edgecolor='none')
             bar_handles.append(bar)
             left += df[cat + ' %']
-
-        # # Add labels and style
-        # for i, (method, correct_pct) in enumerate(zip(df['Method'], df['Correct %'])):
-        #     if correct_pct > 0:
-        #         ax.text(correct_pct/2, i, f"{method} Correct  {correct_pct*100:.1f}%",
-        #                va='center', ha='left', color='black', fontsize=10, fontweight='bold',
-        #                bbox=dict(facecolor='white', edgecolor='none', alpha=0.7, boxstyle='round,pad=0.2'))
 
         # Style plot
         ax.set_xlim(0, 1)

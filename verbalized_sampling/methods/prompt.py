@@ -1,15 +1,15 @@
 BASE_PROMPT = """
-Generate a response to the input prompt. The response must be at least {min_words} words long.
+Generate a response to the input prompt. The response should be around {target_words} words.
 Output ONLY the response, no explanations or extra text.
 """
 
 STANDARD_PROMPT = """
-Generate {num_samplings} different responses to the input prompt. Each response must be at least {min_words} words long.
+Generate {num_samplings} different responses to the input prompt. Each response should be around {target_words} words.
 Try to be as creative and diverse as possible.
 """
 
 STANDARD_ALL_POSSIBLE_PROMPT = """
-Generate all possible responses to the input prompt. Each response must be at least {min_words} words long.
+Generate all possible responses to the input prompt. Each response should be around {target_words} words.
 Try to be as creative and diverse as possible.
 """
 
