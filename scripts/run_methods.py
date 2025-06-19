@@ -98,12 +98,26 @@ if __name__ == "__main__":
         },
     ]
     
+    # run_method_tests(
+    #     task=Task.POEM,
+    #     model_name="openai/gpt-4.1",
+    #     methods=methods,
+    #     metrics=["diversity", "ngram", "ttct"], # "ngram", "ttct"
+    #     output_dir="method_results_poem",
+    # ) 
+    # run_method_tests(
+    #     task=Task.SPEECH,
+    #     model_name="openai/gpt-4.1",
+    #     methods=methods,
+    #     metrics=["diversity", "ttct"], # "ngram", "ttct"
+    #     output_dir="method_results_speech",
+    # ) 
     run_method_tests(
-        task=Task.POEM,
-        model_name="google/gemini-2.0-flash-001",
+        task=Task.BOOK,
+        model_name="openai/gpt-4.1",
         methods=methods,
-        metrics=["diversity"], # "ngram", "ttct"
-        output_dir="method_results_poem",
+        metrics=["diversity", "ttct"], # "ngram", "ttct"
+        output_dir="method_results_book",
     ) 
     # run_method_tests(
     #     task=Task.JOKE,

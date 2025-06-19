@@ -103,9 +103,9 @@ class DiversityEvaluator(BaseEvaluator):
                 prompt_groups[prompt] = []
             prompt_groups[prompt].append((i, m["response"]))
         
-        print(f"Number of prompt groups: {len(prompt_groups)}")
-        for prompt, indices_responses in prompt_groups.items():
-            print(f"Prompt group size: {len(indices_responses)}")
+        # print(f"Number of prompt groups: {len(prompt_groups)}")
+        # for prompt, indices_responses in prompt_groups.items():
+        #     print(f"Prompt group size: {len(indices_responses)}")
         
         # 2. Calculate embeddings per prompt group
         def compute_prompt_group_embeddings(prompt_group_data):

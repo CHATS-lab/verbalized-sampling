@@ -17,13 +17,24 @@ class BookTask(BaseTask):
             random_seed: Random seed for reproducible sampling
         """
         super().__init__(**kwargs)
-    
-    def get_metadata(self) -> dict:
-        """Get task metadata."""
-        return {
+        self.metadata = {
             "task_type": "book",
-            "total_prompts": len(self._prompts) if self._prompts else 0,
+            "total_prompts": 0,
             "num_prompts": self.num_prompts,
             "random_seed": self.random_seed,
             "description": "Novel/book continuation task with prompts from literary works"
-        } 
+        }
+
+    @property
+    def task_type(self) -> str:
+        return "book" 
+    
+    # def get_metadata(self) -> dict:
+    #     """Get task metadata."""
+    #     return {
+    #         "task_type": "book",
+    #         "total_prompts": len(self._prompts) if self._prompts else 0,
+    #         "num_prompts": self.num_prompts,
+    #         "random_seed": self.random_seed,
+    #         "description": "Novel/book continuation task with prompts from literary works"
+    #     } 

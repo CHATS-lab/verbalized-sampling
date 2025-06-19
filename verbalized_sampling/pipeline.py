@@ -182,11 +182,11 @@ class Pipeline:
                 )
                 
                 task_kwargs = {}
-                if exp_config.task in [Task.POEM, Task.SPEECH, Task.STATE_NAME, Task.SIMPLE_QA]:
-                    task_kwargs.update({
-                        "num_prompts": exp_config.num_prompts,
-                        "random_seed": exp_config.random_seed,
-                    })
+                # if exp_config.task in [Task.POEM, Task.SPEECH, Task.STATE_NAME, Task.SIMPLE_QA, Task.BOOK]:
+                task_kwargs.update({
+                    "num_prompts": exp_config.num_prompts,
+                    "random_seed": exp_config.random_seed,
+                })
 
                 # The num_samples must be smaller than num_responses
                 if exp_config.num_samples > exp_config.num_responses:
