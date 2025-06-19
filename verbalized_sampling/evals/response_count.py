@@ -14,42 +14,56 @@ class ResponseCountEvaluator(BaseEvaluator):
     ]
     aggregate_plot_metrics = [
         "average_kl_divergence",
-        "average_chi_square"
+        "average_precision"
     ]
     key_plot_metrics = [
         ("average_kl_divergence", "KL Divergence"),
-        ("average_chi_square", "Chi-square"),
+        ("average_precision", "Precision"),
     ]
 
     def __init__(self, name: str = "response_count", num_workers: int = 128):
         super().__init__(name=name, num_workers=num_workers)
         with open("data/state_name.json", "r") as f:
             self.gt_data = json.load(f)
+
+
+    def check_precision(self, response: str, gt_responses: List[Dict[str, Any]]) -> bool:
+        """Check if the response matches any of the ground truth responses.
+        
+        Args:
+            response: The response to check
+            gt_responses: List of ground truth responses
+            
+        Returns:
+            bool: True if the response matches any ground truth response
+        """
+        return any(response == fmt.lower().rstrip().rstrip('.') for gt_resp in gt_responses for fmt in gt_resp)
+
     
     def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, int]:
         """Compute the count of responses."""
-        if isinstance(response, str):
-            response = ast.literal_eval(response)
+        response_text = response.get('text', '')
+        if isinstance(response_text, dict):
+            if 'text' in response_text:
+                response_text = response_text['text']
+            else:
+                response_text = str(response_text)
 
-        list_of_responses = [
-            response.get('text', response) if isinstance(response, dict) else response
-        ]
-        list_of_responses = [
-            response.lower().rstrip().rstrip('.') for response in list_of_responses
-        ]
+        # Process the response text
+        response_text = response_text.lower().rstrip().rstrip('.')
 
         # get the gt response count and clean prompt
         prompt_clean = prompt.replace('\n', '')
         gt_response_count = len(self.gt_data[prompt_clean]['answers'])
+        correct_response = self.check_precision(response_text, self.gt_data[prompt_clean]['answers'])
         
-        return [
-            {
-                "prompt": prompt_clean,
-                "response": text,
-                "response_count": 1,  # Set to 1 as we'll count in aggregate_metrics
-                'total_gt_responses': gt_response_count
-            } for text in list_of_responses
-        ]
+        return {
+            "prompt": prompt_clean,
+            "response": response_text,
+            "response_count": 1,  # Set to 1 as we'll count in aggregate_metrics
+            'correct_response': 1 if correct_response else 0,
+            'total_gt_responses': gt_response_count
+        }
 
     def _calculate_kl_divergence(self, response_distribution: Counter, num_gt_responses: int) -> float:
         """Calculate KL divergence against uniform distribution."""
@@ -96,15 +110,12 @@ class ResponseCountEvaluator(BaseEvaluator):
         total_responses = sum(response_distribution.values())
         observed_values = list(response_distribution.values())
         
-        # Ensure we're using the larger of the two numbers for array size
-        max_categories = max(len(response_distribution), num_gt_responses)
-        
         # Create observed counts array with proper size
-        observed_counts = np.zeros(max_categories)
+        observed_counts = np.zeros(num_gt_responses)
         observed_counts[:len(observed_values)] = observed_values
         
         # Generate uniform sample with same size
-        expected_uniform = self._generate_uniform_sample(total_responses, max_categories, 42)
+        expected_uniform = self._generate_uniform_sample(total_responses, num_gt_responses, 42)
         # print(expected_uniform)
         # print(observed_counts)
         
@@ -122,12 +133,9 @@ class ResponseCountEvaluator(BaseEvaluator):
         if not instance_metrics:
             return {}
 
-        # Flatten the list of lists
-        flat_metrics = [item for sublist in instance_metrics for item in sublist]
-
         # Group by prompt
         prompt_groups = {}
-        for metric in flat_metrics:
+        for metric in instance_metrics:
             prompt = metric["prompt"]
             if prompt not in prompt_groups:
                 prompt_groups[prompt] = []
@@ -137,6 +145,7 @@ class ResponseCountEvaluator(BaseEvaluator):
         per_prompt_stats = {}
         total_kl_div = 0.0
         total_chi_square = 0.0
+        total_precision = 0.0
         num_prompts = len(prompt_groups)
         
         for prompt, group in prompt_groups.items():
@@ -147,15 +156,19 @@ class ResponseCountEvaluator(BaseEvaluator):
             
             # Count responses for this prompt group
             for metric in group:
-                response_distribution[metric['response']] += 1  # Count each response once
-                num_responses += 1
+                # Only count if it's a correct response
+                if metric.get('correct_response') == 1:
+                    response_distribution[metric['response']] += 1
+                    num_responses += 1
             
             # Calculate uniformity metrics for this prompt
             kl_div = self._calculate_kl_divergence(response_distribution, gt_count)
             chi_square = self._calculate_chi_square(response_distribution, gt_count)
+            precision = num_responses / len(group)
             
             total_kl_div += kl_div
             total_chi_square += chi_square
+            total_precision += precision
             
             if response_distribution:
                 min_responses_per_category = min(response_distribution.values())
@@ -171,13 +184,15 @@ class ResponseCountEvaluator(BaseEvaluator):
                 "response_distribution": dict(response_distribution),
                 "num_gt_responses": gt_count,
                 "kl_divergence": kl_div,
-                "chi_square": chi_square
+                "chi_square": chi_square,
+                "precision": precision
             }
         
         return {
             "per_prompt_stats": per_prompt_stats,
             "average_kl_divergence": total_kl_div / num_prompts if num_prompts > 0 else 0.0,
             "average_chi_square": total_chi_square / num_prompts if num_prompts > 0 else 0.0,
+            "average_precision": total_precision / num_prompts if num_prompts > 0 else 0.0,
             "num_prompts": num_prompts
         }
 

@@ -124,7 +124,7 @@ class BaseTask(ABC):
         parsed_results = []
 
         # print("Prompts: ", prompts)
-        # print("Results: ", results)
+        print("Results: ", results)
         
         for prompt, result in zip(prompts, results):
             prompt_text = prompt[-1]["content"]

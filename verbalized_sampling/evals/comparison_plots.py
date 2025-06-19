@@ -585,6 +585,7 @@ class ComparisonPlotter:
         x = np.arange(len(key_metric_names))
         width = 0.8 / len(method_names)  # Adjust width based on number of methods
         
+        ylim = 1
         # Create grouped bars
         for i, method_name in enumerate(method_names):
             print(f"Method name: {method_name}")
@@ -596,6 +597,8 @@ class ComparisonPlotter:
                 value = eval_result.overall_metrics
                 for key in metric_name.split('.'):
                     print(f"Key: {key}")
+                    if key == "average_kl_divergence":
+                        ylim = 3.0
                     # print(f"Value: {value}")
                     if isinstance(value, dict) and key in value:
                         value = value[key]
@@ -628,7 +631,7 @@ class ComparisonPlotter:
         plt.xlabel('Metrics', fontsize=12, fontweight='bold')
         plt.ylabel('Score', fontsize=12, fontweight='bold')
         plt.xticks(x, [plot_title for _, plot_title in key_metric_names], fontsize=11)
-        plt.ylim(0, 1)
+        plt.ylim(0, ylim)
 
         # Add legend
         plt.legend(loc='lower center', bbox_to_anchor=(0.5, -0.15),

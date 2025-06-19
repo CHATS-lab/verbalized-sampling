@@ -21,7 +21,7 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 50,
+        'num_responses': 100,
         'num_prompts': 10, # total: 145
         'target_words': 20, 
         'temperature': 1,
@@ -83,21 +83,21 @@ if __name__ == "__main__":
             'strict_json': False,
             'num_samples': 1,
         },
-        # {
-        #     'method': Method.MULTI_TURN,
-        #     'strict_json': False,
-        #     'num_samples': 5,
-        # },
-        # {
-        #     'method': Method.SEQUENCE,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
-        # {
-        #     'method': Method.STRUCTURE_WITH_PROB,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
+        {
+            'method': Method.MULTI_TURN,
+            'strict_json': False,
+            'num_samples': 5,
+        },
+        {
+            'method': Method.STRUCTURE,
+            'strict_json': True,
+            'num_samples': 5,
+        },
+        {
+            'method': Method.STRUCTURE_WITH_PROB,
+            'strict_json': True,
+            'num_samples': 5,
+        },
     ]
     
     run_method_tests(
@@ -106,14 +106,7 @@ if __name__ == "__main__":
         methods=methods,
         metrics=["response_count"],
         output_dir="method_results_state_name",
-    ) 
-    # run_method_tests(
-    #     task=Task.JOKE,
-    #     model_name="google/gemini-2.0-flash-001",
-    #     methods=methods,
-    #     metrics=["diversity", "ngram", "ttct"],
-    #     output_dir="method_results_jokes",
-    # )
+    )
 
 
 # # Direct (Baseline)
