@@ -7,7 +7,7 @@ import pandas as pd
 from dataclasses import dataclass
 from .base import EvalResult
 from scipy.stats import chisquare, entropy
-
+import os
 
 @dataclass
 class ComparisonData:
@@ -433,34 +433,42 @@ class ComparisonPlotter:
     def _create_response_count_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
         """Create response count-specific plots, including KL divergence from uniform."""
         # print(comparison_data[0].result.overall_metrics['per_prompt_stats'])
-        metrics = comparison_data[0].result.overall_metrics['per_prompt_stats']
-        
-        for idx, (key, data_point) in enumerate(metrics.items()):
-            num_responses = data_point["num_responses"]
-            num_gt_responses = data_point["num_gt_responses"]
-            response_counter = data_point["response_distribution"]
-            sorted_items = sorted(response_counter.items(), key=lambda x: x[1], reverse=True)
-            responses, counts = zip(*sorted_items)
 
-            # Create plot
-            plt.figure(figsize=self.figsize)
-            ax = sns.barplot(x=range(len(responses)), y=counts, color=self.colors[0], alpha=0.7)
-                
-            # Customize x-axis
-            plt.xticks(range(len(responses)), responses, rotation=45, ha='right')
-            plt.xlabel('Response')
-            plt.ylabel('Count')
-            plt.title(f"Question: {key}")
-            plt.ylim(0, max(counts) * 1.1)  # Add 10% padding above max count
-                
-            # Add value labels on top of bars
-            for i, count in enumerate(counts):
-                ax.text(i, count, f'{count}', ha='center', va='bottom')
-                
-            plt.tight_layout()
-            plt.savefig(output_dir / f"response_count_distribution_Q{idx}.png", dpi=300, bbox_inches='tight',
-                        facecolor='white', edgecolor='none')
-            plt.close()
+        for idx, comp in enumerate(comparison_data):
+            if idx != len(comparison_data) - 1:
+                continue
+            method_name = comp.name
+            if not os.path.exists(output_dir / method_name):
+                os.makedirs(output_dir / method_name)
+            metrics = comp.result.overall_metrics['per_prompt_stats']
+            for idx, (key, data_point) in enumerate(metrics.items()):
+                num_responses = data_point["num_responses"]
+                num_gt_responses = data_point["num_gt_responses"]
+                response_counter = data_point["response_distribution"]
+                if not response_counter:
+                    continue
+                sorted_items = sorted(response_counter.items(), key=lambda x: x[1], reverse=True)
+                responses, counts = zip(*sorted_items)
+
+                # Create plot
+                plt.figure(figsize=self.figsize)
+                ax = sns.barplot(x=range(len(responses)), y=counts, color=self.colors[0], alpha=0.7)
+                    
+                # Customize x-axis
+                plt.xticks(range(len(responses)), responses, rotation=45, ha='right')
+                plt.xlabel('Response')
+                plt.ylabel('Count')
+                plt.title(f"Question: {key}")
+                plt.ylim(0, max(counts) * 1.1)  # Add 10% padding above max count
+                    
+                # Add value labels on top of bars
+                for i, count in enumerate(counts):
+                    ax.text(i, count, f'{count}', ha='center', va='bottom')
+                    
+                plt.tight_layout()
+                plt.savefig(output_dir / method_name / f"response_count_distribution_Q{idx}.png", dpi=300, bbox_inches='tight',
+                            facecolor='white', edgecolor='none')
+                plt.close()
 
 
     def _create_factuality_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
@@ -596,7 +604,7 @@ class ComparisonPlotter:
             for metric_name, plot_title in key_metric_names:
                 value = eval_result.overall_metrics
                 for key in metric_name.split('.'):
-                    print(f"Key: {key}")
+                    # print(f"Key: {key}")
                     if key == "average_kl_divergence":
                         ylim = 3.0
                     # print(f"Value: {value}")
@@ -636,7 +644,7 @@ class ComparisonPlotter:
         # Add legend
         plt.legend(loc='lower center', bbox_to_anchor=(0.5, -0.15),
                   frameon=True, fancybox=True, shadow=True,
-                  fontsize=10, framealpha=0.9, ncol=len(method_names))
+                  fontsize=10, framealpha=0.9, ncol=min(len(method_names), 4))
         
         # Add title if provided
         if title:

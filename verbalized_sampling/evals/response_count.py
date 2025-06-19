@@ -73,6 +73,7 @@ class ResponseCountEvaluator(BaseEvaluator):
         observed_counts = np.array(list(response_distribution.values()))
         total_responses = sum(observed_counts)
         observed_probs = observed_counts / total_responses
+
         uniform_probs = np.full_like(observed_probs, 1.0 / num_gt_responses)
         
         # Add small epsilon to avoid log(0)
@@ -116,16 +117,32 @@ class ResponseCountEvaluator(BaseEvaluator):
         
         # Generate uniform sample with same size
         expected_uniform = self._generate_uniform_sample(total_responses, num_gt_responses, 42)
-        # print(expected_uniform)
-        # print(observed_counts)
+        
+        # Ensure both arrays are numpy arrays with the same shape
+        observed_counts = np.array(observed_counts, dtype=float)
+        expected_uniform = np.array(expected_uniform, dtype=float)
         
         # Add small epsilon to avoid division by zero
         epsilon = 1e-10
-        expected_uniform = np.array(expected_uniform) + epsilon
+        expected_uniform = expected_uniform + epsilon
         
-        # Calculate chi-square
         chi_square_stat, _ = chisquare(observed_counts, expected_uniform)
         return float(chi_square_stat)
+    
+
+    def re_group(self, response_distribution: Counter, gt_responses: List[Dict[str, Any]]) -> Counter:
+        """Re-group the response distribution to the number of gt responses."""
+        regrouped_distribution = Counter()
+        
+        # For each response in the distribution, find which gt_response group it belongs to
+        for response, count in response_distribution.items():
+            for gt_response in gt_responses:
+                gt_response_clean = [fmt.lower().rstrip().rstrip('.') for fmt in gt_response]
+                gt_first_ans = gt_response_clean[0]
+                if response in gt_response_clean:
+                    regrouped_distribution[gt_first_ans] += count
+        
+        return regrouped_distribution
 
 
     def aggregate_metrics(self, instance_metrics: List[List[Dict[str, int]]]) -> Dict[str, float]:
@@ -150,6 +167,7 @@ class ResponseCountEvaluator(BaseEvaluator):
         
         for prompt, group in prompt_groups.items():
             # Create a fresh counter for each prompt group
+            # print("prompt: ", prompt)
             response_distribution = Counter()
             num_responses = 0
             gt_count = group[0]['total_gt_responses'] if group else 0
@@ -160,6 +178,10 @@ class ResponseCountEvaluator(BaseEvaluator):
                 if metric.get('correct_response') == 1:
                     response_distribution[metric['response']] += 1
                     num_responses += 1
+            
+            # re-group the response distribution to the number of gt responses
+            prompt_clean = prompt.replace('\n', '')
+            response_distribution = self.re_group(response_distribution, self.gt_data[prompt_clean]['answers'])
             
             # Calculate uniformity metrics for this prompt
             kl_div = self._calculate_kl_divergence(response_distribution, gt_count)
@@ -187,6 +209,7 @@ class ResponseCountEvaluator(BaseEvaluator):
                 "chi_square": chi_square,
                 "precision": precision
             }
+        
         
         return {
             "per_prompt_stats": per_prompt_stats,
