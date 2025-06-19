@@ -118,6 +118,8 @@ class CreativeWritingV3Evaluator(BaseEvaluator):
         messages = [{"role": "user", "content": evaluation_prompt}]
         judge_response = self.judge_model._chat(messages)
         
+        if judge_response is None:
+            return {"Average_Score": 0.0}
         # Parse scores from judge response
         scores = parse_judge_scores_creative(judge_response)
         

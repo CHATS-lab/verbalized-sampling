@@ -5,11 +5,13 @@ import time
 import litellm
 from .base import BaseLLM
 
+litellm.drop_params = True
 LITELLM_MODELS_MAPPING = {
     "anthropic/claude-4-sonnet" : "anthropic/claude-sonnet-4-20250514",
     "anthropic/claude-4-opus" : "anthropic/claude-opus-4-20250514",
     "claude-4-sonnet" : "anthropic/claude-sonnet-4-20250514",
     "claude-4-opus" : "anthropic/claude-opus-4-20250514",
+    "openai/o3" : "o3",
 }
 
 

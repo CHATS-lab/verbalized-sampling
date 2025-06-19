@@ -57,6 +57,11 @@ class ResponseParser:
                 parsed = ast.literal_eval(response)
                 if isinstance(parsed, list):
                     return [{'text': item} for item in parsed]
+                elif isinstance(parsed, dict):
+                    if isinstance(parsed["responses"], list):
+                        return parsed["responses"]
+                    else:
+                        return [{'text': parsed["responses"]}]
                 else:
                     return [{'text': str(parsed)}]
             except Exception:

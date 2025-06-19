@@ -28,6 +28,8 @@ def get_model(model_name: str,
             model_class = LLM_REGISTRY["openrouter"]
         else:
             model_class = LLM_REGISTRY["litellm"]
+    elif "o3" in model_name:
+        model_class = LLM_REGISTRY["litellm"]
     else:
         model_class = LLM_REGISTRY["vllm" if use_vllm else "openrouter"]
     return model_class(model_name=model_name, 
