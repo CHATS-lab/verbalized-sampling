@@ -4,15 +4,6 @@ from verbalized_sampling.methods import Method
 from pathlib import Path
 import sys
 
-NUM_RESPONSES = 5
-NUM_SAMPLES = 5
-NUM_PROMPTS = 1
-
-MODEL_PARAMS = {
-    "temperature": 1,
-    "top_p": 1.0,
-}
-
 from verbalized_sampling.pipeline import Pipeline, PipelineConfig, ExperimentConfig, EvaluationConfig
 from verbalized_sampling.tasks import Task
 from verbalized_sampling.methods import Method
@@ -30,9 +21,9 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 10,
-        'num_prompts': 5,
-        'target_words': 20,
+        'num_responses': 50,
+        'num_prompts': 10, # total: 145
+        'target_words': 20, 
         'temperature': 1,
         'random_seed': 42,
     }
@@ -87,14 +78,14 @@ if __name__ == "__main__":
     
     # Test multi-turn and JSON mode variations
     methods = [
-        # {
-        #     'method': Method.DIRECT,
-        #     'strict_json': False,
-        #     'num_samples': 1,
-        # },
+        {
+            'method': Method.DIRECT,
+            'strict_json': False,
+            'num_samples': 1,
+        },
         # {
         #     'method': Method.MULTI_TURN,
-        #     'strict_json': True,
+        #     'strict_json': False,
         #     'num_samples': 5,
         # },
         # {
@@ -102,11 +93,11 @@ if __name__ == "__main__":
         #     'strict_json': True,
         #     'num_samples': 5,
         # },
-        {
-            'method': Method.STRUCTURE_WITH_PROB,
-            'strict_json': True,
-            'num_samples': 5,
-        },
+        # {
+        #     'method': Method.STRUCTURE_WITH_PROB,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        # },
     ]
     
     run_method_tests(

@@ -23,12 +23,11 @@ class ResponseCountEvaluator(BaseEvaluator):
 
     def __init__(self, name: str = "response_count", num_workers: int = 128):
         super().__init__(name=name, num_workers=num_workers)
-        self.counter = Counter()
         with open("data/state_name.json", "r") as f:
             self.gt_data = json.load(f)
     
     def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, int]:
-        """Compute the count of responses and uniformity metrics."""
+        """Compute the count of responses."""
         if isinstance(response, str):
             response = ast.literal_eval(response)
 
@@ -36,10 +35,8 @@ class ResponseCountEvaluator(BaseEvaluator):
             response.get('text', response) if isinstance(response, dict) else response
         ]
         list_of_responses = [
-            response.replace('.', '').lower().rstrip() for response in list_of_responses
+            response.lower().rstrip().rstrip('.') for response in list_of_responses
         ]
-        response_counter = Counter(list_of_responses)
-        self.counter.update(list_of_responses)
 
         # get the gt response count and clean prompt
         prompt_clean = prompt.replace('\n', '')
@@ -49,8 +46,8 @@ class ResponseCountEvaluator(BaseEvaluator):
             {
                 "prompt": prompt_clean,
                 "response": text,
-                "response_count": self.counter[text],
-                'total_gt_responses': gt_response_count,
+                "response_count": 1,  # Set to 1 as we'll count in aggregate_metrics
+                'total_gt_responses': gt_response_count
             } for text in list_of_responses
         ]
 
@@ -61,11 +58,7 @@ class ResponseCountEvaluator(BaseEvaluator):
             
         observed_counts = np.array(list(response_distribution.values()))
         total_responses = sum(observed_counts)
-        
-        # Calculate observed probabilities
         observed_probs = observed_counts / total_responses
-        
-        # Calculate uniform probabilities
         uniform_probs = np.full_like(observed_probs, 1.0 / num_gt_responses)
         
         # Add small epsilon to avoid log(0)
@@ -73,7 +66,10 @@ class ResponseCountEvaluator(BaseEvaluator):
         observed_probs = observed_probs + epsilon
         observed_probs = observed_probs / observed_probs.sum()  # Renormalize
         
-        return float(entropy(observed_probs, uniform_probs))
+        # Calculate KL divergence: KL(P || Q) = sum(P * log(P / Q))
+        kl_divergence = float(np.sum(observed_probs * np.log(observed_probs / uniform_probs)))
+        return kl_divergence
+
 
     def _generate_uniform_sample(self, n_trials, n_labels, seed):
         """Generate what a truly uniform state selection would look like."""
@@ -98,20 +94,24 @@ class ResponseCountEvaluator(BaseEvaluator):
             return 0.0
         
         total_responses = sum(response_distribution.values())
-        observed_counts = np.concatenate([
-            np.array(list(response_distribution.values())),
-            np.zeros(num_gt_responses - len(response_distribution))
-        ])
-        print(observed_counts)
+        observed_values = list(response_distribution.values())
         
-        # Calculate expected counts for uniform distribution
-        expected_uniform = self._generate_uniform_sample(total_responses, num_gt_responses, 42)
-        print(expected_uniform)
-
+        # Ensure we're using the larger of the two numbers for array size
+        max_categories = max(len(response_distribution), num_gt_responses)
+        
+        # Create observed counts array with proper size
+        observed_counts = np.zeros(max_categories)
+        observed_counts[:len(observed_values)] = observed_values
+        
+        # Generate uniform sample with same size
+        expected_uniform = self._generate_uniform_sample(total_responses, max_categories, 42)
+        # print(expected_uniform)
+        # print(observed_counts)
+        
         # Add small epsilon to avoid division by zero
         epsilon = 1e-10
         expected_uniform = np.array(expected_uniform) + epsilon
-
+        
         # Calculate chi-square
         chi_square_stat, _ = chisquare(observed_counts, expected_uniform)
         return float(chi_square_stat)
@@ -140,13 +140,14 @@ class ResponseCountEvaluator(BaseEvaluator):
         num_prompts = len(prompt_groups)
         
         for prompt, group in prompt_groups.items():
+            # Create a fresh counter for each prompt group
             response_distribution = Counter()
             num_responses = 0
             gt_count = group[0]['total_gt_responses'] if group else 0
             
-            # Collect response distribution for this prompt
+            # Count responses for this prompt group
             for metric in group:
-                response_distribution[metric['response']] += metric['response_count']
+                response_distribution[metric['response']] += 1  # Count each response once
                 num_responses += 1
             
             # Calculate uniformity metrics for this prompt
@@ -172,13 +173,6 @@ class ResponseCountEvaluator(BaseEvaluator):
                 "kl_divergence": kl_div,
                 "chi_square": chi_square
             }
-        
-        # Calculate and add average metrics
-        average_metrics = {
-            "average_kl_divergence": total_kl_div / num_prompts if num_prompts > 0 else 0.0,
-            "average_chi_square": total_chi_square / num_prompts if num_prompts > 0 else 0.0,
-            "num_prompts": num_prompts
-        }
         
         return {
             "per_prompt_stats": per_prompt_stats,
