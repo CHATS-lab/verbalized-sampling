@@ -30,8 +30,8 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 100,
-        'num_prompts': 1,
+        'num_responses': 10,
+        'num_prompts': 5,
         'target_words': 20,
         'temperature': 1,
         'random_seed': 42,
@@ -92,11 +92,11 @@ if __name__ == "__main__":
         #     'strict_json': False,
         #     'num_samples': 1,
         # },
-        {
-            'method': Method.MULTI_TURN,
-            'strict_json': True,
-            'num_samples': 5,
-        },
+        # {
+        #     'method': Method.MULTI_TURN,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        # },
         # {
         #     'method': Method.SEQUENCE,
         #     'strict_json': True,

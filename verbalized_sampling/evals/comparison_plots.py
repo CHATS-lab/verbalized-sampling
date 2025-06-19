@@ -6,7 +6,6 @@ import seaborn as sns
 import pandas as pd
 from dataclasses import dataclass
 from .base import EvalResult
-from scipy.stats import chisquare
 from scipy.stats import chisquare, entropy
 
 
@@ -430,114 +429,38 @@ class ComparisonPlotter:
                 plot_type="bar"
             )
 
-    def _generate_uniform_state_sample(self, n_trials=500, n_states=50, seed=42):
-        """Generate what a truly uniform state selection would look like."""
-        if seed:
-            np.random.seed(seed)
-        
-        # Simulate uniform random selection
-        state_selections = np.random.choice(range(n_states), size=n_trials, replace=True)
-        
-        # Count frequencies
-        unique_states, counts = np.unique(state_selections, return_counts=True)
-        
-        # Create full array (including states with 0 counts)
-        full_counts = np.zeros(n_states)
-        full_counts[unique_states] = counts
-        
-        return sorted([int(count) for count in full_counts], reverse=True)
-
-
-    def draw_kl_from_uniform(values_extended, expected_frequencies, labels_extended, output_dir, prefix=""):
-        """Draws the KL divergence scatter and bar plots comparing observed and uniform distributions."""
-        # Calculate probabilities
-        total_trials = sum(values_extended)
-        expected_probs = np.array(expected_frequencies) / sum(expected_frequencies)
-        observed_probs = np.array(values_extended) / (sum(values_extended) if sum(values_extended) > 0 else 1)
-        epsilon = 1e-10
-        kl_div = entropy(observed_probs + epsilon, expected_probs + epsilon)
-        chi2_stat, _ = chisquare(f_obs=values_extended, f_exp=expected_frequencies)
-
-        # --- Plot 1: Discrete bar plot of observed vs uniform ---
-        plt.figure(figsize=(16, 6))
-        x = np.arange(50)
-        width = 0.35
-
-        plt.bar(x - width/2, values_extended, width, label='Observed', color="#4C72B0", alpha=0.7)
-        plt.bar(x + width/2, expected_frequencies, width, label='Uniform Expected', color='#888888', alpha=0.5)
-
-        plt.xlabel('State')
-        plt.ylabel('Count')
-        plt.title('State Name Distribution vs Uniform')
-        plt.xticks(x, labels_extended, rotation=90, fontsize=8)
-        plt.ylim(0, max(max(values_extended), max(expected_frequencies)) * 1.1)
-        plt.legend()
-        plt.tight_layout()
-
-        # Annotate bars with values
-        for i, v in enumerate(values_extended):
-            plt.text(i - width/2, v + 2, str(int(v)), ha='center', va='bottom', fontsize=7, color="#4C72B0")
-        for i, v in enumerate(expected_frequencies):
-            plt.text(i + width/2, v + 2, str(int(v)), ha='center', va='bottom', fontsize=7, color='#888888')
-
-        # Add test results
-        plt.text(0.99, 0.98, f'Chi-square: {chi2_stat:.2f}\nKL Div: {kl_div:.3f}', transform=plt.gca().transAxes,
-                va='top', ha='right', bbox=dict(boxstyle='round', facecolor='white', alpha=0.8), fontsize=10)
-        plt.savefig(output_dir / f"{prefix}response_count_vs_uniform.png", dpi=300, bbox_inches='tight',
-                    facecolor='white', edgecolor='none')
-        plt.close()
-
-        # --- Plot 2: KL scatter plot (like the attached image) ---
-        plt.figure(figsize=(6, 6))
-        plt.scatter(expected_frequencies, values_extended, color="#4C72B0", alpha=0.8)
-        plt.plot([0, max(expected_frequencies)], [0, max(expected_frequencies)], 'r--', label='y=x (Perfect Uniform)')
-        plt.xlabel('Uniform Expected Count')
-        plt.ylabel('Observed Count')
-        plt.title('Observed vs Uniform State Distribution')
-        plt.legend()
-        plt.grid(True, linestyle='--', alpha=0.5)
-
-        # Annotate KL value
-        plt.text(0.98, 0.02, f'KL Div: {kl_div:.3f}', transform=plt.gca().transAxes,
-                va='bottom', ha='right', bbox=dict(boxstyle='round', facecolor='white', alpha=0.8), fontsize=10)
-        plt.tight_layout()
-        plt.savefig(output_dir / f"{prefix}kl_scatter_vs_uniform.png", dpi=300, bbox_inches='tight',
-                    facecolor='white', edgecolor='none')
-        plt.close()
-
 
     def _create_response_count_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
         """Create response count-specific plots, including KL divergence from uniform."""
-        # Extract and sort data
-        response_counter = comparison_data[0].result.overall_metrics["response_distribution"]
-        sorted_items = sorted(response_counter.items(), key=lambda x: x[1], reverse=True)
-        values, labels = zip(*sorted_items)
+        # print(comparison_data[0].result.overall_metrics['per_prompt_stats'])
+        metrics = comparison_data[0].result.overall_metrics['per_prompt_stats']
+        
+        for idx, (key, data_point) in enumerate(metrics.items()):
+            num_responses = data_point["num_responses"]
+            num_gt_responses = data_point["num_gt_responses"]
+            response_counter = data_point["response_distribution"]
+            sorted_items = sorted(response_counter.items(), key=lambda x: x[1], reverse=True)
+            responses, counts = zip(*sorted_items)
 
-        # Pad to 50 states if needed
-        values_extended = list(values) + [0] * (50 - len(values))
-        labels_extended = list(labels) + [f"State_{i+1}" for i in range(len(labels), 50)]
-
-        total_trials = sum(values_extended)
-        expected_frequencies = self._generate_uniform_state_sample(n_trials=total_trials, n_states=50, seed=42)
-
-        # Draw KL and bar/scatter plots
-        draw_kl_from_uniform(values_extended, expected_frequencies, labels_extended, output_dir, prefix="")
-
-        # (Optional) Also keep the original barplot for just the observed distribution
-        plt.figure(figsize=self.figsize)
-        ax = sns.barplot(data=pd.DataFrame({'Response Type': labels, 'Count': values}),
-                        x='Response Type', y='Count', palette=[self.colors[0]], alpha=0.7)
-        plt.xticks(rotation=45)
-        plt.xlabel('Name of the State')
-        plt.ylabel('Count')
-        plt.title('State Name Distribution')
-        plt.ylim(0, 500)
-        for i, v in enumerate(values):
-            ax.text(i, v, f'{int(v)}', ha='center', va='bottom')
-        plt.tight_layout()
-        plt.savefig(output_dir / "response_count_distribution.png", dpi=300, bbox_inches='tight',
-                    facecolor='white', edgecolor='none')
-        plt.close()
+            # Create plot
+            plt.figure(figsize=self.figsize)
+            ax = sns.barplot(x=range(len(responses)), y=counts, color=self.colors[0], alpha=0.7)
+                
+            # Customize x-axis
+            plt.xticks(range(len(responses)), responses, rotation=45, ha='right')
+            plt.xlabel('Response')
+            plt.ylabel('Count')
+            plt.title(f"Question: {key}")
+            plt.ylim(0, max(counts) * 1.1)  # Add 10% padding above max count
+                
+            # Add value labels on top of bars
+            for i, count in enumerate(counts):
+                ax.text(i, count, f'{count}', ha='center', va='bottom')
+                
+            plt.tight_layout()
+            plt.savefig(output_dir / f"response_count_distribution_Q{idx}.png", dpi=300, bbox_inches='tight',
+                        facecolor='white', edgecolor='none')
+            plt.close()
 
 
     def _create_factuality_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
@@ -811,3 +734,21 @@ def plot_comparison_chart(results: Dict[str, Union[EvalResult, str, Path]],
             output_path,
             title=title)
         
+
+# legacy code
+    # def _generate_uniform_state_sample(self, n_trials, n_labels, seed):
+    #     """Generate what a truly uniform state selection would look like."""
+    #     if seed:
+    #         np.random.seed(seed)
+
+    #     # Simulate uniform random selection
+    #     state_selections = np.random.choice(range(n_labels), size=n_trials, replace=True)
+        
+    #     # Count frequencies
+    #     unique_states, counts = np.unique(state_selections, return_counts=True)
+        
+    #     # Create full array (including states with 0 counts)
+    #     full_counts = np.zeros(n_labels)
+    #     full_counts[unique_states] = counts
+        
+    #     return sorted([int(count) for count in full_counts], reverse=True)
