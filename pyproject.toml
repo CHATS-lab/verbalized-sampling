@@ -28,6 +28,8 @@ dependencies = [
     "sacremoses",
     "seaborn",
     "dedent",
+    "scikit-learn",
+    "litellm",
 ]
 
 [project.optional-dependencies]

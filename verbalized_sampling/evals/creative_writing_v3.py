@@ -100,9 +100,10 @@ class CreativeWritingV3Evaluator(BaseEvaluator):
         ("Average_Score", "Quality (LLM-as-Judge)"),
     ]
     
-    def __init__(self, judge_model: str = "anthropic/claude-sonnet-4", num_workers: int = 64):
+    def __init__(self, judge_model: str = "anthropic/claude-4-sonnet", num_workers: int = 64):
         super().__init__("creative_writing_v3", num_workers=num_workers)
-        self.judge_model = get_model(judge_model, method="direct", config={})
+        
+        self.judge_model = get_model(judge_model, method="direct", config={"temperature": 0.0})
         
     def compute_instance_metric(self, prompt: str, response: Dict) -> Dict[str, float]:
         """Compute creative writing metrics for a single prompt-response pair."""
