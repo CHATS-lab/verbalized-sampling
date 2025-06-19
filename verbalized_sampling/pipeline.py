@@ -255,6 +255,8 @@ class Pipeline:
                         prompt = data["prompt"]
                         responses_list = data["responses"]
                         for i, response in enumerate(responses_list):
+                            if isinstance(response, str):
+                                response = {"text": response}
                             response['index'] = i
                             responses.append(response)
                             prompts.append(prompt)

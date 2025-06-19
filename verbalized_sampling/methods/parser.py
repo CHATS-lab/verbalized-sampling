@@ -56,12 +56,12 @@ class ResponseParser:
             try:
                 parsed = ast.literal_eval(response)
                 if isinstance(parsed, list):
-                    return [{'text': item} for item in parsed]
+                    return [{'text': item} for item in parsed if item is not None]
                 elif isinstance(parsed, dict):
                     if isinstance(parsed["responses"], list):
                         return parsed["responses"]
                     else:
-                        return [{'text': parsed["responses"]}]
+                        return [{'text': parsed["responses"] if parsed["responses"] is not None else ""}]
                 else:
                     return [{'text': str(parsed)}]
             except Exception:

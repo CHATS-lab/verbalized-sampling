@@ -101,7 +101,8 @@ class CreativeWritingV3Evaluator(BaseEvaluator):
     ]
     
     def __init__(self, judge_model: str = "anthropic/claude-4-sonnet", num_workers: int = 64):
-        super().__init__("creative_writing_v3", num_workers=num_workers)
+        # Reduce number of workers to 8 to avoid rate limiting since calling claude
+        super().__init__("creative_writing_v3", num_workers=32)
         
         self.judge_model = get_model(judge_model, method="direct", config={"temperature": 0.0})
         

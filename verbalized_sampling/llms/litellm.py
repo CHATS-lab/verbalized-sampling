@@ -11,6 +11,8 @@ LITELLM_MODELS_MAPPING = {
     "anthropic/claude-4-opus" : "anthropic/claude-opus-4-20250514",
     "claude-4-sonnet" : "anthropic/claude-sonnet-4-20250514",
     "claude-4-opus" : "anthropic/claude-opus-4-20250514",
+    "claude-3.7-sonnet" : "anthropic/claude-3-7-sonnet-20250219",
+    "anthropic/claude-3.7-sonnet" : "anthropic/claude-3-7-sonnet-20250219",
     "openai/o3" : "o3",
 }
 
