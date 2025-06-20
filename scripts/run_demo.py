@@ -9,17 +9,17 @@ NUM_SAMPLES = 5
 # Quick comparison
 results = run_quick_comparison(
     task=Task.POEM,
-    methods=[Method.SEQUENCE],
+    methods=[Method.DIRECT, Method.SEQUENCE, Method.MULTI_TURN,Method.STRUCTURE_WITH_PROB],
     # methods=[Method.MULTI_TURN],
-    model_name="openai/gpt-4.1",
-    # model_name="anthropic/claude-sonnet-4",
-    metrics=["diversity"],
-    output_dir=Path("comparison_results/poem"),
+    # model_name="openai/gpt-4.1",
+    model_name="anthropic/claude-4-sonnet",
+    metrics=["diversity", "quality", "creative_writing_v3"],
+    output_dir=Path("comparison_results/claude_4_sonnet"),
     num_responses=NUM_RESPONSES,
     num_samples=NUM_SAMPLES,
-    num_prompts=1,
+    num_prompts=10,
     rerun=True,
-    # strict_json=True,
+    strict_json=True,
     # skip_existing=True
 )
 

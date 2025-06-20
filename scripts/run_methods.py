@@ -19,12 +19,16 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 100,
-        'num_prompts': 5,
+        'num_responses': 30, # 30
+        'num_prompts': 100, # 100
         'target_words': 200,
-        'temperature': 1,
+        'temperature': 0.7,
         'random_seed': 42,
     }
+
+    # story, target_words: 500, num_responses: 
+    # ablation: vary num_responses
+    # ablation: base model
     
     experiments = []
     for method_config in methods:
@@ -82,12 +86,12 @@ if __name__ == "__main__":
             'num_samples': 1,
         },
         {
-            'method': Method.MULTI_TURN,
+            'method': Method.SEQUENCE,
             'strict_json': True,
             'num_samples': 5,
         },
         {
-            'method': Method.SEQUENCE,
+            'method': Method.MULTI_TURN,
             'strict_json': True,
             'num_samples': 5,
         },
@@ -97,28 +101,70 @@ if __name__ == "__main__":
             'num_samples': 5,
         },
     ]
-    
+     
+    models = [
+        "openai/gpt-4.1",
+        "openai/gpt-4.1-mini",
+        "google/gemini-2.5-flash",
+        "anthropic/claude-4-sonnet",
+        "anthropic/claude-3.7-sonnet",
+        "google/gemini-2.5-pro",
+        "deepseek/deepseek-r1-0528",
+        "openai/o3",
+    ]
+    for model in models:
+        model_basename = model.replace("/", "_")
+        run_method_tests(
+            task=Task.POEM,
+            model_name=model,
+            methods=methods,
+            metrics=["diversity", "ngram", "creative_writing_v3"],
+            output_dir=f"poem_experiments_final/{model_basename}",
+        )
+    # run_method_tests(
+    #     task=Task.POEM,
+    #     # model_name="openai/gpt-4.1",
+    #     model_name="anthropic/claude-4-sonnet",
+    #     methods=methods,
+    #     metrics=["diversity", "ngram", "ttct", "creative_writing_v3"],
+    #     output_dir="method_results_poem/claude_4_sonnet",
+    # )
     # run_method_tests(
     #     task=Task.POEM,
     #     model_name="openai/gpt-4.1",
+    #     # model_name="anthropic/claude-4-sonnet",
     #     methods=methods,
-    #     metrics=["diversity", "ngram", "ttct"], # "ngram", "ttct"
-    #     output_dir="method_results_poem",
+    #     metrics=["diversity", "ngram", "ttct", "creative_writing_v3"],
+    #     output_dir="method_results_poem/gpt_4_1",
+    # )
+    # run_method_tests(
+    #     task=Task.POEM,
+    #     model_name="google/gemini-2.5-pro",
+    #     methods=methods,
+    #     metrics=["diversity", "ngram", "ttct", "creative_writing_v3"],
+    #     output_dir="method_results_poem/gemini_2_5_pro",
+    # )
+    # run_method_tests(
+    #     task=Task.POEM,
+    #     model_name="deepseek/deepseek-r1-0528",
+    #     methods=methods,
+    #     metrics=["diversity", "ngram", "ttct", "creative_writing_v3"],
+    #     output_dir="method_results_poem/deepseek_r1_0528",
+    # )
+    # run_method_tests(
+    #     task=Task.POEM,
+    #     model_name="openai/o3",
+    #     methods=methods,
+    #     metrics=["diversity", "ngram", "ttct", "creative_writing_v3", "length"],
+    #     output_dir="method_results_poem/o3",
     # ) 
     # run_method_tests(
-    #     task=Task.SPEECH,
-    #     model_name="openai/gpt-4.1",
+    #     task=Task.POEM,
+    #     model_name="google/gemini-2.5-flash",
     #     methods=methods,
-    #     metrics=["diversity", "ttct"], # "ngram", "ttct"
-    #     output_dir="method_results_speech",
+    #     metrics=["diversity", "ngram", "ttct", "creative_writing_v3", "length"],
+    #     output_dir="method_results_poem/gemini_2_5_flash_001",
     # ) 
-    run_method_tests(
-        task=Task.BOOK,
-        model_name="openai/gpt-4.1",
-        methods=methods,
-        metrics=["diversity", "ttct"], # "ngram", "ttct"
-        output_dir="method_results_book",
-    ) 
     # run_method_tests(
     #     task=Task.JOKE,
     #     model_name="google/gemini-2.0-flash-001",
