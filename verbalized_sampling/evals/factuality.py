@@ -120,7 +120,10 @@ class FactualityEvaluator(BaseEvaluator):
 
     def __init__(self, judge_model: str = "openai/gpt-4.1", num_workers=64):
         super().__init__("factuality", num_workers=num_workers)
-        self.judge_model = get_model(judge_model, method="direct", config={}, strict_json=True)
+        model_config = {
+            "temperature": 0.1,
+        }
+        self.judge_model = get_model(judge_model, method="direct", config=model_config, strict_json=True)
         self.df = pd.read_csv("https://openaipublic.blob.core.windows.net/simple-evals/simple_qa_test_set.csv")
         if self.df is None:
             self.df = pd.read_csv("data/simple_qa.csv")
@@ -154,60 +157,97 @@ class FactualityEvaluator(BaseEvaluator):
         # print("prompt: ", prompt)
         # print("type of prompt: ", type(prompt))
 
-        if isinstance(response, str):
-            response = ast.literal_eval(response)
+        response_text = response.get('text', response)
+        if isinstance(response_text, dict):
+            response_text = str(response_text)
 
-        list_of_responses = [
-            response.get('text', response) if isinstance(response, dict) else response
-        ]
-
-        grade_letter_list = []
-        question = prompt
         target = self.get_answer_by_question(prompt)
-        for response in list_of_responses:
-            grade_letter = self.grade_sample(question, target, response)
-            grade_letter_list.append(grade_letter)
+        grade_letter = self.grade_sample(prompt, target, response)
         
-        return [{
-            'question': question,
+        return {
+            'prompt': prompt,
             'target': target,
-            'predicted_answer': response,
+            'predicted_answer': response_text,
             'grade_letter': grade_letter,
             # Metrics based on grading response
             "is_correct": grade_letter == "A",
             "is_incorrect": grade_letter == "B",
             "is_not_attempted": grade_letter == "C"
-        } for response, grade_letter in zip(list_of_responses, grade_letter_list)]
+        }
     
 
     def aggregate_metrics(self, instance_metrics: List[List[Dict[str, float]]]) -> Dict[str, float]:
-        instance_metrics = [metric for instance_list in instance_metrics for metric in instance_list if metric]
+        if not instance_metrics:
+            return {}
         
-        aggregate_metrics = {
-            "is_correct": sum(metric["is_correct"] for metric in instance_metrics) / len(instance_metrics),
-            "is_incorrect": sum(metric["is_incorrect"] for metric in instance_metrics) / len(instance_metrics),
-            "is_not_attempted": sum(metric["is_not_attempted"] for metric in instance_metrics) / len(instance_metrics),
-        }
-        aggregate_metrics["is_given_attempted"] = aggregate_metrics["is_correct"] + aggregate_metrics["is_incorrect"]
-        aggregate_metrics["accuracy_given_attempted"] = (
-            aggregate_metrics["is_correct"]
-            / aggregate_metrics["is_given_attempted"]
-            if aggregate_metrics["is_given_attempted"] > 0
-            else 0
-        )
-
-        return {
-            'num_is_correct': sum(metric['is_correct'] for metric in instance_metrics),
-            'num_is_incorrect': sum(metric['is_incorrect'] for metric in instance_metrics),
-            'num_is_not_attempted': sum(metric['is_not_attempted'] for metric in instance_metrics),
-            'num_responses': len(instance_metrics),
-            'accuracy_given_attempted': aggregate_metrics['accuracy_given_attempted'],
-            'f1': (
-                2 * aggregate_metrics['accuracy_given_attempted'] * aggregate_metrics['is_correct']
-                / (aggregate_metrics['accuracy_given_attempted'] + aggregate_metrics['is_correct'])
-                if (aggregate_metrics['accuracy_given_attempted'] + aggregate_metrics['is_correct']) > 0
+       # Group by prompt
+        prompt_groups = {}
+        for metric in instance_metrics:
+            prompt = metric["prompt"]
+            if prompt not in prompt_groups:
+                prompt_groups[prompt] = []
+            prompt_groups[prompt].append(metric)
+        
+        # Calculate metrics for each prompt
+        per_prompt_stats = {}
+        prompt_accuracies = []
+        prompt_f1_scores = []
+        total_correct = 0
+        total_incorrect = 0
+        total_not_attempted = 0
+        total_responses = 0
+        
+        for prompt, group in prompt_groups.items():
+            # Calculate per-prompt metrics
+            prompt_correct = sum(metric['is_correct'] for metric in group)
+            prompt_incorrect = sum(metric['is_incorrect'] for metric in group)
+            prompt_not_attempted = sum(metric['is_not_attempted'] for metric in group)
+            prompt_attempted = prompt_correct + prompt_incorrect
+            
+            # Calculate accuracy given attempted for this prompt
+            prompt_accuracy = (
+                prompt_correct / prompt_attempted if prompt_attempted > 0 else 0
+            )
+            prompt_accuracies.append(prompt_accuracy)
+            
+            # Calculate F1 for this prompt
+            prompt_f1 = (
+                2 * prompt_accuracy * (prompt_correct / len(group))
+                / (prompt_accuracy + (prompt_correct / len(group)))
+                if (prompt_accuracy + (prompt_correct / len(group))) > 0
                 else 0
             )
+            prompt_f1_scores.append(prompt_f1)
+
+            per_prompt_stats[prompt] = {
+                'prompt': prompt,
+                'prompt_correct': prompt_correct,
+                'prompt_incorrect': prompt_incorrect,
+                'prompt_not_attempted': prompt_not_attempted,
+                'prompt_accuracy': prompt_accuracy,
+                'prompt_f1': prompt_f1,
+            }
+        
+            # Accumulate totals
+            total_correct += prompt_correct
+            total_incorrect += prompt_incorrect
+            total_not_attempted += prompt_not_attempted
+            total_responses += len(group)
+        
+        # Calculate averages across prompts
+        avg_accuracy_given_attempted = sum(prompt_accuracies) / len(prompt_accuracies) if prompt_accuracies else 0
+        avg_f1 = sum(prompt_f1_scores) / len(prompt_f1_scores) if prompt_f1_scores else 0
+
+
+        return {
+            "per_prompt_stats": per_prompt_stats,
+            'num_is_correct': total_correct,
+            'num_is_incorrect': total_incorrect,
+            'num_is_not_attempted': total_not_attempted,
+            'num_responses': total_responses,
+            'num_prompts': len(prompt_groups),
+            'accuracy_given_attempted': avg_accuracy_given_attempted,  # Average across prompts
+            'f1': avg_f1,  # Average across prompts
         }
 
     def evaluate(self, prompts: List[str], responses: List[str], metadata: Optional[Dict[str, Any]] = None) -> EvalResult:

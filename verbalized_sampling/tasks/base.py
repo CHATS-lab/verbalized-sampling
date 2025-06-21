@@ -123,7 +123,7 @@ class BaseTask(ABC):
         results = self.model.chat(prompts, schema=get_schema(self.method))
         parsed_results = []
 
-        print("Prompts: ", prompts)
+        # print("Prompts: ", prompts)
         # print("Results: ", results)
         
         for prompt, result in zip(prompts, results):

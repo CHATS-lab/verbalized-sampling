@@ -4,8 +4,7 @@ Output ONLY the response, no explanations or extra text.
 """
 
 BASE_PROMPT = """
-Generate a response to the input prompt.
-Output ONLY the response, no explanations or extra text.
+Generate a response to the input prompt. Output ONLY the response, no explanations or extra text.
 """
 
 STANDARD_PROMPT_TARGET_WORDS = """
@@ -14,8 +13,7 @@ Try to be as creative and diverse as possible.
 """
 
 STANDARD_PROMPT = """
-Generate {num_samplings} different responses to the input prompt.
-Try to be as creative and diverse as possible.
+Generate {num_samplings} different responses to the input prompt. Try to be as creative and diverse as possible.
 """
 
 STANDARD_ALL_POSSIBLE_PROMPT_TARGET_WORDS = """
@@ -24,8 +22,7 @@ Try to be as creative and diverse as possible.
 """
 
 STANDARD_ALL_POSSIBLE_PROMPT = """
-Generate all possible responses to the input prompt.
-Try to be as creative and diverse as possible.
+Generate all possible responses to the input prompt. Try to be as creative and diverse as possible.
 """
 
 SEQUENCE_FORMAT_PROMPT = """

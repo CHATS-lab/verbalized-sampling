@@ -42,12 +42,9 @@ class ResponseCountEvaluator(BaseEvaluator):
     
     def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, int]:
         """Compute the count of responses."""
-        response_text = response.get('text', '')
+        response_text = response.get('text', response)
         if isinstance(response_text, dict):
-            if 'text' in response_text:
-                response_text = response_text['text']
-            else:
-                response_text = str(response_text)
+            response_text = str(response_text)
 
         # Process the response text
         response_text = response_text.lower().rstrip().rstrip('.')
