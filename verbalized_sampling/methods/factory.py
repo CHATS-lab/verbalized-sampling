@@ -62,22 +62,31 @@ class PromptFactory:
         prompt: str,
         chat_history: List[Dict[str, str]] = None,
         num_samplings: int = 5,
-        target_words: int = 200,
+        target_words: int = 0,
         all_possible: bool = False,
         strict_json: bool = False,
     ) -> List[Dict[str, str]]:
         
         if (method == Method.DIRECT) or (method == Method.MULTI_TURN):
-            system_prompt = BASE_PROMPT.format(target_words=target_words)
+            if target_words > 0:
+                system_prompt = BASE_PROMPT_TARGET_WORDS.format(num_samplings=num_samplings, target_words=target_words)
+            else:
+                system_prompt = BASE_PROMPT.format(num_samplings=num_samplings)
             return [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": prompt}
             ]
         
         if all_possible:
-            system_prompt = STANDARD_ALL_POSSIBLE_PROMPT.format(target_words=target_words)
+            if target_words > 0:
+                system_prompt = STANDARD_ALL_POSSIBLE_PROMPT_TARGET_WORDS.format(num_samplings=num_samplings, target_words=target_words)
+            else:
+                system_prompt = STANDARD_ALL_POSSIBLE_PROMPT.format(num_samplings=num_samplings)
         else:
-            system_prompt = STANDARD_PROMPT.format(num_samplings=num_samplings, target_words=target_words)
+            if target_words > 0:
+                system_prompt = STANDARD_PROMPT_TARGET_WORDS.format(num_samplings=num_samplings, target_words=target_words)
+            else:
+                system_prompt = STANDARD_PROMPT.format(num_samplings=num_samplings)
         
         if strict_json:
             return [

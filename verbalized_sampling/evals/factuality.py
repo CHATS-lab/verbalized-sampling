@@ -106,6 +106,18 @@ CHOICE_LETTER_TO_STRING = dict(zip(CHOICE_LETTERS, CHOICE_STRINGS))
 
 
 class FactualityEvaluator(BaseEvaluator):
+    instance_plot_metrics = [
+        ("grade_letter", "histogram"),
+    ]
+    aggregate_plot_metrics = [
+        "accuracy_given_attempted",
+        "f1"
+    ]
+    key_plot_metrics = [
+        ("accuracy_given_attempted", "Accuracy Given Attempted"),
+        ("f1", "F1"),
+    ]
+
     def __init__(self, judge_model: str = "openai/gpt-4.1", num_workers=64):
         super().__init__("factuality", num_workers=num_workers)
         self.judge_model = get_model(judge_model, method="direct", config={}, strict_json=True)
@@ -137,10 +149,10 @@ class FactualityEvaluator(BaseEvaluator):
 
 
     def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, Any]:
-        print("response: ", response)
-        print("type of response: ", type(response))
-        print("prompt: ", prompt)
-        print("type of prompt: ", type(prompt))
+        # print("response: ", response)
+        # print("type of response: ", type(response))
+        # print("prompt: ", prompt)
+        # print("type of prompt: ", type(prompt))
 
         if isinstance(response, str):
             response = ast.literal_eval(response)

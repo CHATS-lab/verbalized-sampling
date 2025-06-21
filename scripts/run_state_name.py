@@ -21,9 +21,9 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 100,
-        'num_prompts': 145, # total: 145
-        'target_words': 20, 
+        'num_responses': 500,
+        'num_prompts': 1, # total: 145
+        'target_words': 0, 
         'temperature': 1,
         'random_seed': 42,
     }
@@ -86,21 +86,6 @@ if __name__ == "__main__":
         {
             'method': Method.MULTI_TURN,
             'strict_json': False,
-            'num_samples': 5,
-        },
-        {
-            'method': Method.STRUCTURE,
-            'strict_json': True,
-            'num_samples': 5,
-        },
-        {
-            'method': Method.STRUCTURE_WITH_PROB,
-            'strict_json': True,
-            'num_samples': 5,
-        },
-        {
-            'method': Method.MULTI_TURN,
-            'strict_json': False,
             'num_samples': 10,
         },
         {
@@ -117,7 +102,7 @@ if __name__ == "__main__":
     
     run_method_tests(
         task=Task.STATE_NAME,
-        model_name="openai/gpt-4.1",
+        model_name="google/gemini-2.0-flash-001", # google/gemini-2.5-pro, openai/gpt-4.1
         methods=methods,
         metrics=["response_count"],
         output_dir="method_results_state_name",
