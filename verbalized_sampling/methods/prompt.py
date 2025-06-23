@@ -1,16 +1,18 @@
 BASE_PROMPT = """
-Generate a response to the input prompt.
-Output ONLY the response, no explanations or extra text.
+Generate a response to the input prompt. Output ONLY the response, no explanations or extra text.
 """
 
+# STANDARD_PROMPT = """
+# Generate {num_samplings} different responses to the input prompt. Try to be as creative and diverse as possible.
+# """
+
+# Special version for the simple QA task
 STANDARD_PROMPT = """
-Generate {num_samplings} different responses to the input prompt.
-Try to be as creative and diverse as possible.
+Generate {num_samplings} responses to the input prompt.
 """
 
 STANDARD_ALL_POSSIBLE_PROMPT = """
-Generate all possible responses to the input prompt.
-Try to be as creative and diverse as possible.
+Generate all possible responses to the input prompt. Try to be as creative and diverse as possible.
 """
 
 BASE_PROMPT_TARGET_WORDS = """
@@ -26,20 +28,26 @@ Generate all possible responses to the input prompt with {target_words} target w
 Try to be as creative and diverse as possible.
 """
 
+# SEQUENCE_FORMAT_PROMPT = """
+# Give your responses in a Python list of strings format like: ["response1", "response2", "response3", ...]
+# Output ONLY the list, no explanations or extra text.
+# """
 SEQUENCE_FORMAT_PROMPT = """
-Give your responses in a Python list of strings format like: ["response1", "response2", "response3", ...]
+Return ALL responses as a Python list of strings, in the following format:
+["response1", "response2", "response3", ...]
 Output ONLY the list, no explanations or extra text.
 """
 
+
 STRUCTURE_FORMAT_PROMPT = """
-Return the output in JSON format with keys: "responses" (list of dicts with 'text'). Each dictionary must include:
+Return the responses in JSON format with keys: "responses" (list of dicts with 'text'). Each dictionary must include:
 - 'text': the response string (no explanation or extra text).
 
 Give ONLY the JSON object, no explanations or extra text.
 """
 
 STRUCTURE_WITH_PROBABILITY_FORMAT_PROMPT = """
-Return the output in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
+Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
 - 'text': the response string (no explanation or extra text).
 - 'probability': Assign probabilities representing how likely each response would be (value between 0 and 1).
 

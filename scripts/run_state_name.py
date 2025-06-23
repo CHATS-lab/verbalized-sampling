@@ -1,14 +1,9 @@
-from verbalized_sampling.pipeline import run_quick_comparison
-from verbalized_sampling.tasks import Task
-from verbalized_sampling.methods import Method
-from pathlib import Path
-import sys
-
-from verbalized_sampling.pipeline import Pipeline, PipelineConfig, ExperimentConfig, EvaluationConfig
+from verbalized_sampling.pipeline import run_quick_comparison, Pipeline, PipelineConfig, ExperimentConfig, EvaluationConfig
 from verbalized_sampling.tasks import Task
 from verbalized_sampling.methods import Method
 from pathlib import Path
 from typing import List, Dict, Any
+import sys
 
 def create_method_experiments(
     task: Task,

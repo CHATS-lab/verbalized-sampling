@@ -7,6 +7,8 @@ from typing import List, Dict, Any
 def create_method_experiments(
     task: Task,
     model_name: str,
+    temperature: float,
+    top_p: float,
     methods: List[Dict[str, Any]],
 ) -> List[ExperimentConfig]:
     """Create experiments for testing specific method variations."""
@@ -16,9 +18,10 @@ def create_method_experiments(
         'task': task,
         'model_name': model_name,
         'num_responses': 10,
-        'num_prompts': 10, # total: 4326
+        'num_prompts': 5, # current total: 500; total: 4326
         'target_words': 0, 
-        'temperature': 0.7,
+        'temperature': temperature,
+        'top_p': top_p,
         'random_seed': 42,
     }
     
@@ -44,12 +47,15 @@ def run_method_tests(
     model_name: str,
     methods: List[Dict[str, Any]],
     metrics: List[str], # "ngram"
+    temperature: float,
+    top_p: float,
     output_dir: str,
+    num_workers: int = 32,
 ) -> None:
     """Run tests for specific method variations."""
     print("🔬 Running Method Tests")
     
-    experiments = create_method_experiments(task, model_name, methods)
+    experiments = create_method_experiments(task, model_name, temperature, top_p, methods)
     print(f"📊 {len(experiments)} methods to test")
     
     for i, exp in enumerate(experiments, 1):
@@ -78,25 +84,82 @@ if __name__ == "__main__":
         {
             'method': Method.MULTI_TURN,
             'strict_json': False,
-            'num_samples': 10,
+            'num_samples': 5,
         },
         {
-            'method': Method.STRUCTURE,
+            'method': Method.SEQUENCE,
             'strict_json': True,
-            'num_samples': 10,
+            'num_samples': 5,
         },
         {
             'method': Method.STRUCTURE_WITH_PROB,
             'strict_json': True,
-            'num_samples': 10,
+            'num_samples': 5,
         },
     ]
-    
+
+
+    run_method_tests(
+        task=Task.SIMPLE_QA,
+        model_name="openai/gpt-4.1-mini", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+        methods=methods,
+        metrics=["factuality"],
+        temperature=1.0,
+        top_p=1.0,    
+        output_dir="method_results_simple_qa",
+    )
+
+
     run_method_tests(
         task=Task.SIMPLE_QA,
         model_name="openai/gpt-4.1", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
         methods=methods,
         metrics=["factuality"],
+        temperature=1.0,
+        top_p=1.0,
+        output_dir="method_results_simple_qa",
+    )
+
+
+    run_method_tests(
+        task=Task.SIMPLE_QA,
+        model_name="google/gemini-2.5-flash", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+        methods=methods,
+        metrics=["factuality"],
+        temperature=1.0,
+        top_p=0.95,
+        output_dir="method_results_simple_qa",
+    )
+
+
+    run_method_tests(
+        task=Task.SIMPLE_QA,
+        model_name="google/gemini-2.5-pro", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+        methods=methods,
+        metrics=["factuality"],
+        temperature=1.0,
+        top_p=0.95,
+        output_dir="method_results_simple_qa",
+    )
+
+    
+    run_method_tests(
+        task=Task.SIMPLE_QA,
+        model_name="anthropic/claude-4-sonnet", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+        methods=methods,
+        metrics=["factuality"],
+        temperature=1.0,
+        top_p=1.0,
+        output_dir="method_results_simple_qa",
+    )
+
+    run_method_tests(
+        task=Task.SIMPLE_QA,
+        model_name="o3", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+        methods=methods,
+        metrics=["factuality"],
+        temperature=1.0,
+        top_p=1.0,
         output_dir="method_results_simple_qa",
     )
 

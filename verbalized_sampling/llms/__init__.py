@@ -32,6 +32,7 @@ def get_model(model_name: str,
         model_class = LLM_REGISTRY["litellm"]
     else:
         model_class = LLM_REGISTRY["vllm" if use_vllm else "openrouter"]
+    # print("Model class: ", model_class)
     return model_class(model_name=model_name, 
                        config=config, 
                        num_workers=num_workers,

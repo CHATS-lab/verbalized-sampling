@@ -56,6 +56,8 @@ class OpenRouterLLM(BaseLLM):
         if isinstance(schema, BaseModel):
             schema = schema.model_json_schema()
         
+        # print("Schema: ", schema)
+        
         completion = self.client.chat.completions.create(
             model=self.model_name,
             messages=messages,
@@ -78,11 +80,17 @@ class OpenRouterLLM(BaseLLM):
                 
                 # Validate the parsed response against the schema
                 # validated_data = schema(**parsed)
+
+                # Handle double-escaped JSON strings (i.e., string inside a string)
+                if isinstance(parsed, str):
+                    parsed = json.loads(parsed)
                 
                 # Handle different schema types
                 if "responses" in parsed:
                     # For schemas with a 'responses' field (SequenceResponse, StructuredResponseList, etc.)
                     responses = parsed["responses"]
+                    # print("Responses: ", responses)
+                    # print("Type of responses: ", type(responses))
                     
                     if isinstance(responses, list):
                         result = []

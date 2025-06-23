@@ -2,14 +2,14 @@ from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Dict, Any
 from .factory import Method
 
-class Response(BaseModel):
-    model_config = ConfigDict(extra='forbid')
-    text: str = Field(..., description="The response text")
+# class Response(BaseModel):
+#     model_config = ConfigDict(extra='forbid')
+#     text: str = Field(..., description="The response text")
 
-class ResponseWithProbability(BaseModel):
-    model_config = ConfigDict(extra='forbid')
-    text: str = Field(..., description="The response text")
-    probability: float = Field(..., description="The probability of the response", ge=0.0, le=1.0)
+# class ResponseWithProbability(BaseModel):
+#     model_config = ConfigDict(extra='forbid')
+#     text: str = Field(..., description="The response text")
+#     probability: float = Field(..., description="The probability of the response", ge=0.0, le=1.0)
 
 # class SequenceResponse(BaseModel):
 #     model_config = ConfigDict(extra='forbid')
@@ -88,8 +88,6 @@ def get_tool_schema(method: Method) -> List[Dict[str, Any]]:
                         "items": {
                             "type": "number",
                             "description": "Probability score between 0 and 1 indicating how likely this response would be",
-                            "minimum": 0.0,
-                            "maximum": 1.0
                         }
                     }
                 },
@@ -150,8 +148,6 @@ def get_tool_schema(method: Method) -> List[Dict[str, Any]]:
                         "items": {
                             "type": "number",
                             "description": "Confidence score between 0 and 1",
-                            "minimum": 0.0,
-                            "maximum": 1.0
                         }
                     }
                 },
@@ -163,19 +159,53 @@ def get_tool_schema(method: Method) -> List[Dict[str, Any]]:
         return None
 
 # Legacy JSON schema support for OpenAI/OpenRouter
-StructuredResponseList = {
-    "type": "json_schema",  # Required for OpenRouter
+
+SequenceResponse ={
+    "type": "json_schema",
     "json_schema": {
-        "name": "responses_schema",
+        "name": "sequence_responses_schema",
         "schema": {
             "type": "object",
             "properties": {
                 "responses": {
                     "type": "array",
-                    "description": "A list of response strings.",
+                    "description": "A list of string responses.",
                     "items": {
                         "type": "string",
-                        "description": "The text of the response."
+                        "description": "Individual response as a string.",
+                        "minLength": 1
+                    }
+                }
+            },
+            "required": [
+                "responses"
+            ],
+            "additionalProperties": False
+        },
+        "strict": True
+    }
+}
+
+StructuredResponseList = {
+    "type": "json_schema",  # Required for OpenRouter
+    "json_schema": {
+        "name": "structured_schema",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "responses": {
+                    "type": "array",
+                    "description": "A list of dicts, each with a 'text' field, representing possible responses to the input prompt.",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "text": {
+                                "type": "string",
+                                "description": "The text of the response."
+                            },
+                        },
+                        "required": ["text"],
+                        "additionalProperties": False
                     }
                 }
             },
@@ -189,49 +219,27 @@ StructuredResponseList = {
 StructuredResponseListWithProbability = {
     "type": "json_schema",  # Required for OpenRouter
     "json_schema": {
-        "name": "responses_schema",
+        "name": "structured_with_prob_schema",
         "schema": {
             "type": "object",
             "properties": {
                 "responses": {
                     "type": "array",
-                    "description": "A list of response strings.",
+                    "description": "A list of dicts, each with a 'text' and 'probability' field, representing possible responses to the input prompt and corresponding probabilities of each response.",
                     "items": {
-                        "type": "string",
-                        "description": "The text of the response."
-                    }
-                },
-                "probabilities": {
-                    "type": "array",
-                    "description": "A list of probability values corresponding to each response.",
-                    "items": {
-                        "type": "number",
-                        "description": "How likely each response would be (value between 0 and 1)",
-                        "minimum": 0.0,
-                        "maximum": 1.0
-                    }
-                }
-            },
-            "required": ["responses", "probabilities"],
-            "additionalProperties": False
-        },
-        "strict": True
-    }
-}
-
-SequenceResponse = {
-    "type": "json_schema",
-    "json_schema": {
-        "name": "responses_schema",
-        "schema": {
-            "type": "object",
-            "properties": {
-                "responses": {
-                    "type": "array",
-                    "description": "List of response strings",
-                    "items": {
-                        "type": "string",
-                        "description": "A single response candidate"
+                        "type": "object",
+                        "properties": {
+                            "text": {
+                                "type": "string",
+                                "description": "The text of the response."
+                            },
+                            "probability": {
+                                "type": "number",
+                                "description": "How likely each response would be (value between 0 and 1)"
+                            }
+                        },
+                        "required": ["text", "probability"],
+                        "additionalProperties": False
                     }
                 }
             },
@@ -241,6 +249,7 @@ SequenceResponse = {
         "strict": True
     }
 }
+
 
 def get_schema(method: Method, use_tools: bool = False) -> Any:
     """Get schema for the specified method.
@@ -261,3 +270,28 @@ def get_schema(method: Method, use_tools: bool = False) -> Any:
 def is_claude_model(model_name: str) -> bool:
     """Check if the model is a Claude model that should use tool calling."""
     return "claude" in model_name.lower() or "anthropic" in model_name.lower()
+
+
+# Legacy JSON schema support for OpenAI/OpenRouter
+# SequenceResponse = {
+#     "type": "json_schema",
+#     "json_schema": {
+#         "name": "sequence_responses_schema",
+#         "schema": {
+#             "type": "object",
+#             "properties": {
+#                 "responses": {
+#                     "type": "array",
+#                     "description": "List of response strings",
+#                     "items": {
+#                         "type": "string",
+#                         "description": "A single response candidate"
+#                     }
+#                 }
+#             },
+#             "required": ["responses"],
+#             "additionalProperties": False
+#         },
+#         "strict": True
+#     }
+# }
