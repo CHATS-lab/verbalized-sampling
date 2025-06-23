@@ -11,6 +11,9 @@ from .prompt import (
     STRUCTURE_FORMAT_PROMPT,
     STRUCTURE_WITH_PROBABILITY_FORMAT_PROMPT,
     MULTI_TURN_CONTINUE_PROMPT,
+    BASE_PROMPT_TARGET_WORDS,
+    STANDARD_PROMPT_TARGET_WORDS,
+    STANDARD_ALL_POSSIBLE_PROMPT_TARGET_WORDS,
 )
 
 class Method(str, Enum):
@@ -137,8 +140,6 @@ class PromptFactory:
         if (num_prompts is not None) and (random_seed is not None):
             random.seed(random_seed)
             prompts = random.sample(prompts, min(num_prompts, len(prompts)))
-        else:
-            prompts = random.sample(prompts, 1)
 
         print(f"Num samplings: {num_samplings}, Method: {method}, Sample size: {num_prompts}, Random seed: {random_seed}")
         return [PromptFactory.pack_prompt(method, prompt, num_samplings=num_samplings, target_words=target_words, **kwargs) for prompt in prompts]
