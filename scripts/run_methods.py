@@ -53,6 +53,7 @@ def run_method_tests(
     methods: List[Dict[str, Any]],
     metrics: List[str], # "ngram"
     output_dir: str,
+    num_workers: int = 128,
 ) -> None:
     """Run tests for specific method variations."""
     print("🔬 Running Method Tests")
@@ -69,6 +70,7 @@ def run_method_tests(
         evaluation=EvaluationConfig(metrics=metrics),
         output_base_dir=Path(f"{output_dir}/{model_basename}_{task.value}"),
         skip_existing=True,
+        num_workers=num_workers,
     )
     
     pipeline = Pipeline(config)
@@ -103,14 +105,15 @@ if __name__ == "__main__":
     ]
      
     models = [
-        "openai/gpt-4.1",
-        "openai/gpt-4.1-mini",
-        "google/gemini-2.5-flash",
-        "anthropic/claude-4-sonnet",
-        "anthropic/claude-3.7-sonnet",
+        # "openai/gpt-4.1",
+        # "openai/gpt-4.1-mini",
+        # "google/gemini-2.5-flash",
+        # "anthropic/claude-4-sonnet",
+        # "anthropic/claude-3.7-sonnet",
         "google/gemini-2.5-pro",
-        "deepseek/deepseek-r1-0528",
-        "openai/o3",
+        # "openai/o3",
+        # "deepseek/deepseek-r1-0528",
+        # "openai/o3",
     ]
     for model in models:
         model_basename = model.replace("/", "_")
@@ -120,6 +123,7 @@ if __name__ == "__main__":
             methods=methods,
             metrics=["diversity", "ngram", "creative_writing_v3"],
             output_dir=f"poem_experiments_final/{model_basename}",
+            num_workers=32 if "claude" in model_basename else 128,
         )
     # run_method_tests(
     #     task=Task.POEM,

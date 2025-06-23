@@ -85,7 +85,7 @@ class BaseTask(ABC):
 
             return turn_responses
         
-        with concurrent.futures.ThreadPoolExecutor(max_workers=128) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=self.model.num_workers) as executor:
             futures = [executor.submit(_run_whole_conversation, initial_prompt) for initial_prompt in initial_prompts]
             for future in concurrent.futures.as_completed(futures):
                 turn_responses = future.result()
