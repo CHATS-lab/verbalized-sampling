@@ -7,7 +7,7 @@ import pandas as pd
 from dataclasses import dataclass
 from .base import EvalResult
 from scipy.stats import chisquare, entropy
-
+import os
 
 @dataclass
 class ComparisonData:
@@ -433,47 +433,60 @@ class ComparisonPlotter:
     def _create_response_count_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
         """Create response count-specific plots, including KL divergence from uniform."""
         # print(comparison_data[0].result.overall_metrics['per_prompt_stats'])
-        metrics = comparison_data[0].result.overall_metrics['per_prompt_stats']
-        
-        for idx, (key, data_point) in enumerate(metrics.items()):
-            num_responses = data_point["num_responses"]
-            num_gt_responses = data_point["num_gt_responses"]
-            response_counter = data_point["response_distribution"]
-            sorted_items = sorted(response_counter.items(), key=lambda x: x[1], reverse=True)
-            responses, counts = zip(*sorted_items)
 
-            # Create plot
-            plt.figure(figsize=self.figsize)
-            ax = sns.barplot(x=range(len(responses)), y=counts, color=self.colors[0], alpha=0.7)
-                
-            # Customize x-axis
-            plt.xticks(range(len(responses)), responses, rotation=45, ha='right')
-            plt.xlabel('Response')
-            plt.ylabel('Count')
-            plt.title(f"Question: {key}")
-            plt.ylim(0, max(counts) * 1.1)  # Add 10% padding above max count
-                
-            # Add value labels on top of bars
-            for i, count in enumerate(counts):
-                ax.text(i, count, f'{count}', ha='center', va='bottom')
-                
-            plt.tight_layout()
-            plt.savefig(output_dir / f"response_count_distribution_Q{idx}.png", dpi=300, bbox_inches='tight',
-                        facecolor='white', edgecolor='none')
-            plt.close()
+        for idx_1, comp in enumerate(comparison_data):
+            # if idx_1 != len(comparison_data) - 1:
+            #     continue
+            method_name = comp.name
+            if not os.path.exists(output_dir / method_name):
+                os.makedirs(output_dir / method_name)
+            metrics = comp.result.overall_metrics['per_prompt_stats']
+            for idx_2, (key, data_point) in enumerate(metrics.items()):
+                num_responses = data_point["num_responses"]
+                num_gt_responses = data_point["num_gt_responses"]
+                response_counter = data_point["response_distribution"]
+                if not response_counter:
+                    continue
+                sorted_items = sorted(response_counter.items(), key=lambda x: x[1], reverse=True)
+                responses, counts = zip(*sorted_items)
+
+                # Create plot
+                plt.figure(figsize=self.figsize)
+                ax = sns.barplot(x=range(len(responses)), y=counts, color=self.colors[0], alpha=0.7)
+                    
+                # Customize x-axis
+                plt.xticks(range(len(responses)), responses, rotation=45, ha='right')
+                plt.xlabel('Response')
+                plt.ylabel('Count')
+                plt.title(f"Question: {key}")
+                plt.ylim(0, max(counts) * 1.1)  # Add 10% padding above max count
+                    
+                # Add value labels on top of bars
+                for i, count in enumerate(counts):
+                    ax.text(i, count, f'{count}', ha='center', va='bottom')
+                    
+                plt.tight_layout()
+                plt.savefig(output_dir / method_name / f"response_count_distribution_Q{idx_2}.png", dpi=300, bbox_inches='tight',
+                            facecolor='white', edgecolor='none')
+                plt.close()
 
 
     def _create_factuality_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
         """Create factuality-specific plots as horizontal stacked bar chart with percentages."""
-        # Create DataFrame from metrics
-        df = pd.DataFrame([{
-            'Method': 'GPT-4.1 (Structure w Prob)',
-            'Correct': comp.result.overall_metrics['num_is_correct'],
-            'Incorrect': comp.result.overall_metrics['num_is_incorrect'],
-            'Not attempted': comp.result.overall_metrics['num_is_not_attempted'],
-            'Total': comp.result.overall_metrics['num_responses'],
-        } for comp in comparison_data])
-
+        # Collect data from all methods
+        all_data = []
+        for comp in comparison_data:
+            method_name = comp.name
+            all_data.append({
+                'Method': method_name,
+                'Correct': comp.result.overall_metrics['num_is_correct'],
+                'Incorrect': comp.result.overall_metrics['num_is_incorrect'],
+                'Not attempted': comp.result.overall_metrics['num_is_not_attempted'],
+                'Total': comp.result.overall_metrics['num_responses'],
+            })
+        
+        df = pd.DataFrame(all_data)
+        
         # Setup plot data
         categories = ['Correct', 'Not attempted', 'Incorrect']
         colors = ['#6C8CFF', '#23233B', '#E6E6E6']
@@ -484,11 +497,11 @@ class ComparisonPlotter:
         fig, ax = plt.subplots(figsize=(9, 4 + 0.5 * len(df)))
         left = np.zeros(len(df))
         bar_handles = []
-        
+            
         # Plot bars
         for idx, cat in enumerate(categories):
             bar = ax.barh(df['Method'], df[cat + ' %'], left=left, color=colors[idx], 
-                         label=cat, height=0.5, edgecolor='none')
+                        label=cat, height=0.5, edgecolor='none')
             bar_handles.append(bar)
             left += df[cat + ' %']
 
@@ -496,14 +509,18 @@ class ComparisonPlotter:
         ax.set_xlim(0, 1)
         ax.set_xticks(np.linspace(0, 1, 5))
         ax.set_xticklabels([f"{int(x*100)}%" for x in np.linspace(0, 1, 5)])
+        
+        # Fix the warning by setting y-ticks before setting labels
+        ax.set_yticks(range(len(df)))
         ax.set_yticklabels(df['Method'], fontsize=11)
+        
         for spine in ax.spines.values():
             spine.set_visible(False)
         ax.tick_params(axis='both', length=0)
-        
+            
         # Add legend
         ax.legend(bar_handles, categories, loc='upper left', bbox_to_anchor=(0, 1.08),
-                 ncol=len(categories), frameon=False, fontsize=10)
+                    ncol=len(categories), frameon=False, fontsize=10)
 
         plt.tight_layout()
         plt.savefig(output_dir / "factuality_distribution.png", dpi=300, bbox_inches='tight', facecolor='white')
@@ -596,7 +613,7 @@ class ComparisonPlotter:
             for metric_name, plot_title in key_metric_names:
                 value = eval_result.overall_metrics
                 for key in metric_name.split('.'):
-                    print(f"Key: {key}")
+                    # print(f"Key: {key}")
                     if key == "average_kl_divergence":
                         ylim = 3.0
                     # print(f"Value: {value}")
@@ -636,7 +653,7 @@ class ComparisonPlotter:
         # Add legend
         plt.legend(loc='lower center', bbox_to_anchor=(0.5, -0.15),
                   frameon=True, fancybox=True, shadow=True,
-                  fontsize=10, framealpha=0.9, ncol=len(method_names))
+                  fontsize=10, framealpha=0.9, ncol=min(len(method_names), 4))
         
         # Add title if provided
         if title:
