@@ -1,52 +1,53 @@
-BASE_PROMPT_TARGET_WORDS = """
-Generate a response to the input prompt. The response should be around {target_words} words.
+BASE_PROMPT = """
+Generate a response to the input prompt.
 Output ONLY the response, no explanations or extra text.
 """
 
-BASE_PROMPT = """
-Generate a response to the input prompt. Output ONLY the response, no explanations or extra text.
-"""
-
-STANDARD_PROMPT_TARGET_WORDS = """
-Generate {num_samplings} different responses to the input prompt. Each response should be around {target_words} words.
-Try to be as creative and diverse as possible.
-"""
-
 STANDARD_PROMPT = """
-Generate {num_samplings} different responses to the input prompt. Try to be as creative and diverse as possible.
-"""
-
-STANDARD_ALL_POSSIBLE_PROMPT_TARGET_WORDS = """
-Generate all possible responses to the input prompt. Each response should be around {target_words} words.
+Generate {num_samplings} different responses to the input prompt.
 Try to be as creative and diverse as possible.
 """
 
 STANDARD_ALL_POSSIBLE_PROMPT = """
-Generate all possible responses to the input prompt. Try to be as creative and diverse as possible.
+Generate all possible responses to the input prompt.
+Try to be as creative and diverse as possible.
+"""
+
+BASE_PROMPT_TARGET_WORDS = """
+Generate a response to the input prompt with {target_words} target words.
+Output ONLY the response, no explanations or extra text.
+"""
+STANDARD_PROMPT_TARGET_WORDS = """
+Generate {num_samplings} different responses to the input prompt with {target_words} target words.
+Try to be as creative and diverse as possible.
+"""
+STANDARD_ALL_POSSIBLE_PROMPT_TARGET_WORDS = """
+Generate all possible responses to the input prompt with {target_words} target words.
+Try to be as creative and diverse as possible.
 """
 
 SEQUENCE_FORMAT_PROMPT = """
-Return your responses in a Python list of strings format like: ["response1", "response2", "response3", ...]
+Give your responses in a Python list of strings format like: ["response1", "response2", "response3", ...]
 Output ONLY the list, no explanations or extra text.
 """
 
 STRUCTURE_FORMAT_PROMPT = """
-Return your responses in JSON format with keys: "responses" (list of dicts with 'text'). Each dictionary must include:
-- 'text': the response string (ONLY the response, no explanations or extra text).
+Return the output in JSON format with keys: "responses" (list of dicts with 'text'). Each dictionary must include:
+- 'text': the response string (no explanation or extra text).
 
 Give ONLY the JSON object, no explanations or extra text.
 """
 
 STRUCTURE_WITH_PROBABILITY_FORMAT_PROMPT = """
-Return your responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
-- 'text': the response string (ONLY the response, no explanations or extra text).
-- 'probability': the empirical probability representing how likely each response would be (value between 0 and 1).
+Return the output in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
+- 'text': the response string (no explanation or extra text).
+- 'probability': Assign probabilities representing how likely each response would be (value between 0 and 1).
 
 Give ONLY the JSON object, no explanations or extra text.
 """
 
 MULTI_TURN_CONTINUE_PROMPT = """
-Generate an alternative response to the original input prompt. ONLY the response, no explanations or extra text
+Generate an alternative response to the original input prompt.
 """
 
 # Chain-of-Thought Sampling Prompts

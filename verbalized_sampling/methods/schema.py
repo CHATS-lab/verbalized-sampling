@@ -249,10 +249,6 @@ def get_schema(method: Method, use_tools: bool = False) -> Any:
         method: The sampling method
         use_tools: Whether to use tool calling (True for Claude) or JSON schema (False for OpenAI/OpenRouter)
     """
-    # if use_tools:
-    #     return get_tool_schema(method)
-    # else:
-    # Legacy JSON schema support
     if method == Method.SEQUENCE:
         return SequenceResponse
     elif method == Method.STRUCTURE:
