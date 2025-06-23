@@ -36,7 +36,7 @@ def get_tool_schema(method: Method) -> List[Dict[str, Any]]:
                 "properties": {
                     "responses": {
                         "type": "array",
-                        "description": "List of response texts",
+                        "description": "List of response strings",
                         "items": {
                             "type": "string",
                             "description": "A response text"
@@ -56,16 +56,10 @@ def get_tool_schema(method: Method) -> List[Dict[str, Any]]:
                 "properties": {
                     "responses": {
                         "type": "array",
-                        "description": "List of structured responses",
+                        "description": "List of response strings",
                         "items": {
-                            "type": "object",
-                            "properties": {
-                                "text": {
-                                    "type": "string",
-                                    "description": "The response text"
-                                }
-                            },
-                            "required": ["text"]
+                            "type": "string",
+                            "description": "The response text"
                         }
                     }
                 },
@@ -82,26 +76,24 @@ def get_tool_schema(method: Method) -> List[Dict[str, Any]]:
                 "properties": {
                     "responses": {
                         "type": "array",
-                        "description": "List of responses with probability scores",
+                        "description": "List of response strings",
                         "items": {
-                            "type": "object",
-                            "properties": {
-                                "text": {
-                                    "type": "string",
-                                    "description": "The response text"
-                                },
-                                "probability": {
-                                    "type": "number",
-                                    "description": "Probability score between 0 and 1 indicating how likely this response would be",
-                                    "minimum": 0.0,
-                                    "maximum": 1.0
-                                }
-                            },
-                            "required": ["text", "probability"]
+                            "type": "string",
+                            "description": "The response text"
+                        }
+                    },
+                    "probabilities": {
+                        "type": "array",
+                        "description": "List of probability values corresponding to each response",
+                        "items": {
+                            "type": "number",
+                            "description": "Probability score between 0 and 1 indicating how likely this response would be",
+                            "minimum": 0.0,
+                            "maximum": 1.0
                         }
                     }
                 },
-                "required": ["responses"]
+                "required": ["responses", "probabilities"]
             }
         }]
     
@@ -120,14 +112,8 @@ def get_tool_schema(method: Method) -> List[Dict[str, Any]]:
                         "type": "array",
                         "description": "List of responses based on the reasoning",
                         "items": {
-                            "type": "object",
-                            "properties": {
-                                "text": {
-                                    "type": "string",
-                                    "description": "The response text"
-                                }
-                            },
-                            "required": ["text"]
+                            "type": "string",
+                            "description": "The response text"
                         }
                     }
                 },
@@ -144,30 +130,32 @@ def get_tool_schema(method: Method) -> List[Dict[str, Any]]:
                 "properties": {
                     "responses": {
                         "type": "array",
-                        "description": "List of responses with reflection and confidence",
+                        "description": "List of response strings",
                         "items": {
-                            "type": "object",
-                            "properties": {
-                                "text": {
-                                    "type": "string",
-                                    "description": "The response text"
-                                },
-                                "reflection": {
-                                    "type": "string",
-                                    "description": "Self-reflection on the quality and appropriateness of this response"
-                                },
-                                "confidence": {
-                                    "type": "number",
-                                    "description": "Confidence score between 0 and 1",
-                                    "minimum": 0.0,
-                                    "maximum": 1.0
-                                }
-                            },
-                            "required": ["text", "reflection", "confidence"]
+                            "type": "string",
+                            "description": "The response text"
+                        }
+                    },
+                    "reflections": {
+                        "type": "array",
+                        "description": "List of self-reflections corresponding to each response",
+                        "items": {
+                            "type": "string",
+                            "description": "Self-reflection on the quality and appropriateness of this response"
+                        }
+                    },
+                    "confidences": {
+                        "type": "array",
+                        "description": "List of confidence scores corresponding to each response",
+                        "items": {
+                            "type": "number",
+                            "description": "Confidence score between 0 and 1",
+                            "minimum": 0.0,
+                            "maximum": 1.0
                         }
                     }
                 },
-                "required": ["responses"]
+                "required": ["responses", "reflections", "confidences"]
             }
         }]
     
@@ -184,17 +172,10 @@ StructuredResponseList = {
             "properties": {
                 "responses": {
                     "type": "array",
-                    "description": "A list of dicts, each with a 'text' field, representing possible responses to the input prompt.",
+                    "description": "A list of response strings.",
                     "items": {
-                        "type": "object",
-                        "properties": {
-                            "text": {
-                                "type": "string",
-                                "description": "The text of the response."
-                            },
-                        },
-                        "required": ["text"],
-                        "additionalProperties": False
+                        "type": "string",
+                        "description": "The text of the response."
                     }
                 }
             },
@@ -214,25 +195,24 @@ StructuredResponseListWithProbability = {
             "properties": {
                 "responses": {
                     "type": "array",
-                    "description": "A list of dicts, each with a 'text' and 'probability' field, representing possible responses to the input prompt and corresponding probabilities of each response.",
+                    "description": "A list of response strings.",
                     "items": {
-                        "type": "object",
-                        "properties": {
-                            "text": {
-                                "type": "string",
-                                "description": "The text of the response."
-                            },
-                            "probability": {
-                                "type": "number",
-                                "description": "How likely each response would be (value between 0 and 1)"
-                            }
-                        },
-                        "required": ["text", "probability"],
-                        "additionalProperties": False
+                        "type": "string",
+                        "description": "The text of the response."
+                    }
+                },
+                "probabilities": {
+                    "type": "array",
+                    "description": "A list of probability values corresponding to each response.",
+                    "items": {
+                        "type": "number",
+                        "description": "How likely each response would be (value between 0 and 1)",
+                        "minimum": 0.0,
+                        "maximum": 1.0
                     }
                 }
             },
-            "required": ["responses"],
+            "required": ["responses", "probabilities"],
             "additionalProperties": False
         },
         "strict": True
@@ -242,23 +222,16 @@ StructuredResponseListWithProbability = {
 SequenceResponse = {
     "type": "json_schema",
     "json_schema": {
-        "name": "sequence_response",
+        "name": "responses_schema",
         "schema": {
             "type": "object",
             "properties": {
                 "responses": {
                     "type": "array",
-                    "description": "List of response texts",
+                    "description": "List of response strings",
                     "items": {
-                        "type": "object",
-                        "properties": {
-                            "text": {
-                                "type": "string",
-                                "description": "A single response candidate"
-                            },
-                        },
-                        "required": ["text"],
-                        "additionalProperties": False
+                        "type": "string",
+                        "description": "A single response candidate"
                     }
                 }
             },
@@ -276,18 +249,18 @@ def get_schema(method: Method, use_tools: bool = False) -> Any:
         method: The sampling method
         use_tools: Whether to use tool calling (True for Claude) or JSON schema (False for OpenAI/OpenRouter)
     """
-    if use_tools:
-        return get_tool_schema(method)
+    # if use_tools:
+    #     return get_tool_schema(method)
+    # else:
+    # Legacy JSON schema support
+    if method == Method.SEQUENCE:
+        return SequenceResponse
+    elif method == Method.STRUCTURE:
+        return StructuredResponseList
+    elif method == Method.STRUCTURE_WITH_PROB:
+        return StructuredResponseListWithProbability
     else:
-        # Legacy JSON schema support
-        if method == Method.SEQUENCE:
-            return SequenceResponse
-        elif method == Method.STRUCTURE:
-            return StructuredResponseList
-        elif method == Method.STRUCTURE_WITH_PROB:
-            return StructuredResponseListWithProbability
-        else:
-            return None
+        return None
 
 def is_claude_model(model_name: str) -> bool:
     """Check if the model is a Claude model that should use tool calling."""

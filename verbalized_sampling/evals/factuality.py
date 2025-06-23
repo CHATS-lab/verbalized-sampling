@@ -152,10 +152,6 @@ class FactualityEvaluator(BaseEvaluator):
 
 
     def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, Any]:
-        # print("response: ", response)
-        # print("type of response: ", type(response))
-        # print("prompt: ", prompt)
-        # print("type of prompt: ", type(prompt))
 
         response_text = response.get('text', response)
         if isinstance(response_text, dict):

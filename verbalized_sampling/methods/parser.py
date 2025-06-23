@@ -48,7 +48,7 @@ class ResponseParser:
     def parse_sequence(response: str) -> List[Dict]:
         """Parse sequence response expecting Python list format."""
         if isinstance(response, list):
-            return [{'text': item} for item in response]
+            return [{'text': item["response"] if (isinstance(item, dict) and "response" in item) else item} for item in response]
         elif isinstance(response, dict):
             response_list = response["responses"]
             return [{'text': item} for item in response_list]
