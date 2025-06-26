@@ -7,17 +7,22 @@ Generate a response to the input prompt. Output ONLY the response, no explanatio
 # """
 
 # Special version for the simple QA task
-# STANDARD_PROMPT = """
-# Provide your {num_samplings} best guesses for the given question. 
-# """
-
-# Special version for the state name task
 STANDARD_PROMPT = """
-Generate {num_samplings} different responses to the input prompt. Try to be as diverse as possible.
+Provide your {num_samplings} best guesses for the given question. 
 """
+
+# # Special version for the state name task
+# STANDARD_PROMPT = """
+# Generate {num_samplings} different responses to the input prompt. Try to be as diverse as possible.
+# """
 
 STANDARD_ALL_POSSIBLE_PROMPT = """
 Generate all possible responses to the input prompt. Try to be as creative and diverse as possible.
+"""
+
+# Combined multi-turn and verbalized sampling together
+STANDARD_COMBINED_PROMPT = """
+Generate {num_samplings} plausible and diverse responses to the input prompt. Try to be as creative and diverse as possible.
 """
 
 BASE_PROMPT_TARGET_WORDS = """
@@ -43,7 +48,6 @@ Return ALL responses as a Python list of strings, in the following format:
 Output ONLY the list, no explanations or extra text.
 """
 
-
 STRUCTURE_FORMAT_PROMPT = """
 Return the responses in JSON format with keys: "responses" (list of dicts with 'text'). Each dictionary must include:
 - 'text': the response string (no explanation or extra text).
@@ -65,14 +69,24 @@ Generate an alternative response to the original input prompt.
 
 # Chain-of-Thought Sampling Prompts
 CHAIN_OF_THOUGHT_PROMPT = """
-Output {num_samplings} plausible and diverse responses using chain-of-thought reasoning.
-For each response, first think through your reasoning, then provide the response.
-Return the output in JSON format with keys: "responses" (list of dicts with "reasoning" and "response"). Each dictionary must include:
-- 'reasoning': the step-by-step thinking process.
-- 'response': the final response based on reasoning.
+Provide {num_samplings} plausible responses to the input prompt using chain-of-thought reasoning.
+First, provide a single "reasoning" field that details your step-by-step thought process.
+Then, under "responses", return a list of dictionaries. Each dictionary must include:
+- 'text': the response string (no explanation or extra text).
+- 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
 
 Give ONLY the JSON object, no explanations or extra text.
 """
+
+# CHAIN_OF_THOUGHT_PROMPT = """
+# Generate {num_samplings} plausible and diverse responses using chain-of-thought reasoning.
+# First, provide a single "reasoning" field that details your step-by-step thought process.
+# Then, under "responses", return a list of dictionaries. Each dictionary must include:
+# - 'text': the response string (no explanation or extra text).
+# - 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
+
+# Give ONLY the JSON object, no explanations or extra text.
+# """
 
 # Self-Reflection Sampling Prompts
 SELF_REFLECTION_PROMPT = """

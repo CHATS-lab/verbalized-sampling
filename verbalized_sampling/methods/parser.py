@@ -36,6 +36,8 @@ class ResponseParser:
                 return ResponseParser.parse_structure_with_probability(response)
             case Method.MULTI_TURN:
                 return ResponseParser.parse_multi_turn(response)
+            case Method.CHAIN_OF_THOUGHT:
+                return ResponseParser.parse_chain_of_thought(response)
             case _:
                 raise ValueError(f"Unknown parsing method: {method}")
     
@@ -72,6 +74,11 @@ class ResponseParser:
     @staticmethod
     def parse_structure_response_only(response: str) -> List[Dict]:
         """Parse structured response with response field only."""
+        return ResponseParser.parse_structure_with_probability(response)
+
+    @staticmethod
+    def parse_chain_of_thought(response: str) -> List[Dict]:
+        """Parse chain-of-thought response."""
         return ResponseParser.parse_structure_with_probability(response)
     
     @staticmethod

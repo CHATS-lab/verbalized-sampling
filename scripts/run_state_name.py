@@ -80,23 +80,28 @@ if __name__ == "__main__":
     
     # Test multi-turn and JSON mode variations
     methods = [
+        # {
+        #     'method': Method.DIRECT,
+        #     'strict_json': False,
+        #     'num_samples': 1,
+        # },
+        # {
+        #     'method': Method.MULTI_TURN,
+        #     'strict_json': False,
+        #     'num_samples': 20,
+        # },
+        # {
+        #     'method': Method.SEQUENCE,
+        #     'strict_json': True,
+        #     'num_samples': 20,
+        # },
+        # {
+        #     'method': Method.STRUCTURE_WITH_PROB,
+        #     'strict_json': True,
+        #     'num_samples': 20,
+        # },
         {
-            'method': Method.DIRECT,
-            'strict_json': False,
-            'num_samples': 1,
-        },
-        {
-            'method': Method.MULTI_TURN,
-            'strict_json': False,
-            'num_samples': 20,
-        },
-        {
-            'method': Method.SEQUENCE,
-            'strict_json': True,
-            'num_samples': 20,
-        },
-        {
-            'method': Method.STRUCTURE_WITH_PROB,
+            'method': Method.CHAIN_OF_THOUGHT,
             'strict_json': True,
             'num_samples': 20,
         },
@@ -104,7 +109,7 @@ if __name__ == "__main__":
     
     run_method_tests(
         task=Task.STATE_NAME,
-        model_name="openai/gpt-4.1-mini", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+        model_name="gpt-4.1-mini", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
         methods=methods,
         metrics=["response_count"],
         temperature=1.0,
@@ -113,78 +118,78 @@ if __name__ == "__main__":
     )
 
 
-    run_method_tests(
-        task=Task.STATE_NAME,
-        model_name="openai/gpt-4.1", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
-        methods=methods,
-        metrics=["response_count"],
-        temperature=1.0,
-        top_p=1.0,
-        output_dir="method_results_state_name",
-    )
+    # run_method_tests(
+    #     task=Task.STATE_NAME,
+    #     model_name="gpt-4.1", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+    #     methods=methods,
+    #     metrics=["response_count"],
+    #     temperature=1.0,
+    #     top_p=1.0,
+    #     output_dir="method_results_state_name",
+    # )
 
 
-    run_method_tests(
-        task=Task.STATE_NAME,
-        model_name="google/gemini-2.5-flash", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
-        methods=methods,
-        metrics=["response_count"],
-        temperature=1.0,
-        top_p=0.95,
-        output_dir="method_results_state_name",
-    )
+    # run_method_tests(
+    #     task=Task.STATE_NAME,
+    #     model_name="google/gemini-2.5-flash", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+    #     methods=methods,
+    #     metrics=["response_count"],
+    #     temperature=1.0,
+    #     top_p=0.95,
+    #     output_dir="method_results_state_name",
+    # )
 
 
-    run_method_tests(
-        task=Task.STATE_NAME,
-        model_name="google/gemini-2.5-pro", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
-        methods=methods,
-        metrics=["response_count"],
-        temperature=1.0,
-        top_p=0.95,
-        output_dir="method_results_state_name",
-    )
+    # run_method_tests(
+    #     task=Task.STATE_NAME,
+    #     model_name="google/gemini-2.5-pro", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+    #     methods=methods,
+    #     metrics=["response_count"],
+    #     temperature=1.0,
+    #     top_p=0.95,
+    #     output_dir="method_results_state_name",
+    # )
 
     
-    run_method_tests(
-        task=Task.STATE_NAME,
-        model_name="anthropic/claude-4-sonnet", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
-        methods=methods,
-        metrics=["response_count"],
-        temperature=1.0,
-        top_p=1.0,
-        output_dir="method_results_state_name",
-    )
+    # run_method_tests(
+    #     task=Task.STATE_NAME,
+    #     model_name="anthropic/claude-4-sonnet", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+    #     methods=methods,
+    #     metrics=["response_count"],
+    #     temperature=1.0,
+    #     top_p=1.0,
+    #     output_dir="method_results_state_name",
+    # )
 
-    run_method_tests(
-        task=Task.STATE_NAME,
-        model_name="o3", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
-        methods=methods,
-        metrics=["response_count"],
-        temperature=1.0,
-        top_p=1.0,
-        output_dir="method_results_state_name",
-    )
+    # run_method_tests(
+    #     task=Task.STATE_NAME,
+    #     model_name="o3", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+    #     methods=methods,
+    #     metrics=["response_count"],
+    #     temperature=1.0,
+    #     top_p=1.0,
+    #     output_dir="method_results_state_name",
+    # )
 
-    run_method_tests(
-        task=Task.STATE_NAME,
-        model_name="meta-llama/llama-3.1-70b-instruct", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
-        methods=methods,
-        metrics=["response_count"],
-        temperature=0.7,
-        top_p=1.0,
-        output_dir="method_results_state_name",
-    )
+    # run_method_tests(
+    #     task=Task.STATE_NAME,
+    #     model_name="meta-llama/llama-3.1-70b-instruct", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+    #     methods=methods,
+    #     metrics=["response_count"],
+    #     temperature=0.7,
+    #     top_p=1.0,
+    #     output_dir="method_results_state_name",
+    # )
 
-    run_method_tests(
-        task=Task.STATE_NAME,
-        model_name="deepseek/deepseek-r1-0528", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
-        methods=methods,
-        metrics=["response_count"],
-        temperature=1.0,
-        top_p=1.0,
-        output_dir="method_results_state_name",
-    )
+    # run_method_tests(
+    #     task=Task.STATE_NAME,
+    #     model_name="deepseek/deepseek-r1-0528", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+    #     methods=methods,
+    #     metrics=["response_count"],
+    #     temperature=1.0,
+    #     top_p=1.0,
+    #     output_dir="method_results_state_name",
+    # )
 
 
 # # Direct (Baseline)

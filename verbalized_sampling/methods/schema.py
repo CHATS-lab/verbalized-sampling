@@ -108,16 +108,52 @@ def get_tool_schema(method: Method) -> List[Dict[str, Any]]:
                     },
                     "responses": {
                         "type": "array",
-                        "description": "List of responses based on the reasoning",
+                        "description": "List of potential responses with their probabilities.",
                         "items": {
-                            "type": "string",
-                            "description": "The response text"
+                        "type": "object",
+                        "properties": {
+                            "text": {
+                                "type": "string",
+                                "description": "The text of the response."
+                            },
+                            "probability": {
+                                "type": "number",
+                                "description": "The likelihood of this response being correct.",
+                            }
+                        },
+                        "required": [
+                            "text",
+                            "probability"
+                        ],
+                        "additionalProperties": False
                         }
                     }
                 },
                 "required": ["reasoning", "responses"]
             }
         }]
+        # return [{
+        #     "name": "generate_with_reasoning",
+        #     "description": "Generate responses with step-by-step reasoning",
+        #     "input_schema": {
+        #         "type": "object",
+        #         "properties": {
+        #             "reasoning": {
+        #                 "type": "string",
+        #                 "description": "Step-by-step reasoning process"
+        #             },
+        #             "responses": {
+        #                 "type": "array",
+        #                 "description": "List of responses based on the reasoning",
+        #                 "items": {
+        #                     "type": "string",
+        #                     "description": "The response text"
+        #                 }
+        #             }
+        #         },
+        #         "required": ["reasoning", "responses"]
+        #     }
+        # }]
     
     elif method == Method.SELF_REFLECTION:
         return [{
@@ -250,6 +286,50 @@ StructuredResponseListWithProbability = {
     }
 }
 
+ChainOfThoughtResponse = {
+    "type": "json_schema",
+    "json_schema": {
+        "name": "chain_of_thought_response",
+        "strict": True,
+        "schema": {
+            "type": "object",
+            "properties": {
+                "reasoning": {
+                    "type": "string",
+                    "description": "Detailed reasoning behind the responses."
+                },
+                "responses": {
+                    "type": "array",
+                    "description": "List of potential responses with their probabilities.",
+                    "items": {
+                    "type": "object",
+                    "properties": {
+                        "text": {
+                            "type": "string",
+                            "description": "The text of the response."
+                        },
+                        "probability": {
+                            "type": "number",
+                            "description": "The likelihood of this response being correct.",
+                        }
+                    },
+                    "required": [
+                        "text",
+                        "probability"
+                    ],
+                    "additionalProperties": False
+                    }
+                }
+            },
+            "required": [
+                "reasoning",
+                "responses"
+            ],
+            "additionalProperties": False
+        }
+    }
+}
+
 
 def get_schema(method: Method, use_tools: bool = False) -> Any:
     """Get schema for the specified method.
@@ -264,6 +344,8 @@ def get_schema(method: Method, use_tools: bool = False) -> Any:
         return StructuredResponseList
     elif method == Method.STRUCTURE_WITH_PROB:
         return StructuredResponseListWithProbability
+    elif method == Method.CHAIN_OF_THOUGHT:
+        return ChainOfThoughtResponse
     else:
         return None
 

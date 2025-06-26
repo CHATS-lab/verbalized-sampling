@@ -6,6 +6,7 @@ from .openrouter import OpenRouterLLM
 from verbalized_sampling.methods import Method, is_method_structured
 from .embed import get_embedding_model
 from .litellm import LiteLLM
+from .openai import OpenAILLM
 
 __all__ = ["get_model", "get_embedding_model"]
 
@@ -13,6 +14,7 @@ LLM_REGISTRY: Dict[str, Type[BaseLLM]] = {
     "vllm": VLLMOpenAI,
     "openrouter": OpenRouterLLM,
     "litellm": LiteLLM,
+    "openai": OpenAILLM,
 }
 
 def get_model(model_name: str, 
@@ -28,6 +30,12 @@ def get_model(model_name: str,
             model_class = LLM_REGISTRY["openrouter"]
         else:
             model_class = LLM_REGISTRY["litellm"]
+    elif "gpt" in model_name:
+        if os.environ.get("OPENAI_API_KEY") is None:
+            print("OPENAI_API_KEY is not set, falling back to openrouter")
+            model_class = LLM_REGISTRY["openrouter"]
+        else:
+            model_class = LLM_REGISTRY["openai"]
     elif "o3" in model_name:
         model_class = LLM_REGISTRY["litellm"]
     else:

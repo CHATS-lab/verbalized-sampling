@@ -76,23 +76,28 @@ def run_method_tests(
 
 if __name__ == "__main__":
     methods = [
+        # {
+        #     'method': Method.DIRECT,
+        #     'strict_json': False,
+        #     'num_samples': 1,
+        # },
+        # {
+        #     'method': Method.MULTI_TURN,
+        #     'strict_json': False,
+        #     'num_samples': 5,
+        # },
+        # {
+        #     'method': Method.SEQUENCE,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        # },
+        # {
+        #     'method': Method.STRUCTURE_WITH_PROB,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        # },
         {
-            'method': Method.DIRECT,
-            'strict_json': False,
-            'num_samples': 1,
-        },
-        {
-            'method': Method.MULTI_TURN,
-            'strict_json': False,
-            'num_samples': 5,
-        },
-        {
-            'method': Method.SEQUENCE,
-            'strict_json': True,
-            'num_samples': 5,
-        },
-        {
-            'method': Method.STRUCTURE_WITH_PROB,
+            'method': Method.CHAIN_OF_THOUGHT,
             'strict_json': True,
             'num_samples': 5,
         },
@@ -101,7 +106,7 @@ if __name__ == "__main__":
 
     # run_method_tests(
     #     task=Task.SIMPLE_QA,
-    #     model_name="openai/gpt-4.1-mini", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+    #     model_name="gpt-4.1-mini", # google/gemini-2.5-pro, gpt-4.1, anthropic/claude-4-sonnet
     #     methods=methods,
     #     metrics=["factuality"],
     #     temperature=1.0,
@@ -112,7 +117,7 @@ if __name__ == "__main__":
 
     # run_method_tests(
     #     task=Task.SIMPLE_QA,
-    #     model_name="openai/gpt-4.1", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+    #     model_name="gpt-4.1", # google/gemini-2.5-pro, gpt-4.1, anthropic/claude-4-sonnet
     #     methods=methods,
     #     metrics=["factuality"],
     #     temperature=1.0,
@@ -143,25 +148,25 @@ if __name__ == "__main__":
     # )
 
     
-    run_method_tests(
-        task=Task.SIMPLE_QA,
-        model_name="anthropic/claude-4-sonnet", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
-        methods=methods,
-        metrics=["factuality"],
-        temperature=1.0,
-        top_p=1.0,
-        output_dir="method_results_simple_qa",
-    )
-
     # run_method_tests(
     #     task=Task.SIMPLE_QA,
-    #     model_name="o3", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+    #     model_name="anthropic/claude-4-sonnet", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
     #     methods=methods,
     #     metrics=["factuality"],
     #     temperature=1.0,
     #     top_p=1.0,
     #     output_dir="method_results_simple_qa",
     # )
+
+    run_method_tests(
+        task=Task.SIMPLE_QA,
+        model_name="o3", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+        methods=methods,
+        metrics=["factuality"],
+        temperature=1.0,
+        top_p=1.0,
+        output_dir="method_results_simple_qa",
+    )
 
     # run_method_tests(
     #     task=Task.SIMPLE_QA,

@@ -125,7 +125,7 @@ class FactualityEvaluator(BaseEvaluator):
         ("top_at_k_accuracy", "Top@k Accuracy"),
     ]
 
-    def __init__(self, judge_model: str = "openai/gpt-4.1", num_workers: int = 64):
+    def __init__(self, judge_model: str = "gpt-4.1", num_workers: int = 64):
         super().__init__("factuality", num_workers=num_workers)
         model_config = {
             "temperature": 0.1,

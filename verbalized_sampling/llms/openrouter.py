@@ -17,6 +17,9 @@ OPENROUTER_MODELS_MAPPING = {
     "gemini-2.0-flash": "google/gemini-2.0-flash-001",
     "gemini-2.5-flash": "google/gemini-2.5-flash-preview",
     "gemini-2.5-pro": "google/gemini-2.5-pro",
+    # OpenAI models
+    "gpt-4.1-mini": "openai/gpt-4.1-mini",
+    "gpt-4.1": "openai/gpt-4.1",
 }
 
 class OpenRouterLLM(BaseLLM):
@@ -68,6 +71,7 @@ class OpenRouterLLM(BaseLLM):
         
         response = completion.choices[0].message.content
         if response:
+            print("Response: ", response)
             parsed_response = self._parse_response_with_schema(response, schema)
             return parsed_response
         return []

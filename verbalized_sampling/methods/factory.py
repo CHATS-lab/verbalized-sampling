@@ -10,6 +10,7 @@ from .prompt import (
     SEQUENCE_FORMAT_PROMPT,
     STRUCTURE_FORMAT_PROMPT,
     STRUCTURE_WITH_PROBABILITY_FORMAT_PROMPT,
+    CHAIN_OF_THOUGHT_PROMPT,
     MULTI_TURN_CONTINUE_PROMPT,
     BASE_PROMPT_TARGET_WORDS,
     STANDARD_PROMPT_TARGET_WORDS,
@@ -23,6 +24,9 @@ class Method(str, Enum):
     STRUCTURE = "structure"
     STRUCTURE_WITH_PROB = "structure_with_prob"
     MULTI_TURN = "multi_turn"
+    CHAIN_OF_THOUGHT = "chain_of_thought"
+    # SELF_REFLECTION = "self_reflection"
+    # TEMPERATURE_SAMPLING = "temperature_sampling"
 
 def is_method_structured(method: Method) -> bool:
     """Check if a method requires structured JSON output."""
@@ -30,8 +34,8 @@ def is_method_structured(method: Method) -> bool:
         Method.STRUCTURE, 
         Method.STRUCTURE_WITH_PROB,
         Method.CHAIN_OF_THOUGHT,
-        Method.SELF_REFLECTION,
-        Method.TEMPERATURE_SAMPLING,
+        # Method.SELF_REFLECTION,
+        # Method.TEMPERATURE_SAMPLING,
     ]
 
 def is_method_multi_turn(method: Method) -> bool:
@@ -57,6 +61,7 @@ class PromptFactory:
         Method.SEQUENCE: SEQUENCE_FORMAT_PROMPT,
         Method.STRUCTURE: STRUCTURE_FORMAT_PROMPT,
         Method.STRUCTURE_WITH_PROB: STRUCTURE_WITH_PROBABILITY_FORMAT_PROMPT,
+        Method.CHAIN_OF_THOUGHT: CHAIN_OF_THOUGHT_PROMPT,
     }
 
     @staticmethod
@@ -80,11 +85,14 @@ class PromptFactory:
                 {"role": "user", "content": prompt}
             ]
         
+        # print(f"Method: {method}")
         if all_possible:
             if target_words > 0:
                 system_prompt = STANDARD_ALL_POSSIBLE_PROMPT_TARGET_WORDS.format(num_samplings=num_samplings, target_words=target_words)
             else:
                 system_prompt = STANDARD_ALL_POSSIBLE_PROMPT.format(num_samplings=num_samplings)
+        elif method == Method.CHAIN_OF_THOUGHT:
+            system_prompt = CHAIN_OF_THOUGHT_PROMPT.format(num_samplings=num_samplings)
         else:
             if target_words > 0:
                 system_prompt = STANDARD_PROMPT_TARGET_WORDS.format(num_samplings=num_samplings, target_words=target_words)
