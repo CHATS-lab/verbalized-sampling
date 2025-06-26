@@ -7,8 +7,13 @@ Generate a response to the input prompt. Output ONLY the response, no explanatio
 # """
 
 # Special version for the simple QA task
+# STANDARD_PROMPT = """
+# Provide your {num_samplings} best guesses for the given question. 
+# """
+
+# Special version for the state name task
 STANDARD_PROMPT = """
-Generate {num_samplings} responses to the input prompt.
+Generate {num_samplings} different responses to the input prompt. Try to be as diverse as possible.
 """
 
 STANDARD_ALL_POSSIBLE_PROMPT = """
@@ -49,7 +54,7 @@ Give ONLY the JSON object, no explanations or extra text.
 STRUCTURE_WITH_PROBABILITY_FORMAT_PROMPT = """
 Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
 - 'text': the response string (no explanation or extra text).
-- 'probability': Assign probabilities representing how likely each response would be (value between 0 and 1).
+- 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
 
 Give ONLY the JSON object, no explanations or extra text.
 """

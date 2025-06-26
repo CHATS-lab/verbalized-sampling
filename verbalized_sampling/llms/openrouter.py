@@ -16,7 +16,7 @@ OPENROUTER_MODELS_MAPPING = {
     # Gemini models
     "gemini-2.0-flash": "google/gemini-2.0-flash-001",
     "gemini-2.5-flash": "google/gemini-2.5-flash-preview",
-    "gemini-2.5-pro": "google/gemini-2.5-pro-preview",
+    "gemini-2.5-pro": "google/gemini-2.5-pro",
 }
 
 class OpenRouterLLM(BaseLLM):
