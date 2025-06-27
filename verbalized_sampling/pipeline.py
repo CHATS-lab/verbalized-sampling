@@ -186,6 +186,7 @@ class Pipeline:
                 # if exp_config.task in [Task.POEM, Task.SPEECH, Task.STATE_NAME, Task.SIMPLE_QA, Task.BOOK]:
                 task_kwargs.update({
                     "num_prompts": exp_config.num_prompts,
+                    "num_samples_per_prompt": exp_config.num_samples_per_prompt,
                     "random_seed": exp_config.random_seed,
                 })
 

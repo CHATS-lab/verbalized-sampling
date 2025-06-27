@@ -150,7 +150,7 @@ class BaseTask(ABC):
             futures = [executor.submit(_run_whole_conversation, initial_prompt) for initial_prompt in initial_prompts]
             for future in concurrent.futures.as_completed(futures):
                 turn_responses = future.result()
-                print(f"Turn responses: {turn_responses}")
+                # print(f"Turn responses: {turn_responses}")
                 all_results.extend(turn_responses)
                 if progress and task_id is not None:
                     progress.update(task_id, advance=len(turn_responses))
