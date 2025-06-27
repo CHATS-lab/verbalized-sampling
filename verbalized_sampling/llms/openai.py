@@ -39,7 +39,11 @@ class OpenAILLM(BaseLLM):
             status = self.client.fine_tuning.jobs.retrieve(self.model_name)
             self.model_name = status.fine_tuned_model
         
-        if "o4" or "o3" in self.model_name: 
+        # Handle O3/O4 models that don't support temperature and top_p
+        if "o3" in self.model_name or "o4" in self.model_name:
+            # Remove temperature and top_p for O3/O4 models
+            self.config.pop('temperature', None)
+            self.config.pop('top_p', None)
             if 'max_tokens' in self.config:
                 self.config.update({'max_completion_tokens': self.config.pop('max_tokens')})
 

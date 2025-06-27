@@ -63,7 +63,7 @@ class BaseTask(ABC):
         initial_prompts = [prompt for prompt in self.get_prompt() for _ in range(self.num_responses)]
         all_results = []
         
-        num_turns = self.num_samples // self.num_samples_per_prompt
+        num_turns = int(self.num_samples // self.num_samples_per_prompt)
         remainder = self.num_samples % self.num_samples_per_prompt
         
         def _run_whole_conversation(initial_prompt: List[Dict[str, str]]):
@@ -150,7 +150,7 @@ class BaseTask(ABC):
             futures = [executor.submit(_run_whole_conversation, initial_prompt) for initial_prompt in initial_prompts]
             for future in concurrent.futures.as_completed(futures):
                 turn_responses = future.result()
-                print(f"Turn responses: {turn_responses}")
+                # print(f"Turn responses: {turn_responses}")
                 all_results.extend(turn_responses)
                 if progress and task_id is not None:
                     progress.update(task_id, advance=len(turn_responses))

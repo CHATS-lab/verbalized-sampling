@@ -20,6 +20,11 @@ OPENROUTER_MODELS_MAPPING = {
     # OpenAI models
     "gpt-4.1-mini": "openai/gpt-4.1-mini",
     "gpt-4.1": "openai/gpt-4.1",
+    # meta-llama models
+    "llama-3.1-70b-instruct": "meta-llama/llama-3.1-70b-instruct",
+    # DeepSeek models
+    "deepseek-r1": "deepseek/deepseek-r1-0528",
+
 }
 
 class OpenRouterLLM(BaseLLM):
@@ -56,25 +61,36 @@ class OpenRouterLLM(BaseLLM):
 
     def _chat_with_format(self, messages: List[Dict[str, str]], schema: BaseModel) -> List[Dict[str, Any]]:
         """Chat with structured response format."""
-        if isinstance(schema, BaseModel):
-            schema = schema.model_json_schema()
-        
-        # print("Schema: ", schema)
-        
-        completion = self.client.chat.completions.create(
-            model=self.model_name,
-            messages=messages,
-            temperature=self.config.get("temperature", 0.7),
-            top_p=self.config.get("top_p", 0.9),
-            response_format=schema
-        )
-        
-        response = completion.choices[0].message.content
-        if response:
-            # print("Response: ", response)
-            parsed_response = self._parse_response_with_schema(response, schema)
-            return parsed_response
-        return []
+        try:
+            if isinstance(schema, BaseModel):
+                schema = schema.model_json_schema()
+            
+            # print("Schema: ", schema)
+            
+            completion = self.client.chat.completions.create(
+                model=self.model_name,
+                messages=messages,
+                temperature=self.config.get("temperature", 0.7),
+                top_p=self.config.get("top_p", 0.9),
+                response_format=schema
+            )
+            
+            if completion is None or not completion.choices:
+                print(f"Error: No response from OpenRouter API for model {self.model_name}")
+                return []
+            
+            response = completion.choices[0].message.content
+            if response:
+                # print("Response: ", response)
+                parsed_response = self._parse_response_with_schema(response, schema)
+                return parsed_response
+            else:
+                print(f"Error: Empty response from OpenRouter API for model {self.model_name}")
+                return []
+                
+        except Exception as e:
+            print(f"Error in OpenRouter chat_with_format: {e}")
+            return []
 
     def _parse_response_with_schema(self, response: str, schema: BaseModel) -> List[Dict[str, Any]]:
         """Parse the response based on the provided schema."""

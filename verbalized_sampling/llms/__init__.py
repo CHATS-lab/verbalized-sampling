@@ -30,17 +30,13 @@ def get_model(model_name: str,
             model_class = LLM_REGISTRY["openrouter"]
         else:
             model_class = LLM_REGISTRY["litellm"]
-    elif "gpt" in model_name:
-        if os.environ.get("OPENAI_API_KEY") is None:
-            print("OPENAI_API_KEY is not set, falling back to openrouter")
-            model_class = LLM_REGISTRY["openrouter"]
-        else:
-            model_class = LLM_REGISTRY["openai"]
-    elif "o3" in model_name:
-        model_class = LLM_REGISTRY["litellm"]
+    elif "gpt" in model_name or "o3" in model_name:
+        model_class = LLM_REGISTRY["openai"]
     else:
         model_class = LLM_REGISTRY["vllm" if use_vllm else "openrouter"]
-    # print("Model class: ", model_class)
+    
+    print("Model class: ", model_class)
+    print("Model name: ", model_name)
     return model_class(model_name=model_name, 
                        config=config, 
                        num_workers=num_workers,
