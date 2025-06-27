@@ -18,7 +18,7 @@ def create_method_experiments(
         'task': task,
         'model_name': model_name,
         'num_responses': 5,
-        'num_prompts': 300, # current total: 500; total: 4326
+        'num_prompts': 300, # current total: 300; total: 4326
         'target_words': 0, 
         'temperature': temperature,
         'top_p': top_p,
@@ -76,43 +76,49 @@ def run_method_tests(
 
 if __name__ == "__main__":
     methods = [
-        # {
-        #     'method': Method.DIRECT,
-        #     'strict_json': False,
-        #     'num_samples': 1,
-        # },
-        # {
-        #     'method': Method.MULTI_TURN,
-        #     'strict_json': False,
-        #     'num_samples': 5,
-        # },
-        # {
-        #     'method': Method.SEQUENCE,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
-        # {
-        #     'method': Method.STRUCTURE_WITH_PROB,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
+        {
+            'method': Method.DIRECT,
+            'strict_json': False,
+            'num_samples': 1,
+        },
+        {
+            'method': Method.MULTI_TURN,
+            'strict_json': False,
+            'num_samples': 5,
+        },
+        {
+            'method': Method.SEQUENCE,
+            'strict_json': True,
+            'num_samples': 5,
+        },
+        {
+            'method': Method.STRUCTURE_WITH_PROB,
+            'strict_json': True,
+            'num_samples': 5,
+        },
         {
             'method': Method.CHAIN_OF_THOUGHT,
             'strict_json': True,
             'num_samples': 5,
         },
+        {
+            'method': Method.COMBINED,
+            'strict_json': True,
+            'num_samples': 5,
+            'num_samples_per_prompt': 10,
+        }
     ]
 
 
-    # run_method_tests(
-    #     task=Task.SIMPLE_QA,
-    #     model_name="gpt-4.1-mini", # google/gemini-2.5-pro, gpt-4.1, anthropic/claude-4-sonnet
-    #     methods=methods,
-    #     metrics=["factuality"],
-    #     temperature=1.0,
-    #     top_p=1.0,    
-    #     output_dir="method_results_simple_qa",
-    # )
+    run_method_tests(
+        task=Task.SIMPLE_QA,
+        model_name="gpt-4.1-mini", # google/gemini-2.5-pro, gpt-4.1, anthropic/claude-4-sonnet
+        methods=methods,
+        metrics=["factuality"],
+        temperature=0.7,
+        top_p=1.0,    
+        output_dir="method_results_simple_qa",
+    )
 
 
     # run_method_tests(
@@ -120,7 +126,7 @@ if __name__ == "__main__":
     #     model_name="gpt-4.1", # google/gemini-2.5-pro, gpt-4.1, anthropic/claude-4-sonnet
     #     methods=methods,
     #     metrics=["factuality"],
-    #     temperature=1.0,
+    #     temperature=0.7,
     #     top_p=1.0,
     #     output_dir="method_results_simple_qa",
     # )
@@ -131,8 +137,8 @@ if __name__ == "__main__":
     #     model_name="google/gemini-2.5-flash", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
     #     methods=methods,
     #     metrics=["factuality"],
-    #     temperature=1.0,
-    #     top_p=0.95,
+    #     temperature=0.7,
+    #     top_p=1.0,
     #     output_dir="method_results_simple_qa",
     # )
 
@@ -142,8 +148,8 @@ if __name__ == "__main__":
     #     model_name="google/gemini-2.5-pro", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
     #     methods=methods,
     #     metrics=["factuality"],
-    #     temperature=1.0,
-    #     top_p=0.95,
+    #     temperature=0.7,
+    #     top_p=1.0,
     #     output_dir="method_results_simple_qa",
     # )
 
@@ -153,20 +159,20 @@ if __name__ == "__main__":
     #     model_name="anthropic/claude-4-sonnet", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
     #     methods=methods,
     #     metrics=["factuality"],
-    #     temperature=1.0,
+    #     temperature=0.7,
     #     top_p=1.0,
     #     output_dir="method_results_simple_qa",
     # )
 
-    run_method_tests(
-        task=Task.SIMPLE_QA,
-        model_name="o3", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
-        methods=methods,
-        metrics=["factuality"],
-        temperature=1.0,
-        top_p=1.0,
-        output_dir="method_results_simple_qa",
-    )
+    # run_method_tests(
+    #     task=Task.SIMPLE_QA,
+    #     model_name="o3", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+    #     methods=methods,
+    #     metrics=["factuality"],
+    #     temperature=0.7,
+    #     top_p=1.0,
+    #     output_dir="method_results_simple_qa",
+    # )
 
     # run_method_tests(
     #     task=Task.SIMPLE_QA,
@@ -183,7 +189,7 @@ if __name__ == "__main__":
     #     model_name="deepseek/deepseek-r1-0528", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
     #     methods=methods,
     #     metrics=["factuality"],
-    #     temperature=1.0,
+    #     temperature=0.7,
     #     top_p=1.0,
     #     output_dir="method_results_simple_qa",
     # )

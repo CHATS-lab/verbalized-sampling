@@ -14,6 +14,7 @@ from verbalized_sampling.methods import (
 import concurrent.futures
 from verbalized_sampling.llms import BaseLLM
 from verbalized_sampling.methods.schema import get_schema
+import math
 
 class BaseTask(ABC):
     """Base class for all tasks."""
@@ -55,47 +56,61 @@ class BaseTask(ABC):
             all_possible=self.all_possible,
             strict_json=self.strict_json,
         )
-    
-    def _parse_combined_response(self, result: str, turn: int) -> List[Dict[str, Any]]:
-        """Parse response from COMBINED method into the expected format."""
-        # Try to parse as JSON first, then fallback to treating as plain text
-        try:
-            # Try JSON parsing first
-            parsed_result = json.loads(result)
-            if isinstance(parsed_result, dict) and "responses" in parsed_result:
-                responses = parsed_result["responses"]
-            else:
-                # If it's a list, treat as responses
-                responses = parsed_result if isinstance(parsed_result, list) else [parsed_result]
-        except (json.JSONDecodeError, SyntaxError):
-            # If JSON parsing fails, try ast.literal_eval for Python literals
-            try:
-                parsed_result = ast.literal_eval(result)
-                if isinstance(parsed_result, list):
-                    responses = parsed_result
-                elif isinstance(parsed_result, dict) and "responses" in parsed_result:
-                    responses = parsed_result["responses"]
-                else:
-                    responses = [str(parsed_result)]
-            except (ValueError, SyntaxError):
-                # If all parsing fails, treat as a single response
-                responses = [result]
+
+
+    def _run_combined(self, progress: Progress = None, task_id: int = None) -> List[Any]:
+        """Run combined multi-turn conversations with structured responses."""
+        initial_prompts = [prompt for prompt in self.get_prompt() for _ in range(self.num_responses)]
+        all_results = []
         
-        # Convert responses to the expected format
-        formatted_responses = []
-        for i, resp in enumerate(responses):
-            if isinstance(resp, dict):
-                text = resp.get("text", str(resp))
-            else:
-                text = str(resp)
+        num_turns = self.num_samples // self.num_samples_per_prompt
+        remainder = self.num_samples % self.num_samples_per_prompt
+        
+        def _run_whole_conversation(initial_prompt: List[Dict[str, str]]):
+            chat_history = initial_prompt.copy()
+            turn_responses = []
+            global_index = 0
             
-            formatted_responses.append({
-                "text": text,
-                "turn": turn + 1,
-                "index": i
-            })
+            def process_turn(current_prompts, num_samples):
+                nonlocal global_index
+                result = self.model._chat_with_format(current_prompts, schema=get_schema(self.method))
+                
+                parsed_responses = ResponseParser.parse_response(self.method, result)
+                for i, response in enumerate(parsed_responses):
+                    response["index"] = global_index + i
+                
+                # print("parsed_responses: ", parsed_responses)
+                response_data = {
+                    "prompt": initial_prompt[-1]["content"],
+                    "responses": parsed_responses
+                }
+                turn_responses.append(response_data)
+                chat_history.append({"role": "assistant", "content": str(result)})
+                global_index += len(parsed_responses)
+            
+            # Process regular turns
+            for turn in range(num_turns):
+                current_prompts = (initial_prompt if turn == 0 else 
+                                 PromptFactory.get_combined_continuation(chat_history, num_samplings_per_prompt=self.num_samples_per_prompt))
+                process_turn(current_prompts, self.num_samples_per_prompt)
+            
+            # Process remainder turn
+            if remainder > 0:
+                continuation_prompt = PromptFactory.get_combined_continuation(chat_history, num_samplings_per_prompt=remainder)
+                process_turn(continuation_prompt, remainder)
+            
+            return turn_responses
         
-        return formatted_responses
+        with concurrent.futures.ThreadPoolExecutor(max_workers=self.model.num_workers) as executor:
+            futures = [executor.submit(_run_whole_conversation, initial_prompt) for initial_prompt in initial_prompts]
+            for future in concurrent.futures.as_completed(futures):
+                turn_responses = future.result()
+                all_results.extend(turn_responses)
+                if progress and task_id is not None:
+                    progress.update(task_id, advance=len(turn_responses))
+        
+        return all_results
+
 
     def _run_multi_turn(
         self,
@@ -130,62 +145,18 @@ class BaseTask(ABC):
                 chat_history.append({"role": "assistant", "content": str(result)})
 
             return turn_responses
-
-    def _run_combined(
-        self,
-        progress: Progress = None,
-        task_id: int = None,
-    ) -> List[Any]:
-        """Run combined multi-turn conversations with structured responses."""
-        initial_prompts = [prompt for prompt in self.get_prompt() for _ in range(self.num_responses)]
-        all_results = []
-        
-        # Calculate number of turns: num_samples / num_samples_per_prompt
-        num_turns = self.num_samples // self.num_samples_per_prompt
-        
-        def _run_whole_conversation(initial_prompt: List[Dict[str, str]]):
-            chat_history = initial_prompt.copy()
-            turn_responses = []
-            for turn in range(num_turns):
-                if turn == 0:
-                    current_prompts = initial_prompt
-                else:
-                    continuation_prompt = PromptFactory.get_combined_continuation(chat_history, num_samplings_per_prompt=self.num_samples_per_prompt)
-                    current_prompts = continuation_prompt
-                
-                # Use chat with schema for structured responses
-                results = self.model.chat([current_prompts], schema=get_schema(self.method))
-                result = results[0] if results else ""
-                print(f"Result: {result}")
-
-                initial_prompt_content = initial_prompt[-1]["content"]
-                
-                # Parse the structured response
-                parsed_responses = ResponseParser.parse_response(self.method, result)
-                
-                # Add turn information to each response
-                for i, response in enumerate(parsed_responses):
-                    response["turn"] = turn + 1
-                    response["index"] = i
-                
-                response_data = {
-                    "prompt": initial_prompt_content,
-                    "responses": parsed_responses
-                }
-                turn_responses.append(response_data)
-                chat_history.append({"role": "assistant", "content": str(result)})
-
-            return turn_responses
         
         with concurrent.futures.ThreadPoolExecutor(max_workers=self.model.num_workers) as executor:
             futures = [executor.submit(_run_whole_conversation, initial_prompt) for initial_prompt in initial_prompts]
             for future in concurrent.futures.as_completed(futures):
                 turn_responses = future.result()
+                print(f"Turn responses: {turn_responses}")
                 all_results.extend(turn_responses)
                 if progress and task_id is not None:
                     progress.update(task_id, advance=len(turn_responses))
         
         return all_results
+            
 
     def run(
         self,
