@@ -68,7 +68,9 @@ class LiteLLM(BaseLLM):
                 content = response.choices[0].message.content
                 
                 if json_schema is not None:
-                    return json.loads(content)
+                    parsed_content = json.loads(content)
+                    # print("Parsed content: ", parsed_content)
+                    return parsed_content
                 else:
                     return content
                     

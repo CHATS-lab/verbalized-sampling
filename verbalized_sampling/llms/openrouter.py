@@ -16,7 +16,10 @@ OPENROUTER_MODELS_MAPPING = {
     # Gemini models
     "gemini-2.0-flash": "google/gemini-2.0-flash-001",
     "gemini-2.5-flash": "google/gemini-2.5-flash-preview",
-    "gemini-2.5-pro": "google/gemini-2.5-pro-preview",
+    "gemini-2.5-pro": "google/gemini-2.5-pro",
+    # OpenAI models
+    "gpt-4.1-mini": "openai/gpt-4.1-mini",
+    "gpt-4.1": "openai/gpt-4.1",
 }
 
 class OpenRouterLLM(BaseLLM):
@@ -56,6 +59,8 @@ class OpenRouterLLM(BaseLLM):
         if isinstance(schema, BaseModel):
             schema = schema.model_json_schema()
         
+        # print("Schema: ", schema)
+        
         completion = self.client.chat.completions.create(
             model=self.model_name,
             messages=messages,
@@ -66,6 +71,7 @@ class OpenRouterLLM(BaseLLM):
         
         response = completion.choices[0].message.content
         if response:
+            print("Response: ", response)
             parsed_response = self._parse_response_with_schema(response, schema)
             return parsed_response
         return []
@@ -78,11 +84,17 @@ class OpenRouterLLM(BaseLLM):
                 
                 # Validate the parsed response against the schema
                 # validated_data = schema(**parsed)
+
+                # Handle double-escaped JSON strings (i.e., string inside a string)
+                if isinstance(parsed, str):
+                    parsed = json.loads(parsed)
                 
                 # Handle different schema types
                 if "responses" in parsed:
                     # For schemas with a 'responses' field (SequenceResponse, StructuredResponseList, etc.)
                     responses = parsed["responses"]
+                    # print("Responses: ", responses)
+                    # print("Type of responses: ", type(responses))
                     
                     if isinstance(responses, list):
                         result = []

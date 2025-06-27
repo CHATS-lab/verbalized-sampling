@@ -145,7 +145,13 @@ class ResponseCountEvaluator(BaseEvaluator):
     def aggregate_metrics(self, instance_metrics: List[List[Dict[str, int]]]) -> Dict[str, float]:
         """Aggregate metrics across all instances, grouped by prompt and calculate per-prompt stats."""
         if not instance_metrics:
-            return {}
+            return {
+                "per_prompt_stats": {},
+                "average_kl_divergence": 0.0,
+                "average_chi_square": 0.0,
+                "average_precision": 0.0,
+                "num_prompts": 0
+            }
 
         # Group by prompt
         prompt_groups = {}

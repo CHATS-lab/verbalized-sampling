@@ -36,6 +36,10 @@ class ResponseParser:
                 return ResponseParser.parse_structure_with_probability(response)
             case Method.MULTI_TURN:
                 return ResponseParser.parse_multi_turn(response)
+            case Method.CHAIN_OF_THOUGHT:
+                return ResponseParser.parse_chain_of_thought(response)
+            case Method.COMBINED:
+                return ResponseParser.parse_combined(response)
             case _:
                 raise ValueError(f"Unknown parsing method: {method}")
     
@@ -55,11 +59,12 @@ class ResponseParser:
         else:
             try:
                 parsed = ast.literal_eval(response)
+   
                 if isinstance(parsed, list):
                     return [{'text': item} for item in parsed if item is not None]
                 elif isinstance(parsed, dict):
                     if isinstance(parsed["responses"], list):
-                        return parsed["responses"]
+                        return [{'text': item} for item in parsed["responses"]]
                     else:
                         return [{'text': parsed["responses"] if parsed["responses"] is not None else ""}]
                 else:
@@ -71,6 +76,16 @@ class ResponseParser:
     @staticmethod
     def parse_structure_response_only(response: str) -> List[Dict]:
         """Parse structured response with response field only."""
+        return ResponseParser.parse_structure_with_probability(response)
+
+    @staticmethod
+    def parse_chain_of_thought(response: str) -> List[Dict]:
+        """Parse chain-of-thought response."""
+        return ResponseParser.parse_structure_with_probability(response)
+
+    @staticmethod
+    def parse_combined(response: str) -> List[Dict]:
+        """Parse combined response."""
         return ResponseParser.parse_structure_with_probability(response)
     
     @staticmethod

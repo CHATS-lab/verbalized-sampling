@@ -10,9 +10,12 @@ import os
 import random
 import re
 from typing import Any, Dict, List, Optional
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import threading
 
 import pandas as pd
 from pydantic import BaseModel
+from tqdm import tqdm
 
 from .base import BaseEvaluator, EvalResult
 from verbalized_sampling.llms import get_model
@@ -110,15 +113,19 @@ class FactualityEvaluator(BaseEvaluator):
         ("grade_letter", "histogram"),
     ]
     aggregate_plot_metrics = [
+        "f1",
         "accuracy_given_attempted",
-        "f1"
+        "pass_at_k_accuracy",
+        "top_at_k_accuracy",
     ]
     key_plot_metrics = [
-        ("accuracy_given_attempted", "Accuracy Given Attempted"),
         ("f1", "F1"),
+        ("accuracy_given_attempted", "Accuracy Given Attempted"),
+        ("pass_at_k_accuracy", "Pass@k Accuracy"),
+        ("top_at_k_accuracy", "Top@k Accuracy"),
     ]
 
-    def __init__(self, judge_model: str = "openai/gpt-4.1", num_workers=64):
+    def __init__(self, judge_model: str = "gpt-4.1", num_workers: int = 64):
         super().__init__("factuality", num_workers=num_workers)
         model_config = {
             "temperature": 0.1,
@@ -127,6 +134,21 @@ class FactualityEvaluator(BaseEvaluator):
         self.df = pd.read_csv("https://openaipublic.blob.core.windows.net/simple-evals/simple_qa_test_set.csv")
         if self.df is None:
             self.df = pd.read_csv("data/simple_qa.csv")
+        
+        # Thread-local storage for judge models to avoid conflicts
+        self._thread_local = threading.local()
+
+    def _get_thread_judge_model(self):
+        """Get a thread-local judge model instance to avoid conflicts in parallel execution."""
+        if not hasattr(self._thread_local, 'judge_model'):
+            model_config = {"temperature": 0.1}
+            self._thread_local.judge_model = get_model(
+                self.judge_model.model_name, 
+                method="direct", 
+                config=model_config, 
+                strict_json=True
+            )
+        return self._thread_local.judge_model
 
     def get_answer_by_question(self, question):
         question = question.strip()
@@ -145,20 +167,33 @@ class FactualityEvaluator(BaseEvaluator):
         prompt_messages = [
             {"role": "user","content": grader_prompt}
         ]
-        judge_response = self.judge_model._chat(prompt_messages)
+        
+        # Use thread-local judge model
+        judge_model = self._get_thread_judge_model()
+        judge_response = judge_model._chat(prompt_messages)
         
         match = re.search(r"(A|B|C)", judge_response)
         return match.group(0) if match else "C"  # Default to "NOT_ATTEMPTED" if no match
 
-
-    def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, Any]:
-
+    def compute_instance_metric(self, prompt: str, response: Dict) -> Dict[str, Any]:
         response_text = response.get('text', response)
         if isinstance(response_text, dict):
             response_text = str(response_text)
 
         target = self.get_answer_by_question(prompt)
-        grade_letter = self.grade_sample(prompt, target, response)
+        if target is None:
+            # If target not found, mark as not attempted
+            return {
+                'prompt': prompt,
+                'target': None,
+                'predicted_answer': response_text,
+                'grade_letter': 'C',
+                "is_correct": False,
+                "is_incorrect": False,
+                "is_not_attempted": True
+            }
+        
+        grade_letter = self.grade_sample(prompt, target, response_text)
         
         return {
             'prompt': prompt,
@@ -171,79 +206,133 @@ class FactualityEvaluator(BaseEvaluator):
             "is_not_attempted": grade_letter == "C"
         }
     
+    def _process_prompt_group(self, prompt_group_data):
+        """Process a group of responses for the same prompt in parallel."""
+        prompt, group = prompt_group_data
+        
+        # Calculate metrics for this prompt group
+        prompt_correct = sum(metric['is_correct'] for metric in group)
+        prompt_incorrect = sum(metric['is_incorrect'] for metric in group)
+        prompt_not_attempted = sum(metric['is_not_attempted'] for metric in group)
+        prompt_attempted = prompt_correct + prompt_incorrect
+        prompt_accuracy = (
+            prompt_correct / prompt_attempted if prompt_attempted > 0 else 0
+        )
+        prompt_f1 = (
+            2 * prompt_accuracy * (prompt_correct / len(group))
+            / (prompt_accuracy + (prompt_correct / len(group)))
+            if (prompt_accuracy + (prompt_correct / len(group))) > 0
+            else 0
+        )
+        
+        # For pass@k (majority): count prompt as correct if majority of generations are correct
+        pass_at_k_correct = prompt_correct > len(group) / 2
+        
+        # For top@k: count prompt as correct if any generation is correct
+        top_at_k_correct = prompt_correct > 0
+        
+        return {
+            'prompt': prompt,
+            'prompt_correct': prompt_correct,
+            'prompt_incorrect': prompt_incorrect,
+            'prompt_not_attempted': prompt_not_attempted,
+            'prompt_accuracy': prompt_accuracy,
+            'prompt_f1': prompt_f1,
+            'pass_at_k_correct': pass_at_k_correct,
+            'top_at_k_correct': top_at_k_correct,
+            'group_size': len(group)
+        }
 
-    def aggregate_metrics(self, instance_metrics: List[List[Dict[str, float]]]) -> Dict[str, float]:
+    def aggregate_metrics(self, instance_metrics: List[Dict[str, float]]) -> Dict[str, Any]:
         if not instance_metrics:
             return {}
         
-       # Group by prompt
+        # If input is nested, flatten
+        if len(instance_metrics) > 0 and isinstance(instance_metrics[0], list):
+            metrics = [m for sublist in instance_metrics for m in sublist if sublist]
+        else:
+            metrics = instance_metrics
+        if not metrics:
+            return {}
+        
+        # Group by prompt
         prompt_groups = {}
-        for metric in instance_metrics:
+        for metric in metrics:
             prompt = metric["prompt"]
             if prompt not in prompt_groups:
                 prompt_groups[prompt] = []
             prompt_groups[prompt].append(metric)
         
-        # Calculate metrics for each prompt
+        # Process prompt groups in parallel using ThreadPoolExecutor
         per_prompt_stats = {}
         prompt_accuracies = []
         prompt_f1_scores = []
-        total_correct = 0
-        total_incorrect = 0
-        total_not_attempted = 0
         total_responses = 0
+        num_prompts = len(prompt_groups)
         
-        for prompt, group in prompt_groups.items():
-            # Calculate per-prompt metrics
-            prompt_correct = sum(metric['is_correct'] for metric in group)
-            prompt_incorrect = sum(metric['is_incorrect'] for metric in group)
-            prompt_not_attempted = sum(metric['is_not_attempted'] for metric in group)
-            prompt_attempted = prompt_correct + prompt_incorrect
-            
-            # Calculate accuracy given attempted for this prompt
-            prompt_accuracy = (
-                prompt_correct / prompt_attempted if prompt_attempted > 0 else 0
-            )
-            prompt_accuracies.append(prompt_accuracy)
-            
-            # Calculate F1 for this prompt
-            prompt_f1 = (
-                2 * prompt_accuracy * (prompt_correct / len(group))
-                / (prompt_accuracy + (prompt_correct / len(group)))
-                if (prompt_accuracy + (prompt_correct / len(group))) > 0
-                else 0
-            )
-            prompt_f1_scores.append(prompt_f1)
-
-            per_prompt_stats[prompt] = {
-                'prompt': prompt,
-                'prompt_correct': prompt_correct,
-                'prompt_incorrect': prompt_incorrect,
-                'prompt_not_attempted': prompt_not_attempted,
-                'prompt_accuracy': prompt_accuracy,
-                'prompt_f1': prompt_f1,
+        # Counters for different evaluation strategies
+        pass_at_k_correct_prompts = 0  # majority correct per prompt
+        top_at_k_correct_prompts = 0   # any correct per prompt
+        
+        with ThreadPoolExecutor(max_workers=os.cpu_count() or 4) as executor:
+            # Submit processing tasks for each prompt group
+            future_to_prompt = {
+                executor.submit(self._process_prompt_group, (prompt, group)): prompt 
+                for prompt, group in prompt_groups.items()
             }
+            
+            # Process results as they complete
+            with tqdm(total=len(prompt_groups), desc="Processing prompt groups") as pbar:
+                for future in as_completed(future_to_prompt):
+                    result = future.result()
+                    prompt = result['prompt']
+                    
+                    per_prompt_stats[prompt] = {
+                        'prompt': prompt,
+                        'prompt_correct': result['prompt_correct'],
+                        'prompt_incorrect': result['prompt_incorrect'],
+                        'prompt_not_attempted': result['prompt_not_attempted'],
+                        'prompt_accuracy': result['prompt_accuracy'],
+                        'prompt_f1': result['prompt_f1'],
+                    }
+                    
+                    prompt_accuracies.append(result['prompt_accuracy'])
+                    prompt_f1_scores.append(result['prompt_f1'])
+                    
+                    # Update counters
+                    if result['pass_at_k_correct']:
+                        pass_at_k_correct_prompts += 1
+                    if result['top_at_k_correct']:
+                        top_at_k_correct_prompts += 1
+                    
+                    total_responses += result['group_size']
+                    pbar.update(1)
         
-            # Accumulate totals
-            total_correct += prompt_correct
-            total_incorrect += prompt_incorrect
-            total_not_attempted += prompt_not_attempted
-            total_responses += len(group)
+        # Calculate overall totals
+        total_correct = sum(metric['is_correct'] for metric in metrics)
+        total_incorrect = sum(metric['is_incorrect'] for metric in metrics)
+        total_not_attempted = sum(metric['is_not_attempted'] for metric in metrics)
         
-        # Calculate averages across prompts
-        avg_accuracy_given_attempted = sum(prompt_accuracies) / len(prompt_accuracies) if prompt_accuracies else 0
-        avg_f1 = sum(prompt_f1_scores) / len(prompt_f1_scores) if prompt_f1_scores else 0
+        # Calculate averages
+        avg_accuracy_given_attempted = sum(prompt_accuracies) / num_prompts if prompt_accuracies else 0
+        avg_f1 = sum(prompt_f1_scores) / num_prompts if prompt_f1_scores else 0
 
-
+        # Pass@k stats: majority correct per prompt
+        pass_at_k_accuracy = pass_at_k_correct_prompts / num_prompts if num_prompts > 0 else 0
+        # Top@k stats: any correct per prompt
+        top_at_k_accuracy = top_at_k_correct_prompts / num_prompts if num_prompts > 0 else 0
+        
         return {
-            "per_prompt_stats": per_prompt_stats,
+            'per_prompt_stats': per_prompt_stats,
             'num_is_correct': total_correct,
             'num_is_incorrect': total_incorrect,
             'num_is_not_attempted': total_not_attempted,
             'num_responses': total_responses,
-            'num_prompts': len(prompt_groups),
-            'accuracy_given_attempted': avg_accuracy_given_attempted,  # Average across prompts
-            'f1': avg_f1,  # Average across prompts
+            'num_prompts': num_prompts,
+            'accuracy_given_attempted': avg_accuracy_given_attempted,
+            'f1': avg_f1,
+            'pass_at_k_accuracy': pass_at_k_accuracy,
+            'top_at_k_accuracy': top_at_k_accuracy,
         }
 
     def evaluate(self, prompts: List[str], responses: List[str], metadata: Optional[Dict[str, Any]] = None) -> EvalResult:
@@ -253,7 +342,8 @@ class FactualityEvaluator(BaseEvaluator):
         metadata.update({
             "evaluation_framework": "Factuality",
             "judge_model": self.judge_model.model_name,
-            "num_responses": len(responses)
+            "num_responses": len(responses),
+            "num_workers": self.num_workers
         })
         
         return super().evaluate(prompts, responses, metadata)

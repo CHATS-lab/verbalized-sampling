@@ -18,8 +18,8 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 20,
-        'num_prompts': 1, # total: 145
+        'num_responses': 100,
+        'num_prompts': 1, # 38 responses have at least 30 responses; total: 145
         'target_words': 0, 
         'temperature': temperature,
         'top_p': top_p,
@@ -75,64 +75,59 @@ def run_method_tests(
     pipeline.run_complete_pipeline()
     print(f"✅ Done! Check {output_dir}/{model_basename}_{task.value}/pipeline_report.html")
 
+
 if __name__ == "__main__":
     # Example usage for testing different method variations
     
     # Test multi-turn and JSON mode variations
     methods = [
-        # {
-        #     'method': Method.DIRECT,
-        #     'strict_json': False,
-        #     'num_samples': 1,
-        # },
-        # {
-        #     'method': Method.MULTI_TURN,
-        #     'strict_json': False,
-        #     'num_samples': 20,
-        # },
-        # {
-        #     'method': Method.SEQUENCE,
-        #     'strict_json': True,
-        #     'num_samples': 20,
-        # },
-        # {
-        #     'method': Method.STRUCTURE_WITH_PROB,
-        #     'strict_json': True,
-        #     'num_samples': 20,
-        # },
-        # {
-        #     'method': Method.CHAIN_OF_THOUGHT,
-        #     'strict_json': True,
-        #     'num_samples': 20,
-        # },
         {
-            'method': Method.COMBINED,
+            'method': Method.DIRECT,
+            'strict_json': False,
+            'num_samples': 1,
+        },
+        {
+            'method': Method.MULTI_TURN,
+            'strict_json': False,
+            'num_samples': 20,
+        },
+        {
+            'method': Method.SEQUENCE,
             'strict_json': True,
             'num_samples': 20,
-            'num_samples_per_prompt': 10,
-        }
+        },
+        {
+            'method': Method.STRUCTURE_WITH_PROB,
+            'strict_json': True,
+            'num_samples': 20,
+        },
+        {
+            'method': Method.CHAIN_OF_THOUGHT,
+            'strict_json': True,
+            'num_samples': 20,
+        },
     ]
     
-    run_method_tests(
-        task=Task.STATE_NAME,
-        model_name="gpt-4.1-mini", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
-        methods=methods,
-        metrics=["response_count"],
-        temperature=1.0,
-        top_p=1.0,    
-        output_dir="method_results_state_name",
-    )
-
-
     # run_method_tests(
     #     task=Task.STATE_NAME,
-    #     model_name="gpt-4.1", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+    #     model_name="gpt-4.1-mini", # google/gemini-2.5-pro, gpt-4.1, anthropic/claude-4-sonnet
     #     methods=methods,
     #     metrics=["response_count"],
     #     temperature=1.0,
-    #     top_p=1.0,
-    #     output_dir="method_results_state_name",
+    #     top_p=1.0,    
+    #     output_dir="method_results_bias_task",
     # )
+
+
+    run_method_tests(
+        task=Task.STATE_NAME,
+        model_name="gpt-4.1", # google/gemini-2.5-pro, gpt-4.1, anthropic/claude-4-sonnet
+        methods=methods,
+        metrics=["response_count"],
+        temperature=1.0,
+        top_p=1.0,
+        output_dir="method_results_bias_task",
+    )
 
 
     # run_method_tests(
@@ -142,7 +137,7 @@ if __name__ == "__main__":
     #     metrics=["response_count"],
     #     temperature=1.0,
     #     top_p=0.95,
-    #     output_dir="method_results_state_name",
+    #     output_dir="method_results_bias_task",
     # )
 
 
@@ -153,7 +148,7 @@ if __name__ == "__main__":
     #     metrics=["response_count"],
     #     temperature=1.0,
     #     top_p=0.95,
-    #     output_dir="method_results_state_name",
+    #     output_dir="method_results_bias_task",
     # )
 
     
@@ -164,7 +159,7 @@ if __name__ == "__main__":
     #     metrics=["response_count"],
     #     temperature=1.0,
     #     top_p=1.0,
-    #     output_dir="method_results_state_name",
+    #     output_dir="method_results_bias_task",
     # )
 
     # run_method_tests(
@@ -174,7 +169,7 @@ if __name__ == "__main__":
     #     metrics=["response_count"],
     #     temperature=1.0,
     #     top_p=1.0,
-    #     output_dir="method_results_state_name",
+    #     output_dir="method_results_bias_task",
     # )
 
     # run_method_tests(
@@ -184,7 +179,7 @@ if __name__ == "__main__":
     #     metrics=["response_count"],
     #     temperature=0.7,
     #     top_p=1.0,
-    #     output_dir="method_results_state_name",
+    #     output_dir="method_results_bias_task",
     # )
 
     # run_method_tests(
@@ -194,61 +189,5 @@ if __name__ == "__main__":
     #     metrics=["response_count"],
     #     temperature=1.0,
     #     top_p=1.0,
-    #     output_dir="method_results_state_name",
+    #     output_dir="method_results_bias_task",
     # )
-
-
-# # Direct (Baseline)
-# results = run_quick_comparison(
-#     task=Task.STATE_NAME,
-#     methods=[Method.DIRECT],
-#     model_name="google/gemini-2.5-flash-preview", # google/gemini-2.5-flash-preview, openai/gpt-4.1
-#     metrics=["response_count"], # diversity, ttct, creativity_index, length
-#     output_dir=Path("comparison_results/direct"),
-#     num_responses=NUM_RESPONSES,
-#     num_samples=1, # how many times to sample from the model
-#     num_prompts=NUM_PROMPTS, # how many samples from the prompt dataset to generate
-#     strict_json=False,
-#     rerun=True,
-#     **MODEL_PARAMS
-# )
-
-# # Structure without probability
-# results = run_quick_comparison(
-#     task=Task.STATE_NAME,
-#     methods=[Method.STRUCTURE], # Method.STRUCTURE, Method.STRUCTURE_WITH_PROB
-#     model_name="google/gemini-2.0-flash-001", # google/gemini-2.5-flash-preview, openai/gpt-4.1
-#     metrics=["response_count"], # diversity, ttct, creativity_index, length
-#     output_dir=Path("comparison_results/sequence"),
-#     num_responses=NUM_RESPONSES,
-#     num_samples=NUM_SAMPLES, # how many times to sample from the model
-#     num_prompts=NUM_PROMPTS, # how many samples from the prompt dataset to generate
-#     strict_json=True,
-#     rerun=True,
-#     **MODEL_PARAMS
-# )
-
-
-# # Structure with probabilitys
-# results = run_quick_comparison(
-#     task=Task.STATE_NAME,
-#     methods=[Method.STRUCTURE_WITH_PROB], # Method.STRUCTURE, Method.STRUCTURE_WITH_PROB
-#     model_name="google/gemini-2.0-flash-001", # google/gemini-2.5-flash-preview, openai/gpt-4.1
-#     metrics=["response_count"], # diversity, ttct, creativity_index, length
-#     output_dir=Path("comparison_results/sequence_with_prob"),
-#     num_responses=NUM_RESPONSES,
-#     num_samples=NUM_SAMPLES, # how many times to sample from the model
-#     num_prompts=1, # how many samples from the prompt dataset to generate
-#     strict_json=True,
-#     rerun=True,
-#     **MODEL_PARAMS
-# )
-
-
-
-
-# Results will include:
-# - Generated responses for each method
-# - Evaluation results for all metrics
-# - Comparison plots
-# - HTML summary report
