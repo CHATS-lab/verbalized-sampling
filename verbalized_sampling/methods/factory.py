@@ -15,6 +15,9 @@ from .prompt import (
     BASE_PROMPT_TARGET_WORDS,
     STANDARD_PROMPT_TARGET_WORDS,
     STANDARD_ALL_POSSIBLE_PROMPT_TARGET_WORDS,
+    STANDARD_COMBINED_PROMPT,
+    STANDARD_COMBINED_PROMPT_TARGET_WORDS,
+    COMBINED_CONTINUE_PROMPT,
 )
 
 class Method(str, Enum):
@@ -25,6 +28,7 @@ class Method(str, Enum):
     STRUCTURE_WITH_PROB = "structure_with_prob"
     MULTI_TURN = "multi_turn"
     CHAIN_OF_THOUGHT = "chain_of_thought"
+    COMBINED = "combined"
     # SELF_REFLECTION = "self_reflection"
     # TEMPERATURE_SAMPLING = "temperature_sampling"
 
@@ -34,6 +38,7 @@ def is_method_structured(method: Method) -> bool:
         Method.STRUCTURE, 
         Method.STRUCTURE_WITH_PROB,
         Method.CHAIN_OF_THOUGHT,
+        Method.COMBINED,
         # Method.SELF_REFLECTION,
         # Method.TEMPERATURE_SAMPLING,
     ]
@@ -41,6 +46,10 @@ def is_method_structured(method: Method) -> bool:
 def is_method_multi_turn(method: Method) -> bool:
     """Check if a method requires multi-turn interaction."""
     return method == Method.MULTI_TURN
+
+def is_method_combined(method: Method) -> bool:
+    """Check if a method requires combined sampling."""
+    return method == Method.COMBINED
 
 class PromptTemplate(BaseModel):
     """Base class for prompt templates."""
@@ -62,6 +71,7 @@ class PromptFactory:
         Method.STRUCTURE: STRUCTURE_FORMAT_PROMPT,
         Method.STRUCTURE_WITH_PROB: STRUCTURE_WITH_PROBABILITY_FORMAT_PROMPT,
         Method.CHAIN_OF_THOUGHT: CHAIN_OF_THOUGHT_PROMPT,
+        Method.COMBINED: STANDARD_COMBINED_PROMPT,
     }
 
     @staticmethod
@@ -70,6 +80,7 @@ class PromptFactory:
         prompt: str,
         chat_history: List[Dict[str, str]] = None,
         num_samplings: int = 5,
+        num_samples_per_prompt: int = 2,
         target_words: int = 0,
         all_possible: bool = False,
         strict_json: bool = False,
@@ -80,6 +91,16 @@ class PromptFactory:
                 system_prompt = BASE_PROMPT_TARGET_WORDS.format(num_samplings=num_samplings, target_words=target_words)
             else:
                 system_prompt = BASE_PROMPT.format(num_samplings=num_samplings)
+            return [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": prompt}
+            ]
+
+        if method == Method.COMBINED:
+            if target_words > 0:
+                system_prompt = STANDARD_COMBINED_PROMPT_TARGET_WORDS.format(num_samplings=num_samples_per_prompt, target_words=target_words)
+            else:
+                system_prompt = STANDARD_COMBINED_PROMPT.format(num_samplings=num_samples_per_prompt)
             return [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": prompt}
@@ -119,6 +140,12 @@ class PromptFactory:
         """Get continuation prompt for multi-turn sampling."""
         continuation_prompt = MULTI_TURN_CONTINUE_PROMPT
         return chat_history + [{"role": "user", "content": continuation_prompt}]
+
+    @staticmethod
+    def get_combined_continuation(chat_history: List[Dict[str, str]], num_samplings_per_prompt: int = 3) -> List[Dict[str, str]]:
+        """Get continuation prompt for combined sampling."""
+        continuation_prompt = COMBINED_CONTINUE_PROMPT.format(num_samplings=num_samplings_per_prompt)
+        return chat_history + [{"role": "user", "content": continuation_prompt}]
     
     @staticmethod
     def get_prompt(
@@ -126,6 +153,7 @@ class PromptFactory:
         method: Method, 
         num_samplings: int = 5,
         num_prompts: int = None,
+        num_samples_per_prompt: int = 2,
         random_seed: int = None,
         target_words: int = 200,
         **kwargs,
@@ -150,4 +178,4 @@ class PromptFactory:
             prompts = random.sample(prompts, min(num_prompts, len(prompts)))
 
         print(f"Num samplings: {num_samplings}, Method: {method}, Sample size: {num_prompts}, Random seed: {random_seed}")
-        return [PromptFactory.pack_prompt(method, prompt, num_samplings=num_samplings, target_words=target_words, **kwargs) for prompt in prompts]
+        return [PromptFactory.pack_prompt(method, prompt, num_samplings=num_samplings, num_samples_per_prompt=num_samples_per_prompt, target_words=target_words, **kwargs) for prompt in prompts]

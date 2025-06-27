@@ -31,6 +31,7 @@ class ExperimentConfig:
     num_responses: int = 10
     num_samples: int = 1
     num_prompts: int = 5
+    num_samples_per_prompt: int = 2 # Number of samples per prompt for COMBINED method
     target_words: int = 200 # Minimum number of words in each response
     random_seed: int = 42
     use_vllm: bool = False
@@ -724,6 +725,7 @@ def run_quick_comparison(
     num_responses: int = 10,
     num_samples: int = 1,
     num_prompts: int = 5,
+    num_samples_per_prompt: int = 2,
     rerun: bool = False,
     create_backup: bool = False,
     **kwargs
@@ -738,6 +740,7 @@ def run_quick_comparison(
     print(f"Num responses: {num_responses}")
     print(f"Num samples: {num_samples}")
     print(f"Num prompts: {num_prompts}")
+    print(f"Num samples per prompt: {num_samples_per_prompt}")
     print(f"Rerun: {rerun}")
     print(f"Create backup: {create_backup}")
     print(f"**kwargs: {kwargs}")
@@ -752,6 +755,7 @@ def run_quick_comparison(
             num_responses=num_responses,
             num_samples=num_samples,
             num_prompts=num_prompts,
+            num_samples_per_prompt=num_samples_per_prompt,
             **kwargs
         ))
     

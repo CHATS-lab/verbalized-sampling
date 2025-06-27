@@ -2,14 +2,14 @@ BASE_PROMPT = """
 Generate a response to the input prompt. Output ONLY the response, no explanations or extra text.
 """
 
-# STANDARD_PROMPT = """
-# Generate {num_samplings} different responses to the input prompt. Try to be as creative and diverse as possible.
-# """
-
-# Special version for the simple QA task
 STANDARD_PROMPT = """
-Provide your {num_samplings} best guesses for the given question. 
+Generate {num_samplings} different responses to the input prompt. Try to be as creative and diverse as possible.
 """
+
+# # Special version for the simple QA task
+# STANDARD_PROMPT = """
+# Provide your {num_samplings} best guesses for the given question. 
+# """
 
 # # Special version for the state name task
 # STANDARD_PROMPT = """
@@ -23,7 +23,14 @@ Generate all possible responses to the input prompt. Try to be as creative and d
 # Combined multi-turn and verbalized sampling together
 STANDARD_COMBINED_PROMPT = """
 Generate {num_samplings} plausible and diverse responses to the input prompt. Try to be as creative and diverse as possible.
+
+Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
+- 'text': the response string (no explanation or extra text).
+- 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
+
+Give ONLY the JSON object, no explanations or extra text.
 """
+
 
 BASE_PROMPT_TARGET_WORDS = """
 Generate a response to the input prompt with {target_words} target words.
@@ -36,6 +43,16 @@ Try to be as creative and diverse as possible.
 STANDARD_ALL_POSSIBLE_PROMPT_TARGET_WORDS = """
 Generate all possible responses to the input prompt with {target_words} target words.
 Try to be as creative and diverse as possible.
+"""
+STANDARD_COMBINED_PROMPT_TARGET_WORDS = """
+Generate {num_samplings} different responses to the input prompt with {target_words} target words.
+Try to be as creative and diverse as possible.
+
+Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
+- 'text': the response string (no explanation or extra text).
+- 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
+
+Give ONLY the JSON object, no explanations or extra text.
 """
 
 # SEQUENCE_FORMAT_PROMPT = """
@@ -65,6 +82,10 @@ Give ONLY the JSON object, no explanations or extra text.
 
 MULTI_TURN_CONTINUE_PROMPT = """
 Generate an alternative response to the original input prompt.
+"""
+
+COMBINED_CONTINUE_PROMPT = """
+Generate {num_samplings} alternative responses to the original input prompt.
 """
 
 # Chain-of-Thought Sampling Prompts

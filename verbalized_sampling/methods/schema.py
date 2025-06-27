@@ -342,7 +342,7 @@ def get_schema(method: Method, use_tools: bool = False) -> Any:
         return SequenceResponse
     elif method == Method.STRUCTURE:
         return StructuredResponseList
-    elif method == Method.STRUCTURE_WITH_PROB:
+    elif method == Method.STRUCTURE_WITH_PROB or method == Method.COMBINED:
         return StructuredResponseListWithProbability
     elif method == Method.CHAIN_OF_THOUGHT:
         return ChainOfThoughtResponse

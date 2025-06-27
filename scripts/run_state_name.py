@@ -18,7 +18,7 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 500,
+        'num_responses': 20,
         'num_prompts': 1, # total: 145
         'target_words': 0, 
         'temperature': temperature,
@@ -100,11 +100,17 @@ if __name__ == "__main__":
         #     'strict_json': True,
         #     'num_samples': 20,
         # },
+        # {
+        #     'method': Method.CHAIN_OF_THOUGHT,
+        #     'strict_json': True,
+        #     'num_samples': 20,
+        # },
         {
-            'method': Method.CHAIN_OF_THOUGHT,
+            'method': Method.COMBINED,
             'strict_json': True,
             'num_samples': 20,
-        },
+            'num_samples_per_prompt': 10,
+        }
     ]
     
     run_method_tests(
