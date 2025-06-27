@@ -71,7 +71,7 @@ class OpenRouterLLM(BaseLLM):
         
         response = completion.choices[0].message.content
         if response:
-            print("Response: ", response)
+            # print("Response: ", response)
             parsed_response = self._parse_response_with_schema(response, schema)
             return parsed_response
         return []

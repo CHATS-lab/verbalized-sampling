@@ -1,35 +1,36 @@
-BASE_PROMPT = """
-Generate a response to the input prompt. Output ONLY the response, no explanations or extra text.
-"""
-
-STANDARD_PROMPT = """
-Generate {num_samplings} different responses to the input prompt. Try to be as creative and diverse as possible.
-"""
-
-# # Special version for the simple QA task
-# STANDARD_PROMPT = """
-# Provide your {num_samplings} best guesses for the given question. 
+# ########################### Creativity Task Prompts ###########################
+# BASE_PROMPT = """
+# Generate a response to the input prompt. Output ONLY the response, no explanations or extra text.
 # """
-
-# # Special version for the state name task
 # STANDARD_PROMPT = """
-# Generate {num_samplings} different responses to the input prompt. Try to be as diverse as possible.
+# Generate {num_samplings} different responses to the input prompt. Try to be as creative and diverse as possible.
 # """
+# # Combined multi-turn and verbalized sampling together
+# STANDARD_COMBINED_PROMPT = """
+# Generate {num_samplings} plausible and diverse responses to the input prompt. Try to be as creative and diverse as possible.
 
-STANDARD_ALL_POSSIBLE_PROMPT = """
-Generate all possible responses to the input prompt. Try to be as creative and diverse as possible.
-"""
+# Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
+# - 'text': the response string (no explanation or extra text).
+# - 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
 
-# Combined multi-turn and verbalized sampling together
-STANDARD_COMBINED_PROMPT = """
-Generate {num_samplings} plausible and diverse responses to the input prompt. Try to be as creative and diverse as possible.
+# Give ONLY the JSON object, no explanations or extra text.
+# """
+# CHAIN_OF_THOUGHT_PROMPT = """
+# Generate {num_samplings} plausible responses to the input prompt using chain-of-thought reasoning.
+# First, provide a single "reasoning" field that details your step-by-step thought process.
+# Then, under "responses", return a list of dictionaries. Each dictionary must include:
+# - 'text': the response string (no explanation or extra text).
+# - 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
 
-Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
-- 'text': the response string (no explanation or extra text).
-- 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
-
-Give ONLY the JSON object, no explanations or extra text.
-"""
+# Give ONLY the JSON object, no explanations or extra text.
+# """
+# MULTI_TURN_CONTINUE_PROMPT = """
+# Generate an alternative response to the original input prompt.
+# """
+# # Combined multi-turn and verbalized sampling together
+# COMBINED_CONTINUE_PROMPT = """
+# Generate {num_samplings} alternative responses to the original input prompt.
+# """
 
 
 BASE_PROMPT_TARGET_WORDS = """
@@ -45,7 +46,7 @@ Generate all possible responses to the input prompt with {target_words} target w
 Try to be as creative and diverse as possible.
 """
 STANDARD_COMBINED_PROMPT_TARGET_WORDS = """
-Generate {num_samplings} different responses to the input prompt with {target_words} target words.
+Generate {num_samplings} plausible and diverse responses to the input prompt with {target_words} target words.
 Try to be as creative and diverse as possible.
 
 Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
@@ -54,43 +55,8 @@ Return the responses in JSON format with keys: "responses" (list of dicts with '
 
 Give ONLY the JSON object, no explanations or extra text.
 """
-
-# SEQUENCE_FORMAT_PROMPT = """
-# Give your responses in a Python list of strings format like: ["response1", "response2", "response3", ...]
-# Output ONLY the list, no explanations or extra text.
-# """
-SEQUENCE_FORMAT_PROMPT = """
-Return ALL responses as a Python list of strings, in the following format:
-["response1", "response2", "response3", ...]
-Output ONLY the list, no explanations or extra text.
-"""
-
-STRUCTURE_FORMAT_PROMPT = """
-Return the responses in JSON format with keys: "responses" (list of dicts with 'text'). Each dictionary must include:
-- 'text': the response string (no explanation or extra text).
-
-Give ONLY the JSON object, no explanations or extra text.
-"""
-
-STRUCTURE_WITH_PROBABILITY_FORMAT_PROMPT = """
-Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
-- 'text': the response string (no explanation or extra text).
-- 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
-
-Give ONLY the JSON object, no explanations or extra text.
-"""
-
-MULTI_TURN_CONTINUE_PROMPT = """
-Generate an alternative response to the original input prompt.
-"""
-
-COMBINED_CONTINUE_PROMPT = """
-Generate {num_samplings} alternative responses to the original input prompt.
-"""
-
-# Chain-of-Thought Sampling Prompts
-CHAIN_OF_THOUGHT_PROMPT = """
-Provide {num_samplings} plausible responses to the input prompt using chain-of-thought reasoning.
+CHAIN_OF_THOUGHT_PROMPT_TARGET_WORDS = """
+Generate {num_samplings} plausible responses to the input prompt using chain-of-thought reasoning. Each response should have {target_words} target words.
 First, provide a single "reasoning" field that details your step-by-step thought process.
 Then, under "responses", return a list of dictionaries. Each dictionary must include:
 - 'text': the response string (no explanation or extra text).
@@ -99,8 +65,77 @@ Then, under "responses", return a list of dictionaries. Each dictionary must inc
 Give ONLY the JSON object, no explanations or extra text.
 """
 
+########################### Format Prompts ###########################
+SEQUENCE_FORMAT_PROMPT = """
+Return ALL responses as a Python list of strings, in the following format:
+["response1", "response2", "response3", ...]
+Output ONLY the list, no explanations or extra text.
+"""
+STRUCTURE_FORMAT_PROMPT = """
+Return the responses in JSON format with keys: "responses" (list of dicts with 'text'). Each dictionary must include:
+- 'text': the response string (no explanation or extra text).
+
+Give ONLY the JSON object, no explanations or extra text.
+"""
+STRUCTURE_WITH_PROBABILITY_FORMAT_PROMPT = """
+Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
+- 'text': the response string (no explanation or extra text).
+- 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
+
+Give ONLY the JSON object, no explanations or extra text.
+"""
+
+
+########################### Commonsense Reasoning Task Prompts ###########################
+# Special version for the simple QA task
+BASE_PROMPT = """
+Provide your best guess for the given question. Output ONLY the response, no explanations or extra text.
+"""
+
+STANDARD_PROMPT = """
+Provide your {num_samplings} best guesses for the given question. 
+"""
+
+# Combined verbalized sampling for simple QA task
+STANDARD_COMBINED_PROMPT = """
+Provide your {num_samplings} best guesses for the given question. 
+
+Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
+- 'text': the response string (no explanation or extra text).
+- 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
+
+Give ONLY the JSON object, no explanations or extra text.
+"""
+
+# Combined verbalized sampling for simple QA task
+COMBINED_CONTINUE_PROMPT = """
+Give your {num_samplings} alternative best guesses for the given question. 
+"""
+
+MULTI_TURN_CONTINUE_PROMPT = """
+Generate an alternative best guess for the given question.
+"""
+
+# Chain-of-Thought Sampling Prompts
+CHAIN_OF_THOUGHT_PROMPT = """
+Provide your {num_samplings} best guesses for the given question using chain-of-thought reasoning.
+First, provide a single "reasoning" field that details your step-by-step thought process.
+Then, under "responses", return a list of dictionaries. Each dictionary must include:
+- 'text': the response string (no explanation or extra text).
+- 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
+
+Give ONLY the JSON object, no explanations or extra text.
+"""
+
+
+########################### Bias Task Prompts ###########################
+# # Special version for the state name task
+# STANDARD_PROMPT = """
+# Generate {num_samplings} different responses to the input prompt. Try to be as diverse as possible.
+# """
+
 # CHAIN_OF_THOUGHT_PROMPT = """
-# Generate {num_samplings} plausible and diverse responses using chain-of-thought reasoning.
+# Generate {num_samplings} plausible responses to the input prompt using chain-of-thought reasoning.
 # First, provide a single "reasoning" field that details your step-by-step thought process.
 # Then, under "responses", return a list of dictionaries. Each dictionary must include:
 # - 'text': the response string (no explanation or extra text).
@@ -108,6 +143,16 @@ Give ONLY the JSON object, no explanations or extra text.
 
 # Give ONLY the JSON object, no explanations or extra text.
 # """
+
+
+########################### Ablation Prompts ###########################
+STANDARD_ALL_POSSIBLE_PROMPT = """
+Generate all possible responses to the input prompt. Try to be as creative and diverse as possible.
+"""
+
+
+
+########################### Legacy Prompts ###########################
 
 # Self-Reflection Sampling Prompts
 SELF_REFLECTION_PROMPT = """
@@ -132,3 +177,21 @@ Return the output in JSON format with keys: "responses" (list of dicts with 'res
 
 Give ONLY the JSON object, no explanations or extra text.
 """
+
+
+# legacy prompts
+
+# CHAIN_OF_THOUGHT_PROMPT = """
+# Generate {num_samplings} plausible and diverse responses using chain-of-thought reasoning.
+# First, provide a single "reasoning" field that details your step-by-step thought process.
+# Then, under "responses", return a list of dictionaries. Each dictionary must include:
+# - 'text': the response string (no explanation or extra text).
+# - 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
+
+# Give ONLY the JSON object, no explanations or extra text.
+# """
+
+# SEQUENCE_FORMAT_PROMPT = """
+# Give your responses in a Python list of strings format like: ["response1", "response2", "response3", ...]
+# Output ONLY the list, no explanations or extra text.
+# """
