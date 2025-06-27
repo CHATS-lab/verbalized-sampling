@@ -91,11 +91,9 @@ Give ONLY the JSON object, no explanations or extra text.
 BASE_PROMPT = """
 Provide your best guess for the given question. Output ONLY the response, no explanations or extra text.
 """
-
 STANDARD_PROMPT = """
 Provide your {num_samplings} best guesses for the given question. 
 """
-
 # Combined verbalized sampling for simple QA task
 STANDARD_COMBINED_PROMPT = """
 Provide your {num_samplings} best guesses for the given question. 
@@ -106,16 +104,13 @@ Return the responses in JSON format with keys: "responses" (list of dicts with '
 
 Give ONLY the JSON object, no explanations or extra text.
 """
-
 # Combined verbalized sampling for simple QA task
 COMBINED_CONTINUE_PROMPT = """
 Give your {num_samplings} alternative best guesses for the given question. 
 """
-
 MULTI_TURN_CONTINUE_PROMPT = """
 Generate an alternative best guess for the given question.
 """
-
 # Chain-of-Thought Sampling Prompts
 CHAIN_OF_THOUGHT_PROMPT = """
 Provide your {num_samplings} best guesses for the given question using chain-of-thought reasoning.
