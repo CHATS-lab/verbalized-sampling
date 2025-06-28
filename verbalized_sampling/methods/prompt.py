@@ -103,7 +103,8 @@ Give ONLY the JSON object, no explanations or extra text.
 
     def get_combined_prompt(self, num_samplings: int = 5, target_words: int = 200) -> str:
         return f"""
-Generate {num_samplings} creative and diverse responses for the input prompt. Try to be as creative and diverse as possible.
+Generate {num_samplings} creative and diverse responses for the input prompt, each with {target_words} target words.
+Try to be as creative and diverse as possible.
 
 Return the responses in JSON format with the key: "responses" (a list of dicts with 'text' and 'confidence'). Each dictionary must include:
 - 'text': the response string (no explanations or extra text).
@@ -112,14 +113,16 @@ Return the responses in JSON format with the key: "responses" (a list of dicts w
 Give ONLY the JSON object, no explanations or extra text.
 """
     
-    def get_continue_prompt(self, num_samplings: int = 5) -> str:
+    def get_continue_prompt(self, num_samplings: int = 5, target_words: int = 200) -> str:
         if num_samplings == 1:
             return f"""
-Generate an alternative response to the original input prompt.
+Generate an alternative response to the original input prompt, each with {target_words} target words.
+Try to be as creative and diverse as possible.
 """
         else:
             return f"""
-Generate {num_samplings} alternative responses to the original input prompt.
+Generate {num_samplings} alternative responses to the original input prompt, each with {target_words} target words.
+Try to be as creative and diverse as possible.
 """
     
     def get_format_prompt(self, method: str) -> str:
@@ -235,11 +238,11 @@ Give ONLY the JSON object, no explanations or extra text.
     def get_continue_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         if num_samplings == 1:
             return f"""
-Generate an alternative response to the input prompt.
+Generate an alternative response to the input prompt. Try to be as diverse as possible.
 """
         else:
             return f"""
-Generate {num_samplings} alternative responses to the input prompt.
+Generate {num_samplings} alternative responses to the input prompt. Try to be as diverse as possible.
 """
     
     def get_format_prompt(self, method: str) -> str:

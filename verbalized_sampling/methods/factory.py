@@ -153,22 +153,22 @@ class PromptFactory:
         ]
 
     @staticmethod
-    def get_multi_turn_continuation(chat_history: List[Dict[str, str]], task: str) -> List[Dict[str, str]]:
+    def get_multi_turn_continuation(chat_history: List[Dict[str, str]], task: str, target_words: int) -> List[Dict[str, str]]:
         """Get continuation prompt for multi-turn sampling."""
         task_type = PromptFactory._get_task_type_from_task_name(task)
         template = PromptTemplateFactory.get_template(task_type)
-        continuation_prompt = template.get_continue_prompt(num_samplings=1)
-        print("Continuation prompt: ", continuation_prompt)
+        continuation_prompt = template.get_continue_prompt(num_samplings=1, target_words=target_words)
+        # print("Continuation prompt: ", continuation_prompt)
         
         return chat_history + [{"role": "user", "content": continuation_prompt}]
 
     @staticmethod
-    def get_combined_continuation(chat_history: List[Dict[str, str]], num_samplings_per_prompt: int, task: str) -> List[Dict[str, str]]:
+    def get_combined_continuation(chat_history: List[Dict[str, str]], num_samplings_per_prompt: int, task: str, target_words: int) -> List[Dict[str, str]]:
         """Get continuation prompt for combined sampling."""
         task_type = PromptFactory._get_task_type_from_task_name(task)
         template = PromptTemplateFactory.get_template(task_type)
-        continuation_prompt = template.get_continue_prompt(num_samplings=num_samplings_per_prompt)
-        print("Continuation prompt: ", continuation_prompt)
+        continuation_prompt = template.get_continue_prompt(num_samplings=num_samplings_per_prompt, target_words=target_words)
+        # print("Continuation prompt: ", continuation_prompt)
         
         return chat_history + [{"role": "user", "content": continuation_prompt}]
     
