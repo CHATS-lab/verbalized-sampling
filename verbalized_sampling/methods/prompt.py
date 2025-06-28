@@ -106,7 +106,7 @@ Give ONLY the JSON object, no explanations or extra text.
 """
 # Combined verbalized sampling for simple QA task
 COMBINED_CONTINUE_PROMPT = """
-Give your {num_samplings} alternative best guesses for the given question. 
+Provide your {num_samplings} alternative best guesses for the given question. 
 """
 MULTI_TURN_CONTINUE_PROMPT = """
 Generate an alternative best guess for the given question.
@@ -124,19 +124,37 @@ Give ONLY the JSON object, no explanations or extra text.
 
 
 ########################### Bias Task Prompts ###########################
-# # Special version for the state name task
+# BASE_PROMPT = """
+# Generate a response to the input prompt. Output ONLY the response, no explanations or extra text.
+# """
 # STANDARD_PROMPT = """
 # Generate {num_samplings} different responses to the input prompt. Try to be as diverse as possible.
 # """
-
 # CHAIN_OF_THOUGHT_PROMPT = """
-# Generate {num_samplings} plausible responses to the input prompt using chain-of-thought reasoning.
+# Generate {num_samplings} plausible and diverse responses to the input prompt using chain-of-thought reasoning. Try to be as diverse as possible.
+
 # First, provide a single "reasoning" field that details your step-by-step thought process.
 # Then, under "responses", return a list of dictionaries. Each dictionary must include:
 # - 'text': the response string (no explanation or extra text).
 # - 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
 
 # Give ONLY the JSON object, no explanations or extra text.
+# """
+# STANDARD_COMBINED_PROMPT = """
+# Generate {num_samplings} plausible and diverse responses to the input prompt. Try to be as creative and diverse as possible.
+
+# Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
+# - 'text': the response string (no explanation or extra text).
+# - 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
+
+# Give ONLY the JSON object, no explanations or extra text.
+# """
+# # Combined verbalized sampling for simple QA task
+# COMBINED_CONTINUE_PROMPT = """
+# Generate {num_samplings} alternative responses to the input prompt. 
+# """
+# MULTI_TURN_CONTINUE_PROMPT = """
+# Generate an alternative response to the input prompt.
 # """
 
 

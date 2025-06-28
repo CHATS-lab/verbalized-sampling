@@ -35,8 +35,8 @@ def get_model(model_name: str,
     else:
         model_class = LLM_REGISTRY["vllm" if use_vllm else "openrouter"]
     
-    print("Model class: ", model_class)
-    print("Model name: ", model_name)
+    # print("Model class: ", model_class)
+    # print("Model name: ", model_name)
     return model_class(model_name=model_name, 
                        config=config, 
                        num_workers=num_workers,

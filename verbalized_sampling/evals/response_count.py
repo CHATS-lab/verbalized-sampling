@@ -14,10 +14,12 @@ class ResponseCountEvaluator(BaseEvaluator):
     ]
     aggregate_plot_metrics = [
         "average_kl_divergence",
-        "average_precision"
+        "average_unique_recall_rate",
+        "average_precision",
     ]
     key_plot_metrics = [
         ("average_kl_divergence", "KL Divergence"),
+        ("average_unique_recall_rate", "Unique Recall Rate"),
         ("average_precision", "Precision"),
     ]
 
@@ -166,6 +168,7 @@ class ResponseCountEvaluator(BaseEvaluator):
         total_kl_div = 0.0
         total_chi_square = 0.0
         total_precision = 0.0
+        total_unique_recall_rate = 0.0
         num_prompts = len(prompt_groups)
         
         for prompt, group in prompt_groups.items():
@@ -190,11 +193,14 @@ class ResponseCountEvaluator(BaseEvaluator):
             kl_div = self._calculate_kl_divergence(response_distribution, gt_count)
             chi_square = self._calculate_chi_square(response_distribution, gt_count)
             precision = num_responses / len(group)
+            # unique recall rate
+            unique_recall_rate = len(response_distribution.keys()) / gt_count
             
             total_kl_div += kl_div
             total_chi_square += chi_square
             total_precision += precision
-            
+            total_unique_recall_rate += unique_recall_rate
+
             if response_distribution:
                 min_responses_per_category = min(response_distribution.values())
                 max_responses_per_category = max(response_distribution.values())
@@ -210,7 +216,8 @@ class ResponseCountEvaluator(BaseEvaluator):
                 "num_gt_responses": gt_count,
                 "kl_divergence": kl_div,
                 "chi_square": chi_square,
-                "precision": precision
+                "precision": precision,
+                "unique_recall_rate": unique_recall_rate
             }
         
         
@@ -219,6 +226,7 @@ class ResponseCountEvaluator(BaseEvaluator):
             "average_kl_divergence": total_kl_div / num_prompts if num_prompts > 0 else 0.0,
             "average_chi_square": total_chi_square / num_prompts if num_prompts > 0 else 0.0,
             "average_precision": total_precision / num_prompts if num_prompts > 0 else 0.0,
+            "average_unique_recall_rate": total_unique_recall_rate / num_prompts if num_prompts > 0 else 0.0,
             "num_prompts": num_prompts
         }
 
