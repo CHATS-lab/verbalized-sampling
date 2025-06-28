@@ -132,29 +132,35 @@ def get_tool_schema(method: Method) -> List[Dict[str, Any]]:
                 "required": ["reasoning", "responses"]
             }
         }]
-        # return [{
-        #     "name": "generate_with_reasoning",
-        #     "description": "Generate responses with step-by-step reasoning",
-        #     "input_schema": {
-        #         "type": "object",
-        #         "properties": {
-        #             "reasoning": {
-        #                 "type": "string",
-        #                 "description": "Step-by-step reasoning process"
-        #             },
-        #             "responses": {
-        #                 "type": "array",
-        #                 "description": "List of responses based on the reasoning",
-        #                 "items": {
-        #                     "type": "string",
-        #                     "description": "The response text"
-        #                 }
-        #             }
-        #         },
-        #         "required": ["reasoning", "responses"]
-        #     }
-        # }]
     
+    elif method == Method.COMBINED:
+        return [{
+            "name": "generate_with_reasoning",
+            "description": "Generate responses with step-by-step reasoning",
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "responses": {
+                        "type": "array",
+                        "description": "List of response strings",
+                        "items": {
+                            "type": "string",
+                            "description": "The response text"
+                        }
+                    },
+                    "confidences": {
+                        "type": "array",
+                        "description": "List of confidence values corresponding to each response",
+                        "items": {
+                            "type": "number",
+                            "description": "Confidence score between 0 and 1 indicating how likely this response would be",
+                        }
+                    }
+                },
+                "required": ["responses", "confidences"]
+            }
+        }]
+
     elif method == Method.SELF_REFLECTION:
         return [{
             "name": "generate_with_reflection",
@@ -330,6 +336,45 @@ ChainOfThoughtResponse = {
     }
 }
 
+CombinedResponse = {
+    "type": "json_schema",
+    "json_schema": {
+        "name": "combined_response",
+        "strict": True,
+        "schema": {
+            "type": "object",
+            "properties": {
+                "responses": {
+                    "type": "array",
+                    "description": "A list of response objects containing text and probability.",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "text": {
+                                "type": "string",
+                                "description": "The text response."
+                            },
+                            "confidence": {
+                                "type": "number",
+                                "description": "a score from 0.0 to 1.0 representing how likely or typical the response is."
+                            }
+                        },
+                        "required": [
+                            "text",
+                            "confidence"
+                        ],
+                        "additionalProperties": False
+                    }
+                }
+            },
+            "required": [
+                "responses"
+            ],
+            "additionalProperties": False
+        }
+    }
+}
+
 
 def get_schema(method: Method, use_tools: bool = False) -> Any:
     """Get schema for the specified method.
@@ -342,10 +387,12 @@ def get_schema(method: Method, use_tools: bool = False) -> Any:
         return SequenceResponse
     elif method == Method.STRUCTURE:
         return StructuredResponseList
-    elif method == Method.STRUCTURE_WITH_PROB or method == Method.COMBINED:
+    elif method == Method.STRUCTURE_WITH_PROB:
         return StructuredResponseListWithProbability
     elif method == Method.CHAIN_OF_THOUGHT:
         return ChainOfThoughtResponse
+    elif method == Method.COMBINED:
+        return CombinedResponse
     else:
         return None
 

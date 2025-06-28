@@ -16,6 +16,7 @@ import threading
 import pandas as pd
 from pydantic import BaseModel
 from tqdm import tqdm
+import numpy as np
 
 from .base import BaseEvaluator, EvalResult
 from verbalized_sampling.llms import get_model
@@ -192,7 +193,8 @@ class FactualityEvaluator(BaseEvaluator):
                 'grade_letter': 'C',
                 "is_correct": False,
                 "is_incorrect": False,
-                "is_not_attempted": True
+                "is_not_attempted": True,
+                'probability': response.get('probability', np.nan)  # Preserve probability
             }
         
         grade_letter = self.grade_sample(prompt, target, response_text)
@@ -205,36 +207,44 @@ class FactualityEvaluator(BaseEvaluator):
             # Metrics based on grading response
             "is_correct": grade_letter == "A",
             "is_incorrect": grade_letter == "B",
-            "is_not_attempted": grade_letter == "C"
+            "is_not_attempted": grade_letter == "C",
+            'probability': response.get('probability', np.nan)  # Preserve probability
         }
     
     def _process_prompt_group(self, prompt_group_data):
         """Process a group of responses for the same prompt in parallel."""
         prompt, group = prompt_group_data
         
+        # Sort responses by probability from high to low if probability is available
+        if np.isnan(group[0]['probability']):
+            sorted_group = group
+        else:
+            sorted_group = sorted(group, key=lambda x: x.get('probability', 0.0), reverse=True)
+        
         # Calculate metrics for this prompt group
-        prompt_correct = sum(metric['is_correct'] for metric in group)
-        prompt_incorrect = sum(metric['is_incorrect'] for metric in group)
-        prompt_not_attempted = sum(metric['is_not_attempted'] for metric in group)
+        prompt_correct = sum(metric['is_correct'] for metric in sorted_group)
+        prompt_incorrect = sum(metric['is_incorrect'] for metric in sorted_group)
+        prompt_not_attempted = sum(metric['is_not_attempted'] for metric in sorted_group)
         prompt_attempted = prompt_correct + prompt_incorrect
         prompt_accuracy = (
             prompt_correct / prompt_attempted if prompt_attempted > 0 else 0
         )
         prompt_f1 = (
-            2 * prompt_accuracy * (prompt_correct / len(group))
-            / (prompt_accuracy + (prompt_correct / len(group)))
-            if (prompt_accuracy + (prompt_correct / len(group))) > 0
+            2 * prompt_accuracy * (prompt_correct / len(sorted_group))
+            / (prompt_accuracy + (prompt_correct / len(sorted_group)))
+            if (prompt_accuracy + (prompt_correct / len(sorted_group))) > 0
             else 0
         )
         
         # For top@k (majority): count prompt as correct if majority of generations are correct
-        top_at_k_correct = prompt_correct > len(group) / 2
+        top_at_k_correct = prompt_correct > len(sorted_group) / 2
         
         # For pass@k: count prompt as correct if any generation is correct
         pass_at_k_correct = prompt_correct > 0
         
-        # For first response accuracy: check if the first response (index 0) is correct
-        first_response_correct = group[0]['is_correct'] if group else False
+        # For first response accuracy: check if the first response (highest probability) is correct
+        # print(sorted_group)
+        first_response_correct = sorted_group[0]['is_correct'] if sorted_group else False
         
         return {
             'prompt': prompt,
@@ -246,7 +256,7 @@ class FactualityEvaluator(BaseEvaluator):
             'pass_at_k_correct': pass_at_k_correct,
             'top_at_k_correct': top_at_k_correct,
             'first_response_correct': first_response_correct,
-            'group_size': len(group)
+            'group_size': len(sorted_group)
         }
 
     def aggregate_metrics(self, instance_metrics: List[Dict[str, float]]) -> Dict[str, Any]:

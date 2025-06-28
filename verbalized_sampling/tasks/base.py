@@ -74,6 +74,7 @@ class BaseTask(ABC):
             def process_turn(current_prompts, num_samples):
                 nonlocal global_index
                 result = self.model._chat_with_format(current_prompts, schema=get_schema(self.method))
+                # print("Result: ", result)
                 
                 parsed_responses = ResponseParser.parse_response(self.method, result)
                 for i, response in enumerate(parsed_responses):

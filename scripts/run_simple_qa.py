@@ -18,7 +18,7 @@ def create_method_experiments(
         'task': task,
         'model_name': model_name,
         'num_responses': 5,
-        'num_prompts': 300, # current total: 300; total: 4326
+        'num_prompts': 1, # current total: 300; total: 4326
         'target_words': 0, 
         'temperature': temperature,
         'top_p': top_p,
@@ -101,12 +101,12 @@ if __name__ == "__main__":
             'strict_json': True,
             'num_samples': 5,
         },
-        # {
-        #     'method': Method.COMBINED,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        #     'num_samples_per_prompt': 2,
-        # }
+        {
+            'method': Method.COMBINED,
+            'strict_json': True,
+            'num_samples': 5,
+            'num_samples_per_prompt': 2,
+        }
     ]
 
 
@@ -154,25 +154,25 @@ if __name__ == "__main__":
     # )
 
     
-    # run_method_tests(
-    #     task=Task.SIMPLE_QA,
-    #     model_name="anthropic/claude-4-sonnet",
-    #     methods=methods,
-    #     metrics=["factuality"],
-    #     temperature=0.7,
-    #     top_p=1.0,
-    #     output_dir="method_results_simple_qa",
-    # )
-
     run_method_tests(
         task=Task.SIMPLE_QA,
-        model_name="o3",
+        model_name="anthropic/claude-4-sonnet",
         methods=methods,
         metrics=["factuality"],
         temperature=0.7,
         top_p=1.0,
         output_dir="method_results_simple_qa",
     )
+
+    # run_method_tests(
+    #     task=Task.SIMPLE_QA,
+    #     model_name="o3",
+    #     methods=methods,
+    #     metrics=["factuality"],
+    #     temperature=0.7,
+    #     top_p=1.0,
+    #     output_dir="method_results_simple_qa",
+    # )
 
     # run_method_tests(
     #     task=Task.SIMPLE_QA,

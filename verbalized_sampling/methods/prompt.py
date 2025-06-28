@@ -96,17 +96,17 @@ Provide your {num_samplings} best guesses for the given question.
 """
 # Combined verbalized sampling for simple QA task
 STANDARD_COMBINED_PROMPT = """
-Provide your {num_samplings} best guesses for the given question. 
+Generate {num_samplings} plausible responses for the given question.
 
-Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
-- 'text': the response string (no explanation or extra text).
-- 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
+Return the responses in JSON format with the key: "responses" (a list of dicts with 'text' and 'confidence'). Each dictionary must include:
+- 'text': the response string (no explanations or extra text).
+- 'confidence': a score from 0.0 to 1.0 representing how likely or typical the response is (1.0 = very typical/commonsense, 0.0 = very unlikely/creative).
 
 Give ONLY the JSON object, no explanations or extra text.
 """
 # Combined verbalized sampling for simple QA task
 COMBINED_CONTINUE_PROMPT = """
-Provide your {num_samplings} alternative best guesses for the given question. 
+Give {num_samplings} more guesses that you believe could be correct for the given question.
 """
 MULTI_TURN_CONTINUE_PROMPT = """
 Generate an alternative best guess for the given question.

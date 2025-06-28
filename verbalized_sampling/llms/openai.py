@@ -67,7 +67,7 @@ class OpenAILLM(BaseLLM):
         try:
             if isinstance(response, str):
                 parsed = json.loads(response)
-
+                
                 # Handle double-escaped JSON strings (i.e., string inside a string)
                 if isinstance(parsed, str):
                     parsed = json.loads(parsed)
@@ -76,8 +76,6 @@ class OpenAILLM(BaseLLM):
                 if "responses" in parsed:
                     # For schemas with a 'responses' field (SequenceResponse, StructuredResponseList, etc.)
                     responses = parsed["responses"]
-                    # print("Responses: ", responses)
-                    # print("Type of responses: ", type(responses))
                     
                     if isinstance(responses, list):
                         result = []
@@ -85,19 +83,25 @@ class OpenAILLM(BaseLLM):
                             if isinstance(resp, dict) and "text" in resp and "probability" in resp:
                                 # ResponseWithProbability
                                 result.append({
-                                    "response": resp["text"],
+                                    "text": resp["text"],
                                     "probability": resp["probability"]
+                                })
+                            elif isinstance(resp, dict) and "text" in resp and "confidence" in resp:
+                                # ResponseWithConfidence
+                                result.append({
+                                    "text": resp["text"],
+                                    "probability": resp["confidence"]
                                 })
                             elif isinstance(resp, dict) and "text" in resp:
                                 # Response
                                 result.append({
-                                    "response": resp["text"],
+                                    "text": resp["text"],
                                     "probability": 1.0
                                 })
                             elif isinstance(resp, str):
                                 # SequenceResponse (list of strings)
                                 result.append({
-                                    "response": resp,
+                                    "text": resp,
                                     "probability": 1.0
                                 })
                         return result
@@ -105,17 +109,17 @@ class OpenAILLM(BaseLLM):
                     # For direct response schemas (Response)
                     if "text" in parsed:
                         return [{
-                            "response": parsed["text"],
+                            "text": parsed["text"],
                             "probability": parsed.get("probability", 1.0)
                         }]
                     
                 # Fallback: return the raw validated data
-                return [{"response": str(parsed), "probability": 1.0}]
+                return [{"text": str(parsed), "probability": 1.0}]
                 
         except Exception as e:
             print(f"Error parsing response with schema: {e}")
             # If parsing fails, return a single response with probability 1.0
-            return [{"response": response, "probability": 1.0}]
+            return [{"text": response, "probability": 1.0}]
 
 
     def _chat_with_format(self, messages: List[Dict[str, str]], schema: BaseModel) -> List[Dict[str, Any]]:
