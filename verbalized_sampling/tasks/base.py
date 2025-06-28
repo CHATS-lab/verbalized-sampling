@@ -92,12 +92,12 @@ class BaseTask(ABC):
             # Process regular turns
             for turn in range(num_turns):
                 current_prompts = (initial_prompt if turn == 0 else 
-                                 PromptFactory.get_combined_continuation(chat_history, num_samplings_per_prompt=self.num_samples_per_prompt))
+                                 PromptFactory.get_combined_continuation(chat_history, self.num_samples_per_prompt, self.task_type))
                 process_turn(current_prompts, self.num_samples_per_prompt)
             
             # Process remainder turn
             if remainder > 0:
-                continuation_prompt = PromptFactory.get_combined_continuation(chat_history, num_samplings_per_prompt=remainder)
+                continuation_prompt = PromptFactory.get_combined_continuation(chat_history, remainder, self.task_type)
                 process_turn(continuation_prompt, remainder)
             
             return turn_responses
@@ -129,7 +129,7 @@ class BaseTask(ABC):
                 if turn == 0:
                     current_prompts = initial_prompt
                 else:
-                    continuation_prompt = PromptFactory.get_multi_turn_continuation(chat_history)
+                    continuation_prompt = PromptFactory.get_multi_turn_continuation(chat_history, self.task_type)
                     current_prompts = continuation_prompt
                 # print(f"Current prompts: {current_prompts}")
                 result = self.model._chat(current_prompts)

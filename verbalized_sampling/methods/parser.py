@@ -9,7 +9,6 @@ from typing import Any, Dict, List, Union, Optional
 from .factory import Method
 
 def maybe_rename_response(response: Dict) -> Dict:
-    print(response)
     if "response" in response:
         response["text"] = response["response"]
         del response["response"]

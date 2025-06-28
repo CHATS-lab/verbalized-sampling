@@ -1,62 +1,98 @@
-# ########################### Creativity Task Prompts ###########################
-# BASE_PROMPT = """
-# Generate a response to the input prompt. Output ONLY the response, no explanations or extra text.
-# """
-# STANDARD_PROMPT = """
-# Generate {num_samplings} different responses to the input prompt. Try to be as creative and diverse as possible.
-# """
-# # Combined multi-turn and verbalized sampling together
-# STANDARD_COMBINED_PROMPT = """
-# Generate {num_samplings} plausible and diverse responses to the input prompt. Try to be as creative and diverse as possible.
-
-# Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
-# - 'text': the response string (no explanation or extra text).
-# - 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
-
-# Give ONLY the JSON object, no explanations or extra text.
-# """
-# CHAIN_OF_THOUGHT_PROMPT = """
-# Generate {num_samplings} plausible responses to the input prompt using chain-of-thought reasoning.
-# First, provide a single "reasoning" field that details your step-by-step thought process.
-# Then, under "responses", return a list of dictionaries. Each dictionary must include:
-# - 'text': the response string (no explanation or extra text).
-# - 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
-
-# Give ONLY the JSON object, no explanations or extra text.
-# """
-# MULTI_TURN_CONTINUE_PROMPT = """
-# Generate an alternative response to the original input prompt.
-# """
-# # Combined multi-turn and verbalized sampling together
-# COMBINED_CONTINUE_PROMPT = """
-# Generate {num_samplings} alternative responses to the original input prompt.
-# """
-
-
-BASE_PROMPT_TARGET_WORDS = """
-Generate a response to the input prompt with {target_words} target words.
-Output ONLY the response, no explanations or extra text.
 """
-STANDARD_PROMPT_TARGET_WORDS = """
-Generate {num_samplings} different responses to the input prompt with {target_words} target words.
-Try to be as creative and diverse as possible.
+Prompt templates organized by task type.
 """
-STANDARD_ALL_POSSIBLE_PROMPT_TARGET_WORDS = """
-Generate all possible responses to the input prompt with {target_words} target words.
-Try to be as creative and diverse as possible.
-"""
-STANDARD_COMBINED_PROMPT_TARGET_WORDS = """
-Generate {num_samplings} plausible and diverse responses to the input prompt with {target_words} target words.
-Try to be as creative and diverse as possible.
 
+from typing import Dict, Any, Optional
+from enum import Enum
+
+class TaskType(Enum):
+    """Enumeration of different task types."""
+    CREATIVITY = "creativity"
+    COMMONSENSE = "commonsense"
+    BIAS = "bias"
+    ABLATION = "ablation"
+
+
+class BasePromptTemplate:
+    """Base class for prompt templates."""
+    
+    def __init__(self, task_type: TaskType):
+        self.task_type = task_type
+    
+    def get_base_prompt(self, **kwargs) -> str:
+        """Get the base prompt for the task."""
+        raise NotImplementedError
+    
+    def get_standard_prompt(self, **kwargs) -> str:
+        """Get the standard prompt for the task."""
+        raise NotImplementedError
+    
+    def get_combined_prompt(self, **kwargs) -> str:
+        """Get the combined prompt for the task."""
+        raise NotImplementedError
+    
+    def get_chain_of_thought_prompt(self, **kwargs) -> str:
+        """Get the chain-of-thought prompt for the task."""
+        raise NotImplementedError
+    
+    def get_continue_prompt(self, **kwargs) -> str:
+        """Get the continuation prompt for the task."""
+        raise NotImplementedError
+    
+    def get_format_prompt(self, method: str) -> str:
+        """Get the format prompt for a specific method."""
+        format_prompts = {
+            "sequence": """
+Return ALL responses as a Python list of strings, in the following format:
+["response1", "response2", "response3", ...]
+Output ONLY the list, no explanations or extra text.
+""",
+            "structure": """
+Return the responses in JSON format with keys: "responses" (list of dicts with 'text'). Each dictionary must include:
+- 'text': the response string (no explanation or extra text).
+
+Give ONLY the JSON object, no explanations or extra text.
+""",
+            "structure_with_prob": """
 Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
 - 'text': the response string (no explanation or extra text).
 - 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
 
 Give ONLY the JSON object, no explanations or extra text.
 """
-CHAIN_OF_THOUGHT_PROMPT_TARGET_WORDS = """
+        }
+        return format_prompts.get(method, "")
+
+
+#############################Creativity tasks###################################
+class CreativityPromptTemplate(BasePromptTemplate):
+    """Prompt templates for creativity tasks."""
+    
+    def __init__(self):
+        super().__init__(TaskType.CREATIVITY)
+    
+    def get_base_prompt(self, target_words: int = 200) -> str:
+        return f"""
+Generate a response to the input prompt with {target_words} target words.
+Output ONLY the response, no explanations or extra text.
+"""
+    
+    def get_standard_prompt(self, num_samplings: int = 5, target_words: int = 200) -> str:
+        return f"""
+Generate {num_samplings} different responses to the input prompt, each with {target_words} target words.
+Try to be as creative and diverse as possible.
+"""
+    
+    def get_standard_all_possible_prompt(self, target_words: int = 200) -> str:
+        return f"""
+Generate all possible responses to the input prompt, each with {target_words} target words.
+Try to be as creative and diverse as possible.
+"""
+
+    def get_chain_of_thought_prompt(self, num_samplings: int = 5, target_words: int = 200) -> str:
+        return f"""
 Generate {num_samplings} plausible responses to the input prompt using chain-of-thought reasoning. Each response should have {target_words} target words.
+
 First, provide a single "reasoning" field that details your step-by-step thought process.
 Then, under "responses", return a list of dictionaries. Each dictionary must include:
 - 'text': the response string (no explanation or extra text).
@@ -65,54 +101,56 @@ Then, under "responses", return a list of dictionaries. Each dictionary must inc
 Give ONLY the JSON object, no explanations or extra text.
 """
 
-########################### Format Prompts ###########################
-SEQUENCE_FORMAT_PROMPT = """
-Return ALL responses as a Python list of strings, in the following format:
-["response1", "response2", "response3", ...]
-Output ONLY the list, no explanations or extra text.
-"""
-STRUCTURE_FORMAT_PROMPT = """
-Return the responses in JSON format with keys: "responses" (list of dicts with 'text'). Each dictionary must include:
-- 'text': the response string (no explanation or extra text).
-
-Give ONLY the JSON object, no explanations or extra text.
-"""
-STRUCTURE_WITH_PROBABILITY_FORMAT_PROMPT = """
-Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
-- 'text': the response string (no explanation or extra text).
-- 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
-
-Give ONLY the JSON object, no explanations or extra text.
-"""
-
-
-########################### Commonsense Reasoning Task Prompts ###########################
-# Special version for the simple QA task
-BASE_PROMPT = """
-Provide your best guess for the given question. Output ONLY the response, no explanations or extra text.
-"""
-STANDARD_PROMPT = """
-Provide your {num_samplings} best guesses for the given question. 
-"""
-# Combined verbalized sampling for simple QA task
-STANDARD_COMBINED_PROMPT = """
-Generate {num_samplings} plausible responses for the given question.
+    def get_combined_prompt(self, num_samplings: int = 5, target_words: int = 200) -> str:
+        return f"""
+Generate {num_samplings} creative and diverse responses for the input prompt. Try to be as creative and diverse as possible.
 
 Return the responses in JSON format with the key: "responses" (a list of dicts with 'text' and 'confidence'). Each dictionary must include:
 - 'text': the response string (no explanations or extra text).
-- 'confidence': a score from 0.0 to 1.0 representing how likely or typical the response is (1.0 = very typical/commonsense, 0.0 = very unlikely/creative).
+- 'confidence': a score from 0.0 to 1.0 representing how likely or conventional the response is (1.0 = very typical/common, 0.0 = highly original or unconventional).
 
 Give ONLY the JSON object, no explanations or extra text.
 """
-# Combined verbalized sampling for simple QA task
-COMBINED_CONTINUE_PROMPT = """
-Give {num_samplings} more guesses that you believe could be correct for the given question.
+    
+    def get_continue_prompt(self, num_samplings: int = 5) -> str:
+        if num_samplings == 1:
+            return f"""
+Generate an alternative response to the original input prompt.
 """
-MULTI_TURN_CONTINUE_PROMPT = """
-Generate an alternative best guess for the given question.
+        else:
+            return f"""
+Generate {num_samplings} alternative responses to the original input prompt.
 """
-# Chain-of-Thought Sampling Prompts
-CHAIN_OF_THOUGHT_PROMPT = """
+    
+    def get_format_prompt(self, method: str) -> str:
+        base_template = BasePromptTemplate(TaskType.CREATIVITY)
+        return base_template.get_format_prompt(method)
+
+
+#############################Commonsense reasoning tasks###################################
+class CommonsensePromptTemplate(BasePromptTemplate):
+    """Prompt templates for commonsense reasoning tasks."""
+    
+    def __init__(self):
+        super().__init__(TaskType.COMMONSENSE)
+    
+    def get_base_prompt(self, **kwargs) -> str:
+        return """
+Provide your best guess for the given question. Output ONLY the response, no explanations or extra text.
+"""
+    
+    def get_standard_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        return f"""
+Provide your {num_samplings} best guesses for the given question that you believe could be correct. 
+"""
+    
+    def get_standard_all_possible_prompt(self, **kwargs) -> str:
+        return f"""
+Provide all possible guesses for the given question that you believe could be correct. Output ONLY the response, no explanations or extra text.
+"""
+    
+    def get_chain_of_thought_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        return f"""
 Provide your {num_samplings} best guesses for the given question using chain-of-thought reasoning.
 First, provide a single "reasoning" field that details your step-by-step thought process.
 Then, under "responses", return a list of dictionaries. Each dictionary must include:
@@ -122,47 +160,135 @@ Then, under "responses", return a list of dictionaries. Each dictionary must inc
 Give ONLY the JSON object, no explanations or extra text.
 """
 
+    def get_combined_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        return f"""
+Provide your {num_samplings} best guesses for the given question that you believe could be correct.
 
-########################### Bias Task Prompts ###########################
-# BASE_PROMPT = """
-# Generate a response to the input prompt. Output ONLY the response, no explanations or extra text.
-# """
-# STANDARD_PROMPT = """
-# Generate {num_samplings} different responses to the input prompt. Try to be as diverse as possible.
-# """
-# CHAIN_OF_THOUGHT_PROMPT = """
-# Generate {num_samplings} plausible and diverse responses to the input prompt using chain-of-thought reasoning. Try to be as diverse as possible.
+Return the responses in JSON format with the key: "responses" (a list of dicts with 'text' and 'confidence'). Each dictionary must include:
+- 'text': the response string (no explanations or extra text).
+- 'confidence': a score from 0.0 to 1.0 representing how likely or typical the response is (1.0 = very typical/commonsense, 0.0 = very unlikely/creative).
 
-# First, provide a single "reasoning" field that details your step-by-step thought process.
-# Then, under "responses", return a list of dictionaries. Each dictionary must include:
-# - 'text': the response string (no explanation or extra text).
-# - 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
-
-# Give ONLY the JSON object, no explanations or extra text.
-# """
-# STANDARD_COMBINED_PROMPT = """
-# Generate {num_samplings} plausible and diverse responses to the input prompt. Try to be as creative and diverse as possible.
-
-# Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
-# - 'text': the response string (no explanation or extra text).
-# - 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
-
-# Give ONLY the JSON object, no explanations or extra text.
-# """
-# # Combined verbalized sampling for simple QA task
-# COMBINED_CONTINUE_PROMPT = """
-# Generate {num_samplings} alternative responses to the input prompt. 
-# """
-# MULTI_TURN_CONTINUE_PROMPT = """
-# Generate an alternative response to the input prompt.
-# """
+Give ONLY the JSON object, no explanations or extra text.
+"""
+    
+    def get_continue_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        if num_samplings == 1:
+            return f"""
+Give an alternative guess that you believe could be correct for the given question.
+"""
+        else:
+            return f"""
+Give {num_samplings} more guesses that you believe could be correct for the given question.
+"""
+    
+    def get_format_prompt(self, method: str) -> str:
+        # Use the same format prompts as creativity tasks
+        base_template = BasePromptTemplate(TaskType.COMMONSENSE)
+        return base_template.get_format_prompt(method)
 
 
-########################### Ablation Prompts ###########################
-STANDARD_ALL_POSSIBLE_PROMPT = """
-Generate all possible responses to the input prompt. Try to be as creative and diverse as possible.
+#############################Bias tasks###################################
+class BiasPromptTemplate(BasePromptTemplate):
+    """Prompt templates for bias tasks."""
+    
+    def __init__(self):
+        super().__init__(TaskType.BIAS)
+    
+    def get_base_prompt(self, **kwargs) -> str:
+        return """
+Generate a response to the input prompt. Output ONLY the response, no explanations or extra text.
+"""
+    
+    def get_standard_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        return f"""
+Generate {num_samplings} plausible and diverse responses to the input prompt. Try to be as diverse as possible.
+"""
+    
+    def get_standard_all_possible_prompt(self, **kwargs) -> str:
+        return """
+Generate all plausible responses to the input prompt. Try to be as diverse as possible.
+"""
+    
+    def get_chain_of_thought_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        return f"""
+Generate {num_samplings} plausible and diverse responses to the input prompt using chain-of-thought reasoning. Try to be as diverse as possible.
+
+First, provide a single "reasoning" field that details your step-by-step thought process.
+Then, under "responses", return a list of dictionaries. Each dictionary must include:
+- 'text': the response string (no explanation or extra text).
+- 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
+
+Give ONLY the JSON object, no explanations or extra text.
 """
 
+    def get_combined_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        return f"""
+Generate {num_samplings} plausible and diverse responses to the input prompt. Try to be as diverse as possible.
+
+Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
+- 'text': the response string (no explanation or extra text).
+- 'confidence': a score from 0.0 to 1.0 representing how likely or typical the response is (1.0 = very typical/commonsense, 0.0 = very unlikely/creative).
+
+Give ONLY the JSON object, no explanations or extra text.
+"""
+    
+    def get_continue_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        if num_samplings == 1:
+            return f"""
+Generate an alternative response to the input prompt.
+"""
+        else:
+            return f"""
+Generate {num_samplings} alternative responses to the input prompt.
+"""
+    
+    def get_format_prompt(self, method: str) -> str:
+        base_template = BasePromptTemplate()
+        return base_template.get_format_prompt(method)
+
+
+#############################Prompt factory###################################
+class PromptTemplateFactory:
+    """Factory class to create prompt templates for different task types."""
+    
+    _templates = {
+        TaskType.CREATIVITY: CreativityPromptTemplate,
+        TaskType.COMMONSENSE: CommonsensePromptTemplate,
+        TaskType.BIAS: BiasPromptTemplate,
+        # TaskType.ABLATION: AblationPromptTemplate,
+    }
+    
+    @classmethod
+    def get_template(cls, task_type: TaskType) -> BasePromptTemplate:
+        """Get the appropriate prompt template for a task type."""
+        template_class = cls._templates.get(task_type)
+        if template_class is None:
+            raise ValueError(f"Unknown task type: {task_type}")
+        return template_class()
+    
+    @classmethod
+    def get_prompt(cls, task_type: TaskType, prompt_type: str, **kwargs) -> str:
+        """Get a specific prompt for a task type."""
+        template = cls.get_template(task_type)
+        
+        prompt_methods = {
+            "base": template.get_base_prompt,
+            "standard": template.get_standard_prompt,
+            "combined": template.get_combined_prompt,
+            "chain_of_thought": template.get_chain_of_thought_prompt,
+            "continue": template.get_continue_prompt,
+            "standard_all_possible": getattr(template, 'get_standard_all_possible_prompt', template.get_standard_prompt),
+        }
+
+        method = prompt_methods.get(prompt_type)
+        if method is None:
+            raise ValueError(f"Unknown prompt type: {prompt_type}")
+        
+        return method(**kwargs)
+
+
+# Legacy compatibility - keep the old flat structure for backward compatibility
+# These can be gradually migrated to use the new class-based system
 
 
 ########################### Legacy Prompts ###########################
@@ -190,21 +316,3 @@ Return the output in JSON format with keys: "responses" (list of dicts with 'res
 
 Give ONLY the JSON object, no explanations or extra text.
 """
-
-
-# legacy prompts
-
-# CHAIN_OF_THOUGHT_PROMPT = """
-# Generate {num_samplings} plausible and diverse responses using chain-of-thought reasoning.
-# First, provide a single "reasoning" field that details your step-by-step thought process.
-# Then, under "responses", return a list of dictionaries. Each dictionary must include:
-# - 'text': the response string (no explanation or extra text).
-# - 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
-
-# Give ONLY the JSON object, no explanations or extra text.
-# """
-
-# SEQUENCE_FORMAT_PROMPT = """
-# Give your responses in a Python list of strings format like: ["response1", "response2", "response3", ...]
-# Output ONLY the list, no explanations or extra text.
-# """
