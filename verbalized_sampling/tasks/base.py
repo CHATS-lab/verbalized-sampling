@@ -63,7 +63,7 @@ class BaseTask(ABC):
         initial_prompts = [prompt for prompt in self.get_prompt() for _ in range(self.num_responses)]
         all_results = []
         
-        num_turns = self.num_samples // self.num_samples_per_prompt
+        num_turns = int(self.num_samples // self.num_samples_per_prompt)
         remainder = self.num_samples % self.num_samples_per_prompt
         
         def _run_whole_conversation(initial_prompt: List[Dict[str, str]]):
@@ -74,6 +74,7 @@ class BaseTask(ABC):
             def process_turn(current_prompts, num_samples):
                 nonlocal global_index
                 result = self.model._chat_with_format(current_prompts, schema=get_schema(self.method))
+                # print("Result: ", result)
                 
                 parsed_responses = ResponseParser.parse_response(self.method, result)
                 for i, response in enumerate(parsed_responses):
@@ -91,12 +92,12 @@ class BaseTask(ABC):
             # Process regular turns
             for turn in range(num_turns):
                 current_prompts = (initial_prompt if turn == 0 else 
-                                 PromptFactory.get_combined_continuation(chat_history, num_samplings_per_prompt=self.num_samples_per_prompt))
+                                 PromptFactory.get_combined_continuation(chat_history, self.num_samples_per_prompt, self.task_type, self.target_words))
                 process_turn(current_prompts, self.num_samples_per_prompt)
             
             # Process remainder turn
             if remainder > 0:
-                continuation_prompt = PromptFactory.get_combined_continuation(chat_history, num_samplings_per_prompt=remainder)
+                continuation_prompt = PromptFactory.get_combined_continuation(chat_history, remainder, self.task_type, self.target_words)
                 process_turn(continuation_prompt, remainder)
             
             return turn_responses
@@ -128,7 +129,7 @@ class BaseTask(ABC):
                 if turn == 0:
                     current_prompts = initial_prompt
                 else:
-                    continuation_prompt = PromptFactory.get_multi_turn_continuation(chat_history)
+                    continuation_prompt = PromptFactory.get_multi_turn_continuation(chat_history, self.task_type, self.target_words)
                     current_prompts = continuation_prompt
                 # print(f"Current prompts: {current_prompts}")
                 result = self.model._chat(current_prompts)

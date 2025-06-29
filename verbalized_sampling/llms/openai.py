@@ -39,7 +39,11 @@ class OpenAILLM(BaseLLM):
             status = self.client.fine_tuning.jobs.retrieve(self.model_name)
             self.model_name = status.fine_tuned_model
         
-        if "o4" or "o3" in self.model_name: 
+        # Handle O3/O4 models that don't support temperature and top_p
+        if "o3" in self.model_name or "o4" in self.model_name:
+            # Remove temperature and top_p for O3/O4 models
+            self.config.pop('temperature', None)
+            self.config.pop('top_p', None)
             if 'max_tokens' in self.config:
                 self.config.update({'max_completion_tokens': self.config.pop('max_tokens')})
 
@@ -63,7 +67,7 @@ class OpenAILLM(BaseLLM):
         try:
             if isinstance(response, str):
                 parsed = json.loads(response)
-
+                
                 # Handle double-escaped JSON strings (i.e., string inside a string)
                 if isinstance(parsed, str):
                     parsed = json.loads(parsed)
@@ -72,8 +76,6 @@ class OpenAILLM(BaseLLM):
                 if "responses" in parsed:
                     # For schemas with a 'responses' field (SequenceResponse, StructuredResponseList, etc.)
                     responses = parsed["responses"]
-                    # print("Responses: ", responses)
-                    # print("Type of responses: ", type(responses))
                     
                     if isinstance(responses, list):
                         result = []
@@ -83,6 +85,12 @@ class OpenAILLM(BaseLLM):
                                 result.append({
                                     "response": resp["text"],
                                     "probability": resp["probability"]
+                                })
+                            elif isinstance(resp, dict) and "text" in resp and "confidence" in resp:
+                                # ResponseWithConfidence
+                                result.append({
+                                    "response": resp["text"],
+                                    "probability": resp["confidence"]
                                 })
                             elif isinstance(resp, dict) and "text" in resp:
                                 # Response

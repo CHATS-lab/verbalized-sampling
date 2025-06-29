@@ -16,6 +16,7 @@ import threading
 import pandas as pd
 from pydantic import BaseModel
 from tqdm import tqdm
+import numpy as np
 
 from .base import BaseEvaluator, EvalResult
 from verbalized_sampling.llms import get_model
@@ -117,12 +118,14 @@ class FactualityEvaluator(BaseEvaluator):
         "accuracy_given_attempted",
         "pass_at_k_accuracy",
         "top_at_k_accuracy",
+        "first_response_accuracy",
     ]
     key_plot_metrics = [
         ("f1", "F1"),
         ("accuracy_given_attempted", "Accuracy Given Attempted"),
         ("pass_at_k_accuracy", "Pass@k Accuracy"),
         ("top_at_k_accuracy", "Top@k Accuracy"),
+        ("first_response_accuracy", "First Response Accuracy"),
     ]
 
     def __init__(self, judge_model: str = "gpt-4.1", num_workers: int = 64):
@@ -190,7 +193,8 @@ class FactualityEvaluator(BaseEvaluator):
                 'grade_letter': 'C',
                 "is_correct": False,
                 "is_incorrect": False,
-                "is_not_attempted": True
+                "is_not_attempted": True,
+                'probability': response.get('probability', np.nan)  # Preserve probability
             }
         
         grade_letter = self.grade_sample(prompt, target, response_text)
@@ -203,33 +207,44 @@ class FactualityEvaluator(BaseEvaluator):
             # Metrics based on grading response
             "is_correct": grade_letter == "A",
             "is_incorrect": grade_letter == "B",
-            "is_not_attempted": grade_letter == "C"
+            "is_not_attempted": grade_letter == "C",
+            'probability': response.get('probability', np.nan)  # Preserve probability
         }
     
     def _process_prompt_group(self, prompt_group_data):
         """Process a group of responses for the same prompt in parallel."""
         prompt, group = prompt_group_data
         
+        # Sort responses by probability from high to low if probability is available
+        if np.isnan(group[0]['probability']):
+            sorted_group = group
+        else:
+            sorted_group = sorted(group, key=lambda x: x.get('probability', 0.0), reverse=True)
+        
         # Calculate metrics for this prompt group
-        prompt_correct = sum(metric['is_correct'] for metric in group)
-        prompt_incorrect = sum(metric['is_incorrect'] for metric in group)
-        prompt_not_attempted = sum(metric['is_not_attempted'] for metric in group)
+        prompt_correct = sum(metric['is_correct'] for metric in sorted_group)
+        prompt_incorrect = sum(metric['is_incorrect'] for metric in sorted_group)
+        prompt_not_attempted = sum(metric['is_not_attempted'] for metric in sorted_group)
         prompt_attempted = prompt_correct + prompt_incorrect
         prompt_accuracy = (
             prompt_correct / prompt_attempted if prompt_attempted > 0 else 0
         )
         prompt_f1 = (
-            2 * prompt_accuracy * (prompt_correct / len(group))
-            / (prompt_accuracy + (prompt_correct / len(group)))
-            if (prompt_accuracy + (prompt_correct / len(group))) > 0
+            2 * prompt_accuracy * (prompt_correct / len(sorted_group))
+            / (prompt_accuracy + (prompt_correct / len(sorted_group)))
+            if (prompt_accuracy + (prompt_correct / len(sorted_group))) > 0
             else 0
         )
         
-        # For pass@k (majority): count prompt as correct if majority of generations are correct
-        pass_at_k_correct = prompt_correct > len(group) / 2
+        # For top@k (majority): count prompt as correct if majority of generations are correct
+        top_at_k_correct = prompt_correct > len(sorted_group) / 2
         
-        # For top@k: count prompt as correct if any generation is correct
-        top_at_k_correct = prompt_correct > 0
+        # For pass@k: count prompt as correct if any generation is correct
+        pass_at_k_correct = prompt_correct > 0
+        
+        # For first response accuracy: check if the first response (highest probability) is correct
+        # print(sorted_group)
+        first_response_correct = sorted_group[0]['is_correct'] if sorted_group else False
         
         return {
             'prompt': prompt,
@@ -240,7 +255,8 @@ class FactualityEvaluator(BaseEvaluator):
             'prompt_f1': prompt_f1,
             'pass_at_k_correct': pass_at_k_correct,
             'top_at_k_correct': top_at_k_correct,
-            'group_size': len(group)
+            'first_response_correct': first_response_correct,
+            'group_size': len(sorted_group)
         }
 
     def aggregate_metrics(self, instance_metrics: List[Dict[str, float]]) -> Dict[str, Any]:
@@ -271,8 +287,9 @@ class FactualityEvaluator(BaseEvaluator):
         num_prompts = len(prompt_groups)
         
         # Counters for different evaluation strategies
-        pass_at_k_correct_prompts = 0  # majority correct per prompt
-        top_at_k_correct_prompts = 0   # any correct per prompt
+        top_at_k_correct_prompts = 0  # majority correct per prompt
+        pass_at_k_correct_prompts = 0   # any correct per prompt
+        first_response_correct_prompts = 0  # first response correct per prompt
         
         with ThreadPoolExecutor(max_workers=os.cpu_count() or 4) as executor:
             # Submit processing tasks for each prompt group
@@ -304,6 +321,8 @@ class FactualityEvaluator(BaseEvaluator):
                         pass_at_k_correct_prompts += 1
                     if result['top_at_k_correct']:
                         top_at_k_correct_prompts += 1
+                    if result['first_response_correct']:
+                        first_response_correct_prompts += 1
                     
                     total_responses += result['group_size']
                     pbar.update(1)
@@ -317,10 +336,12 @@ class FactualityEvaluator(BaseEvaluator):
         avg_accuracy_given_attempted = sum(prompt_accuracies) / num_prompts if prompt_accuracies else 0
         avg_f1 = sum(prompt_f1_scores) / num_prompts if prompt_f1_scores else 0
 
-        # Pass@k stats: majority correct per prompt
-        pass_at_k_accuracy = pass_at_k_correct_prompts / num_prompts if num_prompts > 0 else 0
-        # Top@k stats: any correct per prompt
+        # Top@k stats: majority correct per prompt
         top_at_k_accuracy = top_at_k_correct_prompts / num_prompts if num_prompts > 0 else 0
+        # Pass@k stats: any correct per prompt
+        pass_at_k_accuracy = pass_at_k_correct_prompts / num_prompts if num_prompts > 0 else 0
+        # First response accuracy: first response correct per prompt
+        first_response_accuracy = first_response_correct_prompts / num_prompts if num_prompts > 0 else 0
         
         return {
             'per_prompt_stats': per_prompt_stats,
@@ -331,8 +352,9 @@ class FactualityEvaluator(BaseEvaluator):
             'num_prompts': num_prompts,
             'accuracy_given_attempted': avg_accuracy_given_attempted,
             'f1': avg_f1,
-            'pass_at_k_accuracy': pass_at_k_accuracy,
             'top_at_k_accuracy': top_at_k_accuracy,
+            'pass_at_k_accuracy': pass_at_k_accuracy,
+            'first_response_accuracy': first_response_accuracy,
         }
 
     def evaluate(self, prompts: List[str], responses: List[str], metadata: Optional[Dict[str, Any]] = None) -> EvalResult:

@@ -18,7 +18,7 @@ def create_method_experiments(
         'task': task,
         'model_name': model_name,
         'num_responses': 5,
-        'num_prompts': 300, # current total: 300; total: 4326
+        'num_prompts': 1, # current total: 300; total: 4326
         'target_words': 0, 
         'temperature': temperature,
         'top_p': top_p,
@@ -112,7 +112,7 @@ if __name__ == "__main__":
 
     # run_method_tests(
     #     task=Task.SIMPLE_QA,
-    #     model_name="gpt-4.1-mini", # google/gemini-2.5-pro, gpt-4.1, anthropic/claude-4-sonnet
+    #     model_name="gpt-4.1", 
     #     methods=methods,
     #     metrics=["factuality"],
     #     temperature=0.7,
@@ -123,7 +123,7 @@ if __name__ == "__main__":
 
     # run_method_tests(
     #     task=Task.SIMPLE_QA,
-    #     model_name="gpt-4.1", # google/gemini-2.5-pro, gpt-4.1, anthropic/claude-4-sonnet
+    #     model_name="google/gemini-2.5-flash",
     #     methods=methods,
     #     metrics=["factuality"],
     #     temperature=0.7,
@@ -145,7 +145,7 @@ if __name__ == "__main__":
 
     # run_method_tests(
     #     task=Task.SIMPLE_QA,
-    #     model_name="google/gemini-2.5-pro", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+    #     model_name="google/gemini-2.5-pro",
     #     methods=methods,
     #     metrics=["factuality"],
     #     temperature=0.7,
@@ -156,7 +156,7 @@ if __name__ == "__main__":
     
     # run_method_tests(
     #     task=Task.SIMPLE_QA,
-    #     model_name="anthropic/claude-4-sonnet", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+    #     model_name="anthropic/claude-4-sonnet",
     #     methods=methods,
     #     metrics=["factuality"],
     #     temperature=0.7,
@@ -166,7 +166,7 @@ if __name__ == "__main__":
 
     # run_method_tests(
     #     task=Task.SIMPLE_QA,
-    #     model_name="o3", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+    #     model_name="o3",
     #     methods=methods,
     #     metrics=["factuality"],
     #     temperature=0.7,
@@ -176,7 +176,7 @@ if __name__ == "__main__":
 
     # run_method_tests(
     #     task=Task.SIMPLE_QA,
-    #     model_name="meta-llama/llama-3.1-70b-instruct", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+    #     model_name="llama-3.1-70b-instruct",
     #     methods=methods,
     #     metrics=["factuality"],
     #     temperature=0.7,
@@ -186,7 +186,7 @@ if __name__ == "__main__":
 
     # run_method_tests(
     #     task=Task.SIMPLE_QA,
-    #     model_name="deepseek/deepseek-r1-0528", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+    #     model_name="deepseek-r1",
     #     methods=methods,
     #     metrics=["factuality"],
     #     temperature=0.7,

@@ -12,6 +12,9 @@ def maybe_rename_response(response: Dict) -> Dict:
     if "response" in response:
         response["text"] = response["response"]
         del response["response"]
+    if "confidence" in response:
+        response["probability"] = response["confidence"]
+        del response["confidence"]
     return response
 
 class ParseError(Exception):
@@ -100,7 +103,7 @@ class ResponseParser:
             # non-strict json
             try:
                 response = ResponseParser._extract_json(response)
-                return response['responses']
+                return [maybe_rename_response(item) for item in response['responses']]
             except Exception as e:
                 # Fallback: treat as a single string
                 return [{'text': ""}]
