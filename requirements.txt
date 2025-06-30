@@ -17,3 +17,4 @@ sacremoses
 seaborn
 dedent
 scikit-learn
+litellm

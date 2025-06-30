@@ -120,32 +120,9 @@ if __name__ == "__main__":
     #     output_dir="method_results_simple_qa",
     # )
 
-
     # run_method_tests(
     #     task=Task.SIMPLE_QA,
-    #     model_name="gpt-4.1", 
-    #     methods=methods,
-    #     metrics=["factuality"],
-    #     temperature=0.7,
-    #     top_p=1.0,
-    #     output_dir="method_results_simple_qa",
-    # )
-
-
-    # run_method_tests(
-    #     task=Task.SIMPLE_QA,
-    #     model_name="google/gemini-2.5-flash",
-    #     methods=methods,
-    #     metrics=["factuality"],
-    #     temperature=0.7,
-    #     top_p=1.0,
-    #     output_dir="method_results_simple_qa",
-    # )
-
-
-    # run_method_tests(
-    #     task=Task.SIMPLE_QA,
-    #     model_name="google/gemini-2.5-pro",
+    #     model_name="gpt-4.1", # google/gemini-2.5-pro, gpt-4.1, anthropic/claude-4-sonnet
     #     methods=methods,
     #     metrics=["factuality"],
     #     temperature=0.7,
@@ -156,17 +133,29 @@ if __name__ == "__main__":
 
     run_method_tests(
         task=Task.SIMPLE_QA,
-        model_name="anthropic/claude-4-sonnet",
+        model_name="google/gemini-2.5-flash", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
         methods=methods,
         metrics=["factuality"],
         temperature=0.7,
         top_p=1.0,
-        output_dir="method_results_simple_qa_1",
+        output_dir="method_results_simple_qa",
     )
+
 
     # run_method_tests(
     #     task=Task.SIMPLE_QA,
-    #     model_name="o3",
+    #     model_name="google/gemini-2.5-pro", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+    #     methods=methods,
+    #     metrics=["factuality"],
+    #     temperature=0.7,
+    #     top_p=1.0,
+    #     output_dir="method_results_simple_qa",
+    # )
+
+    
+    # run_method_tests(
+    #     task=Task.SIMPLE_QA,
+    #     model_name="anthropic/claude-4-sonnet", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
     #     methods=methods,
     #     metrics=["factuality"],
     #     temperature=0.7,
