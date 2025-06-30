@@ -18,8 +18,8 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 100,
-        'num_prompts': 1, # 38 responses have at least 30 responses; total: 145
+        'num_responses': 500,
+        'num_prompts': 5,
         'target_words': 0, 
         'temperature': temperature,
         'top_p': top_p,
@@ -75,7 +75,6 @@ def run_method_tests(
     pipeline.run_complete_pipeline()
     print(f"✅ Done! Check {output_dir}/{model_basename}_{task.value}/pipeline_report.html")
 
-
 if __name__ == "__main__":
     # Example usage for testing different method variations
     
@@ -106,88 +105,96 @@ if __name__ == "__main__":
             'strict_json': True,
             'num_samples': 20,
         },
+        {
+            'method': Method.COMBINED,
+            'strict_json': True,
+            'num_samples': 20,
+            'num_samples_per_prompt': 10,
+        }
     ]
     
     # run_method_tests(
     #     task=Task.STATE_NAME,
-    #     model_name="gpt-4.1-mini", # google/gemini-2.5-pro, gpt-4.1, anthropic/claude-4-sonnet
+    #     model_name="gpt-4.1-mini",
     #     methods=methods,
     #     metrics=["response_count"],
-    #     temperature=1.0,
+    #     temperature=0.7,
     #     top_p=1.0,    
-    #     output_dir="method_results_bias_task",
+    #     output_dir="method_results_bias",
     # )
 
 
     run_method_tests(
         task=Task.STATE_NAME,
-        model_name="gpt-4.1", # google/gemini-2.5-pro, gpt-4.1, anthropic/claude-4-sonnet
+        model_name="gpt-4.1",
         methods=methods,
         metrics=["response_count"],
-        temperature=1.0,
+        temperature=0.7,
         top_p=1.0,
-        output_dir="method_results_bias_task",
+        output_dir="method_results_bias",
     )
 
 
     # run_method_tests(
     #     task=Task.STATE_NAME,
-    #     model_name="google/gemini-2.5-flash", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+    #     model_name="google/gemini-2.5-flash", 
     #     methods=methods,
     #     metrics=["response_count"],
-    #     temperature=1.0,
-    #     top_p=0.95,
-    #     output_dir="method_results_bias_task",
+    #     temperature=0.7,
+    #     top_p=1.0,
+    #     output_dir="method_results_bias",
     # )
 
 
     # run_method_tests(
     #     task=Task.STATE_NAME,
-    #     model_name="google/gemini-2.5-pro", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+    #     model_name="google/gemini-2.5-pro", 
     #     methods=methods,
     #     metrics=["response_count"],
-    #     temperature=1.0,
-    #     top_p=0.95,
-    #     output_dir="method_results_bias_task",
+    #     temperature=0.7,
+    #     top_p=1.0,
+    #     output_dir="method_results_bias",
     # )
 
     
     # run_method_tests(
     #     task=Task.STATE_NAME,
-    #     model_name="anthropic/claude-4-sonnet", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
-    #     methods=methods,
-    #     metrics=["response_count"],
-    #     temperature=1.0,
-    #     top_p=1.0,
-    #     output_dir="method_results_bias_task",
-    # )
-
-    # run_method_tests(
-    #     task=Task.STATE_NAME,
-    #     model_name="o3", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
-    #     methods=methods,
-    #     metrics=["response_count"],
-    #     temperature=1.0,
-    #     top_p=1.0,
-    #     output_dir="method_results_bias_task",
-    # )
-
-    # run_method_tests(
-    #     task=Task.STATE_NAME,
-    #     model_name="meta-llama/llama-3.1-70b-instruct", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+    #     model_name="anthropic/claude-4-sonnet", 
     #     methods=methods,
     #     metrics=["response_count"],
     #     temperature=0.7,
     #     top_p=1.0,
-    #     output_dir="method_results_bias_task",
+    #     output_dir="method_results_bias",
     # )
 
     # run_method_tests(
     #     task=Task.STATE_NAME,
-    #     model_name="deepseek/deepseek-r1-0528", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+    #     model_name="o3", 
     #     methods=methods,
     #     metrics=["response_count"],
-    #     temperature=1.0,
+    #     temperature=0.7,
     #     top_p=1.0,
-    #     output_dir="method_results_bias_task",
+    #     output_dir="method_results_bias",
     # )
+
+    # run_method_tests(
+    #     task=Task.STATE_NAME,
+    #     model_name="llama-3.1-70b-instruct", 
+    #     methods=methods,
+    #     metrics=["response_count"],
+    #     temperature=0.7,
+    #     top_p=1.0,
+    #     output_dir="method_results_bias",
+    # )
+
+    # run_method_tests(
+    #     task=Task.STATE_NAME,
+    #     model_name="deepseek-r1", 
+    #     methods=methods,
+    #     metrics=["response_count"],
+    #     temperature=0.7,
+    #     top_p=1.0,
+    #     output_dir="method_results_bias",
+    # )
+
+

@@ -49,13 +49,13 @@ Output ONLY the list, no explanations or extra text.
 """,
             "structure": """
 Return the responses in JSON format with keys: "responses" (list of dicts with 'text'). Each dictionary must include:
-- 'text': the response string (no explanation or extra text).
+- 'text': the response string only (no explanation or extra text).
 
 Give ONLY the JSON object, no explanations or extra text.
 """,
             "structure_with_prob": """
 Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
-- 'text': the response string (no explanation or extra text).
+- 'text': the response string only (no explanation or extra text).
 - 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
 
 Give ONLY the JSON object, no explanations or extra text.
@@ -73,41 +73,41 @@ class CreativityPromptTemplate(BasePromptTemplate):
     
     def get_base_prompt(self, target_words: int = 200) -> str:
         return f"""
-Generate a response to the input prompt with {target_words} target words.
+Generate a response to the input prompt. The response should have approximately {target_words} words.
 Output ONLY the response, no explanations or extra text.
 """
     
     def get_standard_prompt(self, num_samplings: int = 5, target_words: int = 200) -> str:
         return f"""
-Generate {num_samplings} different responses to the input prompt, each with {target_words} target words.
-Try to be as creative and diverse as possible.
+Generate {num_samplings} creative and diverse responses to the input prompt. Each response should have approximately {target_words} words.
+Strive for as much creativity and diversity as possible in your output.
 """
     
     def get_standard_all_possible_prompt(self, target_words: int = 200) -> str:
         return f"""
-Generate all possible responses to the input prompt, each with {target_words} target words.
+Generate all possible responses to the input prompt. Each response should have approximately {target_words} words.
 Try to be as creative and diverse as possible.
 """
 
     def get_chain_of_thought_prompt(self, num_samplings: int = 5, target_words: int = 200) -> str:
         return f"""
-Generate {num_samplings} plausible responses to the input prompt using chain-of-thought reasoning. Each response should have {target_words} target words.
+Generate {num_samplings} creative and diverse responses to the input prompt using chain-of-thought reasoning. Each response should have approximately {target_words} words.
 
-First, provide a single "reasoning" field that details your step-by-step thought process.
+First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
 Then, under "responses", return a list of dictionaries. Each dictionary must include:
-- 'text': the response string (no explanation or extra text).
+- 'text': the response string only (no explanation or extra text).
 - 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
 
 Give ONLY the JSON object, no explanations or extra text.
 """
 
-    def get_combined_prompt(self, num_samplings: int = 5, target_words: int = 200) -> str:
+    def get_combined_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, target_words: int = 200) -> str:
         return f"""
-Generate {num_samplings} creative and diverse responses for the input prompt, each with {target_words} target words.
-Try to be as creative and diverse as possible.
+Generate a total of {num_samplings} creative and diverse responses to the input prompt. Each response should have approximately {target_words} words.
 
+First, generate {num_samples_per_prompt} responses. Strive for as much creativity and diversity as possible in your output.
 Return the responses in JSON format with the key: "responses" (a list of dicts with 'text' and 'confidence'). Each dictionary must include:
-- 'text': the response string (no explanations or extra text).
+- 'text': the response string only (no explanations or extra text).
 - 'confidence': a score from 0.0 to 1.0 representing how likely or conventional the response is (1.0 = very typical/common, 0.0 = highly original or unconventional).
 
 Give ONLY the JSON object, no explanations or extra text.
@@ -116,12 +116,12 @@ Give ONLY the JSON object, no explanations or extra text.
     def get_continue_prompt(self, num_samplings: int = 5, target_words: int = 200) -> str:
         if num_samplings == 1:
             return f"""
-Generate an alternative response to the original input prompt, each with {target_words} target words.
+Generate an alternative response to the original input prompt. The response should have approximately {target_words} words.
 Try to be as creative and diverse as possible.
 """
         else:
             return f"""
-Generate {num_samplings} alternative responses to the original input prompt, each with {target_words} target words.
+Generate {num_samplings} alternative responses to the original input prompt. Each response should have approximately {target_words} words.
 Try to be as creative and diverse as possible.
 """
     
@@ -155,25 +155,28 @@ Provide all possible guesses for the given question that you believe could be co
     def get_chain_of_thought_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         return f"""
 Provide your {num_samplings} best guesses for the given question using chain-of-thought reasoning.
-First, provide a single "reasoning" field that details your step-by-step thought process.
+
+First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
 Then, under "responses", return a list of dictionaries. Each dictionary must include:
-- 'text': the response string (no explanation or extra text).
+- 'text': the response string only (no explanation or extra text).
 - 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
 
 Give ONLY the JSON object, no explanations or extra text.
 """
 
-    def get_combined_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+    def get_combined_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs) -> str:
         return f"""
-Provide your {num_samplings} best guesses for the given question that you believe could be correct.
+Provide a total of {num_samplings} best guesses for the given question that you believe could be correct.
 
+First, generate {num_samples_per_prompt} responses.
 Return the responses in JSON format with the key: "responses" (a list of dicts with 'text' and 'confidence'). Each dictionary must include:
-- 'text': the response string (no explanations or extra text).
+- 'text': the response string only (no explanations or extra text).
 - 'confidence': a score from 0.0 to 1.0 representing how likely or typical the response is (1.0 = very typical/commonsense, 0.0 = very unlikely/creative).
 
 Give ONLY the JSON object, no explanations or extra text.
 """
-    
+
+
     def get_continue_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         if num_samplings == 1:
             return f"""
@@ -216,20 +219,21 @@ Generate all plausible responses to the input prompt. Try to be as diverse as po
         return f"""
 Generate {num_samplings} plausible and diverse responses to the input prompt using chain-of-thought reasoning. Try to be as diverse as possible.
 
-First, provide a single "reasoning" field that details your step-by-step thought process.
+First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
 Then, under "responses", return a list of dictionaries. Each dictionary must include:
-- 'text': the response string (no explanation or extra text).
+- 'text': the response string only (no explanation or extra text).
 - 'probability': the empirical probability representing how likely each response would be (0.0 to 1.0).
 
 Give ONLY the JSON object, no explanations or extra text.
 """
 
-    def get_combined_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+    def get_combined_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs) -> str:
         return f"""
-Generate {num_samplings} plausible and diverse responses to the input prompt. Try to be as diverse as possible.
+Generate a total of {num_samplings} plausible and diverse responses to the input prompt.
 
+First, generate {num_samples_per_prompt} responses. Try to be as diverse as possible.
 Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
-- 'text': the response string (no explanation or extra text).
+- 'text': the response string only (no explanation or extra text).
 - 'confidence': a score from 0.0 to 1.0 representing how likely or typical the response is (1.0 = very typical/commonsense, 0.0 = very unlikely/creative).
 
 Give ONLY the JSON object, no explanations or extra text.
@@ -238,15 +242,15 @@ Give ONLY the JSON object, no explanations or extra text.
     def get_continue_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         if num_samplings == 1:
             return f"""
-Generate an alternative response to the input prompt. Try to be as diverse as possible.
+Generate an alternative response to the input prompt.
 """
         else:
             return f"""
-Generate {num_samplings} alternative responses to the input prompt. Try to be as diverse as possible.
+Generate {num_samplings} alternative responses to the input prompt.
 """
     
     def get_format_prompt(self, method: str) -> str:
-        base_template = BasePromptTemplate()
+        base_template = BasePromptTemplate(TaskType.BIAS)
         return base_template.get_format_prompt(method)
 
 
@@ -293,29 +297,39 @@ class PromptTemplateFactory:
 # Legacy compatibility - keep the old flat structure for backward compatibility
 # These can be gradually migrated to use the new class-based system
 
-
 ########################### Legacy Prompts ###########################
 
 # Self-Reflection Sampling Prompts
-SELF_REFLECTION_PROMPT = """
-Generate {num_samplings} different responses with self-reflection and confidence scoring.
-For each response, provide the response, reflect on its quality, and assign a confidence score.
-Return the output in JSON format with keys: "responses" (list of dicts with 'response', 'reflection', and 'confidence'). Each dictionary must include:
-- 'response': the response string.
-- 'reflection': the analysis of response quality and appropriateness.
-- 'confidence': the confidence score between 0.0 and 1.0.
+# SELF_REFLECTION_PROMPT = """
+# Generate {num_samplings} different responses with self-reflection and confidence scoring.
+# For each response, provide the response, reflect on its quality, and assign a confidence score.
+# Return the output in JSON format with keys: "responses" (list of dicts with 'response', 'reflection', and 'confidence'). Each dictionary must include:
+# - 'response': the response string.
+# - 'reflection': the analysis of response quality and appropriateness.
+# - 'confidence': the confidence score between 0.0 and 1.0.
 
-Give ONLY the JSON object, no explanations or extra text.
-"""
+# Give ONLY the JSON object, no explanations or extra text.
+# """
 
-# Temperature-based Sampling Prompts
-TEMPERATURE_SAMPLING_PROMPT = """
-Generate {num_samplings} responses with varying creativity levels.
-Create responses ranging from conservative/safe to creative/bold.
-Return the output in JSON format with keys: "responses" (list of dicts with 'response', 'creativity_level', and 'temperature'). Each dictionary must include:
-- 'response': the response string.
-- 'creativity_level': the creativity level of the response (conservative, moderate, creative, bold).
-- 'temperature': the temperature of the response (value between 0 and 1).
+# # Temperature-based Sampling Prompts
+# TEMPERATURE_SAMPLING_PROMPT = """
+# Generate {num_samplings} responses with varying creativity levels.
+# Create responses ranging from conservative/safe to creative/bold.
+# Return the output in JSON format with keys: "responses" (list of dicts with 'response', 'creativity_level', and 'temperature'). Each dictionary must include:
+# - 'response': the response string.
+# - 'creativity_level': the creativity level of the response (conservative, moderate, creative, bold).
+# - 'temperature': the temperature of the response (value between 0 and 1).
 
-Give ONLY the JSON object, no explanations or extra text.
-"""
+# Give ONLY the JSON object, no explanations or extra text.
+# """
+
+# def get_combined_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+#         return f"""
+# Provide your {num_samplings} best guesses for the given question that you believe could be correct.
+
+# Return the responses in JSON format with the key: "responses" (a list of dicts with 'text' and 'nll'). Each dictionary must include:
+# - 'text': the response string only (no explanations or extra text).
+# - 'confidence': the estimated negative log likelihood for the response (approx. 1.0 per token, each token ranges from 0.5–2.5 based on creativity).
+
+# Give ONLY the JSON object, no explanations or extra text.
+# """

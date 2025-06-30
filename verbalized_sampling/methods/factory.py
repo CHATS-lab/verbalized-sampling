@@ -131,7 +131,8 @@ class PromptFactory:
                 system_prompt = PromptTemplateFactory.get_prompt(
                     task_type=task_type,
                     prompt_type=prompt_type,
-                    num_samplings=num_samplings if method != Method.COMBINED else num_samples_per_prompt,
+                    num_samplings=num_samplings,
+                    num_samples_per_prompt=num_samples_per_prompt if method == Method.COMBINED else None,
                     target_words=target_words
                 )
         except Exception as e:
@@ -145,7 +146,7 @@ class PromptFactory:
 
             system_prompt = f"{system_prompt}{format_prompt}"
             
-        print("System prompt: ", system_prompt)
+        # print("System prompt: ", system_prompt)
         
         return [
             {"role": "system", "content": system_prompt},

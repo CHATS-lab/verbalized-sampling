@@ -187,6 +187,7 @@ class Pipeline:
                 task_kwargs.update({
                     "num_prompts": exp_config.num_prompts,
                     "random_seed": exp_config.random_seed,
+                    "num_samples_per_prompt": exp_config.num_samples_per_prompt if exp_config.method == Method.COMBINED else None,
                 })
 
                 # The num_samples must be smaller than num_responses

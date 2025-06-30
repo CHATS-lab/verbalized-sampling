@@ -19,7 +19,7 @@ def create_method_experiments(
         'task': task,
         'model_name': model_name,
         'num_responses': 500,
-        'num_prompts': 1, # total: 145
+        'num_prompts': 5,
         'target_words': 0, 
         'temperature': temperature,
         'top_p': top_p,
@@ -105,23 +105,23 @@ if __name__ == "__main__":
             'strict_json': True,
             'num_samples': 20,
         },
-        # {
-        #     'method': Method.COMBINED,
-        #     'strict_json': True,
-        #     'num_samples': 20,
-        #     'num_samples_per_prompt': 10,
-        # }
+        {
+            'method': Method.COMBINED,
+            'strict_json': True,
+            'num_samples': 20,
+            'num_samples_per_prompt': 10,
+        }
     ]
     
-    # run_method_tests(
-    #     task=Task.STATE_NAME,
-    #     model_name="gpt-4.1-mini",
-    #     methods=methods,
-    #     metrics=["response_count"],
-    #     temperature=0.7,
-    #     top_p=1.0,    
-    #     output_dir="method_results_state_name",
-    # )
+    run_method_tests(
+        task=Task.STATE_NAME,
+        model_name="gpt-4.1-mini",
+        methods=methods,
+        metrics=["response_count"],
+        temperature=0.7,
+        top_p=1.0,    
+        output_dir="method_results_state_name",
+    )
 
 
     # run_method_tests(
@@ -167,15 +167,15 @@ if __name__ == "__main__":
     #     output_dir="method_results_state_name",
     # )
 
-    run_method_tests(
-        task=Task.STATE_NAME,
-        model_name="o3", 
-        methods=methods,
-        metrics=["response_count"],
-        temperature=0.7,
-        top_p=1.0,
-        output_dir="method_results_state_name",
-    )
+    # run_method_tests(
+    #     task=Task.STATE_NAME,
+    #     model_name="o3", 
+    #     methods=methods,
+    #     metrics=["response_count"],
+    #     temperature=0.7,
+    #     top_p=1.0,
+    #     output_dir="method_results_state_name",
+    # )
 
     # run_method_tests(
     #     task=Task.STATE_NAME,
