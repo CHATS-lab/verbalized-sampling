@@ -23,16 +23,15 @@ class DiversityEvaluator(BaseEvaluator):
         ("unique_words", "histogram")
     ]
     aggregate_plot_metrics = [
-        "average_diversity",
+        "avg_diversity",
         "min_diversity",
         "max_diversity",
-        "std_diversity",
-        "average_response_length",
-        "average_unique_words",
-        "average_vocabulary_richness",
+        "avg_response_length",
+        "avg_unique_words",
+        "avg_vocabulary_richness",
     ]
     key_plot_metrics = [
-        ("average_diversity", "Diversity (Pairwise)"),
+        ("avg_diversity", "Diversity (Pairwise)"),
     ]
     
     def __init__(self, embed_model: str = "text-embedding-3-small", num_workers: int = 128):
@@ -85,14 +84,11 @@ class DiversityEvaluator(BaseEvaluator):
         
         if len(instance_metrics) <= 1:
             return {
-                "average_diversity": 0.0,
-                "min_diversity": 0.0,
-                "max_diversity": 0.0,
-                "std_diversity": 0.0,
-                "average_response_length": 0.0,
-                "average_unique_words": 0.0,
-                "average_vocabulary_richness": 0.0,
-                "pairwise_diversities": []
+                "avg_diversity": 0.0, "std_diversity": 0.0,
+                "min_diversity": 0.0, "max_diversity": 0.0,
+                "avg_response_length": 0.0, "std_response_length": 0.0,
+                "avg_unique_words": 0.0, "std_unique_words": 0.0,
+                "avg_vocabulary_richness": 0.0, "std_vocabulary_richness": 0.0,
             }
         
         # 1. Group responses by same prompts
@@ -167,30 +163,47 @@ class DiversityEvaluator(BaseEvaluator):
         
         # Calculate statistics from intra-class diversities
         if all_diversities:
-            diversities_array = np.array(all_diversities)
+            from .base import calculate_stats
+            diversity_stats = calculate_stats(all_diversities)
+            
+            # Calculate stats for instance-level metrics
+            response_length_stats = calculate_stats([m["response_length"] for m in instance_metrics])
+            unique_words_stats = calculate_stats([m["unique_words"] for m in instance_metrics])
+            vocabulary_richness_stats = calculate_stats([m["vocabulary_richness"] for m in instance_metrics])
+            
             metrics = {
-                "average_diversity": float(diversities_array.mean()),
-                "min_diversity": float(diversities_array.min()),
-                "max_diversity": float(diversities_array.max()),
-                "std_diversity": float(diversities_array.std()),
-                "average_response_length": float(np.mean([m["response_length"] for m in instance_metrics])),
-                "average_unique_words": float(np.mean([m["unique_words"] for m in instance_metrics])),
-                "average_vocabulary_richness": float(np.mean([m["vocabulary_richness"] for m in instance_metrics])),
+                # Diversity metrics
+                "avg_diversity": diversity_stats["mean"],
+                "std_diversity": diversity_stats["std"],
+                "min_diversity": diversity_stats["min"],
+                "max_diversity": diversity_stats["max"],
+                
+                # Instance-level metrics with stats
+                "avg_response_length": response_length_stats["mean"],
+                "std_response_length": response_length_stats["std"],
+                "avg_unique_words": unique_words_stats["mean"],
+                "std_unique_words": unique_words_stats["std"],
+                "avg_vocabulary_richness": vocabulary_richness_stats["mean"],
+                "std_vocabulary_richness": vocabulary_richness_stats["std"],
+                
                 "total_cost": float(total_cost),
-                "pairwise_diversities": pairwise_diversities
             }
         else:
             # No valid pairs found (all prompts have only 1 response)
+            response_length_stats = calculate_stats([m["response_length"] for m in instance_metrics])
+            unique_words_stats = calculate_stats([m["unique_words"] for m in instance_metrics])
+            vocabulary_richness_stats = calculate_stats([m["vocabulary_richness"] for m in instance_metrics])
+            
             metrics = {
-                "average_diversity": 0.0,
-                "min_diversity": 0.0,
-                "max_diversity": 0.0,
-                "std_diversity": 0.0,
-                "average_response_length": float(np.mean([m["response_length"] for m in instance_metrics])),
-                "average_unique_words": float(np.mean([m["unique_words"] for m in instance_metrics])),
-                "average_vocabulary_richness": float(np.mean([m["vocabulary_richness"] for m in instance_metrics])),
+                "avg_diversity": 0.0, "std_diversity": 0.0,
+                "min_diversity": 0.0, "max_diversity": 0.0,
+                "avg_response_length": response_length_stats["mean"],
+                "std_response_length": response_length_stats["std"],
+                "avg_unique_words": unique_words_stats["mean"],
+                "std_unique_words": unique_words_stats["std"],
+                "avg_vocabulary_richness": vocabulary_richness_stats["mean"],
+                "std_vocabulary_richness": vocabulary_richness_stats["std"],
                 "total_cost": float(total_cost),
-                "pairwise_diversities": []
             }
         
         # Ensure all values are Python native types

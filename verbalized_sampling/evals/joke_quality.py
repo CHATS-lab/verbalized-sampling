@@ -39,15 +39,15 @@ class JokeQualityEvaluator(BaseEvaluator):
     ]
 
     aggregate_plot_metrics = [
-        "funniness",
-        "cleverness",
-        "originality",
-        "structure",
-        "overall",
+        "avg_funniness",
+        "avg_cleverness",
+        "avg_originality",
+        "avg_structure",
+        "avg_overall",
     ]
     
     key_plot_metrics = [
-        ("normalized_overall", "Joke Quality")
+        ("avg_normalized_overall", "Joke Quality")
     ]
 
     def __init__(self, judge_model: str = "gpt-4o", num_workers=64):
@@ -205,20 +205,48 @@ Output ONLY the JSON object, no explanations or extra text."""
         
         if not instance_metrics:
             return {
-                "funniness": 0.0,
-                "cleverness": 0.0,
-                "originality": 0.0,
-                "structure": 0.0,
-                "overall": 0.0,
-                "normalized_overall": 0.0,
+                "funniness": 0.0, "std_funniness": 0.0,
+                "cleverness": 0.0, "std_cleverness": 0.0,
+                "originality": 0.0, "std_originality": 0.0,
+                "structure": 0.0, "std_structure": 0.0,
+                "overall": 0.0, "std_overall": 0.0,
+                "normalized_overall": 0.0, "std_normalized_overall": 0.0,
             }
+        
+        from .base import calculate_stats
+        
+        # Extract values for each metric
+        funniness_values = [metric["funniness"]["score"] for metric in instance_metrics]
+        cleverness_values = [metric["cleverness"]["score"] for metric in instance_metrics]
+        originality_values = [metric["originality"]["score"] for metric in instance_metrics]
+        structure_values = [metric["structure"]["score"] for metric in instance_metrics]
+        overall_values = [metric["overall"]["joke_quality_score"] for metric in instance_metrics]
+        normalized_values = [metric["overall"]["normalized_score"] for metric in instance_metrics]
+        
+        # Calculate stats for each metric
+        funniness_stats = calculate_stats(funniness_values)
+        cleverness_stats = calculate_stats(cleverness_values)
+        originality_stats = calculate_stats(originality_values)
+        structure_stats = calculate_stats(structure_values)
+        overall_stats = calculate_stats(overall_values)
+        normalized_stats = calculate_stats(normalized_values)
+        
         return {
-            "funniness": sum(metric["funniness"]["score"] for metric in instance_metrics) / len(instance_metrics),
-            "cleverness": sum(metric["cleverness"]["score"] for metric in instance_metrics) / len(instance_metrics),
-            "originality": sum(metric["originality"]["score"] for metric in instance_metrics) / len(instance_metrics),
-            "structure": sum(metric["structure"]["score"] for metric in instance_metrics) / len(instance_metrics),
-            "overall": sum(metric["overall"]["joke_quality_score"] for metric in instance_metrics) / len(instance_metrics),
-            "normalized_overall": sum(metric["overall"]["normalized_score"] for metric in instance_metrics) / len(instance_metrics),
+            # Means (backward compatible)
+            "avg_funniness": funniness_stats["mean"],
+            "avg_cleverness": cleverness_stats["mean"],
+            "avg_originality": originality_stats["mean"],
+            "avg_structure": structure_stats["mean"],
+            "avg_overall": overall_stats["mean"],
+            "avg_normalized_overall": normalized_stats["mean"],
+            
+            # Standard deviations
+            "std_funniness": funniness_stats["std"],
+            "std_cleverness": cleverness_stats["std"],
+            "std_originality": originality_stats["std"],
+            "std_structure": structure_stats["std"],
+            "std_overall": overall_stats["std"],
+            "std_normalized_overall": normalized_stats["std"],
         }
     
     def evaluate(self, prompts: List[str], responses: List[Dict], 

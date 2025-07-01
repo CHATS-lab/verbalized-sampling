@@ -18,6 +18,14 @@ class Method(str, Enum):
     MULTI_TURN = "multi_turn"
     CHAIN_OF_THOUGHT = "chain_of_thought"
     COMBINED = "combined"
+
+    # DIRECT = "Baseline"
+    # SEQUENCE = "Sequence" 
+    # STRUCTURE = "Structure"
+    # STRUCTURE_WITH_PROB = "Verbalized Sampling"
+    # MULTI_TURN = "Multi-turn"
+    # CHAIN_OF_THOUGHT = "Verbalized Sampling (CoT)"
+    # COMBINED = "Verbalized Sampling (Combined)"
     # SELF_REFLECTION = "self_reflection"
     # TEMPERATURE_SAMPLING = "temperature_sampling"
 

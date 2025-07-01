@@ -44,15 +44,15 @@ class TTCTEvaluator(BaseEvaluator):
     ]
 
     aggregate_plot_metrics = [
-        "fluency",
-        "flexibility",
-        "originality",
-        "elaboration",
-        "overall",
+        "avg_fluency",
+        "avg_flexibility",
+        "avg_originality",
+        "avg_elaboration",
+        "avg_overall",
     ]
     
     key_plot_metrics = [
-        ("normalized_overall", "Quality (TTCT)")
+        ("avg_normalized_overall", "Quality (TTCT)")
     ]
 
     def __init__(self, judge_model: str = "gpt-4.1", num_workers=64):
@@ -215,20 +215,48 @@ Output ONLY the JSON object, no explanations or extra text.
         
         if not instance_metrics:
             return {
-                "fluency": 0.0,
-                "flexibility": 0.0,
-                "originality": 0.0,
-                "elaboration": 0.0,
-                "overall": 0.0,
-                "normalized_overall": 0.0,
+                "fluency": 0.0, "std_fluency": 0.0,
+                "flexibility": 0.0, "std_flexibility": 0.0,
+                "originality": 0.0, "std_originality": 0.0,
+                "elaboration": 0.0, "std_elaboration": 0.0,
+                "overall": 0.0, "std_overall": 0.0,
+                "normalized_overall": 0.0, "std_normalized_overall": 0.0,
             }
+        
+        from .base import calculate_stats
+        
+        # Extract values for each metric
+        fluency_values = [metric["fluency"]["score"] for metric in instance_metrics]
+        flexibility_values = [metric["flexibility"]["score"] for metric in instance_metrics]
+        originality_values = [metric["originality"]["score"] for metric in instance_metrics]
+        elaboration_values = [metric["elaboration"]["score"] for metric in instance_metrics]
+        overall_values = [metric["overall"]["creativity_score"] for metric in instance_metrics]
+        normalized_values = [metric["overall"]["normalized_score"] for metric in instance_metrics]
+        
+        # Calculate stats for each metric
+        fluency_stats = calculate_stats(fluency_values)
+        flexibility_stats = calculate_stats(flexibility_values)
+        originality_stats = calculate_stats(originality_values)
+        elaboration_stats = calculate_stats(elaboration_values)
+        overall_stats = calculate_stats(overall_values)
+        normalized_stats = calculate_stats(normalized_values)
+        
         return {
-            "fluency": sum(metric["fluency"]["score"] for metric in instance_metrics) / len(instance_metrics),
-            "flexibility": sum(metric["flexibility"]["score"] for metric in instance_metrics) / len(instance_metrics),
-            "originality": sum(metric["originality"]["score"] for metric in instance_metrics) / len(instance_metrics),
-            "elaboration": sum(metric["elaboration"]["score"] for metric in instance_metrics) / len(instance_metrics),
-            "overall": sum(metric["overall"]["creativity_score"] for metric in instance_metrics) / len(instance_metrics),
-            "normalized_overall": sum(metric["overall"]["normalized_score"] for metric in instance_metrics) / len(instance_metrics),
+            # Means (backward compatible)
+            "avg_fluency": fluency_stats["mean"],
+            "avg_flexibility": flexibility_stats["mean"],
+            "avg_originality": originality_stats["mean"],
+            "avg_elaboration": elaboration_stats["mean"],
+            "avg_overall": overall_stats["mean"],
+            "avg_normalized_overall": normalized_stats["mean"],
+            
+            # Standard deviations
+            "std_fluency": fluency_stats["std"],
+            "std_flexibility": flexibility_stats["std"],
+            "std_originality": originality_stats["std"],
+            "std_elaboration": elaboration_stats["std"],
+            "std_overall": overall_stats["std"],
+            "std_normalized_overall": normalized_stats["std"],
         }
     
     def evaluate(self, prompts: List[str], responses: List[Dict], 
