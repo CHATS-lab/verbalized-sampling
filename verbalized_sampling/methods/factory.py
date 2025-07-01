@@ -72,7 +72,6 @@ class PromptFactory:
             "poem": TaskType.CREATIVITY,
             "speech": TaskType.CREATIVITY,
             "story": TaskType.CREATIVITY,
-            "creative_story": TaskType.CREATIVITY,
             
             # Commonsense tasks
             "simple_qa": TaskType.COMMONSENSE,
@@ -131,7 +130,8 @@ class PromptFactory:
                 system_prompt = PromptTemplateFactory.get_prompt(
                     task_type=task_type,
                     prompt_type=prompt_type,
-                    num_samplings=num_samplings if method != Method.COMBINED else num_samples_per_prompt,
+                    num_samplings=num_samplings,
+                    num_samples_per_prompt=num_samples_per_prompt if method == Method.COMBINED else None,
                     target_words=target_words
                 )
         except Exception as e:
@@ -141,11 +141,11 @@ class PromptFactory:
         if not strict_json and method in PromptFactory.METHOD_TO_FORMAT:
             format_type = PromptFactory.METHOD_TO_FORMAT[method]
             template = PromptTemplateFactory.get_template(task_type)
-            format_prompt = template.get_format_prompt(format_type)
+            format_prompt = template.get_format_prompt(format_type, num_samplings)
 
             system_prompt = f"{system_prompt}{format_prompt}"
             
-        print("System prompt: ", system_prompt)
+        # print("System prompt: ", system_prompt)
         
         return [
             {"role": "system", "content": system_prompt},

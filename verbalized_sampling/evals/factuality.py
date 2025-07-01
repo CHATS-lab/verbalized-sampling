@@ -116,15 +116,15 @@ class FactualityEvaluator(BaseEvaluator):
     aggregate_plot_metrics = [
         "f1",
         "accuracy_given_attempted",
-        "pass_at_k_accuracy",
         "top_at_k_accuracy",
+        "pass_at_k_accuracy",
         "first_response_accuracy",
     ]
     key_plot_metrics = [
         ("f1", "F1"),
         ("accuracy_given_attempted", "Accuracy Given Attempted"),
-        ("pass_at_k_accuracy", "Pass@k Accuracy"),
         ("top_at_k_accuracy", "Top@k Accuracy"),
+        ("pass_at_k_accuracy", "Pass@k Accuracy"),
         ("first_response_accuracy", "First Response Accuracy"),
     ]
 
