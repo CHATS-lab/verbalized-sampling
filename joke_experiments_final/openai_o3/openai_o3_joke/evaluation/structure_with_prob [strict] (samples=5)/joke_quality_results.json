@@ -1,0 +1,2901 @@
+{
+    "instance_metrics": [
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people due to its clever wordplay and relatable scientific reference. The punchline 'they make up everything' is a humorous twist on the dual meaning of 'make up,' playing on the idea that atoms are the building blocks of everything and the notion of fabricating stories."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through its use of a pun that cleverly ties together scientific knowledge with a common phrase. The dual meaning of 'make up' is a smart play on words, showing a thoughtful construction that appeals to those with a basic understanding of science."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "While the joke is amusing, it is a well-known and frequently used joke in the realm of science humor. It follows a common format and is familiar to many, lacking the element of surprise or novelty."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear and effective structure with a straightforward setup and a punchline that delivers the comedic twist efficiently. The timing is good, with the punchline following immediately after the setup, ensuring the humor is not lost."
+            },
+            "overall": {
+                "joke_quality_score": 3.6,
+                "normalized_score": 0.72
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the common phrase 'I need a break' and the well-known KitKat slogan 'Have a break, have a KitKat.' While it might elicit a chuckle or smile, it doesn't have a strong comedic impact that would make most people laugh out loud."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness through its use of wordplay and the double meaning of 'break.' It cleverly ties the concept of needing a break with the KitKat brand, showing a thoughtful connection between the setup and punchline."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the concept of computers misunderstanding human language is a common theme, the specific twist involving KitKat ads adds a fresh element. However, it doesn't completely break away from familiar joke patterns."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('I told my computer I needed a break') and an effective punchline ('now it won\u2019t stop sending me KitKat ads'). The timing is appropriate, and the delivery is concise, making the joke easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the concept of parallel lines, which is a familiar mathematical idea, and uses it to create a humorous situation. While it may not evoke loud laughter, it is likely to elicit a smile or chuckle from those who appreciate wordplay."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness by using a mathematical concept in a humorous context. The wordplay on 'parallel lines' having 'so much in common' but 'never meeting' is a smart twist that shows thoughtfulness in its construction."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While jokes about mathematical concepts are not uncommon, this particular twist on parallel lines is not overly used. It combines a familiar idea with a fresh perspective, though it doesn't break entirely new ground."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is solid. It has a clear setup ('Parallel lines have so much in common') and a punchline ('It\u2019s a shame they\u2019ll never meet') that delivers the humor effectively. The timing and brevity are well-executed, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the pun 'no pun intended' with a clever twist, which might elicit a chuckle or smile from some audiences. However, it may not have a strong comedic impact on everyone, as puns often have mixed reception."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness through its wordplay. The phrase 'no pun in ten did' is a witty twist on 'no pun intended,' showing thoughtful construction and a play on words that requires some intellectual engagement to appreciate."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the concept of pun contests and the phrase 'no pun intended' are familiar, the specific twist of 'no pun in ten did' adds a fresh element. However, it still follows a somewhat predictable pattern of pun-based humor."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup with the context of a pun contest and a punchline that delivers the twist effectively. The timing is appropriate, and the delivery is concise, making the joke easy to follow and understand."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people due to its clever wordplay and relatable concept of avoiding negative numbers. The punchline 'He\u2019ll stop at nothing to avoid them' is a humorous twist that plays on the literal and figurative meanings of 'nothing.'"
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "This joke demonstrates exceptional wit through its clever use of mathematical terminology and double entendre. The phrase 'stop at nothing' is ingeniously used to convey both a literal and figurative meaning, showcasing sophisticated humor."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is clever, it follows a somewhat familiar pattern of using mathematical concepts for humor. The idea of a mathematician avoiding negative numbers is not entirely novel, but the execution is fresh enough to stand out slightly from typical jokes in this category."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a well-constructed setup and punchline. The setup introduces the mathematician's fear, and the punchline delivers a clear and effective twist. The timing is good, and the brevity ensures the joke is easily digestible."
+            },
+            "overall": {
+                "joke_quality_score": 4.05,
+                "normalized_score": 0.8099999999999999
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people due to its clever wordplay and the unexpected twist in the punchline. The humor is accessible and has a broad appeal, making it a solid choice for a wide audience."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through its use of wordplay, playing on the double meaning of 'make up' to create a clever twist. It shows a thoughtful construction that leverages scientific terminology in a humorous context."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "While the joke is amusing, it is a well-known and frequently used joke format. The concept of atoms 'making up everything' is a common punchline in science-related humor, reducing its originality."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The joke has an excellent structure with a clear setup and punchline. The timing is effective, and the delivery is concise, ensuring the humor lands as intended. The setup leads naturally to the punchline, enhancing its comedic impact."
+            },
+            "overall": {
+                "joke_quality_score": 3.75,
+                "normalized_score": 0.75
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the common experience of needing a break and anthropomorphizes the computer, which can elicit a smile. However, it lacks a strong punchline that would make it more universally amusing."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke is quite clever in its use of anthropomorphism and wordplay. The idea of a computer 'going to sleep' as a response to needing a break is a smart twist on everyday language."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the concept of computers having human-like responses is not new, the specific twist of 'going to sleep' is a less common variation, adding some freshness."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure is good, with a clear setup and punchline. The timing is effective, and the delivery is concise, making it easy to understand and appreciate the humor."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and likely to elicit a smile or chuckle from most people. The play on words with 'outstanding in his field' is a classic pun that many will find endearing, though not laugh-out-loud funny."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through its clever wordplay. The double meaning of 'outstanding' as both 'exceptional' and 'literally standing out' is a smart use of language."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "This joke is a well-known classic and has been used frequently in various contexts. While the pun is clever, it lacks freshness and is quite predictable for those familiar with common joke formats."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The structure is solid, leading the audience smoothly from the setup to the punchline without confusion."
+            },
+            "overall": {
+                "joke_quality_score": 3.2,
+                "normalized_score": 0.64
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people due to its clever play on the concept of parallel lines. The humor is derived from the anthropomorphization of mathematical concepts, which is amusing and relatable."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "This joke demonstrates exceptional wit by using a mathematical concept in a humorous context. The cleverness lies in the unexpected application of human emotions to inanimate objects, showcasing a sophisticated understanding of both language and math."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is clever, it is a relatively common type of humor found in math-related jokes. It mixes original elements with familiar patterns, as jokes about parallel lines are not entirely novel."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The structure is solid, with the setup leading seamlessly into the punchline, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 4.05,
+                "normalized_score": 0.8099999999999999
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and likely to elicit a smile or chuckle from some people. The humor lies in the unexpected twist of the dog responding with 'nothing,' which plays on the literal interpretation of the question. However, it may not have a strong comedic impact for everyone."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates cleverness through its use of wordplay and the anthropomorphizing of the dog. The humor comes from the dog's 'response' being both literal and a play on words, showcasing a thoughtful construction."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke uses a common format of asking an animal a question, the specific twist of the dog's response being 'nothing' is somewhat fresh. However, the concept of animals responding in unexpected ways is a familiar comedic trope."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing. The brevity of the joke aids in its delivery, making it easy to understand and appreciate quickly. The structure supports the humor well, with a concise setup leading to an unexpected punchline."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people due to its clever wordplay and relatable subject matter. The punchline 'they make up everything' is a humorous twist on the dual meaning of 'make up,' playing on the scientific fact that atoms are the building blocks of matter and the idiomatic expression of fabricating stories."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through its use of a double entendre. The cleverness lies in the play on words with 'make up,' which is both scientifically accurate and humorously misleading. This dual meaning showcases a thoughtful construction that appeals to those who appreciate wordplay."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "While the joke is amusing, it is a well-known and frequently used joke in the realm of science humor. It follows a common format and is often cited in educational and casual settings, which diminishes its originality."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear and effective structure with a straightforward setup and a punchline that delivers the comedic twist efficiently. The timing is appropriate, and the brevity ensures that the punchline lands without unnecessary complexity."
+            },
+            "overall": {
+                "joke_quality_score": 3.6,
+                "normalized_score": 0.72
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and may elicit a smile or chuckle from some people. The humor comes from the unexpected response of the computer, which plays on the idea of computers being literal and unemotional. However, it lacks a strong comedic impact that would make it universally funny."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit by using a clever play on words. It anthropomorphizes the computer, giving it a voice and personality, which is a smart twist. The humor lies in the computer's literal interpretation of 'needing a break,' showcasing a thoughtful construction."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke uses a common theme of anthropomorphizing technology, it presents a slightly fresh take by focusing on the computer's inactivity. It's moderately original, as it combines familiar elements with a unique twist, but doesn't completely break new ground."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The setup ('I told my computer I needed a break') leads smoothly into the punchline ('Why? I haven\u2019t done anything yet'), creating a concise and well-structured joke."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people due to its play on words and the unexpected twist in the punchline. The humor is accessible and has a broad appeal, making it very funny for a wide audience."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through its clever use of the phrase 'outstanding in his field,' which serves as both a literal and figurative punchline. The wordplay is intelligent and adds a layer of sophistication to the humor."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "This joke is a classic example of a pun that has been widely circulated. While it is amusing, it lacks originality due to its common usage in various contexts. The joke follows a familiar pattern and doesn't introduce any novel elements."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The joke is excellently structured with a clear setup and punchline. The timing is perfect, with the punchline delivering an effective twist that enhances the comedic impact. The brevity and clarity of the joke contribute to its strong structure."
+            },
+            "overall": {
+                "joke_quality_score": 3.75,
+                "normalized_score": 0.75
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and likely to elicit a smile due to its play on words. The pun on 'time-consuming' is clever, but it may not provoke a strong laugh from most audiences. It's a classic dad joke that some might find charming, while others might find it predictable."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through its clever use of wordplay. The pun on 'time-consuming' is a smart twist on the literal and figurative meanings of the phrase. It shows a thoughtful construction that plays with language effectively."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is based on a common pun format and is a variation of a well-known joke type. While the specific wording might be less common, the concept of using 'time-consuming' in this context is familiar and lacks a novel twist."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The brevity of the joke helps maintain its impact, and the punchline is delivered succinctly, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.2,
+                "normalized_score": 0.64
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people due to its clever play on the concept of parallel lines. The humor comes from the anthropomorphization of mathematical concepts, which is amusing and relatable."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "This joke demonstrates exceptional wit by using a mathematical concept in a humorous context. The cleverness lies in the unexpected twist of giving parallel lines human-like qualities, which requires a sophisticated understanding of both geometry and humor."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is amusing, it is a relatively common play on words within the realm of math jokes. It combines familiar elements with a fresh twist, but it doesn't break new ground in terms of originality."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke is well-structured with a clear setup and punchline. The setup introduces the concept of parallel lines, and the punchline delivers the humorous twist effectively. The timing and delivery are concise, enhancing the joke's impact."
+            },
+            "overall": {
+                "joke_quality_score": 4.05,
+                "normalized_score": 0.8099999999999999
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the common scientific knowledge that atoms are the building blocks of everything, which can elicit a chuckle or smile from those familiar with the concept. However, it may not evoke strong laughter due to its predictability."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay, specifically the double meaning of 'make up.' While it shows some wit, the concept is straightforward and lacks deeper intellectual humor."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "This joke is slightly original. It is a well-known joke format that has been widely circulated, making it familiar to many. While it has a small twist with the scientific context, it doesn't offer a fresh or unexpected approach."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has good structure with a clear setup and punchline. The timing is effective, and the delivery is concise, allowing the punchline to land smoothly. The simplicity of the structure aids in its clarity and impact."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and may elicit a chuckle or smile due to its simplicity and the unexpected twist of the dog's response. However, it lacks a strong comedic impact that would make it universally funny."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke employs a clever twist by using the dog's inability to speak as the punchline. While this is a smart play on expectations, it doesn't reach a high level of wit or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke follows a familiar pattern of anthropomorphizing animals for humor. While the specific setup with the math question is slightly novel, the overall concept is not highly original."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing. The brevity and simplicity of the structure work well for the type of humor it aims to deliver."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the common phrase 'I need a break' and the well-known KitKat slogan 'Have a break, have a KitKat.' While it might elicit a chuckle or smile from some, it lacks a strong comedic impact that would make it universally hilarious."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness by using wordplay and a cultural reference to KitKat ads. The double meaning of 'break' is a clever twist, showing thoughtfulness in its construction."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the concept of computers misunderstanding human language is not new, the specific twist with KitKat ads adds a fresh element. However, it still follows a somewhat predictable pattern."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure is well-executed with a clear setup and punchline. The timing is effective, and the delivery is concise, making the joke easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people due to its simple yet effective punchline. The play on words with 'outstanding in his field' is a classic example of humor that is accessible and relatable, making it very funny for a wide audience."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through its clever wordplay. The double meaning of 'outstanding' as both 'excellent' and 'literally standing out' in a field showcases a thoughtful construction that is both amusing and intelligent."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "While the joke is amusing, it is a well-known and frequently used pun. The concept of a scarecrow being 'outstanding in his field' is a common trope, which limits its originality despite its effectiveness."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The joke has an excellent structure with a clear setup and punchline. The timing is perfect, with the punchline delivering a satisfying twist that plays on expectations. The brevity and clarity of the joke enhance its impact, making it a textbook example of good joke mechanics."
+            },
+            "overall": {
+                "joke_quality_score": 3.75,
+                "normalized_score": 0.75
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is quite funny due to its unexpected twist. The idea of living in 'constant fear' from a boomerang is absurd and humorous, likely to elicit chuckles or smiles from most people. The punchline effectively subverts expectations, enhancing its comedic impact."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates cleverness through its use of wordplay and the unexpected twist. The concept of a boomerang returning after years is a witty exaggeration, showcasing a good understanding of humor mechanics and language."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is amusing, it follows a somewhat familiar pattern of using an object with a known behavior (boomerang) to create an exaggerated scenario. It has some originality in its specific execution but isn't entirely novel."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke is well-structured with a clear setup and punchline. The brevity and timing are effective, allowing the punchline to land smoothly. The structure supports the humor without any unnecessary elements."
+            },
+            "overall": {
+                "joke_quality_score": 3.8000000000000003,
+                "normalized_score": 0.76
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people due to its clever wordplay and relatable scientific context. The punchline 'they make up everything' is a humorous twist on the dual meaning of 'make up,' which adds to its comedic effect."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through its use of a pun that plays on the dual meaning of 'make up.' It cleverly ties a scientific concept to a common phrase, showcasing thoughtful construction and a clever observation about atoms."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "This joke is a classic example of a science pun and is quite familiar to many audiences. While it is well-liked, it lacks originality due to its frequent use in various contexts, making it predictable for those familiar with science jokes."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The joke has an excellent structure with a clear setup and punchline. The setup 'Why don\u2019t scientists trust atoms?' effectively leads into the punchline, which is delivered with perfect timing and clarity, ensuring the humor is easily understood."
+            },
+            "overall": {
+                "joke_quality_score": 3.75,
+                "normalized_score": 0.75
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the common phrase 'I need a break' and the well-known Kit Kat slogan 'Have a break, have a Kit Kat.' While it might elicit a chuckle due to the clever twist, it may not provoke a strong laugh from everyone."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness by using wordplay and a cultural reference. The double meaning of 'break' is well-utilized, and the connection to Kit Kat ads shows a thoughtful construction."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the concept of computers misunderstanding human language is not new, the specific twist with Kit Kat ads adds a fresh element. However, it still follows a somewhat predictable pattern."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure is good, with a clear setup and punchline. The timing is effective, and the delivery is concise, making the joke easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people due to its clever wordplay and relatable concept of avoiding negative numbers. The punchline 'He\u2019ll stop at nothing to avoid them' is a humorous twist that plays on the literal and figurative meanings of 'nothing.'"
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "This joke demonstrates exceptional wit through its clever use of mathematical terminology. The phrase 'stop at nothing' is ingeniously used to convey both a literal and figurative meaning, showcasing a sophisticated understanding of language and humor."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is clever, it follows a somewhat familiar pattern of using mathematical concepts for humor. The idea of a mathematician avoiding negative numbers is not entirely novel, but the execution is fresh enough to stand out slightly from typical jokes in this category."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke is well-structured with a clear setup and punchline. The setup effectively introduces the concept of a mathematician's fear, and the punchline delivers a satisfying twist. The timing and brevity are well-executed, making the joke easy to understand and enjoy."
+            },
+            "overall": {
+                "joke_quality_score": 4.05,
+                "normalized_score": 0.8099999999999999
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people due to its light-hearted nature and the play on words. The punchline 'outstanding in his field' cleverly ties back to the setup, creating a satisfying comedic effect."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through its use of wordplay. The double meaning of 'outstanding' as both 'exceptional' and 'literally standing out' in a field shows a thoughtful construction that requires a bit of mental engagement to appreciate fully."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "This joke is a classic example of a pun that has been widely circulated. While it remains amusing, it lacks originality due to its common usage and familiarity in the realm of jokes."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The joke has an excellent structure with a clear setup and punchline. The timing is effective, with the punchline delivering a neat twist that ties back to the setup seamlessly. The brevity and clarity enhance its comedic impact."
+            },
+            "overall": {
+                "joke_quality_score": 3.75,
+                "normalized_score": 0.75
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is quite funny, playing on the common fear of paranoia with a clever twist. The punchline 'They're right behind you' is unexpected and likely to elicit chuckles or smiles from most people due to its playful nature."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness by using a play on the concept of paranoia. The librarian's whisper adds an extra layer of wit, enhancing the joke's sophistication and making it more than just a simple punchline."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is amusing, it follows a somewhat familiar pattern of using paranoia as a comedic element. However, the specific context of a librarian whispering adds a fresh twist, making it moderately original."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The structure of the joke is excellent, with a clear setup and a punchline that delivers effectively. The timing is spot-on, with the whispering librarian adding to the comedic effect, ensuring the joke lands well."
+            },
+            "overall": {
+                "joke_quality_score": 3.95,
+                "normalized_score": 0.79
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The response ':{' does not constitute a joke in any recognizable form. It lacks any elements that would typically evoke laughter or amusement, such as a setup or punchline. It may even be confusing or awkward for the audience, resulting in no comedic effect."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or intellectual humor present in the response ':{}'. It does not demonstrate any cleverness or sophistication in its construction or concept, as it is simply a sequence of characters without meaning."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "While the response ':{' is unconventional, it does not qualify as original humor. It lacks any creative or novel elements that would distinguish it from typical jokes. Its randomness does not contribute to originality in a comedic sense."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response ':{' lacks any recognizable joke structure, including setup, punchline, timing, or delivery. It is merely a sequence of characters without any elements that would constitute a joke, making it structurally deficient."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'blush' and 'dressing' is mildly amusing and likely to elicit a smile or chuckle from some audiences. However, it lacks a strong comedic impact that would make it universally laugh-out-loud funny."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The double meaning of 'dressing' as both a salad component and an action is a clever twist, but it's a fairly common pun that doesn't showcase exceptional wit or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of a potato blushing due to 'seeing the salad dressing' is a familiar pun that has been used in various forms. It lacks a novel approach or unexpected twist that would elevate its originality."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has good structure with a clear setup and punchline. The setup effectively leads to the punchline, and the timing is appropriate for delivering the humor. The brevity and clarity of the joke contribute positively to its structure."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and likely to elicit a smile from some people. The term 'couch potato' is a well-known phrase, which might reduce its comedic impact due to familiarity. However, the play on words with 'lazy spud' adds a touch of humor."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke uses a simple pun, playing on the dual meaning of 'couch potato' as both a lazy person and a type of vegetable. While not exceptionally witty, it demonstrates a basic level of cleverness through wordplay."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke relies on a common phrase, 'couch potato,' which is widely recognized and often used in humor. It lacks novelty and is a familiar concept, reducing its originality."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The structure is straightforward, making it easy to understand and appreciate. The brevity of the joke aids in its delivery."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny, primarily due to the pun on 'yam' and 'am.' While it might elicit a chuckle or smile from some, it lacks a strong comedic impact that would make it universally hilarious. The humor is mild and relies on a simple wordplay that some might find amusing."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The cleverness of the joke lies in its wordplay, using 'yam' as a pun for 'am.' This demonstrates a good level of wit and intelligence, as it plays on the dual meaning of 'yam' as both a type of potato and a phonetic pun. The joke shows thoughtful construction and a clever observation of language."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While potato jokes are common, the specific use of 'yam' as a pun adds a fresh twist. However, puns on 'yam' are not entirely new, so the joke doesn't stand out as highly original but does offer a creative element within a familiar context."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good, with a clear setup and punchline. The setup introduces the concept of a 'sweet potato joke,' leading smoothly into the punchline with the pun. The timing and delivery are effective, making the joke easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and likely to elicit a smile due to its light-hearted nature and simple wordplay. The pun on 'tater' is a common play on words, which some might find endearing, but it lacks a strong comedic impact to provoke laughter."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke employs basic wordplay with 'tater' as a pun on 'later.' While this is a clever use of language, it is a straightforward and familiar pun that doesn't demonstrate high levels of wit or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke relies on a well-known pun involving potatoes and 'tater.' This type of humor is quite common and doesn't offer a fresh or unexpected twist, making it slightly original at best."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The brevity and simplicity of the structure work well for this type of pun, ensuring the joke is easily understood and delivered."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the common phrase 'get fried' in a humorous context, which might elicit a chuckle or smile from some audiences. However, it lacks a strong punchline that would make it more universally amusing."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness by using a play on words with 'fried' and 'heat.' While this is a clever twist, it doesn't reach the level of sophistication or wit that would elevate it to a higher score."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of potatoes being involved in a humorous scenario is not new, and the play on 'fried' is a common pun. It doesn't offer a fresh or unexpected twist that would make it stand out."
+            },
+            "structure": {
+                "score": 3,
+                "justification": "The structure is adequate. The setup and punchline are clear, and the joke follows a basic format. However, the punchline could be stronger to enhance the comedic impact, and the timing could be improved for better delivery."
+            },
+            "overall": {
+                "joke_quality_score": 2.8,
+                "normalized_score": 0.5599999999999999
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and may elicit a chuckle due to the play on the classic 'Why did the chicken cross the road?' format. However, it lacks a strong comedic impact and might not evoke laughter from everyone."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke uses a simple pun with 'fork' as a play on words, which is moderately clever. It shows some thought in connecting the potato with a common road crossing scenario, but the wit is not particularly sophisticated."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke follows a very familiar structure and concept, borrowing heavily from the classic road-crossing joke. The twist with the 'fork' is a minor variation, but overall, it lacks originality and feels predictable."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, following a well-known format that aids in delivery. The timing is effective, with the punchline providing a quick, understandable twist. However, the simplicity of the structure limits its impact."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'spudding around' is mildly amusing and could elicit a chuckle or smile from some people. However, it lacks a strong comedic impact that would make it universally hilarious."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness through its wordplay. The use of 'spudding' as a pun on 'puttering' or 'muddling' around is a clever twist that shows thoughtfulness in its construction."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While potato jokes are common, the specific play on 'spudding around' offers a fresh twist. However, it still follows a familiar pattern of anthropomorphizing vegetables."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('I told my potato it was being lazy') and a punchline ('now it\u2019s just spudding around') that delivers the humor effectively. The timing and delivery are concise, enhancing the joke's impact."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and likely to elicit a smile or chuckle from some people. The play on words with 'see-tater' is a light-hearted pun that may not have a strong comedic impact but is pleasant enough to be considered moderately funny."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke employs a basic pun, combining 'see' with 'tater' to create 'see-tater.' While this demonstrates some level of wordplay, it doesn't reach the heights of sophisticated wit or intelligence. It's a straightforward pun that is clever but not exceptionally so."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke follows a common format of wordplay involving potatoes, a theme that has been explored in various jokes. The 'see-tater' pun is a slight twist on familiar territory, making it slightly original but largely predictable."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with the question leading directly to the pun. The structure is solid, with effective timing and delivery that makes the punchline easy to understand. While not complex, the structure is well-executed for this type of joke."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'mashed' is mildly amusing and might elicit a chuckle or smile from some people. However, it lacks a strong comedic impact that would make it universally laugh-out-loud funny."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness. The pun on 'mashed' is a simple yet effective play on words, but it doesn't showcase exceptional wit or sophistication. It's a straightforward joke that relies on a common pun."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of potatoes not wanting to get 'mashed' is a familiar pun that has been used in various forms. While it has a small twist, it largely follows a predictable pattern."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has good structure. The setup is clear, and the punchline is delivered effectively with a concise and straightforward format. The timing is appropriate, and the joke mechanics are solid, contributing to its overall delivery."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing, playing on the word 'fried' to evoke a smile. While it may not elicit a strong laugh, it has a light-hearted charm that some might find endearing. The humor is gentle and inoffensive, making it suitable for a broad audience."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates clever wordplay by using 'fried' to refer both to a cooking method and a state of being. This dual meaning adds a layer of wit, showing a thoughtful approach to language and concept."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke uses a common pun format, the specific context of a 'russet' potato feeling 'fried' is a less typical twist. It balances between familiar and fresh, offering a new take on a classic pun."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke is well-structured with a clear setup and punchline. The timing is effective, with the punchline delivered succinctly after the setup. The brevity and clarity enhance the joke's impact, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and likely to elicit a smile or chuckle from some people. The concept of a 'couch potato' is a familiar one, and the play on words is light-hearted, though not particularly laugh-out-loud funny."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke employs a basic pun, playing on the dual meaning of 'couch potato.' While the wordplay is clear, it doesn't demonstrate exceptional wit or sophistication, but it does show a moderate level of cleverness."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke relies on a well-known phrase, 'couch potato,' which is a common trope in humor. While the setup is slightly different, the punchline is predictable and lacks a fresh twist."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The structure is solid, with a straightforward setup leading to a concise punchline, making it easy to understand and deliver."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing, playing on the concept of a potato giving skincare advice. It might evoke a chuckle or a smile due to the absurdity of the situation, but it lacks a strong comedic impact that would make it broadly hilarious."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness through its wordplay. The phrase 'peel back the years' is a witty twist on the idea of peeling potatoes and reversing aging, showing a thoughtful construction."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the concept of a potato giving advice is somewhat novel, the joke follows a familiar pattern of anthropomorphizing objects for humor. It has some fresh elements but doesn't completely break away from common joke formats."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing. The setup introduces the absurd scenario, and the punchline delivers the humor succinctly. The structure is solid, contributing to the joke's overall effectiveness."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and may elicit a chuckle or smile from some people. The play on words with 'hesitator tot' is a light-hearted twist on the familiar 'tater tot,' which adds a touch of humor. However, it lacks a strong comedic impact that would make it universally funny."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through its wordplay. The transformation of 'tater tot' into 'hesitator tot' is a clever use of language, showing an understanding of puns and double meanings. This clever twist elevates the joke beyond simple humor."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke uses a common food item (potato) as its subject, the specific twist of 'hesitator tot' is moderately original. It combines familiar elements with a fresh angle, though it doesn't completely break away from typical potato jokes."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The setup ('What do you call a potato that refuses to jump into the fryer?') leads smoothly into the punchline ('A hesitator tot'), making it easy to follow and understand. The structure supports the humor well."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'Detective Spud-nose' is amusing and might elicit a chuckle or smile from some people. However, it lacks a strong comedic impact that would make it universally laugh-out-loud funny."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness with the pun 'Detective Spud-nose.' It creatively combines the concept of a potato with a detective, showing a thoughtful construction and clever wordplay."
+            },
+            "originality": {
+                "score": 4,
+                "justification": "The joke is quite original, as it takes a unique approach by imagining a potato in a detective role. While potato jokes are common, this specific scenario and pun are less predictable and offer a fresh twist."
+            },
+            "structure": {
+                "score": 3,
+                "justification": "The structure is adequate, with a clear setup and punchline. The joke is concise, but the punchline could be stronger to enhance the comedic effect. The timing is decent, but the delivery could be more impactful."
+            },
+            "overall": {
+                "joke_quality_score": 3.45,
+                "normalized_score": 0.6900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and likely to elicit a smile rather than a laugh. The pun on 'eyes peeled' is a classic play on words, which some might find amusing, but it lacks a strong comedic impact."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness through its use of wordplay. The double meaning of 'eyes peeled' as both a potato characteristic and a metaphor for being alert is a clever twist."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke uses a common pun involving potatoes and 'eyes,' it adds a slightly fresh twist by incorporating the idea of keeping secrets. However, the core pun is familiar."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing. The structure is straightforward, making it easy to understand and delivering the punchline effectively."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'smashed' is amusing and can elicit a chuckle or smile from some audiences. However, it may not have a strong comedic impact on everyone, as the humor is somewhat predictable."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness. The double meaning of 'smashed' as both a state of inebriation and a cooking method for potatoes is a clever twist, but it's a common pun that doesn't showcase exceptional wit."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. While the play on 'smashed' is a known pun, the context of a potato refusing to join a party adds a small twist. However, jokes about potatoes and being 'smashed' are fairly common."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup and punchline, with effective timing. The brevity and clarity of the joke contribute to its delivery, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing, playing on the word 'fries' as both a type of potato dish and a term for small jokes. It might elicit a chuckle or smile from some, but it's not likely to be laugh-out-loud funny for most audiences."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wordplay by using 'small fries' to refer to both a type of potato and a metaphor for minor jokes. This dual meaning shows a clever use of language."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the concept of potatoes and fries is common, the specific twist of a baked potato 'telling' jokes is somewhat fresh. However, it still follows a familiar pattern of food-related puns."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing. The setup leads naturally to the punchline, and the brevity helps maintain comedic timing."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing, playing on the pun 'spud-porting' actor, which is a clever twist on 'supporting actor.' While it may elicit a chuckle or smile, it lacks the punch to be considered very funny or hilarious. The humor is light and may not resonate with everyone."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through its wordplay. The pun 'spud-porting' is a clever twist on 'supporting,' showing a thoughtful construction. The use of 'Oscar' adds a layer of sophistication by referencing a well-known award, enhancing the cleverness."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While potato puns are common, the specific twist of a potato winning an Oscar for 'spud-porting' is a fresh take. However, it still follows a familiar pattern of anthropomorphizing objects for humor."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a good structure with a clear setup and punchline. The setup introduces the concept of a potato winning an Oscar, and the punchline delivers the pun effectively. The timing is appropriate, and the delivery is concise, making it easy to understand."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing, playing on the word 'spectator' to create 'see-tater.' While it might elicit a chuckle or smile from some, it lacks a strong comedic impact and may not resonate with everyone."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke employs a basic pun, combining 'see' with 'tater' to create a play on words. While this demonstrates some cleverness, it doesn't reach a high level of wit or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke follows a common format of wordplay involving potatoes, a popular subject for puns. It doesn't offer a particularly fresh or unexpected twist, making it slightly original at best."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The structure is solid, allowing the wordplay to be easily understood and appreciated."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and may elicit a smile due to the play on words with 'chips' and 'keeping it together.' However, it lacks a strong comedic impact that would make it laugh-out-loud funny for most audiences."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through its clever wordplay on 'chips,' which can refer to both potato chips and the idiom 'keeping it together.' This dual meaning adds a layer of intelligence to the joke."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke uses a common pun format, the specific play on 'chips' in the context of a potato is somewhat fresh. However, jokes about potatoes and wordplay involving 'chips' are not entirely novel."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing that delivers the punchline smoothly. The structure is solid, allowing the wordplay to be easily understood and appreciated."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The concept of a potato going to therapy because it has 'too many eyes' is amusing and might elicit a chuckle or smile from some people. However, it lacks a strong punchline that would make it more universally funny."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates a clever use of wordplay with the double meaning of 'eyes' on a potato and the feeling of being watched. This shows a good level of wit and intelligence in its construction."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke uses a common trope of anthropomorphizing objects, the specific twist of a potato going to therapy for its 'eyes' is somewhat original. It mixes familiar elements with a fresh angle."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline. The setup effectively leads to the punchline, and the timing is appropriate. The structure supports the humor, although the punchline could be stronger for greater impact."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing with a play on words involving 'free-range,' which is typically associated with animals, not potatoes. It might elicit a chuckle or smile from some, but lacks strong comedic impact."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The cleverness lies in the wordplay of 'free-range tater,' which is a humorous twist on the concept of free-range animals. However, the wit is moderate as it relies on a simple pun without deeper layers of meaning."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the concept of a 'free-range' potato is not commonly used, the structure of the joke follows a familiar pattern of puns involving food items."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline. The timing is effective, with the punchline delivered succinctly after the setup. The structure is solid, contributing to its overall effectiveness."
+            },
+            "overall": {
+                "joke_quality_score": 3.1500000000000004,
+                "normalized_score": 0.6300000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing, playing on the word 'sleuth' to create a pun with 'po-tato.' While it might elicit a chuckle or smile from some, it lacks a strong comedic impact and may not resonate with everyone."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay, combining 'potato' with 'sleuth' to create a pun. However, the pun is relatively straightforward and doesn't showcase exceptional wit or sophistication."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original, as it combines the concept of a potato with a detective theme, which is not overly common. However, the pun format is a familiar comedic device, making the joke somewhat predictable."
+            },
+            "structure": {
+                "score": 3,
+                "justification": "The joke has an adequate structure with a clear setup and punchline. The timing is decent, but the punchline could be stronger to enhance the comedic effect. Overall, it follows a basic joke format without major issues."
+            },
+            "overall": {
+                "joke_quality_score": 3.0,
+                "normalized_score": 0.6
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing, playing on the word 'mash-ed' to create a pun related to potatoes. While it might elicit a chuckle or smile from some, it lacks a strong comedic impact and may not resonate with everyone."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke employs a basic pun with 'mash-ed,' which is a clever play on words given the context of potatoes. However, the wit is not particularly sophisticated or layered, making it moderately clever at best."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "Potato jokes and puns are quite common, and the concept of a potato wanting to be a stand-up comic is not particularly novel. The joke follows a familiar pattern with a slight twist, but it doesn't stand out as highly original."
+            },
+            "structure": {
+                "score": 3,
+                "justification": "The joke has a clear setup and punchline, with the wordplay being the focal point. However, the delivery could be tighter, and the punchline might benefit from a more impactful or surprising twist to enhance its effectiveness."
+            },
+            "overall": {
+                "joke_quality_score": 2.8,
+                "normalized_score": 0.5599999999999999
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing, playing on the idea of potatoes not wanting to be 'mashed' in public. While it might elicit a chuckle or smile from some, it lacks a strong comedic impact and may not resonate with everyone."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke employs a simple pun with 'mashed' as a double entendre, referring both to the cooking method and a metaphor for being defeated in an argument. It's moderately clever but doesn't demonstrate exceptional wit or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke follows a common format of anthropomorphizing objects (in this case, potatoes) and using a pun. While it has a slight twist, it largely relies on familiar comedic territory."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The structure is solid, allowing the pun to land as intended, though it doesn't elevate the overall humor significantly."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It uses a classic setup with a twist, which might elicit a chuckle or smile from some people. The punchline 'because it saw a fork up ahead' is a play on words that adds a humorous element, but it may not have a strong comedic impact for everyone."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness. The wordplay involving 'fork' as both a road feature and a utensil is a clever twist, but it's a common type of pun. The joke shows some thoughtfulness in its construction but doesn't reach a high level of wit or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The 'why did the X cross the road?' format is a well-worn trope in comedy. While the 'fork up ahead' twist adds a bit of freshness, it still follows a predictable pattern that many jokes in this category use."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has good structure. It follows the classic setup-punchline format effectively, with a clear setup and a punchline that delivers the intended humor. The timing and delivery are appropriate for the joke's style, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on 'half-baked' is mildly amusing and might elicit a chuckle or smile from some people. However, it lacks a strong comedic impact that would make it universally laugh-out-loud funny."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness through its wordplay. The use of 'half-baked' as a pun on both the incomplete joke and the cooking process of potatoes shows thoughtful construction and a clever observation."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the concept of 'half-baked' is a common phrase, its application to a joke about potatoes adds a fresh twist. However, it doesn't completely break away from familiar joke patterns."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup and punchline, with effective timing that delivers the pun smoothly. The brevity and clarity of the joke contribute to its overall effectiveness."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny, playing on the word 'spotted' to create a visual pun. While it might elicit a chuckle or smile, it lacks a strong comedic impact that would make it universally hilarious."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness through its use of wordplay. The double meaning of 'spotted' as both being seen and having spots is a clever twist that shows thoughtfulness in its construction."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the concept of potatoes having 'eyes' is a common trope, the specific twist of them being bad at hide-and-seek is a less common angle, adding some freshness."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is solid, with a clear setup and punchline. The timing is effective, and the brevity ensures the punchline lands without unnecessary complexity."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and likely to elicit a smile from some people. The term 'couch potato' is a well-known phrase, which might make it less impactful for those familiar with it, but it still holds some comedic value."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke employs a simple pun, playing on the double meaning of 'spud' and 'couch potato.' While it's not exceptionally witty, it does show a basic level of cleverness in its wordplay."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The concept of a 'couch potato' is quite common and has been used frequently in humor. The joke doesn't offer a new twist or unexpected element, making it slightly original at best."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing. The brevity and straightforward delivery contribute to its structural strength, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It uses a pun with 'mash' and 'small fry,' which can elicit a chuckle or smile. However, it may not have a strong comedic impact on all audiences, as the humor is mild and relies on a simple wordplay."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness through its use of potato-related puns. The play on words with 'mash' and 'small fry' shows a thoughtful construction and a clever observation about potatoes and problems."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While potato puns are common, the specific combination of 'mash your problems' and 'small fry' offers a fresh twist on the typical potato humor. It avoids being entirely predictable but doesn't break new ground."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup with the premise of asking a potato for advice, followed by a punchline that ties back to the setup effectively. The timing and delivery are concise, enhancing the joke's impact."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny, as it plays on the relatable theme of 'adulting' and the need for coffee to cope with it. While it might elicit a smile or chuckle from those familiar with the struggles of adulthood, it lacks a strong punchline that would make it more universally amusing."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates cleverness through its metaphorical use of a 'user manual' being at the bottom of a coffee mug. This adds a layer of wit by suggesting that coffee is essential for navigating adult life, which is a smart observation."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the concept of using coffee as a coping mechanism for adult responsibilities is common, the specific imagery of a 'user manual' at the bottom of a mug adds a unique twist."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure is good, with a clear setup and punchline. The setup introduces the theme of adulting, and the punchline ties it to coffee in a concise manner. The timing is effective, delivering the punchline smoothly without unnecessary complexity."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people due to its playful wordplay and relatable scenario. The idea of coffee being 'mugged' is a humorous twist on a common phrase, making it amusing."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through its use of a pun. The play on the word 'mugged' cleverly ties together the concept of a coffee cup and a crime report, showing thoughtful construction."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "While the joke is amusing, it relies on a fairly common pun involving coffee and 'mugging.' This type of wordplay is familiar, making it less original, though it still has a slight twist."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The structure is solid, allowing the punchline to land effectively without confusion."
+            },
+            "overall": {
+                "joke_quality_score": 3.6,
+                "normalized_score": 0.72
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the common sentiment of needing coffee to start the day, which many can relate to. While it might evoke a smile or chuckle, it lacks a strong punchline or unexpected twist that would elevate it to a higher level of funniness."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness by using a play on words with 'nonexistent without it.' It cleverly ties the necessity of coffee to the existence of mornings, but it doesn't push the boundaries of wit or wordplay significantly."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of needing coffee to function is a well-trodden comedic path. While the phrasing is somewhat unique, the underlying idea is familiar and lacks a novel twist."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('I like my coffee like I like my mornings') and a punchline ('nonexistent without it'). The timing is effective, and the delivery is concise, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing, playing on the word 'espresso' to create a pun with 'express yourself' and 'depressed'. It might elicit a smile or chuckle from some, but it's not likely to provoke a strong laugh."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wordplay by combining 'espresso' with 'express yourself' and 'depressed'. This clever use of language shows a thoughtful construction and a decent level of wit."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the pun is clever, the concept of using coffee-related wordplay is fairly common. The specific combination of 'espresso' and 'depressed' is somewhat fresh, but not entirely unique."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke is well-structured with a clear setup and punchline. The brevity and timing are effective, delivering the punchline succinctly. The wordplay is clear and easy to understand, enhancing its impact."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people due to its relatable premise. The comparison of decaf coffee to 'airplane mode' is amusing and taps into the common experience of technology and coffee culture."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit by creatively linking the concept of decaf coffee to 'airplane mode,' a term typically associated with technology. This clever analogy shows a thoughtful construction and a clever observation about the lack of effect in both scenarios."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke uses a familiar format of comparing two seemingly unrelated concepts, the specific analogy of decaf coffee to 'airplane mode' is moderately original. It offers a fresh twist on the common theme of decaf being less effective."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The brevity of the joke enhances its impact, making it easy to understand and appreciate quickly. The structure supports the humor well, leading to a satisfying punchline."
+            },
+            "overall": {
+                "joke_quality_score": 3.8000000000000003,
+                "normalized_score": 0.76
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response ': {' does not contain any recognizable humor or comedic elements. It fails to evoke laughter or amusement, and may even be confusing or awkward for the audience."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or intellectual humor in the response. The characters ': {' do not convey any cleverness or sophistication in their construction."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not original as it does not present any recognizable joke format or concept. It lacks any fresh or unexpected elements that would distinguish it from typical jokes."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any discernible joke structure, including setup, punchline, timing, or delivery. The characters ': {' do not form a coherent or structured joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The pun on 'grounded' and 'bean there before' is mildly amusing and might elicit a chuckle or smile from some audiences. However, it lacks a strong comedic impact that would make it universally laugh-out-loud funny."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness through its use of wordplay. The pun on 'grounded' and 'bean' is a clever twist on common phrases, showing a thoughtful construction and understanding of language."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the pun is creative, coffee-related puns are quite common, and the joke follows a familiar pattern. It offers a fresh twist but doesn't completely break away from typical coffee humor."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('I told my coffee it was grounded') and an effective punchline ('That's fine, I've bean there before'). The timing and delivery are concise, contributing to its overall effectiveness."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'spill the beans' is a classic pun that might elicit a chuckle or smile. However, it lacks a strong comedic impact that would make it laugh-out-loud funny for most people."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The phrase 'spill the beans' is cleverly adapted to the context of coffee, but the pun is fairly straightforward and doesn't exhibit exceptional wit or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. While it uses a common phrase in a coffee-related context, the concept of 'spilling the beans' is a well-trodden path in humor, making the joke somewhat predictable."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup and punchline, with effective timing and delivery. The brevity and clarity of the joke contribute positively to its overall structure."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing, playing on the idea that decaf coffee is a less exciting version of regular coffee. It might elicit a chuckle from those familiar with coffee culture, but it lacks a strong comedic impact that would make it universally funny."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke cleverly uses the analogy of a Halloween costume to describe decaf coffee, highlighting the superficial similarity but lack of substance. This demonstrates a good level of wit and intelligence in drawing parallels between two seemingly unrelated concepts."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the comparison of decaf coffee to something less impactful is not entirely new, the specific analogy to a Halloween costume adds a fresh twist. However, the underlying concept of decaf being 'lesser' is a common trope."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke is well-structured with a clear setup and punchline. The timing is effective, with the punchline delivering a humorous twist on the initial setup. The brevity and clarity of the joke contribute to its overall structure."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The pun on 'espresso-ing' is mildly amusing and might elicit a chuckle or smile from some people. However, it lacks a strong comedic impact that would make it universally funny."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness with its wordplay on 'espresso-ing' as a play on 'expressing.' This shows a thoughtful construction and a clever observation about coffee's role in daily life."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the pun on 'espresso' is a common theme in coffee jokes, the specific context of a coffee asking for a raise adds a slightly fresh twist to the familiar setup."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup with the coffee asking for a raise, followed by a punchline that ties back to the setup effectively. The timing and delivery are concise, enhancing the joke's impact."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'mugged' is amusing and might elicit a chuckle or smile from some people. However, it lacks a strong comedic impact that would make it universally laugh-out-loud funny."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness through its wordplay. The double meaning of 'mugged' (referring to both a coffee mug and being robbed) shows a thoughtful construction and clever observation."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the concept of using 'mugged' in a coffee context is not entirely new, the specific phrasing and twist provide a fresh take on a familiar theme."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup and punchline, with effective timing and delivery. The brevity and clarity contribute to its overall impact."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and likely to elicit a smile or chuckle from some people. The pun on 'espresso' is a light-hearted play on words that ties well with the coffee theme, but it may not have a strong comedic impact for everyone."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through the use of a pun. The play on words with 'espresso' as a substitute for 'express' is clever and shows a thoughtful construction that leverages language effectively."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the pun is clever, the concept of using 'espresso' in a joke is somewhat familiar in coffee-related humor. It mixes original wordplay with a common theme, making it moderately original."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The structure is solid, with the punchline providing a neat conclusion to the setup, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is quite funny, playing on the pun between 'latte' and 'a lot of' weight, which is a clever twist. The idea of coffee being 'steamed' adds a humorous layer, as it anthropomorphizes the coffee, making it relatable and amusing. Most people would likely chuckle or smile at this joke."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness through its use of wordplay. The pun on 'latte' and the double meaning of 'steamed' (both as a coffee preparation method and an emotional state) show a thoughtful construction. It cleverly ties together coffee culture with a common social scenario."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke uses a common pun format, it introduces a fresh twist by combining the weight comment with the coffee's emotional reaction. It's moderately original, as it avoids the most overused coffee jokes but still follows a familiar pattern of anthropomorphizing objects."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure is solid, with a clear setup and punchline. The timing is effective, as the punchline delivers the twist immediately after the setup, maintaining brevity and clarity. The joke flows well, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.8000000000000003,
+                "normalized_score": 0.76
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and likely to elicit a smile rather than a laugh. The play on words with 'hug in a mug' is endearing but not laugh-out-loud funny. It has a gentle charm that might appeal to coffee lovers."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wordplay with the phrase 'hug in a mug,' which cleverly ties the comforting nature of coffee to a physical gesture of affection. This shows a thoughtful construction and a clever observation about coffee's comforting qualities."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the phrase 'hug in a mug' is not entirely new, the joke combines it with the question format to create a slightly fresh take. It mixes familiar elements with a small twist, making it moderately original."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The question format sets up the expectation, and the punchline delivers a concise and satisfying conclusion. The structure is solid and supports the humor well."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It uses a common pun involving 'mugged,' which can evoke a smile or chuckle. However, it lacks a strong comedic impact and may not elicit laughter from everyone."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its wordplay on 'mugged.' While the pun is clear and understandable, it doesn't showcase exceptional wit or sophistication, as it's a fairly straightforward play on words."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The 'mugged' pun is a well-trodden path in coffee humor, making it predictable. It doesn't offer a fresh or unexpected twist on the concept."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('Why did the coffee file a police report?') and a punchline ('It got mugged.') that follows logically. The timing and delivery are effective, making the joke easy to understand."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny, as it combines the familiar concept of coffee preferences with a tech-related twist. While it may elicit a chuckle from those familiar with JavaScript, it might not resonate with a broader audience. The humor is niche, appealing primarily to tech-savvy individuals."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness by drawing a parallel between coffee and minified JavaScript, a concept that requires some understanding of programming. The wordplay on 'making no sense after midnight' adds a layer of wit, as it plays on the complexity of minified code and the late-night coffee stereotype."
+            },
+            "originality": {
+                "score": 4,
+                "justification": "The joke is quite original, as it combines two seemingly unrelated topics: coffee and JavaScript. This unexpected pairing creates a fresh perspective, avoiding common coffee jokes and introducing a novel angle that stands out."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure is well-executed, with a clear setup and punchline. The joke effectively uses the format of 'I like my coffee like I like my...' to set up the punchline, maintaining good timing and delivery. The punchline is concise and ties back to the setup effectively."
+            },
+            "overall": {
+                "joke_quality_score": 3.6,
+                "normalized_score": 0.72
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It uses a play on words with 'Java,' which is both a type of coffee and a programming language. While it might elicit a chuckle from those familiar with programming, it may not have a broad comedic impact."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke is quite clever due to its use of wordplay. It connects two seemingly unrelated concepts (coffee and programming) through the term 'Java,' showcasing a good level of wit and intelligence."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the concept of comparing coffee to programming is not entirely new, the specific angle of 'Java' adds a fresh twist. However, similar jokes exist in tech circles."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure is good, with a clear setup and punchline. The joke is concise, and the punchline is delivered effectively. The timing is appropriate, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles due to its clever play on the concept of 'witness protection.' It humorously suggests that decaf coffee is hiding its true identity, which is a relatable and amusing observation for coffee drinkers."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit by using the concept of 'witness protection' in a novel context. It cleverly implies that decaf coffee is disguising itself, which is a smart and unexpected twist on the usual coffee jokes."
+            },
+            "originality": {
+                "score": 4,
+                "justification": "While jokes about decaf coffee are common, this particular angle of comparing it to 'witness protection' is quite original. It avoids typical coffee joke formats and introduces a fresh perspective."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The joke is well-structured with a clear setup and punchline. The brevity and timing are excellent, delivering the punchline effectively and ensuring the humor lands as intended."
+            },
+            "overall": {
+                "joke_quality_score": 4.15,
+                "normalized_score": 0.8300000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It uses a common pun involving the word 'mugged,' which can refer to both a coffee mug and being robbed. While it might elicit a chuckle or smile, it lacks a strong comedic impact and may be seen as predictable by some audiences."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The double meaning of 'mugged' is a clever twist, but it's a well-trodden path in humor, making it less impressive in terms of wit and sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of coffee being 'mugged' is a familiar pun that has been used in various forms. While it has a minor twist, it largely follows a predictable pattern common in coffee-related humor."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('Why did the coffee file a police report?') and an effective punchline ('It got mugged.'). The timing and delivery are straightforward, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It uses a play on words with 'espresso' and 'latte,' which might elicit a smile or chuckle from coffee enthusiasts. However, it lacks a strong punchline that would make it more universally amusing."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness through its use of wordplay. The pun on 'latte' as 'a lot of' is a clever twist, showing an understanding of language and humor mechanics."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is moderately original, it relies on a common pun format involving coffee terms. The twist on 'latte' is somewhat fresh, but the overall concept is familiar to those who enjoy coffee humor."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure is good, with a clear setup and punchline. The timing is effective, and the delivery is concise, making it easy to understand and appreciate the wordplay."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and may elicit a smile due to its play on words. However, it lacks a strong comedic impact that would make it broadly funny. The humor is subtle and may not resonate with everyone."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness through its use of wordplay. The phrase 'grounds for existence' is a witty twist on the concept of coffee grounds, showing a thoughtful construction."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke uses a common theme of coffee, the specific wordplay on 'grounds for existence' adds a moderately original twist. It avoids being entirely predictable but doesn't break new ground in humor."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure is solid with a clear setup and punchline. The timing is effective, and the delivery is concise, allowing the wordplay to stand out. The joke is well-constructed for its intended effect."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles due to its clever wordplay on 'blood type' and 'Arabica-positive.' The humor lies in the absurdity of associating a coffee variety with a blood type, which is a relatable exaggeration for coffee lovers."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "The joke demonstrates exceptional wit through its clever use of wordplay. The pun on 'Arabica-positive' is a sophisticated twist on the concept of blood types, showcasing a deep understanding of language and humor mechanics."
+            },
+            "originality": {
+                "score": 4,
+                "justification": "While jokes about coffee consumption are common, this particular twist on blood types is relatively fresh and inventive. It avoids typical coffee jokes and presents a novel concept that stands out."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke is well-structured with a clear setup and punchline. The brevity and timing are effective, delivering the punchline succinctly. The structure supports the cleverness and enhances the comedic impact."
+            },
+            "overall": {
+                "joke_quality_score": 4.25,
+                "normalized_score": 0.85
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people due to its playful wordplay and relatable context. The concept of a coffee getting 'mugged' is a humorous twist that plays on the dual meaning of 'mug.'"
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through its clever use of wordplay. The pun on 'mugged' is a smart play on words, showing an understanding of language and the ability to create humor from a simple concept."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "While the joke is amusing, it follows a familiar pattern of puns involving coffee and mugs. This type of joke is relatively common, which limits its originality despite the clever execution."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke is well-structured with a clear setup and punchline. The timing is effective, and the delivery is concise, allowing the punchline to land smoothly. The brevity and clarity contribute to its comedic impact."
+            },
+            "overall": {
+                "joke_quality_score": 3.6,
+                "normalized_score": 0.72
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles due to its playful take on decaf coffee, a common subject of humor. The comparison to 'witness protection' is unexpected and amusing, providing a good comedic effect."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit by using the concept of 'witness protection' to describe decaf coffee. This clever analogy shows a thoughtful construction and a creative twist on a familiar topic."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke uses a common subject (decaf coffee), the specific analogy to 'witness protection' adds a fresh element. However, jokes about decaf being 'not real coffee' are somewhat familiar."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The brevity and directness enhance its impact, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.8000000000000003,
+                "normalized_score": 0.76
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'brew-tal' is amusing and might elicit a chuckle or smile from some people. However, it lacks a strong punchline that would make it more universally funny."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness with the wordplay on 'brew-tal' and 'magic beans.' It shows a thoughtful construction by linking coffee to the concept of 'adulting' and fairy tales, which adds a layer of wit."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the concept of coffee being essential for adults is common, the specific wordplay with 'brew-tal' adds a fresh twist. However, the overall theme is somewhat familiar."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure is good, with a clear setup and punchline. The timing is effective, and the brevity of the joke helps in delivering the punchline smoothly. The use of wordplay is well-integrated into the joke's structure."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny, eliciting a mild chuckle due to the play on words with 'espresso' and 'express a'. While it may not cause uproarious laughter, it is likely to bring a smile to those familiar with coffee culture."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness through its pun on 'espresso' and 'express a'. This wordplay shows a thoughtful construction and a clever twist on a common phrase, making it more than just a simple coffee joke."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke uses a common pun format, the specific play on 'espresso problem' is moderately original. It combines familiar elements in a slightly new way, though it doesn't completely break away from typical coffee-related humor."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a good structure with a clear setup ('I told the barista I was tired') and a punchline ('That\u2019s an espresso problem') that delivers the humor effectively. The timing and brevity are well-executed, making the joke easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people familiar with programming. The play on 'light attracts bugs' is a clever twist on a common programming issue, making it relatable and amusing."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit by using a double meaning of 'bugs' and 'light.' It cleverly ties a common programming preference (dark mode) to a humorous explanation, showing thoughtful construction."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is amusing, it follows a somewhat predictable pattern in programming humor. The concept of 'bugs' is a common theme, but the specific twist with 'light' adds a moderately fresh element."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The brevity and clarity of the joke enhance its impact, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.8000000000000003,
+                "normalized_score": 0.76
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the common experience of computers crashing, which many people can relate to. While it might elicit a chuckle or smile, it lacks a strong comedic impact that would make it laugh-out-loud funny."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness by using a play on words with 'break' and 'crash.' However, the wordplay is somewhat predictable and doesn't showcase exceptional wit or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of computers crashing as a punchline is a familiar trope in tech humor. While the specific wording might be unique, the overall idea is common."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('I told my computer I needed a break') and a punchline ('it said \"No problem!\" and crashed'). The timing and delivery are effective, making the joke easy to understand and follow."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the binary system, which is a common concept in programming, and the punchline is clear. While it might elicit a chuckle from those familiar with binary, it may not resonate with a broader audience unfamiliar with the concept."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke is very clever, utilizing a play on words with '10' in binary representing '2' in decimal. This demonstrates a good understanding of programming concepts and wordplay, appealing to those with a technical background."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. It is a well-known joke within programming circles and has been used frequently. While it effectively uses a common programming concept, it lacks novelty for those familiar with tech humor."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup and punchline, with effective timing that delivers the punchline succinctly. The brevity and clarity of the joke contribute to its effectiveness."
+            },
+            "overall": {
+                "joke_quality_score": 3.2,
+                "normalized_score": 0.64
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the common frustration of debugging in programming, which many in the tech community can relate to. While it might elicit a chuckle from those familiar with the concept, it lacks a broader comedic impact that would resonate with a wider audience."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke is quite clever in its metaphorical comparison of debugging to removing needles from a haystack. This analogy is both insightful and humorous, showcasing a good understanding of the complexities involved in programming."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the concept of debugging being a challenging task is common, the specific metaphor of 'removing needles from a haystack until the haystack disappears' adds a fresh twist to the usual narrative."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup with the term 'Debugging' and follows through with a punchline that effectively delivers the humor. The timing and delivery are concise, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing, especially for those familiar with programming. The play on words with 'Node' and 'Express' is clever, but it may not evoke strong laughter from a general audience. It might get a chuckle from tech-savvy individuals."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit by incorporating programming terms ('Node' and 'Express') into a pun about expressing emotions. This shows a thoughtful construction and understanding of both the technical and emotional contexts."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke uses a common format of wordplay with programming terms, it does offer a fresh twist by combining 'Node' and 'Express' in a way that relates to human emotions. However, jokes about programming languages are fairly common."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline. The timing is effective, with the punchline delivering the twist on the expected meaning of 'express.' The structure is solid, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the confusion between octal (base 8) and decimal (base 10) number systems, which is a clever concept for those familiar with programming. However, its humor is niche and may not resonate with a broader audience, limiting its comedic impact."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke is very clever, utilizing a play on number systems that requires some understanding of programming concepts. The wit lies in the unexpected comparison between Halloween (Oct 31) and Christmas (Dec 25), showcasing a sophisticated understanding of both programming and cultural references."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "This joke is slightly original. It is a well-known joke within programming circles, often shared among developers. While it has a clever twist, it follows a familiar pattern and is not particularly novel in the context of programming humor."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup and punchline, with effective timing that delivers the punchline succinctly. The brevity and clarity of the joke contribute to its overall effectiveness, although it relies on the audience's prior knowledge of programming concepts."
+            },
+            "overall": {
+                "joke_quality_score": 3.2,
+                "normalized_score": 0.64
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from those familiar with SQL and database concepts. The anthropomorphizing of a SQL query adds a humorous twist, making it relatable and amusing for the target audience."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "The joke demonstrates exceptional wit by using a double entendre with 'join,' a SQL operation, and the social act of joining a group. This clever wordplay shows a sophisticated understanding of both language and technical concepts."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is clever, it follows a familiar pattern seen in many programming jokes. The concept of SQL queries interacting in a human-like manner is not entirely new, though it remains a fresh take for those unfamiliar with similar jokes."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The structure is solid, allowing the punchline to land effectively. However, it could be slightly improved by adding more context for those less familiar with SQL."
+            },
+            "overall": {
+                "joke_quality_score": 4.05,
+                "normalized_score": 0.8099999999999999
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people, especially those familiar with programming. The humor lies in the absurdity of being both the detective and the murderer, which is a relatable metaphor for programmers who often debug their own code."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "The joke is exceptionally clever, using a metaphor that combines the roles of a detective and a murderer to describe debugging. This duality is a sophisticated observation about the nature of programming and problem-solving."
+            },
+            "originality": {
+                "score": 4,
+                "justification": "While the concept of debugging being a complex or ironic task is not entirely new, the specific analogy of being both the detective and the murderer is a fresh and creative take on the theme."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The joke is well-structured with a clear setup and punchline. The timing is effective, with the punchline delivered succinctly and with impact. The brevity and clarity enhance the comedic effect."
+            },
+            "overall": {
+                "joke_quality_score": 4.4,
+                "normalized_score": 0.8800000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke plays on the classic binary joke format but adds a twist with the unexpected third option. This surprise element enhances the comedic effect, likely eliciting chuckles or smiles from those familiar with binary jokes."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke cleverly subverts expectations by adding a third option to a well-known binary joke format. This demonstrates a good understanding of both the binary concept and comedic misdirection."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke uses a common setup in programming humor, the addition of a third option adds a fresh twist. However, the core concept remains familiar to those in the programming community."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke is well-structured with a clear setup and punchline. The timing is effective, with the punchline delivered succinctly, enhancing the surprise element."
+            },
+            "overall": {
+                "joke_quality_score": 3.8000000000000003,
+                "normalized_score": 0.76
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the common experience of computers freezing, which many people can relate to, and this relatability can evoke a smile. However, it lacks a strong punchline that would elicit a more robust comedic reaction."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness by using a play on words with 'freeze' to imply both a computer malfunction and a break. While this is a clever twist, it doesn't reach the level of sophistication or wit that would elevate it to a higher score."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of computers 'freezing' is a common trope in tech-related humor, and while the execution has a small twist, it doesn't break new ground or offer a novel perspective."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('I told my computer I needed a break') and a punchline ('You seem stressed. How about I freeze for a while?') that follows logically. The timing is effective, and the delivery is concise, enhancing the joke's impact."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people familiar with programming. The punchline cleverly ties the concept of 'bugs' in programming to the common saying about light attracting bugs, creating a humorous connection."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit by playing on the dual meaning of 'bugs' and the common preference for dark mode among programmers. The clever twist on a familiar concept shows thoughtful construction."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is amusing, it follows a somewhat predictable pattern common in programming humor. The concept of 'bugs' and 'dark mode' is familiar, though the execution is fresh enough to stand out slightly."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The brevity and clarity of the joke contribute to its impact, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.8000000000000003,
+                "normalized_score": 0.76
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from those familiar with SQL and database concepts. The anthropomorphizing of a SQL query adds a humorous twist, making it relatable and amusing for the target audience."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "The joke demonstrates exceptional wit by using a double entendre with the term 'join,' which is both a SQL operation and a social action. This clever wordplay shows a sophisticated understanding of both language and technical concepts."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is clever, it follows a somewhat familiar pattern in tech humor, where technical terms are anthropomorphized. However, the specific execution with SQL and tables is moderately fresh."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke is well-structured with a clear setup and punchline. The timing is effective, and the delivery is concise, making it easy to understand and appreciate the humor."
+            },
+            "overall": {
+                "joke_quality_score": 4.05,
+                "normalized_score": 0.8099999999999999
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from those familiar with binary code. The play on the number '10' being binary for '2' is a clever twist that many will find amusing, especially in a tech-savvy audience."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "This joke demonstrates exceptional wit by using binary code as a double entendre. The cleverness lies in the dual meaning of '10' as both a number and a binary representation, showcasing a sophisticated understanding of programming concepts."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is clever, it is a well-known classic in programming circles. It combines familiar elements with a fresh twist, but it is not entirely unique or unexpected for those familiar with tech humor."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The structure is solid, leading the audience through the setup to the punchline smoothly, ensuring the cleverness of the joke is appreciated."
+            },
+            "overall": {
+                "joke_quality_score": 4.05,
+                "normalized_score": 0.8099999999999999
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the common phrase 'I need a break' and the well-known KitKat slogan 'Have a break, have a KitKat.' While it might elicit a chuckle or smile from those familiar with the reference, it lacks a strong comedic impact that would make it universally hilarious."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness by using wordplay and a cultural reference. The double meaning of 'break' is well-utilized, and the connection to KitKat ads shows a thoughtful construction. However, it doesn't reach the level of brilliance due to its reliance on a well-known advertising slogan."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the concept of computers misunderstanding human language is common in programming humor, the specific twist involving KitKat ads adds a fresh element. However, it doesn't completely break away from familiar joke patterns."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a good structure with a clear setup and punchline. The setup effectively leads to the punchline, and the timing is appropriate for the joke's length. The delivery is straightforward, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is quite funny, especially for those familiar with programming. It plays on the relatable frustration of debugging, likening it to a detective story with a humorous twist. The unexpected comparison to being the murderer adds a layer of dark humor that can elicit chuckles or smiles from many."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "This joke is exceptionally clever. It uses a metaphor that combines two seemingly unrelated concepts: debugging and crime-solving. The twist of being both the detective and the murderer is a witty observation that showcases a sophisticated understanding of both programming and storytelling tropes."
+            },
+            "originality": {
+                "score": 4,
+                "justification": "While jokes about debugging are common in programming circles, this particular metaphor is quite original. The unique twist of being the 'murderer' in your own 'crime' adds a fresh perspective that isn't typically seen in similar jokes."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The structure of the joke is excellent. It has a clear setup with the word 'Debugging' and a punchline that delivers a surprising twist. The timing is perfect, with the punchline delivered succinctly, ensuring maximum comedic impact."
+            },
+            "overall": {
+                "joke_quality_score": 4.4,
+                "normalized_score": 0.8800000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people familiar with programming. The play on 'light attracts bugs' is a clever twist on a common programming issue, making it relatable and amusing."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit by using a double meaning of 'bugs' and 'light.' It cleverly ties a common programming preference (dark mode) to a humorous explanation, showing thoughtful construction."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is amusing, it follows a somewhat familiar pattern in programming humor. The concept of 'bugs' and 'light' is not entirely new, but the specific twist is moderately fresh."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline. The structure is effective, with the punchline delivering a satisfying twist. The brevity and timing are well-executed, enhancing the joke's impact."
+            },
+            "overall": {
+                "joke_quality_score": 3.8000000000000003,
+                "normalized_score": 0.76
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles, especially from those familiar with SQL and database concepts. The anthropomorphizing of a SQL query adds a humorous twist, making it relatable and amusing for the target audience."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "The joke demonstrates exceptional wit by using a double entendre with the word 'join,' which is a technical term in SQL and a common social phrase. This clever wordplay showcases a sophisticated understanding of both language and programming concepts."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is clever, it follows a familiar pattern of programming humor that personifies technical concepts. It is moderately original, as similar jokes exist, but it still offers a fresh take on the 'SQL query walks into a bar' format."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke is well-structured with a clear setup and punchline. The timing is effective, and the delivery is concise, making it easy to understand and appreciate. The punchline lands well due to the clever use of wordplay."
+            },
+            "overall": {
+                "joke_quality_score": 4.05,
+                "normalized_score": 0.8099999999999999
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from those familiar with binary code. It plays on the classic '10' in binary representing '2', creating a humorous twist for those who understand the reference. While it may not be universally hilarious, it has a strong comedic impact within its target audience."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "This joke demonstrates exceptional wit by using binary code as a clever play on words. The dual meaning of '10' as both a number and a binary representation showcases a sophisticated understanding of language and concepts, making it highly clever."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is well-crafted, it is a fairly common joke within programming and tech circles. It combines familiar elements with a clever twist, but it doesn't break new ground in terms of originality."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The joke has an excellent structure with a clear setup and punchline. The setup is concise, and the punchline delivers the twist effectively. The timing and delivery are spot-on, making it a well-constructed joke."
+            },
+            "overall": {
+                "joke_quality_score": 4.2,
+                "normalized_score": 0.8400000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is quite funny, especially for those familiar with programming. It plays on the common frustration of debugging by likening it to a crime movie scenario, which is an amusing and relatable analogy. The humor comes from the unexpected twist of being both the detective and the murderer, which can elicit chuckles or smiles from most people."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates cleverness through its use of analogy and role reversal. It takes a mundane task like debugging and elevates it to a dramatic and humorous scenario. The clever twist of being both the detective and the murderer shows a good understanding of humor mechanics and adds a layer of wit."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is amusing, the concept of comparing debugging to a crime investigation is not entirely new. However, the specific twist of being the murderer adds a fresh element. It balances between familiar territory and a novel twist, making it moderately original."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is solid, with a clear setup and punchline. The setup introduces the concept of debugging, and the punchline delivers the twist effectively. The timing is good, and the delivery is concise, making the joke easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.8000000000000003,
+                "normalized_score": 0.76
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the common phrase 'I need a break' and the well-known KitKat slogan 'Have a break, have a KitKat.' While it might elicit a chuckle or smile, it lacks a strong comedic impact that would make it hilarious to a broad audience."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness through its use of wordplay and cultural reference. The double meaning of 'break' is well-executed, and the connection to KitKat ads shows a thoughtful construction that leverages a familiar advertising slogan."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the concept of computers misunderstanding human language is a common theme in programming jokes, the specific twist involving KitKat ads adds a fresh element. However, it doesn't completely break away from typical joke formats in this category."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('I told my computer I needed a break') and an effective punchline ('now it won't stop sending me KitKat ads'). The timing is appropriate, and the delivery is concise, making the joke easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people familiar with programming. The punchline cleverly plays on the common programming issue of 'bugs' and the preference for dark mode, making it relatable and amusing."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit by using a double entendre with 'light attracts bugs,' cleverly linking a common programming problem with a visual preference. The wordplay is intelligent and shows thoughtful construction."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is amusing, it follows a somewhat familiar pattern in programming humor. The concept of 'bugs' is a common theme, but the specific twist with 'dark mode' adds a moderately fresh element."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The brevity and clarity of the joke contribute to its impact, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.8000000000000003,
+                "normalized_score": 0.76
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from those familiar with SQL and database concepts. The anthropomorphizing of a SQL query adds a humorous twist, making it relatable to tech-savvy audiences."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "The joke cleverly uses SQL terminology ('join') in a social context, showcasing a sophisticated understanding of both language and programming concepts. The wordplay is sharp and demonstrates intellectual humor."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is amusing, it follows a somewhat familiar pattern in tech humor, where programming terms are used in everyday scenarios. However, the specific execution with 'join' and 'tables' is moderately fresh."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing. The structure is solid, allowing the humor to be easily understood and appreciated by the target audience."
+            },
+            "overall": {
+                "joke_quality_score": 4.05,
+                "normalized_score": 0.8099999999999999
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the concept of recursion, which is a familiar topic for programmers, and can elicit a chuckle from those who appreciate programming humor. However, it may not resonate with those unfamiliar with the concept, limiting its broader comedic impact."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke is very clever, utilizing the concept of recursion in both its setup and punchline. This demonstrates a good understanding of programming concepts and wordplay, making it appealing to an audience familiar with these ideas."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is moderately original, recursion jokes are somewhat common in programming circles. This joke adds a slight twist by embedding recursion within the joke's structure, but it doesn't break new ground in terms of originality."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good, with a clear setup and punchline that effectively uses the concept of recursion. The timing is well-executed, and the delivery is concise, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the common programming terms 'Node' and 'Express,' which may elicit a chuckle from those familiar with JavaScript. However, it might not resonate with a broader audience unfamiliar with these terms."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness by using wordplay with 'Node' and 'Express,' both JavaScript frameworks, to create a pun about expressing emotions. This shows a thoughtful construction and understanding of programming concepts."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While it uses a common format of programming puns, the specific combination of 'Node' and 'Express' is less frequently seen, adding a touch of freshness."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure is good, with a clear setup and punchline. The timing is effective, and the delivery is concise, making it easy to understand for those familiar with the context."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is quite funny, especially for those familiar with programming. It plays on the common frustration of debugging by likening it to a detective story with a twist, which is a relatable and amusing concept. The unexpected comparison elicits chuckles and smiles, particularly from those who have experienced similar situations."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates cleverness through its metaphorical comparison of debugging to a crime movie. It cleverly highlights the irony of being both the detective and the culprit, showcasing a sophisticated understanding of the debugging process and its inherent challenges."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is amusing, the concept of comparing debugging to a detective story is somewhat familiar in programming humor. However, the twist of being both the detective and the murderer adds a fresh element, making it moderately original."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is solid, with a clear setup and punchline. The timing is effective, as the punchline delivers an unexpected twist that enhances the comedic impact. The brevity and clarity of the joke contribute to its overall effectiveness."
+            },
+            "overall": {
+                "joke_quality_score": 3.8000000000000003,
+                "normalized_score": 0.76
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people familiar with programming. The play on 'light attracts bugs' is a clever twist on a common programming issue, making it relatable and amusing."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke cleverly uses a double meaning of 'bugs' in programming and insects attracted to light. This demonstrates a good understanding of wordplay and the ability to connect two seemingly unrelated concepts."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is amusing, it follows a somewhat familiar pattern in programming humor. The concept of 'bugs' is a common theme, though the specific twist with 'dark mode' adds a bit of freshness."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline. The setup ('Why do programmers prefer dark mode?') effectively leads into the punchline ('Because light attracts bugs.'), with good timing and delivery."
+            },
+            "overall": {
+                "joke_quality_score": 3.8000000000000003,
+                "normalized_score": 0.76
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on a common programming trope about bugs and features, which might elicit a chuckle from those familiar with tech culture. However, it may not resonate as strongly with a broader audience."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke is quite clever, using the dual meaning of 'bug' and 'feature request' to create humor. It demonstrates a good understanding of programming jargon and cleverly flips a common frustration into a humorous observation."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke lacks originality as it relies on a well-known programming clich\u00e9. The 'bug vs. feature' concept is a staple in tech humor, making the joke predictable for those familiar with the field."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is solid, with a clear setup and punchline. The timing is effective, and the delivery is concise, allowing the punchline to land well. The joke's brevity aids in its comedic impact."
+            },
+            "overall": {
+                "joke_quality_score": 3.2,
+                "normalized_score": 0.64
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from those familiar with SQL and database concepts. The anthropomorphizing of a SQL query adds a humorous twist, making it relatable and amusing for the target audience."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "The joke demonstrates exceptional wit by using a double entendre with the word 'join,' which is a technical term in SQL and a common social phrase. This clever wordplay showcases a sophisticated understanding of both language and programming concepts."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is well-crafted, it follows a familiar pattern in programming humor. SQL jokes about 'joining tables' are relatively common, though the execution here is still engaging and enjoyable."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The joke has an excellent structure with a clear setup and punchline. The timing is perfect, with the punchline delivered succinctly and effectively, ensuring the humor lands well."
+            },
+            "overall": {
+                "joke_quality_score": 4.2,
+                "normalized_score": 0.8400000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the binary system, which is a fundamental concept in programming, making it amusing to those familiar with the subject. However, its humor is niche and may not resonate with a broader audience, limiting its comedic impact."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke is very clever, utilizing a play on words with '10' in binary representing '2' in decimal. This demonstrates a good understanding of programming concepts and wordplay, appealing to those with knowledge of binary systems."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. It is a well-known joke within programming circles and has been used frequently. While it remains a classic, its predictability and common usage reduce its originality."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure is good, with a clear setup and punchline. The joke is concise and delivers its punchline effectively, relying on the reader's understanding of binary to complete the humor. The timing and delivery are well-executed for those familiar with the concept."
+            },
+            "overall": {
+                "joke_quality_score": 3.2,
+                "normalized_score": 0.64
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is quite funny as it plays on the relatable frustration of debugging in programming, likening it to a detective story with a twist. The unexpected comparison to being the murderer adds a humorous layer that many in the tech field would find amusing. It elicits chuckles due to its clever analogy and relatable context."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "This joke is brilliantly clever. It uses an unexpected analogy that combines the mystery of a detective story with the self-inflicted challenges of debugging. The twist of being both the detective and the murderer showcases a sophisticated understanding of both programming and storytelling tropes."
+            },
+            "originality": {
+                "score": 4,
+                "justification": "While jokes about debugging are common, this particular analogy is quite original. The twist of being the 'murderer' in your own 'crime' adds a fresh perspective to a familiar topic, making it stand out from typical programming jokes."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The structure of the joke is excellent. It has a clear setup with the comparison to a detective story, and the punchline is delivered effectively with the twist of being the murderer. The timing and brevity are spot-on, ensuring the joke lands well without unnecessary complexity."
+            },
+            "overall": {
+                "joke_quality_score": 4.4,
+                "normalized_score": 0.8800000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles due to its relatable and humorous take on Wi-Fi connectivity issues. The anthropomorphizing of Wi-Fi as 'clingy' adds a layer of humor that many can relate to, especially in a tech-savvy audience."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke cleverly uses wordplay by attributing human characteristics to Wi-Fi, creating a humorous scenario. The phrase 'dropping hints' is a clever twist on the common experience of Wi-Fi dropping connections, showcasing good wit."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke uses a common theme of Wi-Fi issues, it introduces a fresh angle by personifying Wi-Fi in a relationship context. However, jokes about Wi-Fi and connectivity are fairly common, slightly reducing its originality."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke is well-structured with a clear setup and punchline. The setup introduces the Wi-Fi as 'clingy,' leading to the punchline about 'dropping hints,' which is delivered effectively and succinctly."
+            },
+            "overall": {
+                "joke_quality_score": 3.8000000000000003,
+                "normalized_score": 0.76
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people due to its clever wordplay and relatable concept. The idea of parallel lines having 'so much in common' but 'never meeting' is amusing and plays on the anthropomorphization of mathematical concepts, which adds to its humor."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "This joke demonstrates exceptional wit by using a mathematical concept in a humorous context. The cleverness lies in the double meaning of 'having so much in common' and the literal interpretation of 'never meeting,' which is both intellectually engaging and amusing."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is clever, it is a relatively common example of mathematical humor. The concept of parallel lines never meeting is a familiar one in jokes, though the execution here is still fresh enough to be moderately original."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The structure of the joke is excellent, with a clear setup and punchline. The setup introduces the concept of parallel lines, and the punchline delivers the humorous twist effectively. The timing and brevity are spot-on, ensuring the joke lands well."
+            },
+            "overall": {
+                "joke_quality_score": 4.2,
+                "normalized_score": 0.8400000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and likely to elicit a smile or chuckle from some audiences. The humor stems from the anthropomorphization of a calculator, which is a relatable and light-hearted concept. However, it may not have a strong comedic impact across all audiences."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through its use of wordplay. The pun on 'divided' cleverly ties into the mathematical function of a calculator, showcasing a thoughtful construction that plays on the dual meaning of the word."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke uses a common format of anthropomorphizing inanimate objects, the specific context of a calculator discussing its 'favorite subject' is somewhat fresh. However, the pun itself is a familiar type of humor."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke is well-structured with a clear setup and punchline. The setup effectively leads into the punchline, and the brevity of the joke aids in its delivery. The timing is appropriate, allowing the wordplay to land effectively."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the common experience of bugs in programming and the concept of branching logic in trees, which might elicit a chuckle from those familiar with programming. However, it may not resonate as strongly with a broader audience unfamiliar with these terms."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke is very clever, utilizing a double entendre with 'bugs' and 'branching logic.' It requires some understanding of programming concepts, which adds a layer of sophistication and wit to the humor."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the concept of programmers disliking bugs is a common trope, the addition of 'branching logic' in trees adds a fresh twist that isn't as commonly seen."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure is good, with a clear setup and punchline. The setup introduces the premise effectively, and the punchline delivers the humor succinctly. The timing is appropriate, allowing the cleverness of the wordplay to shine."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the dual meaning of 'space' and 'time,' which can elicit a chuckle or smile. However, it may not have a strong comedic impact on all audiences, as the humor relies on understanding the pun and the context of Einstein's theory."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke is very clever, utilizing a play on words with 'space' and 'time' to create a pun that ties in with Einstein's theory of relativity. This demonstrates a good level of wit and intelligence, appealing to those familiar with scientific concepts."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the concept of playing with scientific terms is not entirely new, the specific twist of linking 'space' and 'time' to doing the dishes adds a fresh element. However, it still follows a somewhat predictable pattern of wordplay."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup with the mention of Einstein's theory, leading to a punchline that ties the concept of 'time' to a mundane task. The timing is effective, and the delivery is concise, making the joke easy to understand."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response ': {' does not contain any recognizable humor or comedic elements. It fails to evoke laughter or amusement, and may even be confusing or awkward for the audience."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or intellectual humor in the response ': {'. It lacks any clever construction or sophisticated humor techniques."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response ': {' is not a recognizable joke format, but it also doesn't offer any fresh or unexpected humor. It appears more as a typographical error than an attempt at originality."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response ': {' lacks any discernible joke structure, including setup, punchline, timing, or delivery. It does not follow any known joke architecture."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke about the quantum physicist is quite funny, especially for those familiar with quantum mechanics. The play on the concept of superposition (being both offended and not) is amusing and likely to elicit chuckles from an audience with some scientific background."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "This joke is exceptionally clever, as it incorporates the complex concept of quantum superposition into a humorous context. The duality of being both offended and not is a sophisticated play on words that demonstrates a deep understanding of both humor and physics."
+            },
+            "originality": {
+                "score": 4,
+                "justification": "While jokes about quantum physics are not entirely new, this particular take on the concept of existence and superposition is fresh and inventive. It avoids common tropes and presents a novel twist on a scientific principle."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is solid, with a clear setup and punchline. The timing is effective, and the delivery is concise, allowing the humor to land well. The joke's brevity ensures that the punchline is impactful without unnecessary complexity."
+            },
+            "overall": {
+                "joke_quality_score": 4.25,
+                "normalized_score": 0.85
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response 'probabilities' lacks any clear comedic setup or punchline. It does not evoke laughter or amusement, as it appears to be a single word without context or humor."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evident wit or intelligence in the response. The word 'probabilities' does not demonstrate any clever wordplay, double meanings, or intellectual humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not original as it does not present a joke or any unique concept. It is simply a word without any context or creative twist."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure. There is no setup, punchline, or timing involved, making it confusing and ineffective as a joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is quite funny, playing on the anthropomorphization of a calculator experiencing a breakup. The humor stems from the unexpected emotional response of an inanimate object, which is a clever twist that would likely elicit chuckles or smiles from most people."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "This joke is exceptionally clever, utilizing wordplay with mathematical terms like 'function' and 'divide' to create a double entendre. The joke demonstrates a sophisticated understanding of both language and mathematical concepts, making it highly witty."
+            },
+            "originality": {
+                "score": 4,
+                "justification": "While jokes about inanimate objects having human-like qualities are not entirely new, the specific context of a calculator in a breakup scenario is quite original. The use of mathematical terms in a relational context adds a fresh twist to the concept."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is well-executed, with a clear setup and punchline. The timing is effective, leading the audience through the setup of a breakup before delivering the punchline with the calculator's 'emotional' response. The joke is concise and well-paced."
+            },
+            "overall": {
+                "joke_quality_score": 4.25,
+                "normalized_score": 0.85
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people due to its clever wordplay and relatable concept. The idea of parallel lines having 'so much in common' but 'never meeting' is amusing and taps into a common understanding of geometry, making it accessible and funny."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "This joke demonstrates exceptional wit through its use of wordplay and double meaning. The clever twist on the mathematical concept of parallel lines is both intellectually engaging and humorous, showcasing a sophisticated understanding of language and concepts."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is clever, it is a relatively common play on the concept of parallel lines. It mixes familiar elements with a fresh twist, but similar jokes have been seen before, which slightly diminishes its originality."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The joke is excellently structured with a clear setup and punchline. The setup introduces the concept of parallel lines, and the punchline delivers a humorous twist with perfect timing and brevity, ensuring the joke lands effectively."
+            },
+            "overall": {
+                "joke_quality_score": 4.2,
+                "normalized_score": 0.8400000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles due to its clever twist on the concept of time travel. The punchline is unexpected and plays on the idea of the listener's past reaction, which adds a layer of humor."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "This joke demonstrates exceptional wit by using the concept of time travel to create a paradoxical situation. The cleverness lies in the play on the listener's reaction, which is both unexpected and intellectually engaging."
+            },
+            "originality": {
+                "score": 4,
+                "justification": "While time travel jokes are not entirely new, this particular twist is fresh and inventive. It avoids common punchlines and offers a novel approach by involving the listener's past reaction."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The structure is excellent, with a concise setup and a punchline that delivers effectively. The timing is perfect, as the punchline immediately follows the setup, creating a seamless and impactful delivery."
+            },
+            "overall": {
+                "joke_quality_score": 4.4,
+                "normalized_score": 0.8800000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is quite funny, leveraging a common fear (paranoia) in a library setting, which is unexpected and amusing. The punchline is delivered with a whisper, adding to the comedic effect. Most people would find this joke chuckle-worthy due to its relatable and surprising nature."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates cleverness through its use of wordplay and situational irony. The concept of paranoia is cleverly tied to the library setting, and the whispering librarian adds a layer of sophistication to the humor."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke is amusing, it follows a somewhat familiar pattern of playing on common fears or emotions in unexpected settings. However, the specific context of a library and the whispering element add a touch of originality."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The structure of the joke is excellent, with a clear setup and an effective punchline. The timing is perfect, as the punchline is delivered in a whisper, enhancing the comedic impact. The brevity and clarity of the joke contribute to its strong structure."
+            },
+            "overall": {
+                "joke_quality_score": 3.95,
+                "normalized_score": 0.79
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles due to its clever wordplay and relatable premise. The humor stems from the double entendre of 'sucked' and the unexpected twist of a relationship metaphor applied to a vacuum cleaner."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through its use of double meanings and wordplay. The cleverness lies in the dual interpretation of 'sucked' and the anthropomorphizing of a vacuum cleaner, which adds an intelligent layer to the humor."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke uses a common trope of anthropomorphizing objects, the specific combination of a vacuum cleaner and relationship metaphor is moderately original. It offers a fresh take on a familiar concept, though it doesn't completely break new ground."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke is well-structured with a clear setup and punchline. The setup introduces the breakup scenario, and the punchline delivers the humor effectively with good timing. The brevity and clarity enhance the joke's impact."
+            },
+            "overall": {
+                "joke_quality_score": 3.8000000000000003,
+                "normalized_score": 0.76
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and likely to elicit a smile rather than a laugh. The pun on 'count' is a classic play on words, which some might find charming, but it lacks a strong comedic impact."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through its clever use of wordplay. The double meaning of 'count' as both a mathematical function and a promise of reliability is well-executed, showcasing thoughtful construction."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke relies on a familiar pun format, which is common in humor involving calculators or numbers. While the execution is neat, the concept itself is not particularly fresh or unexpected."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The structure is solid, allowing the wordplay to shine without unnecessary complexity."
+            },
+            "overall": {
+                "joke_quality_score": 3.2,
+                "normalized_score": 0.64
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke effectively combines two relatable concepts for its target audience: programmers and the outdoors. The punchline about 'Git getting jealous' is likely to elicit chuckles from those familiar with programming, as it cleverly anthropomorphizes a common tool in a humorous way."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "The joke demonstrates a high level of cleverness by integrating technical jargon ('bugs' and 'Git') with a common scenario (going outdoors). The wordplay on 'branch' is particularly smart, as it ties together both the natural and programming worlds seamlessly."
+            },
+            "originality": {
+                "score": 4,
+                "justification": "While jokes about programmers and bugs are not uncommon, the specific twist involving 'Git getting jealous' is a fresh take. It avoids typical punchlines and introduces a novel element that stands out."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke is well-structured with a clear setup and punchline. The setup ('Why don\u2019t programmers like the outdoors?') is concise, and the punchline delivers a clever twist that ties back to the setup effectively. The timing is good, with the punchline providing a satisfying conclusion."
+            },
+            "overall": {
+                "joke_quality_score": 4.25,
+                "normalized_score": 0.85
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles due to its clever wordplay and relatable concept. The idea of parallel lines having a 'tragic angle' is amusing and plays on the double meaning of 'angle' in both geometry and storytelling."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "This joke demonstrates exceptional wit through its use of mathematical terminology in a humorous context. The pun on 'tragic angle' is a clever twist that showcases a sophisticated understanding of language and concepts."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the concept of parallel lines never meeting is a familiar one, the addition of 'tragic angle' adds a fresh twist. However, jokes about parallel lines are somewhat common, which slightly reduces its originality."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke is well-structured with a clear setup and punchline. The timing is effective, leading the audience from the setup to the punchline smoothly. The brevity and clarity enhance its comedic impact."
+            },
+            "overall": {
+                "joke_quality_score": 4.05,
+                "normalized_score": 0.8099999999999999
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the well-known Schr\u00f6dinger's cat thought experiment, which might elicit a smile from those familiar with the concept. However, it may not resonate with a broader audience unfamiliar with the reference, limiting its universal comedic appeal."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke is very clever, utilizing a sophisticated scientific concept to create humor. The play on Schr\u00f6dinger's cat being both 'dead and alive' until observed is a smart twist on the typical weekend question, showcasing intellectual humor."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the Schr\u00f6dinger's cat reference is a common trope in intellectual humor, the application to a weekend scenario adds a fresh twist. However, it doesn't completely break new ground in terms of originality."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure is good, with a clear setup and punchline. The timing is effective, as the punchline delivers the twist succinctly. The joke's brevity and clarity contribute to its overall impact, though it could benefit from a slightly more engaging setup."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles due to its clever play on time travel and the unexpected twist of waiting until yesterday to laugh. The humor lies in the absurdity and paradox of the situation, which many will find amusing."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "This joke demonstrates exceptional wit by combining the concept of time travel with a play on words. The clever twist of 'waiting until yesterday' showcases a sophisticated understanding of temporal paradoxes, making it highly intelligent and witty."
+            },
+            "originality": {
+                "score": 5,
+                "justification": "The joke is highly original, as it takes a fresh approach to the common theme of time travel. The unique twist of laughing 'yesterday' adds an unexpected element that sets it apart from typical time-travel jokes."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure is well-executed, with a clear setup and punchline. The timing is effective, as the punchline delivers a surprising twist that enhances the humor. However, the complexity of the concept might require a moment of thought, slightly affecting immediate impact."
+            },
+            "overall": {
+                "joke_quality_score": 4.45,
+                "normalized_score": 0.89
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response ': {' is not inherently funny. It lacks any recognizable comedic elements, such as a setup or punchline, and does not evoke laughter or amusement. It may even be confusing or awkward to the audience."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or intellectual humor in the response. The characters ': {' do not convey any cleverness or sophistication in their construction or concept."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "While the response is unconventional, it does not qualify as original in a comedic sense. It lacks any novel approach or concept that would make it stand out as a joke."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure. There is no setup, punchline, or timing involved. The characters ': {' do not form a coherent or structured joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        }
+    ],
+    "overall_metrics": {
+        "funniness": 3.2977099236641223,
+        "cleverness": 3.877862595419847,
+        "originality": 2.732824427480916,
+        "structure": 3.9770992366412212,
+        "overall": 3.4316793893129756,
+        "normalized_overall": 0.6863358778625963
+    },
+    "metadata": {
+        "experiment": "structure_with_prob [strict] (samples=5)",
+        "metric": "joke_quality",
+        "evaluation_framework": "Joke Quality Assessment",
+        "judge_model": "gpt-4o",
+        "num_responses": 131
+    }
+}

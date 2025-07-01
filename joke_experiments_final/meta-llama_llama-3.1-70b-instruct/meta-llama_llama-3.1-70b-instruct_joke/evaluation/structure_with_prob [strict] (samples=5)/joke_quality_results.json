@@ -1,0 +1,2527 @@
+{
+    "instance_metrics": [
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is a classic example of a pun, which tends to elicit chuckles and smiles. The play on words with 'make up everything' is amusing and likely to be appreciated by a broad audience, especially those with a basic understanding of science."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke cleverly uses a double meaning of 'make up' to create humor. It requires a basic understanding of atoms and their role in the universe, adding a layer of intellectual humor."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "This joke is quite common and widely circulated, especially in educational and scientific contexts. While it remains effective, it lacks novelty and is a familiar format to many."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The joke has a perfect setup and punchline structure. The question sets up the premise, and the punchline delivers a clear and concise twist, making it easy to understand and effective in delivery."
+            },
+            "overall": {
+                "joke_quality_score": 3.75,
+                "normalized_score": 0.75
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and likely to elicit a smile or chuckle from some people. The play on words with 'crack' is a classic pun, which can be appreciated for its simplicity, but it may not evoke strong laughter due to its predictability."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke employs a basic pun, using the double meaning of 'crack' to create humor. While it's a straightforward play on words, it demonstrates a moderate level of cleverness by connecting the concept of eggs cracking with laughter."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "This joke is a common one in the realm of egg-related humor. It follows a familiar pattern and doesn't offer a fresh twist or unexpected element, making it slightly original at best."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The structure is solid, allowing the pun to land as intended, even if the humor itself is not groundbreaking."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people due to its simple yet effective punchline. The play on words with 'outstanding in his field' is amusing and relatable, making it a solid choice for a wide audience."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through its clever wordplay. The double meaning of 'outstanding' as both 'exceptional' and 'literally standing out' in a field is a smart twist that adds depth to the humor."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "While the joke is amusing, it is a well-known classic and follows a common format. It lacks novelty and is often used in various contexts, making it less original."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The joke has an excellent structure with a clear setup and punchline. The timing is perfect, and the delivery is concise, ensuring the humor lands effectively."
+            },
+            "overall": {
+                "joke_quality_score": 3.75,
+                "normalized_score": 0.75
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke 'What do you call a fake noodle? An impasta.' is moderately funny. It uses a simple pun that might elicit a chuckle or smile from some people. The humor is light and inoffensive, making it suitable for a broad audience. However, it lacks the depth or surprise needed to be considered very funny or hilarious."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The pun on 'impasta' is a straightforward play on 'imposter,' which shows some wit. However, the concept is relatively simple and doesn't showcase exceptional intelligence or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The 'impasta' pun is a common one and has been used frequently in various contexts. While it might be new to some, it is generally a familiar joke format and lacks the novelty to score higher in originality."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It follows a classic setup-punchline format, with a clear and concise delivery. The timing is effective, as the punchline 'An impasta' directly follows the setup, making it easy to understand and appreciate. However, it doesn't reach the level of excellence due to its simplicity."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It uses a common pun involving the word 'mugged' to create a humorous situation. While it might elicit a chuckle or smile, it lacks the strong comedic impact needed for higher scores."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The pun on 'mugged' is a classic example of a double meaning, but it's a well-trodden path in humor, limiting its cleverness."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of a coffee being 'mugged' is a familiar pun, often used in various forms. It doesn't offer a fresh or unexpected twist on the idea."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup and punchline, with effective timing and delivery. The brevity and clarity of the joke contribute to its structural strength."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The response ': {' does not constitute a joke in any recognizable form. It lacks any elements that would typically evoke laughter or amusement. It appears to be a typographical error or an incomplete expression, resulting in no comedic impact."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or intellectual humor in the response. The characters ': {' do not form a coherent or clever concept, lacking any sophistication or cleverness."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "While the response is unusual, it does not qualify as original humor. It seems more like a mistake or a random string of characters rather than a fresh or unexpected joke. It does not present any novel comedic idea."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, such as a setup or punchline. It is simply a sequence of characters without any timing, delivery, or comedic architecture. It fails to meet the basic requirements of joke construction."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It combines two well-known scientific concepts, Pavlov's dogs and Schr\u00f6dinger's cat, into a library setting, which might amuse those familiar with these references. However, it may not evoke laughter from a broader audience unfamiliar with the scientific context."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness by merging two scientific concepts into a single punchline. The wordplay on 'rings a bell' cleverly ties into Pavlov's dogs, while the uncertainty of the book's presence nods to Schr\u00f6dinger's cat. This shows thoughtful construction and intellectual humor."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the combination of Pavlov and Schr\u00f6dinger is not entirely new, the specific library context and the play on words provide a fresh twist. However, jokes about these scientific concepts are somewhat common in intellectual humor circles."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure is good, with a clear setup and punchline. The setup introduces the library scenario and the request for books, while the punchline effectively ties the two scientific concepts together. The timing and delivery are well-executed, making the joke easy to follow."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It uses a classic pun format that might elicit a chuckle or smile from some people. The play on words with 'two-tired' is amusing, but not laugh-out-loud funny for most audiences."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its wordplay. The pun on 'two-tired' is a simple yet effective twist on the phrase 'too tired,' showcasing a basic level of wit."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "This joke is slightly original. It is a well-known pun that has been used frequently in various contexts. While it has a small twist, it largely follows a familiar pattern."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('Why couldn't the bicycle stand up by itself?') and a punchline ('Because it was two-tired.') that follows logically. The timing and delivery are effective for this type of joke."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke 'What do you call a fake noodle? An impasta.' is moderately funny. It plays on the pun between 'impasta' and 'imposter,' which can elicit a chuckle or smile from some audiences. However, it may not have a strong comedic impact on everyone, as it relies on a simple wordplay."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The pun on 'impasta' is a straightforward play on words, showing some wit. However, it doesn't delve into deeper or more sophisticated humor, keeping it at a basic level of cleverness."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "This joke is slightly original. The 'impasta' pun is a common one and has been used frequently in various contexts. While it may have been fresh at one point, it now follows a predictable pattern, reducing its originality."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('What do you call a fake noodle?') and an effective punchline ('An impasta.'). The timing and delivery are straightforward, making it easy to understand and appreciate. However, it lacks the complexity that might elevate it to an excellent structure."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people due to its simple yet effective punchline. The play on words with 'outstanding in his field' is amusing and has a broad appeal."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through its clever wordplay. The double meaning of 'outstanding' as both excellent and literally standing out in a field is a smart twist that showcases intelligent humor."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "This joke is quite familiar and has been used frequently in various contexts. While the wordplay is clever, it follows a common format and lacks a novel approach."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The joke is well-structured with a clear setup and punchline. The timing is effective, and the delivery is concise, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.75,
+                "normalized_score": 0.75
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the common scientific knowledge that atoms are the building blocks of everything, which can elicit a chuckle or smile from those familiar with the concept. However, it may not evoke strong laughter due to its predictability."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness through its use of wordplay. The double meaning of 'make up'\u2014as in composing matter and fabricating stories\u2014shows a thoughtful construction that requires some understanding of language nuances."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "This joke is slightly original. It is a well-known joke format and has been widely circulated, making it familiar to many. While it has a clever twist, it lacks the novelty to stand out as highly original."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('Why don't scientists trust atoms?') and an effective punchline ('Because they make up everything.'). The timing and delivery are straightforward, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.2,
+                "normalized_score": 0.64
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is a classic example of a pun, which tends to elicit chuckles or smiles from a wide audience. The punchline 'they make up everything' cleverly plays on the dual meaning of 'make up,' referring both to the composition of matter and the act of fabricating stories. This duality is likely to amuse many, though it may not provoke outright laughter."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through its use of wordplay. The clever twist on the phrase 'make up everything' shows a thoughtful construction that requires an understanding of both scientific terminology and common idiomatic expressions. This level of cleverness is appreciated by audiences who enjoy puns and intellectual humor."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "While the joke is well-constructed, it is a well-known and frequently used pun in the realm of science jokes. Its familiarity makes it less original, as it follows a common pattern seen in many similar jokes about atoms and scientific concepts."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The joke has an excellent structure with a clear setup and punchline. The setup 'Why don't scientists trust atoms?' effectively leads into the punchline, which is delivered succinctly and with perfect timing. The brevity and clarity of the joke enhance its comedic impact, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.75,
+                "normalized_score": 0.75
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and likely to elicit a smile or chuckle from some people. The pun on 'crack' is a classic play on words, which can be appreciated for its simplicity. However, it may not evoke strong laughter due to its predictability."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke employs a basic pun, which is a clever use of language but not particularly sophisticated. The wordplay on 'crack' is straightforward, making it moderately clever but not exceptionally witty."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "This joke follows a common format and uses a well-known pun, making it slightly original. While it has a small twist, it is a familiar joke that many people have likely heard before."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The structure is solid, allowing the pun to land as intended. The brevity and clarity contribute to its effective delivery."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people due to its clever wordplay and relatable imagery. The punchline 'outstanding in his field' is a humorous twist on the literal and figurative meanings, making it amusing."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through its clever use of a double entendre. The phrase 'outstanding in his field' cleverly plays on the literal position of a scarecrow and the figurative sense of being exceptional, showcasing thoughtful construction."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "While the joke is amusing, it is a well-known and commonly used joke format. The concept of a scarecrow being 'outstanding in his field' is familiar to many, reducing its originality despite its cleverness."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The joke has an excellent structure with a clear setup and punchline. The setup 'Why did the scarecrow win an award?' effectively leads to the punchline, which is delivered with perfect timing and clarity, enhancing the comedic impact."
+            },
+            "overall": {
+                "joke_quality_score": 3.75,
+                "normalized_score": 0.75
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke 'What do you call a fake noodle? An impasta.' is moderately funny. It plays on the pun between 'impasta' and 'imposter,' which can elicit a chuckle or smile from some audiences. However, it may not have a strong comedic impact on everyone, as it relies on a simple wordplay that some might find predictable."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The pun on 'impasta' is a clever twist on the word 'imposter,' showing some wit. However, it doesn't reach higher levels of cleverness due to its straightforward nature and lack of deeper intellectual humor."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "This joke is slightly original. The 'impasta' pun is a common joke format that has been used frequently in various contexts. While it may have been fresh at one point, it has become a familiar punchline, reducing its originality."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a good structure with a clear setup and punchline. The question format effectively sets up the punchline, and the brevity ensures the joke is delivered efficiently. The timing is appropriate, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It uses a common pun involving the word 'mugged' to create humor. While it might elicit a chuckle or smile from some, it lacks a strong comedic impact that would make it universally hilarious."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The pun on 'mugged' is a simple yet effective play on words, but it doesn't showcase exceptional wit or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of a coffee getting 'mugged' is a familiar pun that has been used in various forms. It doesn't offer a fresh or unexpected twist on the idea."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has good structure. It follows a classic setup-punchline format, with a clear and concise delivery. The timing is effective, leading to a straightforward punchline that is easy to understand."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke at all. It consists of a JSON-like structure with no comedic content, setup, or punchline. As such, it fails to evoke any laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or cleverness in the response. It appears to be a technical error or placeholder rather than an attempt at humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It lacks any creative or novel elements that would distinguish it as a unique piece of humor."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, or timing. It is simply a JSON-like snippet with no comedic intent or delivery."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke but rather a placeholder text with no comedic content. It fails to evoke any laughter or amusement, as it lacks any elements of humor."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or intellectual humor present in the response. It is a technical placeholder rather than an attempt at cleverness."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not present any fresh or unexpected elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, timing, or delivery. It is a non-joke and does not adhere to any comedic format."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response lacks any traditional comedic elements or punchline. It reads more like a technical output or error message, which does not evoke laughter or amusement. The absence of a clear setup or punchline results in no comedic impact."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or clever construction in the joke response. It appears to be a misformatted or incomplete output rather than a deliberate attempt at humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not original as it does not follow any recognizable joke format or present a novel concept. It seems more like a technical glitch than an attempt at humor, offering no fresh or unexpected elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, or timing. It reads as a fragmented or erroneous output, making it confusing and ineffective as a joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke at all. It lacks any comedic content or attempt at humor, resulting in no comedic effect or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or intelligent humor present in the response. It is purely a technical output with no clever elements."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not present any fresh or unexpected elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, timing, or delivery. It is a technical output rather than a constructed joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response lacks any traditional comedic elements or punchline. It reads more like a technical output rather than an attempt at humor, failing to evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or clever construction in the response. It appears to be a misinterpretation of the prompt rather than a clever joke."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "While the response is unconventional, it does not qualify as original humor. It lacks the creativity or novelty expected in a joke, instead resembling a technical error."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response does not follow any recognizable joke structure. There is no setup or punchline, and the content is confusing and lacks comedic timing."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke at all. It lacks any comedic content or attempt at humor, resulting in no comedic effect or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or clever construction present in the response. It is purely a technical output with no attempt at cleverness or intelligence."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not contain any unique or fresh elements that would distinguish it from typical jokes."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, timing, or delivery. It is a technical output with no elements of joke construction."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response lacks any discernible humor or comedic impact. It reads more like a technical output or error message rather than a joke, failing to evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or cleverness in the response. It appears to be a random string of text without any intelligent or sophisticated humor elements."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "While the response is unusual, it does not qualify as original in a comedic sense. It lacks any creative or novel approach to humor, instead resembling a nonsensical or erroneous output."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup or punchline. It is confusing and does not follow any traditional or innovative joke format."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke at all. It lacks any comedic content or attempt at humor, resulting in no comedic effect or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or clever construction present in the response. It is purely a technical output without any intelligent or sophisticated humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response does not contain any elements of originality or creativity. It is a technical artifact rather than a unique or fresh joke."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, or timing. It is not a joke and therefore cannot be evaluated on structural merits."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response does not contain any recognizable humor or comedic elements. It reads more like a technical error or a misplaced code snippet rather than an attempt at humor. There is no setup or punchline to evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "The response lacks any cleverness or wit. It appears to be a fragment of code or data, which does not demonstrate any intellectual humor or wordplay. There is no evidence of thoughtful construction or clever observations."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "While the response is unusual, it is not original in a comedic sense. It does not present a novel approach or concept that stands out as a joke. Instead, it seems like an error or miscommunication, lacking any intentional humor."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure. There is no setup, punchline, or timing involved. It appears as a disjointed piece of text without any elements of a traditional joke format."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke at all. It lacks any comedic content or attempt at humor, resulting in no comedic effect or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or clever construction present in the response. It does not demonstrate any intelligence or sophistication in humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke, thus it cannot be evaluated for originality. It does not offer any fresh or unexpected elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, or timing. It is not a joke and therefore cannot be evaluated for structural quality."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response lacks any traditional comedic elements or punchline. It reads more like a technical output rather than a humorous attempt, failing to evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit or cleverness in the response. It appears to be a misinterpretation of the prompt, offering a probability statement instead of a joke."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "While the response is unconventional, it does not qualify as original humor. It seems more like a formatting error or misunderstanding rather than a fresh comedic concept."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, such as a setup or punchline. It is confusing and does not adhere to any known joke format, making it ineffective as a joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the common scientific knowledge that atoms are the building blocks of everything, which can elicit a smile or chuckle from those familiar with the concept. However, it may not evoke strong laughter due to its predictability."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay, specifically the double meaning of 'make up.' While it shows some wit, it doesn't reach the level of brilliance due to its straightforward nature."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "This joke is slightly original. It is a well-known joke format that has been used frequently, especially in educational or scientific humor contexts. While it has a small twist, it largely follows a familiar pattern."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('Why don't scientists trust atoms?') and a punchline ('Because they make up everything.') that follows logically. The timing and delivery are effective, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It uses a classic pun involving the word 'crack,' which is a play on words related to both laughter and the physical action of cracking an egg. While it might elicit a chuckle or smile, it lacks the punch to be considered very funny or hilarious."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness. The wordplay on 'crack' is a simple yet effective pun, but it's a common type of humor that doesn't showcase exceptional wit or sophistication. It does, however, show a basic understanding of language play."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "This joke is slightly original. The concept of eggs 'cracking up' is a well-trodden path in humor, making it predictable. While it might have a small twist, it largely relies on a familiar joke format."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('Why don't eggs tell jokes?') and a punchline ('They'd crack each other up.') that follows logically. The timing and delivery are effective, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people due to its simple yet effective punchline. The play on words with 'outstanding in his field' is a classic example of a pun that is accessible and amusing to a wide audience."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through its clever use of wordplay. The double meaning of 'outstanding' as both a literal and figurative descriptor adds a layer of intelligence to the humor."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "While the joke is amusing, it is a well-known and frequently used pun. It lacks novelty and is a staple in the realm of classic jokes, making it predictable for many audiences."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The joke is excellently structured with a clear setup and punchline. The timing is perfect, with the punchline delivering a satisfying twist that ties back to the setup seamlessly."
+            },
+            "overall": {
+                "joke_quality_score": 3.75,
+                "normalized_score": 0.75
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke 'What do you call a fake noodle? An impasta.' is moderately funny. It uses a simple pun that might elicit a chuckle or smile from some people. However, it lacks the strong comedic impact needed to be considered very funny or hilarious."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The pun on 'impasta' is a straightforward play on words, combining 'imposter' and 'pasta'. While it shows some wit, it doesn't reach the level of sophistication or intellectual humor that would warrant a higher score."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "This joke is slightly original. The 'impasta' pun is a common one and has been used frequently in various contexts. While it may have been fresh at one point, it now follows a predictable pattern and lacks the novelty needed for a higher originality score."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has good structure with a clear setup and punchline. The question format effectively sets up the punchline, and the brevity ensures the timing is appropriate. However, the simplicity of the structure prevents it from achieving an excellent score."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It uses a classic pun format, which can elicit a chuckle or smile from some audiences. The play on words with 'mugged' is amusing, but not laugh-out-loud funny for most people."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The double meaning of 'mugged' is a clever twist, but it's a common pun that doesn't showcase exceptional wit or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The 'mugged' pun is a well-trodden path in humor, particularly in jokes involving coffee. While it may have a small twist, it largely follows a predictable pattern."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('Why did the coffee file a police report?') and an effective punchline ('It got mugged.'). The timing and delivery are concise, enhancing its comedic impact."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'spud-tacular' is amusing and likely to elicit a smile or chuckle from some audiences. However, it may not have a strong comedic impact on everyone, as potato puns are relatively common."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The pun 'spud-tacular' is a clever twist on 'spectacular,' but it doesn't reach a level of exceptional wit or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. Potato puns are a well-trodden path in humor, and while 'spud-tacular' is a creative twist, the overall concept of a potato dancing is not particularly novel."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has good structure. It follows a classic setup-punchline format, with a clear and concise delivery. The setup effectively leads into the punchline, making the joke easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and likely to elicit a smile or chuckle from some people. The play on words with 'mashed' is relatable and adds a light-hearted touch, but it lacks a strong comedic impact that would make it universally funny."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke employs a simple pun with 'mashed,' which is a clever play on the potato's state and emotional condition. However, the wit is straightforward and doesn't demonstrate a high level of sophistication or intellectual humor."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke follows a common format of anthropomorphizing objects and using puns related to their typical uses or states. While the specific wording might be slightly different, the concept is familiar and not particularly fresh or unexpected."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing that delivers the pun smoothly. The structure is solid, with a concise setup leading directly to the punchline, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The punchline 'I'm in a bit of a stew!' is a play on words that might elicit a chuckle or a smile from some people. However, it lacks a strong comedic impact that would make it universally laugh-out-loud funny."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The phrase 'in a bit of a stew' cleverly ties the concept of being lost with a cooking-related pun. However, the wit is not particularly sophisticated or groundbreaking."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. While the specific wording might not be overused, the concept of using food-related puns, especially with potatoes, is quite common. It doesn't offer a novel twist or unexpected element that would make it stand out."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup with the question 'What did the potato say when it got lost?' followed by a concise punchline. The timing and delivery are effective, making the joke easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'hash' as both a musical term and a potato dish is amusing, but it may not elicit more than a chuckle or smile from most people. The humor is light and inoffensive, making it accessible to a broad audience."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness through its wordplay. The dual meaning of 'hash' as a musical term and a potato dish shows a thoughtful construction. This clever twist elevates the joke beyond simple humor."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the concept of potatoes in humorous contexts is common, the specific twist of a potato being a 'natural hash player' is a fresh take. However, it still follows a familiar pattern of food-related puns."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('Why did the potato join a band?') and an effective punchline ('Because it was a natural \"hash\" player!'). The timing and delivery are concise, making the joke easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'fry' in its throat is amusing and might elicit a chuckle or smile from some people. However, it lacks a strong comedic impact that would make it universally hilarious."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness with its use of wordplay. The pun on 'fry' is a clever twist on the common phrase 'frog in the throat,' but it's not exceptionally witty or sophisticated."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. Potato jokes and puns are quite common, and this one follows a familiar pattern of using food-related wordplay. While the specific pun is not overused, the overall concept is not particularly fresh."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('Why did the potato go to the doctor?') and a punchline ('It had a little \"fry\" in its throat!') that delivers the humor effectively. The timing and delivery are appropriate for a simple joke format."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response ':{' does not contain any recognizable humor or comedic elements. It fails to evoke laughter or amusement, and may even be confusing or awkward for the audience."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or intellectual humor present in the response. The text ':{' does not demonstrate any cleverness or thoughtful construction."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not original as it does not present any recognizable joke or concept. It lacks any fresh or unexpected elements that would distinguish it from typical jokes."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any discernible joke structure, including setup, punchline, timing, or delivery. The text ':{' does not form a coherent or structured joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'spud-tacular' is amusing and likely to elicit a smile or chuckle from some people. However, it may not have a strong comedic impact on everyone, as it relies on a simple pun."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The pun 'spud-tacular' is a clever twist on 'spectacular,' but it's a fairly straightforward play on words without deeper layers of wit or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. Potato puns are common, and the concept of a potato being a 'spud-tacular dancer' is a familiar type of humor. While it has a small twist, it doesn't break new ground in terms of originality."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('Why did the potato go to the party?') and a punchline ('Because he was a spud-tacular dancer!') that follows logically. The timing and delivery are effective for a simple joke."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'mashed' is mildly amusing and could elicit a smile from some audiences. However, it lacks a strong comedic impact that would make it laugh-out-loud funny."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The pun on 'mashed' is a simple yet effective play on the potato's physical state and emotional state, but it doesn't reach a level of sophistication or depth that would make it very clever."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. Jokes about potatoes and their various states (e.g., mashed, baked) are quite common. While the therapy angle adds a small twist, it doesn't significantly deviate from typical potato humor."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('Why did the potato go to therapy?') and a punchline ('It was feeling a little mashed!') that follows logically. The timing and delivery are effective, making the joke easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'small fry' is amusing and might elicit a chuckle or smile from some people. However, it lacks a strong comedic impact that would make it universally laugh-out-loud funny."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The term 'small fry' cleverly ties into both the potato theme and the context of a dismissive comment. However, the wit is not particularly sophisticated or groundbreaking."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of using 'small fry' in a potato joke is somewhat common, and the setup of running into an ex is a familiar scenario. While there is a minor twist, it doesn't stand out as particularly fresh or unexpected."
+            },
+            "structure": {
+                "score": 3,
+                "justification": "The structure is adequate. The setup and punchline are clear, and the timing is decent. However, the joke could benefit from a more engaging setup or a stronger punchline to enhance its impact."
+            },
+            "overall": {
+                "joke_quality_score": 2.8,
+                "normalized_score": 0.5599999999999999
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'hash browner' is amusing and might elicit a chuckle, especially from those familiar with potato dishes. However, it lacks a strong punchline that would make it more universally funny."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness through its wordplay. The pun on 'hash browner' cleverly ties the concept of a band with a potato dish, showing a thoughtful connection between the two ideas."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While potato jokes are common, the specific twist of a potato joining a band for its 'hash browner' quality is a less typical angle, adding some freshness to the concept."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('Why did the potato join a band?') and a punchline ('Because it was a natural hash browner!') that follows logically. The timing and delivery are effective, though the punchline could be stronger for greater impact."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke is incomplete, lacking a punchline, which is crucial for humor. Without a resolution, it fails to evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "The joke does not demonstrate any cleverness or wit due to its incomplete nature. There is no wordplay or intellectual humor present."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The setup is a common trope in humor, and without a punchline, it doesn't offer any fresh or unique elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The joke lacks a complete structure, missing a punchline and proper delivery. The setup is present, but without resolution, it fails to function as a joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The pun 'spud-tacular' is amusing and might elicit a chuckle or smile from some people, but it lacks a strong comedic impact that would make it universally hilarious."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness. The wordplay on 'spud-tacular' is a clever twist on 'spectacular,' but it's a relatively straightforward pun that doesn't showcase exceptional wit or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. Potato puns are common, and while 'spud-tacular' is a creative twist, the overall concept of a potato going to a party is not particularly novel or unexpected."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has good structure. It follows a classic setup-punchline format with a clear setup ('Why did the potato go to the party?') and a punchline ('Because it was a spud-tacular occasion!') that delivers the pun effectively."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing, playing on the common phrase 'mashed under the pressure' with a potato twist. It might elicit a chuckle or smile from some, but lacks a strong comedic impact."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke uses a simple wordplay on 'mashed' and 'pressure,' which is moderately clever. It shows some thought in connecting the potato theme with a common expression."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke follows a familiar pattern of anthropomorphizing objects and using common expressions. While the specific combination is not overly common, it doesn't stand out as particularly novel."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing. The structure is solid, with a straightforward delivery that makes the punchline easy to understand."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'mash' is mildly amusing and might elicit a chuckle or smile from some people. However, it lacks a strong comedic impact that would make it universally hilarious."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The pun on 'mash' is a straightforward but effective play on words, though it doesn't showcase exceptional wit or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of using 'mash' in a potato joke is somewhat predictable and follows a common pattern in food-related humor. It doesn't offer a fresh or unexpected twist."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('What did the potato say when it got lost?') and a punchline ('I'm in a bit of a mash!') that delivers the humor effectively. The timing and delivery are appropriate for the joke's format."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the pun of 'uncovering the root of the problem,' which is a clever twist on the potato's literal roots. While it might elicit a chuckle or smile, it lacks the punch to be considered very funny or hilarious."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness through its use of wordplay. The pun on 'root' is a smart connection between the potato's physical characteristics and the detective theme. This shows a thoughtful construction and clever observation."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the concept of a potato detective is not commonly seen, the pun on 'root' is a familiar play on words. It combines familiar elements in a slightly new way, but doesn't break new ground in humor."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup with the question 'Why did the potato become a detective?' and a punchline that delivers the pun effectively. The timing and delivery are appropriate, making the joke easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and might elicit a smile due to the play on words with 'egg-cellent abs.' However, it lacks a strong comedic impact and may not resonate with everyone."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke employs a basic pun with 'egg-cellent abs,' which is a clever play on words but not particularly sophisticated or novel. It shows some wit but remains fairly straightforward."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke follows a common format of anthropomorphizing objects (potatoes) and using puns ('egg-cellent'). While the specific combination is not overly common, the elements themselves are familiar."
+            },
+            "structure": {
+                "score": 3,
+                "justification": "The joke has a clear setup and punchline, with the setup being 'Why did the potato go to the gym?' and the punchline 'To get some egg-cellent abs!' The structure is adequate but lacks a surprising twist or timing that could enhance its impact."
+            },
+            "overall": {
+                "joke_quality_score": 2.8,
+                "normalized_score": 0.5599999999999999
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'spud-tacular' is amusing and likely to elicit a smile or chuckle from some audiences. However, it lacks the punch to be considered very funny or hilarious."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The pun 'spud-tacular' is a clever twist on 'spectacular,' but it's a fairly straightforward play on words without deeper layers of wit."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. Potato puns are common, and while 'spud-tacular' is a creative twist, the overall concept of a potato attending a party isn't particularly novel or unexpected."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has good structure. It follows a classic setup-punchline format, with a clear setup ('Why did the potato go to the party?') and a punchline that delivers the pun effectively. The timing and delivery are appropriate for the joke's style."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The concept of a potato going to therapy because it feels 'mashed' is amusing and might elicit a chuckle or smile from some people. However, it lacks a strong comedic impact that would make it universally hilarious."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The pun on 'mashed' is a simple yet effective play on words, but it doesn't exhibit a high level of wit or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of anthropomorphizing a potato and using a common pun ('mashed') is somewhat familiar and has been seen in various forms before. It doesn't offer a novel twist or unexpected element."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('Why did the potato go to therapy?') and an effective punchline ('It was feeling a little mashed!'). The timing and delivery are straightforward, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and may elicit a smile due to the play on words with 'mash'. However, it lacks a strong comedic impact that would make it laugh-out-loud funny for most people."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke employs a simple pun with 'mash', which is a clever play on the word's dual meaning in the context of potatoes. While it shows some wit, it doesn't demonstrate exceptional cleverness or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke follows a common format of using food-related puns, particularly with potatoes. While the specific wording might not be overused, the concept is familiar and lacks a fresh twist."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The structure is solid, allowing the pun to be easily understood and appreciated."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and likely to elicit a smile rather than a laugh. The pun on 'grow' is a gentle play on words that some might find charming, but it lacks a strong comedic impact."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke employs a simple pun with 'grow,' which is moderately clever. It connects the concept of teaching with growth, but the wordplay is straightforward and not particularly sophisticated."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke follows a common format of anthropomorphizing objects and using puns related to their characteristics. While the specific pun might not be overused, the overall approach is familiar and lacks novelty."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing. The structure is solid, delivering the punchline succinctly and without confusion, which aids in its delivery."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'spud-nik' is amusing and likely to elicit a smile or chuckle from some audiences. However, it may not have a strong comedic impact on everyone, as it relies on a simple pun."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates a clever use of wordplay by combining 'spud' (a common term for potato) with 'Sputnik' (the famous satellite). This shows a good level of wit and intelligence, especially for those familiar with the historical reference."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke uses a creative pun, the concept of combining food items with historical or scientific references is not entirely novel. It strikes a balance between familiar and fresh, offering a moderately original take on a common joke format."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear and effective structure. The setup is concise, and the punchline delivers the intended humor efficiently. The timing is appropriate, and the delivery is straightforward, making it easy for audiences to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and likely to elicit a smile or chuckle from some people. The play on words with 'spud-tacular' is a light-hearted attempt at humor, but it may not resonate strongly with everyone."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke employs a basic pun with 'spud-tacular,' which shows some level of cleverness. However, the wordplay is relatively straightforward and doesn't demonstrate high wit or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "Potato jokes and puns are quite common, and the use of 'spud' in wordplay is a familiar trope. While the joke has a slight twist with 'spud-tacular,' it largely follows a predictable pattern."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing and delivery. The structure is solid, allowing the pun to land as intended, even if the comedic impact is moderate."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'mashed' and 'pressure' is mildly amusing and might elicit a chuckle or smile from some people. However, it lacks a strong comedic impact that would make it universally funny."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness. The use of 'mashed' as a pun related to potatoes is a clever element, but it's a fairly common play on words. The concept of a potato going to therapy adds a humorous twist, but it's not exceptionally witty."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of a potato feeling 'mashed' is a familiar pun, and the idea of food items in human-like scenarios is a common trope in humor. While the therapy angle adds a small twist, it doesn't significantly elevate the originality."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has good structure. The setup is clear, and the punchline follows logically, with effective timing. The brevity of the joke helps maintain its comedic impact, and the delivery is straightforward, making it easy to understand."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The punchline 'I'm in a bit of a mash!' is a play on words that might elicit a chuckle or smile from some, but it lacks a strong comedic impact. The humor is mild and may not resonate with everyone."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The pun on 'mash' is a clever twist on the situation of being lost, but it doesn't reach a level of sophistication or wit that would elevate it to a higher score."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. Potato jokes are common, and the use of 'mash' as a pun is a familiar concept. While it has a small twist, it largely follows a predictable pattern seen in many food-related jokes."
+            },
+            "structure": {
+                "score": 3,
+                "justification": "The structure of the joke is adequate. It has a clear setup and punchline, but the timing and delivery could be improved for greater impact. The setup is straightforward, leading directly to the punchline without much buildup."
+            },
+            "overall": {
+                "joke_quality_score": 2.8,
+                "normalized_score": 0.5599999999999999
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'uncovering the root of the problem' is amusing and likely to elicit a smile or chuckle from some audiences. However, it lacks a strong punchline that would make it laugh-out-loud funny."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness through its wordplay. The use of 'root' in the context of both potatoes and problem-solving is a smart double entendre, showcasing a thoughtful construction."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the concept of a potato detective is somewhat novel, the pun on 'root' is a common play on words in humor. It mixes fresh elements with familiar patterns."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure is good, with a clear setup and punchline. The timing is effective, and the delivery is straightforward, allowing the wordplay to shine. However, it could benefit from a more impactful punchline to enhance comedic effect."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'fry-titude' is mildly amusing and might elicit a chuckle or smile from some people. However, it lacks a strong comedic impact that would make it universally laugh-out-loud funny."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness. The pun 'fry-titude' is a creative twist on 'attitude,' showing some wit. However, the wordplay is relatively straightforward and doesn't exhibit exceptional cleverness or sophistication."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the concept of a potato going to the gym is somewhat novel, the use of puns like 'fry-titude' is a common comedic device. It avoids being entirely predictable but doesn't stand out as highly unique."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has good structure. It follows a clear setup and punchline format, with the punchline effectively delivering the pun. The timing and delivery are appropriate, making the joke easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.1500000000000004,
+                "normalized_score": 0.6300000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response ': {' does not contain any recognizable humor elements or punchline. It fails to evoke laughter or amusement, making it not funny."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or intellectual humor present in the response. The characters ': {' do not convey any cleverness or sophistication."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "While the response is unconventional, it does not qualify as original humor. It lacks any recognizable joke format or creative concept."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any discernible joke structure, including setup or punchline. It is confusing and does not follow any traditional or non-traditional joke format."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'mugged' is amusing and likely to elicit a smile or chuckle from some audiences. However, it lacks the punch needed for a higher score, as it doesn't evoke strong laughter."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its wordplay. The double meaning of 'mugged' (as both a crime and a coffee mug) is a clever twist, but it's a common pun that doesn't showcase exceptional wit."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The 'coffee getting mugged' pun is a familiar trope in coffee-related humor, making it predictable. While it has a small twist, it doesn't stand out as fresh or unique."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('Why did the coffee file a police report?') and an effective punchline ('Because it got mugged!'). The timing and delivery are concise, enhancing its comedic impact."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'crumby' is mildly amusing and could elicit a smile from some people. However, it lacks a strong comedic impact that would make it laugh-out-loud funny."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its wordplay. The pun on 'crumby' is a clever twist, but it's not exceptionally witty or sophisticated. It shows some thoughtfulness in its construction."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of coffee and donuts feeling 'crumby' is a familiar pun and doesn't offer a novel approach. It relies on a common wordplay technique without introducing fresh elements."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup and punchline, with effective timing and delivery. The setup leads naturally to the punchline, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing, playing on the idea of coffee 'brewing up trouble.' While it might elicit a smile, it lacks a strong comedic punch that would make it laugh-out-loud funny. The humor is gentle and inoffensive, suitable for a wide audience."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke employs a simple pun on 'brewing,' which is a clever play on words given the context of coffee. However, the wit is not particularly sophisticated or layered, making it moderately clever but not exceptional."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke follows a familiar pattern of anthropomorphizing objects (in this case, coffee) to create humor. While the specific wording might be slightly different, the concept is not particularly novel or unexpected."
+            },
+            "structure": {
+                "score": 3,
+                "justification": "The joke has a clear setup and punchline, with the setup being the question and the punchline delivering the pun. The structure is adequate, but the punchline could be stronger to enhance the comedic impact."
+            },
+            "overall": {
+                "joke_quality_score": 2.8,
+                "normalized_score": 0.5599999999999999
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The concept of coffee feeling 'jittery' is relatable and mildly amusing, especially to coffee drinkers. It might evoke a smile or a chuckle, but it's not laugh-out-loud funny. The humor is gentle and relies on the common experience of caffeine jitters."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke shows moderate cleverness. The play on words with 'jittery' is a simple yet effective use of language, linking the physical effect of caffeine to a reason for visiting a doctor. However, it doesn't demonstrate exceptional wit or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of coffee being 'jittery' is a familiar trope in humor about caffeine. While the setup is somewhat fresh, the punchline follows a predictable pattern often seen in coffee-related jokes."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has good structure. It follows a classic setup-punchline format, with a clear and concise delivery. The timing is effective, with the punchline providing a quick resolution to the setup. The joke is easy to understand and delivers its humor efficiently."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'grind' is amusing and likely to elicit a chuckle or smile from some people, especially those familiar with coffee culture. However, it may not have a strong comedic impact on everyone."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The double meaning of 'grind' as both a coffee-related term and a metaphor for hard work is a clever touch, though not exceptionally witty or sophisticated."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of a barista and the 'grind' pun is somewhat familiar and has been used in various forms before. It doesn't offer a novel twist or unexpected element to stand out significantly."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup and punchline, with effective timing and delivery. The setup leads naturally to the punchline, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response ':{' does not contain any recognizable humor elements. It lacks a setup or punchline, making it impossible to evoke laughter or amusement. The response is more likely to confuse than amuse."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or intellectual humor present in the response ':{}'. It does not demonstrate any cleverness or sophistication in its construction or concept."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "While the response ':{' is unconventional, it does not qualify as original humor. It lacks any recognizable joke format or novel approach, making it more of a typographical error than a fresh comedic attempt."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response ':{' lacks any discernible joke structure. There is no setup, punchline, or timing involved, rendering it ineffective as a joke. It fails to meet basic joke construction criteria."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'mugged' is amusing and likely to elicit a smile or chuckle from some people. However, it lacks the punch to be considered very funny or hilarious."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The pun on 'mugged' is a clever twist, but it's a fairly common type of humor that doesn't showcase exceptional wit or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of coffee being 'mugged' is a familiar pun that has been used in various forms. While it has a small twist, it largely follows a predictable pattern."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('Why did the coffee file a police report?') and an effective punchline ('Because it got mugged!'). The timing and delivery are well-executed, contributing to its comedic effect."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The concept of coffee going to therapy because it's 'jittery' is amusing and likely to elicit a smile or chuckle from some people. However, it may not have a strong comedic impact on everyone, as the humor is relatively mild."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness. The play on words with 'jittery' is a clever connection between coffee's effects and the idea of needing therapy. However, the wit is straightforward and doesn't delve into deeper or more sophisticated humor."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of coffee being jittery is a common trope in humor, and while the therapy angle adds a small twist, it doesn't significantly deviate from familiar coffee jokes."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has good structure. The setup is clear, and the punchline delivers the intended humor effectively. The timing and delivery are concise, making it easy to understand and appreciate the joke's intent."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing with a play on words using 'brewing' to convey excitement. It might elicit a smile or chuckle from some, but lacks a strong comedic impact to be considered very funny."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke uses a simple pun with 'brewing' to connect coffee with excitement. While it's a clever play on words, it's not particularly sophisticated or intellectually stimulating."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke relies on a common pun associated with coffee. The concept of coffee 'brewing' excitement is somewhat predictable and doesn't offer a fresh or unexpected twist."
+            },
+            "structure": {
+                "score": 3,
+                "justification": "The joke has a clear setup and punchline, with the question leading into the pun. However, the punchline could be stronger to enhance the comedic effect. The structure is adequate but not exceptional."
+            },
+            "overall": {
+                "joke_quality_score": 2.8,
+                "normalized_score": 0.5599999999999999
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The pun on 'latte' as 'a lot of' is a classic play on words that might elicit a chuckle or smile from some audiences. However, it lacks a strong comedic impact that would make it universally funny."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The pun on 'latte' is a common technique in coffee jokes, showing some wit but not exceptional intelligence or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. Coffee puns, especially those involving 'latte,' are quite common. While the setup of joining a band adds a minor twist, the overall concept is familiar and predictable."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('Why did the coffee join a band?') and a punchline ('Because it was a latte fun!') that follows logically. The timing and delivery are effective for a quick joke."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing, playing on the double meaning of 'buzz' related to both coffee and dating. It might elicit a smile or chuckle from some, but lacks a strong comedic punch."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke cleverly uses wordplay with 'buzz-worthy connection,' linking the caffeine buzz from coffee to the excitement of a date. This demonstrates a good level of wit and intelligence."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the concept of coffee seeking a 'buzz' is somewhat familiar, the twist of it going on a date adds a fresh element. However, it doesn't completely break away from common coffee-related jokes."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline. The structure is solid, with a concise delivery that effectively leads to the punchline. The timing is appropriate, enhancing the joke's impact."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'mugged' is amusing and likely to elicit a smile or chuckle from some people. However, it may not have a strong comedic impact on everyone, as it's a fairly common pun."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The pun on 'mugged' is a clever twist, but it's a familiar play on words that doesn't showcase exceptional wit or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of coffee being 'mugged' is a well-trodden path in humor, making it predictable. While it has a minor twist, it largely follows a common joke format."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has good structure. It features a clear setup ('Why did the coffee file a police report?') and an effective punchline ('Because it got mugged!'). The timing and delivery are concise, contributing to its overall effectiveness."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing, playing on the word 'crumby' to describe the emotional state of coffee and donuts. While it might elicit a chuckle or smile from some, it lacks a strong comedic impact that would make it broadly funny."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke uses a simple pun with 'crumby,' which is a clever play on words given the context of donuts. However, the wit is not particularly sophisticated or layered, making it moderately clever."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The concept of food items having emotions and going to therapy is somewhat original, though the pun itself is a common type of humor. It balances between fresh and familiar, offering a moderately original take."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a clear setup and punchline, with effective timing. The structure is solid, allowing the pun to land as intended. While not exceptional, it is well-constructed for its purpose."
+            },
+            "overall": {
+                "joke_quality_score": 3.1500000000000004,
+                "normalized_score": 0.6300000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The concept of a barista feeling 'jittery' is relatable and mildly amusing, especially to coffee enthusiasts. It might evoke a chuckle or a smile, but it's not laugh-out-loud funny. The humor is light and inoffensive, making it suitable for a broad audience."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke employs a simple play on words with 'jittery,' which is a clever nod to the effects of caffeine. However, the wit is not particularly deep or sophisticated, as it relies on a straightforward pun. The cleverness is moderate, with a clear but basic connection between the setup and punchline."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of a barista or coffee-related humor is quite common, and the 'jittery' pun is a familiar trope in coffee jokes. While it has a small twist, it doesn't break new ground or offer a fresh perspective on coffee humor."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('Why did the barista go to the doctor?') and a punchline ('She was feeling a little jittery!') that follows logically. The timing is effective, and the delivery is concise, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing with a play on words between 'buzz' (a feeling of energy) and 'buzz' (a sound associated with coffee). It might elicit a smile or chuckle from some, but lacks strong comedic impact."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke uses a simple pun on 'buzz,' which is a clever element but not particularly sophisticated or witty. It shows some thought in connecting coffee with gym activities."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke follows a common format of anthropomorphizing objects and using puns. While the specific combination of coffee and gym is slightly novel, the overall concept is familiar."
+            },
+            "structure": {
+                "score": 3,
+                "justification": "The joke has a clear setup and punchline, with a straightforward delivery. However, the punchline could be stronger to enhance comedic timing and impact."
+            },
+            "overall": {
+                "joke_quality_score": 2.8,
+                "normalized_score": 0.5599999999999999
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing with a play on words using 'brewing up trouble.' It might elicit a smile or chuckle from some, but it's not laugh-out-loud funny. The humor is light and inoffensive, making it accessible to a broad audience."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke employs a simple pun, which is a basic form of cleverness. The wordplay on 'brewing' is straightforward but effective. It doesn't demonstrate high wit or sophistication, but it does show a basic understanding of language play."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke follows a common format of anthropomorphizing objects and using puns related to their function. While the specific wording might not be overused, the concept is familiar and lacks a novel twist."
+            },
+            "structure": {
+                "score": 3,
+                "justification": "The structure is adequate with a clear setup and punchline. The timing is straightforward, and the delivery is simple. However, it doesn't have the punch or surprise that could elevate its impact."
+            },
+            "overall": {
+                "joke_quality_score": 2.8,
+                "normalized_score": 0.5599999999999999
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'mugged' is amusing and likely to elicit a smile or chuckle from some audiences. However, it may not have a strong comedic impact on everyone, as the humor is relatively mild."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The pun on 'mugged' is a straightforward but effective play on words, showing some wit. However, it doesn't reach the level of sophistication or intellectual humor that would warrant a higher score."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of coffee being 'mugged' is a common pun and has been used in various forms before. While it has a small twist, it largely follows a familiar pattern seen in many coffee-related jokes."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('Why did the coffee file a police report?') and an effective punchline ('Because it got mugged!'). The timing and delivery are straightforward, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The concept of coffee going to therapy because it's 'jittery' is amusing and likely to elicit a smile or chuckle from some audiences. However, it lacks the punch needed for a broader comedic impact."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke employs a clever play on words by linking 'jittery'\u2014a common effect of caffeine\u2014with the idea of needing therapy. While this is a smart connection, it doesn't reach the level of exceptional wit or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of coffee being personified and experiencing human-like issues is a familiar trope in humor. While the specific therapy angle adds a small twist, it doesn't significantly deviate from common coffee jokes."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('Why did the coffee go to therapy?') and a punchline ('It was feeling a little jittery!') that delivers the humor effectively. The timing and delivery are concise, enhancing the joke's impact."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny, as it plays on the pun 'latte possibilities,' which is a clever twist on 'a lot of possibilities.' While it might elicit a chuckle or smile, it lacks the punch to be considered very funny or hilarious. The humor is mild and may not resonate with everyone."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness through its use of wordplay. The pun 'latte possibilities' is a smart twist on a common phrase, showing a thoughtful construction. It effectively combines coffee culture with a positive morning sentiment, which adds a layer of wit."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the pun is creative, coffee-related jokes are quite common, and the concept of using 'latte' in wordplay is not entirely new. However, the specific phrasing and context provide a fresh take on a familiar theme."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good, with a clear setup and punchline. The question format effectively sets up the punchline, and the timing is appropriate for delivering the pun. The joke is concise and well-constructed, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The play on words with 'grind-ing connection' is mildly amusing and may elicit a chuckle or smile from some audiences. However, it lacks a strong comedic impact that would make it broadly hilarious."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness through its wordplay. The pun on 'grind' as both a coffee term and a dating term is a clever twist that shows thoughtfulness in its construction."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "The joke is moderately original. While the concept of coffee-related puns is common, the specific twist of a 'grind-ing connection' adds a fresh element. However, it doesn't completely break away from typical coffee jokes."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('Why did the coffee go on a date?') and an effective punchline ('It was looking for a grind-ing connection!'). The timing and delivery are concise, enhancing the joke's impact."
+            },
+            "overall": {
+                "joke_quality_score": 3.4000000000000004,
+                "normalized_score": 0.68
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. The pun on 'latte' as 'a lot of' is amusing and likely to elicit a smile or chuckle from some audiences, especially those familiar with coffee culture. However, it may not have a strong comedic impact on everyone."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The pun on 'latte' is a common play on words in coffee-related humor, showing some wit but not exceptional intelligence or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The 'latte' pun is a well-trodden path in coffee jokes, making it somewhat predictable. While it has a minor twist with the band context, it doesn't stand out as particularly fresh or unexpected."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has good structure. It follows a classic setup-punchline format, with a clear setup ('Why did the coffee join a band?') and a punchline ('Because it was a latte fun!'). The timing and delivery are effective for a quick joke."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the common experience of bugs in programming and the preference for dark mode, which many programmers can relate to. While it might elicit a chuckle or smile from those familiar with the context, it lacks a strong comedic impact for a broader audience."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness by using a play on words with 'light attracts bugs.' It cleverly ties a common programming issue (bugs) with a visual preference (dark mode), but the wordplay is straightforward and not particularly sophisticated."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of 'light attracting bugs' is a familiar trope in programming humor, making it somewhat predictable. While it has a small twist, it doesn't stand out as particularly novel or unexpected."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('Why do programmers prefer dark mode?') and a punchline ('Because light attracts bugs.') that follows logically. The timing and delivery are effective, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and might elicit a smile due to its simplicity and play on words. However, it lacks a strong comedic impact and is unlikely to provoke laughter beyond a polite chuckle."
+            },
+            "cleverness": {
+                "score": 2,
+                "justification": "The joke employs a basic play on words, using 'problems' in a dual context. While there is a hint of cleverness in the wordplay, it remains quite straightforward and lacks depth or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "This joke is a classic example of a common pun involving math and 'problems.' It is a familiar format and lacks originality, as similar jokes have been widely circulated."
+            },
+            "structure": {
+                "score": 3,
+                "justification": "The joke follows a standard setup-punchline structure, with a clear setup ('Why was the math book sad?') and a punchline ('Because it had too many problems.'). While technically sound, it doesn't exhibit exceptional timing or delivery."
+            },
+            "overall": {
+                "joke_quality_score": 2.55,
+                "normalized_score": 0.51
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is quite funny, leveraging a classic setup with a twist. The unexpected punchline about the peanuts being 'complementary' is a clever play on words that would likely elicit chuckles or smiles from most people familiar with the concept of 'complementary' items in a bar setting."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "This joke demonstrates exceptional cleverness through its use of wordplay. The double meaning of 'complementary'\u2014both as 'free of charge' and 'giving compliments'\u2014is a sophisticated twist that showcases a deep understanding of language and humor mechanics."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke uses a common setup of a person hearing voices in a bar, the twist with the peanuts being 'complementary' adds a fresh element. However, the concept of inanimate objects speaking isn't entirely new, which slightly reduces its originality."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke is well-structured with a clear setup and punchline. The progression from hearing voices to the punchline is smooth, and the timing is effective. However, the setup could be slightly more concise to enhance delivery."
+            },
+            "overall": {
+                "joke_quality_score": 4.05,
+                "normalized_score": 0.8099999999999999
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the stereotype of programmers being heavily reliant on coffee, which is a relatable concept for many in the tech industry. While it might elicit a chuckle or smile from those familiar with programming culture, it lacks a strong comedic impact for a broader audience."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness by using the concept of 'constant' as a double entendre. In programming, a constant is a fixed value, and the joke cleverly ties this to the idea of coffee being a constant in a programmer's life. However, the wordplay is somewhat straightforward and doesn't reach a high level of wit."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The theme of programmers and coffee is a common trope in tech-related humor. While the specific phrasing of 'constant' adds a minor twist, the overall concept is familiar and doesn't break new ground in originality."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('Why do programmers prefer coffee?') and a punchline ('Because it's the only constant in their lives.') that delivers the intended humor effectively. The timing and delivery are appropriate for a quick, light-hearted joke."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the double meaning of 'commit' in both relationships and programming, which can elicit a chuckle or smile from those familiar with coding terminology. However, it may not resonate as strongly with those outside the tech community."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness by using a pun that connects programming jargon with relationship dynamics. The wordplay on 'commit' is a smart observation that shows an understanding of both programming and social contexts."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of using programming terms in a humorous context is common, and jokes about 'commit' are relatively familiar in tech circles. While it has a small twist, it doesn't stand out as particularly novel."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup and punchline, with effective timing that allows the pun to land well. The brevity and clarity of the joke contribute to its overall delivery."
+            },
+            "overall": {
+                "joke_quality_score": 3.2,
+                "normalized_score": 0.64
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response ': {' is not inherently funny. It lacks any recognizable comedic elements or punchline that would evoke laughter or amusement. It may even be confusing or awkward for the audience, as it doesn't align with typical joke structures or expectations."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evident cleverness in the response. It doesn't demonstrate wit, wordplay, or any intellectual humor. The response appears to be a random sequence of characters rather than a thoughtfully constructed joke."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "While the response is unconventional, it doesn't qualify as original in a comedic sense. It lacks any fresh or unexpected elements that would make it stand out as a novel joke. Instead, it seems more like an error or typo than an intentional attempt at humor."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure. There is no setup, punchline, or timing involved. The sequence ': {' does not form a coherent or complete joke, making it structurally deficient."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response ': {' is not inherently funny. It lacks any recognizable comedic elements or punchline that would evoke laughter or amusement. It may even be confusing or awkward for the audience, as it doesn't align with typical joke structures or expectations."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evident wit or intelligence in the response ': {'. It doesn't demonstrate any clever wordplay, puns, or intellectual humor. The response appears to be a random sequence of characters rather than a thoughtfully constructed joke."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "While the response ': {' is unusual, it doesn't qualify as original in a comedic sense. It lacks any creative or novel approach to humor, instead appearing as a nonsensical or accidental output rather than a deliberate attempt at originality."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response ': {' lacks any recognizable joke structure. There is no setup, punchline, or timing involved. It fails to deliver any coherent comedic message, making it structurally ineffective as a joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response ': {' is not inherently funny. It lacks any recognizable comedic elements or punchline that would evoke laughter or amusement. It may even come across as confusing or awkward, failing to deliver any comedic impact."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evident wit or cleverness in the response. The use of ': {' does not demonstrate any wordplay, intellectual humor, or clever observations. It appears to be a random sequence of characters without any clever intent."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "While the response is unconventional, it does not qualify as original humor. It lacks any creative or novel approach to joke-telling and does not stand out as a fresh or unexpected comedic concept."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure. There is no setup, punchline, or timing involved. The sequence ': {' does not form a coherent joke, making it structurally deficient."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the common experience of programmers using dark mode and the humorous notion that light attracts bugs, a pun on both insects and software bugs. While it might elicit a chuckle from those familiar with programming, it may not have a broad comedic impact outside this audience."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness through its use of wordplay. The dual meaning of 'bugs' as both insects and software errors is a clever twist that requires some understanding of programming concepts, adding a layer of wit."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of programmers preferring dark mode is a common trope, and the 'light attracts bugs' punchline is a familiar play on words in tech circles. It lacks a novel approach or unexpected twist."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('Why do programmers prefer dark mode?') and a concise punchline ('Because light attracts bugs.'). The timing and delivery are effective, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.2,
+                "normalized_score": 0.64
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny. It plays on the common experience of programmers preferring dark mode and the humorous idea that light attracts bugs, which is a clever twist on the literal and metaphorical meanings of 'bugs.' While it might elicit a chuckle from those familiar with programming, it may not have a strong comedic impact on a broader audience."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness by using a double entendre with 'bugs.' It cleverly ties the technical preference for dark mode to the humorous notion of bugs being attracted to light, which is both a literal and metaphorical play on words. This shows a thoughtful construction and understanding of programming culture."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "The joke is slightly original. The concept of programmers preferring dark mode and the association with bugs is a common theme in programming humor. While the execution is neat, the underlying idea is familiar and has been used in various forms before."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke has a good structure with a clear setup and punchline. The setup ('Why do programmers prefer dark mode?') effectively leads into the punchline ('Because light attracts bugs.'), which is delivered succinctly. The timing and brevity are well-executed, making the joke easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 3.2,
+                "normalized_score": 0.64
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is quite funny, leveraging a classic setup with a twist. The unexpected punchline about the peanuts being 'complimentary' is likely to elicit chuckles or smiles from most people, especially those familiar with bar humor."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates cleverness through its play on the word 'complimentary,' which has a double meaning. This wordplay is intelligent and adds a layer of sophistication to the humor."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke uses a common setup of a person hearing voices, the twist involving 'complimentary' peanuts is a moderately original take. It combines familiar elements with a fresh punchline."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The joke is well-structured with a clear setup and punchline. The timing is effective, building suspense with repeated instances of the mysterious compliments before delivering the punchline. The delivery is concise and impactful."
+            },
+            "overall": {
+                "joke_quality_score": 3.95,
+                "normalized_score": 0.79
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is mildly amusing and likely to elicit a smile or chuckle from some people. The play on words with 'problems' is a classic pun, which can be appreciated for its simplicity. However, it lacks the punch needed for a stronger comedic impact."
+            },
+            "cleverness": {
+                "score": 2,
+                "justification": "The joke uses a basic pun that is straightforward and lacks depth. While the wordplay on 'problems' is clear, it doesn't demonstrate significant wit or sophistication. It's a simple, direct joke without much cleverness."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "This joke is a common one, often heard in various contexts. It follows a well-trodden path of puns involving math and 'problems,' making it predictable and lacking in originality."
+            },
+            "structure": {
+                "score": 3,
+                "justification": "The joke has a clear setup and punchline, which are essential for its delivery. The structure is adequate, with a straightforward question and answer format. However, it doesn't exhibit any advanced timing or delivery techniques."
+            },
+            "overall": {
+                "joke_quality_score": 2.55,
+                "normalized_score": 0.51
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is a classic example of a pun that plays on the dual meaning of 'make up.' It's likely to elicit chuckles or smiles from most people due to its clever wordplay and the universal familiarity with atoms and their role in science."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit by using a play on words. The phrase 'make up everything' cleverly ties together the scientific concept of atoms with the idea of fabrication, showcasing a thoughtful construction."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "This joke is quite common and widely known, especially among science enthusiasts. While it remains amusing, it lacks originality due to its frequent use in various contexts."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The joke has an excellent structure with a clear setup and punchline. The timing is perfect, with the punchline delivering a satisfying twist that ties back to the setup effectively."
+            },
+            "overall": {
+                "joke_quality_score": 3.75,
+                "normalized_score": 0.75
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke but rather a placeholder text ('text'). It lacks any comedic content or attempt at humor, resulting in no comedic effect or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "The response does not contain any elements of wit, wordplay, or intellectual humor. It is a placeholder text without any clever construction or concept."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not present any fresh or unexpected elements, as it is simply a placeholder text."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, timing, or delivery. It is a placeholder text and does not meet the criteria for joke construction."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response 'probability' lacks any comedic elements or punchline. It does not evoke laughter or amusement, failing to deliver any humor."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or clever construction in the response. It simply states a word without any context or clever twist."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and thus lacks any originality. It does not present a fresh or unexpected concept."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup or punchline. It is a single word with no comedic timing or delivery."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response ': {' is not humorous. It lacks any comedic elements, punchline, or context that could evoke laughter or amusement. It appears to be a typographical error or incomplete thought, resulting in no comedic effect."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or intellectual humor in the response ': {'. It does not demonstrate any clever construction or sophisticated understanding of language or concepts."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response ': {' is not original as it does not constitute a joke or any recognizable form of humor. It lacks any novel approach or creative elements that could distinguish it from typical jokes."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response ': {' lacks any recognizable joke structure, including setup, punchline, timing, or delivery. It appears to be an incomplete or erroneous entry, resulting in no coherent joke architecture."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a coherent joke. It lacks any elements that would typically evoke laughter or amusement. The text appears to be a formatting error or a placeholder, resulting in no comedic effect."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or intellectual humor in the response. The text does not demonstrate any clever construction or sophisticated humor techniques."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not present any unique or fresh comedic concept."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, timing, or delivery. It appears to be a formatting error rather than an attempt at humor."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a coherent joke. It lacks any elements that would evoke laughter or amusement, such as a setup or punchline. The text appears to be a formatting error or code snippet rather than an attempt at humor."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or intellectual humor in the response. The text does not demonstrate any cleverness or sophistication, as it seems to be a misformatted string rather than a crafted joke."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not present any fresh or unexpected elements, as it lacks the basic structure of a joke."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, timing, or delivery. It appears to be a technical error rather than an attempt at humor, resulting in a score of 1 for structure."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a coherent joke. It lacks any elements that would evoke laughter or amusement. The text appears to be a formatting error or code snippet rather than an attempt at humor."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or intellectual humor in the response. The text does not demonstrate any clever construction or sophisticated understanding of language or concepts."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not present any fresh or unexpected elements that would differentiate it from typical jokes."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, timing, or delivery. It appears to be a formatting error rather than a structured attempt at humor."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a coherent joke. It lacks any elements that would typically evoke laughter or amusement. The text appears to be a mix of code or data output, which does not translate into humor."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or intellectual humor in the response. The text does not demonstrate any clever construction or insightful observations, as it seems to be a technical error or misformatted data."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke, so it cannot be evaluated for originality. It does not present any fresh or unexpected elements, as it does not constitute a joke in the traditional sense."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, timing, or delivery. It appears to be a fragment of code or data, which does not align with the technical construction of a joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided was not a coherent joke, but rather a jumbled text. It failed to deliver any comedic effect or evoke laughter, making it not funny."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "The response lacked any elements of wit or intelligence. It did not demonstrate any clever wordplay, puns, or intellectual humor, resulting in a score of not clever."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response was not a joke, thus it did not present any fresh or unique elements. It was a jumbled text, lacking any originality or novelty."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response did not follow any recognizable joke structure. There was no setup or punchline, and the text was confusing and poorly constructed, resulting in no structure."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response ': {' is not a recognizable joke or humorous statement. It lacks any comedic elements that would evoke laughter or amusement. It appears to be a typographical error or an incomplete thought, resulting in no comedic effect."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, intelligence, or cleverness in the response. The text ': {' does not demonstrate any wordplay, puns, or intellectual humor. It appears to be a random sequence of characters without any clever construction."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "While the response is unique in its randomness, it does not qualify as a joke or humorous content. The originality score is low because it does not present a novel or unexpected comedic concept, but rather an incomplete or erroneous output."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, timing, or delivery. It is a sequence of characters without any coherent or intentional comedic architecture, making it structurally deficient as a joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke about Pavlov's dogs and Schr\u00f6dinger's cat is quite humorous, especially for those familiar with the scientific references. The punchline cleverly ties in both concepts, leading to a chuckle-worthy moment. While it may not be universally hilarious, it certainly has a strong comedic effect for its target audience."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "This joke is exceptionally clever, weaving together two well-known scientific concepts into a single punchline. The wordplay with 'rings a bell' and the uncertainty of Schr\u00f6dinger's cat showcases a sophisticated understanding of both language and scientific theory."
+            },
+            "originality": {
+                "score": 4,
+                "justification": "The joke stands out due to its unique combination of scientific references. While jokes about Schr\u00f6dinger's cat and Pavlov's dogs exist separately, merging them into a single joke is a fresh and inventive approach."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The structure of the joke is excellent, with a clear setup and a punchline that delivers effectively. The timing is spot-on, and the delivery is concise, ensuring the humor lands as intended."
+            },
+            "overall": {
+                "joke_quality_score": 4.4,
+                "normalized_score": 0.8800000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The response ': {' does not constitute a joke or humorous content. It lacks any comedic elements or punchline that would evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or intelligent humor in the response. It appears to be a typographical error or incomplete text, lacking any clever elements."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not present any fresh or unexpected humor."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup or punchline. It is incomplete and does not follow any comedic format."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response is incomplete and lacks a punchline, making it impossible to evaluate its comedic impact. Without a complete setup and punchline, it fails to evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "Due to the incomplete nature of the joke, there is no demonstration of wit or intelligence. The setup is generic and does not showcase any clever wordplay or sophisticated humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The joke starts with a common setup ('A man walked into a library...'), which is a familiar trope in humor. Without a punchline, it lacks any unique or fresh elements that could contribute to originality."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The joke is structurally incomplete, missing a punchline and clear delivery. The setup is present, but without a conclusion, it lacks the necessary components of a well-constructed joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not humorous. It appears to be a malformed or incomplete joke, lacking any comedic elements or punchline that would evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit or intelligence in the joke response. The text seems to be a technical error or placeholder, showing no clever wordplay or intellectual humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not original as it doesn't present any recognizable joke format or concept. It seems more like a coding error than an attempt at humor."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The joke lacks any recognizable structure, including setup or punchline. It appears to be a fragment of code or data, making it confusing and ineffective as a joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response is incomplete and lacks any discernible humor. The text provided does not form a coherent joke, thus failing to evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "The response does not demonstrate any wit or intelligence due to its incomplete nature. There is no evidence of clever wordplay or sophisticated humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not original as it does not present a complete or coherent joke. Without a full joke, it's impossible to assess its uniqueness or creativity."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The joke lacks any structure, including setup, punchline, or timing. The incomplete text does not form a recognizable joke format, making it structurally deficient."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided does not contain any recognizable humor or comedic elements. It appears to be a malformed or incomplete text, lacking any setup or punchline that could evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or intelligent humor in the response. The text does not demonstrate any clever construction or sophisticated understanding of language or concepts."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It lacks any novel approach or unexpected elements that would differentiate it from typical jokes."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, timing, or delivery. It is a fragmented text that does not adhere to any comedic format."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke 'What do you call a fake noodle? An impasta.' is moderately funny. It uses a simple pun that might elicit a chuckle or a smile from some people, but it's unlikely to cause a strong comedic reaction. The humor is light and accessible, but not particularly impactful."
+            },
+            "cleverness": {
+                "score": 3,
+                "justification": "The joke demonstrates moderate cleverness through its use of wordplay. The pun on 'impasta' is a straightforward play on words, combining 'imposter' and 'pasta.' While it's a clever twist, it doesn't showcase deep wit or sophistication."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "This joke is slightly original. The 'impasta' pun is a common one and has been used frequently in various contexts. It lacks the freshness or unexpectedness that would make it stand out as highly original."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure of the joke is good. It has a clear setup ('What do you call a fake noodle?') and a concise punchline ('An impasta.'). The timing and delivery are effective for a quick, simple joke, making it easy to understand and appreciate."
+            },
+            "overall": {
+                "joke_quality_score": 2.95,
+                "normalized_score": 0.5900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a coherent joke. It lacks any elements that would typically evoke laughter or amusement. The text appears to be a fragment of code or data, which does not contribute to humor."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or intellectual humor in the response. The text is nonsensical in the context of a joke and does not demonstrate any cleverness."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not present any fresh or unexpected elements that would distinguish it from typical jokes."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, timing, or delivery. It is a fragment of data rather than a constructed joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is likely to elicit chuckles or smiles from most people due to its clever wordplay and relatable imagery. The punchline 'outstanding in his field' is a humorous twist on a common phrase, making it accessible and amusing."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit through its play on words. The phrase 'outstanding in his field' cleverly combines the literal and figurative meanings, showcasing a thoughtful construction that requires a bit of mental engagement to appreciate."
+            },
+            "originality": {
+                "score": 2,
+                "justification": "While the joke is amusing, it is a well-known classic and thus lacks originality. It follows a familiar format and punchline that many people have likely encountered before, reducing its novelty."
+            },
+            "structure": {
+                "score": 5,
+                "justification": "The joke is excellently structured with a clear setup and punchline. The timing is perfect, with the setup leading naturally to the punchline, ensuring the humor lands effectively. The brevity and clarity enhance its comedic impact."
+            },
+            "overall": {
+                "joke_quality_score": 3.75,
+                "normalized_score": 0.75
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not humorous. It appears to be a malformed or incomplete text, lacking any comedic elements or punchline that would evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit or intelligence in the joke response. It seems to be a technical error or a miscommunication rather than a clever attempt at humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response does not contain any original or creative elements. It does not resemble a joke or any known comedic format, making it impossible to assess for originality."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure. There is no setup, punchline, or coherent delivery, rendering it ineffective as a joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response is incomplete and lacks any coherent setup or punchline. It fails to evoke any laughter or amusement due to its unfinished nature."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit or intelligence in the joke response. The text is cut off and does not present any clever elements or wordplay."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is too incomplete to assess originality. It does not present any unique or fresh elements due to its fragmented state."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The joke lacks any discernible structure, with no setup or punchline. The incomplete text makes it impossible to evaluate timing or delivery."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response is not humorous. It appears to be a malformed or incomplete joke, lacking any comedic elements or punchline that would evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit or intelligence in the joke response. It seems to be a technical error or a miscommunication rather than a clever attempt at humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not original as it does not present any recognizable joke format or concept. It appears to be a random string of text rather than a novel or unexpected joke."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure. There is no setup, punchline, or coherent delivery, making it impossible to evaluate its technical construction."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        }
+    ],
+    "overall_metrics": {
+        "funniness": 2.4473684210526314,
+        "cleverness": 2.56140350877193,
+        "originality": 1.8070175438596492,
+        "structure": 3.0350877192982457,
+        "overall": 2.4359649122807006,
+        "normalized_overall": 0.48719298245614123
+    },
+    "metadata": {
+        "experiment": "structure_with_prob [strict] (samples=5)",
+        "metric": "joke_quality",
+        "evaluation_framework": "Joke Quality Assessment",
+        "judge_model": "gpt-4o",
+        "num_responses": 114
+    }
+}

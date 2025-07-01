@@ -1,0 +1,1823 @@
+{
+    "instance_metrics": [
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke at all. It lacks any comedic content or attempt at humor, resulting in no comedic effect or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or clever construction present in the response. It is purely a technical output without any attempt at cleverness or intelligence."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not contain any elements that could be considered fresh or unique."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, timing, or delivery. It is simply a technical output without any comedic architecture."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke at all. It lacks any comedic content or attempt at humor, resulting in no comedic effect or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or clever construction present in the response. It is purely a technical output without any attempt at cleverness or intelligence."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not present any fresh or unique comedic concept."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, or timing. It is a technical output without any elements of joke construction."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response 'probability' lacks any comedic elements or punchline. It does not evoke laughter or amusement, making it not funny."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or clever construction in the response. It simply states a word without any context or clever twist."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore lacks any originality. It does not present a fresh or unexpected concept."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any structure typical of a joke, such as a setup or punchline. It is a single word without any comedic framework."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke but rather a JSON object with no comedic content. It fails to evoke any laughter or amusement, as it lacks any elements of humor."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or cleverness in the response. It is purely a technical output with no attempt at humor or intelligent construction."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not present any fresh or unique comedic concept."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, timing, or delivery. It is a technical output with no elements of joke mechanics."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided does not contain any recognizable humor or comedic elements. It appears to be a technical or data-related output rather than a joke, resulting in no comedic effect or laughter."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or clever construction in the response. The content is purely technical and lacks any intelligent or sophisticated humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality in the context of humor. It does not present any fresh or unexpected comedic elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, such as a setup or punchline. It is a technical output with no comedic timing or delivery."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke but rather a JSON object with no comedic content. It fails to evoke any laughter or amusement, lacking any comedic elements or punchline."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or cleverness in the response. It is purely a technical output with no attempt at humor or intellectual engagement."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and thus cannot be evaluated for originality. It is a standard JSON format, which is common in data representation but irrelevant in the context of humor."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, or timing. It is a technical data output with no elements of joke construction."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The response does not contain any recognizable joke or humorous content. It lacks any comedic elements that would evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or clever construction present in the response. It appears to be a technical output rather than an attempt at humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not present any fresh or unexpected comedic elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any structure typical of a joke, such as a setup or punchline. It is a technical output with no comedic architecture."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke at all. It lacks any comedic content or attempt at humor, making it impossible to evaluate for funniness. Without a joke, there is no potential for laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no cleverness in the response as it does not contain any wit, wordplay, or intelligent humor. The response is a placeholder text and does not demonstrate any clever construction or concept."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke, thus it cannot be evaluated for originality. It does not present any unique or fresh comedic elements, as it lacks any comedic content altogether."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, timing, or delivery. It is merely a placeholder text without any elements of a joke, making it impossible to evaluate for structural quality."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response does not contain any recognizable humor or comedic elements. It appears to be a technical output rather than an attempt at humor, resulting in no comedic effect or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or intellectual humor in the response. The content is purely technical and lacks any clever elements that would demonstrate intelligence or sophistication."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not present any fresh or unexpected elements typical of a joke."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, such as a setup or punchline. It is a technical output without any elements of timing or delivery that are essential for a joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke but rather a JSON object with no comedic content. It fails to evoke any laughter or amusement, as it lacks any elements of humor."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or clever construction present in the response. It is purely a technical output with no attempt at humor or cleverness."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not contain any fresh or unexpected elements typical of a joke."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, timing, or delivery. It is a technical output rather than a comedic attempt."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not humorous. It lacks any comedic elements, punchline, or setup that would evoke laughter or amusement. The text 'probability' does not inherently contain humor, and the context does not provide any comedic effect."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no cleverness in the response. The word 'probability' is used without any wit, wordplay, or intellectual humor. It does not demonstrate any sophisticated understanding or clever construction."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not original as it does not present any unique or unexpected elements. It is a straightforward word without any novel approach or concept that would distinguish it from typical jokes."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure. There is no setup, punchline, timing, or delivery present. It is a single word that does not follow any recognizable joke format or mechanics."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke at all. It lacks any comedic content or attempt at humor, resulting in no comedic effect or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or clever construction present in the response. It is purely a placeholder with no intelligent or sophisticated elements."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is entirely unoriginal as it does not contain any joke or creative content. It is a generic placeholder with no unique or fresh elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, or timing. It is not a joke and therefore cannot be evaluated on structural elements."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response 'probability' lacks any comedic elements or punchline. It does not evoke laughter or amusement, failing to deliver any humor."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or cleverness in the response. It simply states a word without any context or intelligent humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and thus cannot be considered original. It does not present any fresh or unexpected elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, or timing. It is a single word without any comedic framework."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke at all. It lacks any comedic content or attempt at humor, resulting in no comedic effect or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or intellectual humor present in the response. It is purely a placeholder with no clever elements."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not present any fresh or unique comedic concept."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any structure typical of a joke, such as a setup or punchline. It is simply a placeholder text with no comedic architecture."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response lacks any comedic elements or punchline. It does not evoke laughter or amusement, failing to register as humorous."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or clever construction in the response. It is purely a technical output without any attempt at humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke but rather a technical output, making it completely unoriginal in the context of humor."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup or punchline. It is a technical output without any comedic architecture."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke but rather a placeholder text ('text'). It lacks any comedic content or attempt at humor, resulting in no comedic effect or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no cleverness or wit in the response as it does not contain any joke or humor elements. It is purely a placeholder with no intellectual or witty content."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not original as it does not present any joke or unique content. It is a generic placeholder ('text') with no creative or novel elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, timing, or delivery. It is simply a placeholder text with no elements of joke construction."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response is empty, providing no content to evaluate for humor. Without any text, it fails to evoke laughter or amusement, resulting in no comedic effect."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "An empty response lacks any wit, intelligence, or sophistication. There are no elements of wordplay, puns, or clever observations to assess."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The absence of content means there is no opportunity for originality. Without any joke or concept presented, it cannot be considered unique or fresh."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "With no text provided, there is no setup, punchline, timing, or delivery to evaluate. The lack of structure results in a score of 1."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke but rather a placeholder text. It lacks any comedic content or attempt at humor, resulting in no comedic effect or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no cleverness or wit in the response as it does not contain any joke or wordplay. It is purely a placeholder with no intelligent or sophisticated humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not original as it does not present any joke or unique concept. It is a generic placeholder text with no creative or fresh elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, timing, or delivery. It is simply a placeholder text with no elements of joke construction."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke but rather a placeholder text ('probability'). It lacks any comedic elements or attempt at humor, resulting in no comedic effect or laughter."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "The response does not demonstrate any wit, wordplay, or cleverness. It is a placeholder text that does not engage with the concept of humor or the prompt about potatoes."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not original as it does not attempt to create a joke. It is a generic placeholder text that does not offer any fresh or unexpected humor related to potatoes."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "There is no joke structure present in the response. It lacks a setup, punchline, timing, or any elements that constitute a joke. The placeholder text does not fulfill the requirements of joke construction."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke but rather a placeholder text ('text'). It lacks any comedic content or attempt at humor, resulting in no comedic effect or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no cleverness or wit present in the response. The placeholder text does not demonstrate any intellectual humor, wordplay, or clever observations."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not original as it does not contain any joke or creative elements. It is a generic placeholder with no unique or fresh approach to humor."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, timing, or delivery. It is simply a placeholder text without any elements of joke construction."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is essentially empty, lacking any content that could be considered humorous. Without a joke or punchline, it fails to evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or intellectual humor present in the response. The absence of content means there is no cleverness to evaluate."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response does not contain any original or unique elements. It lacks any form of creative or unexpected content."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any structure typical of a joke, such as a setup or punchline. Without content, there is no structure to assess."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is essentially empty, lacking any content that could be considered humorous. Without a joke or punchline, it fails to evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or clever construction present in the response. The absence of content means there is no opportunity for cleverness to be demonstrated."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response does not contain any elements that could be evaluated for originality. Without a joke or concept, it cannot be considered fresh or unique."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any structure typical of a joke, such as a setup or punchline. It is essentially an empty response, providing no basis for structural evaluation."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is essentially empty, with no actual joke content to evaluate. As such, it fails to evoke any laughter or amusement, resulting in a score of 1 for funniness."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "Without any content or attempt at humor, there is no demonstration of wit, intelligence, or cleverness. The response lacks any clever elements, leading to a score of 1."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response does not contain any joke or creative content, making it impossible to assess originality. It is essentially a non-response, resulting in a score of 1 for originality."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, timing, or delivery. It is devoid of any elements that constitute a joke, leading to a score of 1 for structure."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke but rather a placeholder text ('probability'). It lacks any comedic content or attempt at humor, resulting in no comedic effect or laughter."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no cleverness or wit in the response as it does not contain any elements of a joke. The text 'probability' does not demonstrate any intellectual humor or wordplay."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not original as it does not present any joke or concept. It is a placeholder text that does not attempt to be unique or fresh."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any structure of a joke, including setup, punchline, or timing. It is simply a placeholder text without any elements of joke construction."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke at all. It lacks any comedic content or attempt at humor, resulting in no comedic effect or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no cleverness or wit present in the response. It does not contain any wordplay, puns, or intelligent humor, as it is not a joke."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It lacks any unique or fresh elements that would distinguish it from typical jokes."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, timing, or delivery. It is not a joke and therefore cannot be evaluated for structural quality."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response is empty, providing no content to evaluate for humor. Without any text, it fails to evoke laughter or amusement, resulting in no comedic effect."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "With no content provided, there is no opportunity to demonstrate wit, intelligence, or cleverness. The absence of a joke means there are no clever elements to assess."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "An empty response cannot be considered original or fresh. Without any content, it lacks any unique or unexpected elements that could differentiate it from common jokes."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The joke lacks any structure, as there is no setup, punchline, or delivery to evaluate. The absence of content means it fails to meet any structural criteria for a joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is incomplete and lacks any comedic content. Without a clear joke or punchline, it fails to evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or clever construction in the response. The absence of a joke means there is no cleverness to evaluate."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "Without any content to assess, the response cannot be considered original or unique. It does not present any fresh or unexpected elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup or punchline. It is incomplete and does not adhere to any comedic format."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response does not contain any recognizable humor or comedic elements. It appears to be a technical output rather than an attempt at humor, resulting in no comedic effect or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or clever construction in the response. The content is purely technical and lacks any intelligent or sophisticated humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not present any fresh or unexpected comedic elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, or timing. It is a technical output rather than a constructed joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a complete joke. It lacks any comedic content or punchline, resulting in no comedic effect or humor."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or clever construction in the response. It is simply a placeholder with no intellectual or humorous elements."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response does not contain any original or unique elements. It is an incomplete joke with no content to evaluate for originality."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any structure of a joke, including setup, punchline, or timing. It is an incomplete and non-functional attempt at humor."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response does not contain any recognizable humor or comedic elements. It appears to be a technical output rather than a crafted joke, thus failing to evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or clever construction in the response. The text seems to be a misinterpretation or error, lacking any intelligent or sophisticated humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not present any fresh or unexpected comedic concept."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup or punchline. It appears to be a technical error rather than a crafted comedic piece."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke at all. It lacks any comedic content or attempt at humor, resulting in no comedic effect or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or clever construction present in the response. It does not demonstrate any intelligence or sophistication in humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not present any fresh or unique comedic elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, or timing. It is not a coherent joke and fails to meet basic structural requirements."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response does not contain any recognizable humor or comedic elements. It appears to be a technical output rather than an attempt at humor, resulting in no comedic impact or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or clever construction in the response. The text is purely technical and lacks any intelligent or sophisticated humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not present any fresh or unexpected comedic elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, or timing. It is a technical output rather than a structured joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke at all. It lacks any comedic content or attempt at humor, resulting in no comedic effect or laughter."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or clever construction present in the response. It does not demonstrate any intelligence or sophistication in humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke, so it cannot be evaluated for originality. It does not offer any fresh or unique comedic perspective."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, or timing. It is not a coherent joke and fails to meet basic structural requirements."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response does not contain any recognizable humor or comedic elements. It appears to be a technical output rather than an attempt at humor, resulting in no comedic effect or laughter."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or cleverness in the response. The content is purely technical and lacks any intelligent or sophisticated humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality in terms of humor. It does not present any fresh or unexpected comedic elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, or timing. It is a technical output with no elements of joke construction."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke at all. It lacks any comedic content or attempt at humor, resulting in no comedic effect or laughter."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or clever construction present in the response. It does not demonstrate any intelligence or sophistication in humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response does not contain any original or creative elements. It fails to present any form of joke, let alone a unique or fresh one."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, or timing. It is not a joke and therefore cannot be evaluated on structural elements."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided does not contain any recognizable humor or comedic elements. It appears to be a technical output rather than a joke about coffee, thus failing to evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or clever construction present in the response. The content is purely technical and lacks any attempt at cleverness or intellectual humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response does not present any original or fresh comedic ideas. It is not a joke, so it cannot be evaluated for originality in the context of humor."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, timing, or delivery. It is not structured as a joke, making it impossible to evaluate on this dimension."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a complete joke, as it lacks any humorous content or punchline. Without a clear attempt at humor, it fails to evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "The response does not demonstrate any wit, wordplay, or cleverness. It lacks any intellectual depth or sophisticated humor techniques, as it is not a complete joke."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not original because it does not present any content or concept to evaluate. It lacks any fresh or unexpected elements that could contribute to originality."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any structure typical of a joke, such as a setup or punchline. Without these elements, it cannot be evaluated for timing, delivery, or overall joke architecture."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke but rather a placeholder text ('probability'). It lacks any comedic content or attempt at humor, resulting in no comedic effect or laughter."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no cleverness or wit in the response as it does not contain any elements of a joke. It is simply a placeholder text without any intelligent or witty construction."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not original as it does not present any joke or creative content. It is a generic placeholder text that does not attempt to be unique or fresh."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, or timing. It is not a joke but a placeholder text, resulting in no technical construction or delivery."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a complete joke, merely a placeholder text ('text'). It lacks any comedic content or punchline, resulting in no comedic effect or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no demonstration of wit, wordplay, or cleverness in the response. The placeholder text does not exhibit any intellectual humor or clever construction."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not original as it does not contain any unique or fresh elements. It is a placeholder text with no creative or novel approach to the joke prompt."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, or timing. It is merely a placeholder text ('text') without any elements of a joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke about coffee, but rather a placeholder text. It lacks any comedic elements or attempt at humor, resulting in no comedic effect or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no cleverness or wit in the response as it does not contain any joke or wordplay related to coffee. It is purely a placeholder text without any intellectual or humorous depth."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response does not present any original or fresh content as it is not a joke. It fails to provide any unique or unexpected elements related to coffee humor."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, or timing. It is simply a placeholder text without any elements of joke construction."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is incomplete and lacks any comedic content. Without a clear joke or punchline, it fails to evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no demonstration of wit, wordplay, or cleverness in the response. The absence of a joke means there is no opportunity to showcase intelligence or sophistication."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response does not contain any original content or unique approach to the prompt. It is essentially a placeholder with no creative elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup or punchline. It is incomplete and does not adhere to any comedic format."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided does not contain any recognizable humor or comedic elements. It appears to be a technical output rather than a joke, failing to evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or cleverness in the response. It lacks any form of intelligent humor or sophisticated construction, as it does not resemble a joke."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not present any fresh or unexpected comedic elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, or timing. It is a technical output rather than a structured joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided lacks any comedic content or structure, making it impossible to evaluate its funniness. Without a joke to assess, it fails to evoke any laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or clever construction present in the response. The absence of a joke means there is no opportunity to demonstrate cleverness or intelligence."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response does not contain any joke or creative content, making it impossible to assess originality. It lacks any fresh or unique elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response is devoid of any joke structure, including setup or punchline. It lacks the basic elements necessary for a joke, resulting in a score of 1 for structure."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response does not contain any recognizable humor or comedic elements. It appears to be a technical output rather than a crafted joke, resulting in no comedic effect or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or clever construction in the response. The content is purely technical and lacks any intelligent or sophisticated humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality in the context of humor. It does not present any fresh or unexpected comedic elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, or timing. It is a technical output rather than a crafted joke, resulting in no comedic architecture."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is incomplete and lacks any comedic content. Without a clear joke or punchline, it fails to evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or clever construction in the response. The absence of a joke means there is no cleverness to evaluate."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response does not contain any original content or unique approach to the prompt. It is essentially a placeholder with no creative elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup or punchline. It is incomplete and does not adhere to any joke format."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke in the traditional sense. It lacks any comedic elements or punchline that would evoke laughter or amusement. The text appears to be a technical output rather than an attempt at humor."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or clever construction in the response. It reads as a technical statement rather than a joke, lacking any intellectual or humorous depth."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response does not contain any elements of originality in terms of humor. It does not present a novel or unexpected approach to the prompt of making a joke about coffee."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, such as a setup or punchline. It is a technical output rather than a crafted joke, resulting in no comedic timing or delivery."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke at all. It lacks any comedic content or attempt at humor, resulting in no comedic effect or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or clever construction present in the response. It fails to demonstrate any intelligence or sophistication in humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response does not contain any original or unique elements. It is not a joke and therefore cannot be evaluated for originality."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any structure typical of a joke, such as a setup or punchline. It is merely a placeholder text without any comedic architecture."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response does not contain any recognizable humor or comedic elements. It appears to be a technical output rather than a crafted joke, resulting in no comedic impact or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or clever construction in the response. The text seems to be a misinterpretation or error, lacking any intelligent or sophisticated humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not present any unique or fresh comedic concept."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, such as a setup or punchline. It appears to be a technical error rather than a crafted joke, resulting in no comedic timing or delivery."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke at all. It lacks any comedic elements, punchline, or humor, resulting in no comedic effect or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or clever construction present in the response. It does not demonstrate any intelligence or sophistication in humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke, hence it cannot be evaluated for originality. It does not present any fresh or unique comedic concept."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, or timing. It is not a coherent joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided does not contain any recognizable humor or comedic elements. It appears to be a technical output rather than a joke, lacking any setup, punchline, or comedic intent. As such, it fails to evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or intellectual humor in the response. The content is purely technical and lacks any clever elements that would typically be associated with a joke."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response does not present any original or fresh comedic ideas. It is not a joke and therefore cannot be evaluated for originality in the context of humor."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, or timing. It is a technical output rather than a constructed joke, making it impossible to evaluate for structural quality."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke at all. It lacks any comedic content or attempt at humor, resulting in no comedic effect or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or clever construction present in the response. It does not demonstrate any intelligence or sophistication in humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke, thus it cannot be evaluated for originality. It does not offer any fresh or unexpected elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, timing, or delivery. It is not a joke and therefore cannot be evaluated on these criteria."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke but rather a placeholder text ('text'). It lacks any comedic content or attempt at humor, thus failing to evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no cleverness in the response as it does not contain any wit, wordplay, or intelligent humor. It is simply a placeholder with no attempt at clever construction."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not original as it does not present any joke or concept. It is a generic placeholder ('text') and does not offer any fresh or unexpected humor."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, timing, or delivery. It is merely a placeholder text without any elements of joke mechanics."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response 'probability' lacks any comedic elements or punchline. It does not evoke laughter or amusement, failing to meet the basic criteria for humor."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or clever construction in the response. It simply states a word without any context or clever twist, lacking any intellectual depth."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be considered original or fresh. It does not present any novel approach or unexpected element."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup or punchline. It is a single word without context, making it confusing and ineffective as a joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is quite funny, especially for those familiar with programming. The initial punchline about dark mode and bugs is a classic but still effective. The extended metaphor about debugging and relationships adds layers of humor, making it relatable and amusing. It would likely elicit chuckles or smiles from most people, especially those in tech."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "The joke demonstrates exceptional cleverness by weaving programming concepts into a relationship metaphor. The use of terms like 'console logs,' 'refactor,' and 'revert to a previous commit' shows a sophisticated understanding of both programming and relationship dynamics. The final line about the heart's API is a brilliant touch, adding depth and wit."
+            },
+            "originality": {
+                "score": 4,
+                "justification": "While the initial part about dark mode is a common joke, the extension into relationship advice using programming terminology is quite original. It creatively combines two seemingly unrelated topics, offering a fresh take on both. The unique twist on debugging as relationship advice stands out."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke is well-structured, with a clear setup and multiple punchlines. The transition from the initial joke to the extended metaphor is smooth, maintaining the audience's interest. The timing is effective, with each part building on the previous one, leading to a satisfying conclusion."
+            },
+            "overall": {
+                "joke_quality_score": 4.25,
+                "normalized_score": 0.85
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is quite humorous, especially for those familiar with programming languages. It cleverly plays on common programming errors and stereotypes, such as segmentation faults and NULL pointers, which are relatable to the target audience. The JavaScript developer's punchline about waiting for a drink is particularly amusing due to its real-world parallel with asynchronous programming."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "The joke demonstrates exceptional wit by incorporating multiple programming languages and their quirks. The use of technical terms like 'segmentation fault', 'NULL pointer', and '0xDEADBEEF' shows a sophisticated understanding of programming humor. The Java developer's abstraction layers and the Python developer's indentation errors are clever nods to real-world programming challenges."
+            },
+            "originality": {
+                "score": 4,
+                "justification": "While programming jokes are common, this joke stands out by combining multiple language-specific quirks into a single narrative. The creative scenario of programmers ordering drinks at a bar adds a fresh twist to the typical programming joke format, making it more engaging and unique."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke is well-structured, with a clear setup and multiple punchlines that build on each other. Each programmer's experience at the bar is a mini-punchline, maintaining comedic momentum throughout. However, the joke could benefit from slightly tighter delivery to enhance its impact."
+            },
+            "overall": {
+                "joke_quality_score": 4.25,
+                "normalized_score": 0.85
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny, especially for those familiar with programming concepts. The humor relies on wordplay and technical references, which might not resonate with everyone. The 'stack overflow exception' line is amusing, but the subsequent lines dilute the comedic impact."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness, particularly in its use of programming terminology like 'stack overflow exception' and 'recursion.' The wordplay is intelligent, and the references to technical concepts show a thoughtful construction."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke uses familiar programming concepts, it combines them in a somewhat fresh way. The 'pickup line' angle adds a twist, but the overall theme of programming humor is common, making it moderately original."
+            },
+            "structure": {
+                "score": 3,
+                "justification": "The joke has an adequate structure with a clear setup and punchline. However, the multiple punchlines ('stack overflow,' 'binary code,' 'recursion') might confuse the delivery, affecting the timing and clarity of the humor."
+            },
+            "overall": {
+                "joke_quality_score": 3.25,
+                "normalized_score": 0.65
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke contains several humorous elements, such as the play on 'cache' and 'volatile market', and the absurdity of monetizing sadness with crying emoji NFTs. However, the humor is niche, appealing primarily to those familiar with tech and finance. It might elicit a chuckle from the target audience but lacks broad comedic impact."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates cleverness through its use of tech jargon and puns, such as 'cache' and 'volatile market', and the creative scenario of a blockchain wedding planner app crashing. These elements show a good understanding of tech culture and wordplay, making it clever for those in the know."
+            },
+            "originality": {
+                "score": 4,
+                "justification": "The joke is quite original, combining tech, finance, and humor in a unique way. The concept of monetizing sadness with crying emoji NFTs and a blockchain wedding planner app crashing during vows are fresh and unexpected, setting it apart from typical programming jokes."
+            },
+            "structure": {
+                "score": 3,
+                "justification": "The joke has a basic structure with a setup and multiple punchlines. However, the delivery is somewhat cluttered, with several ideas packed into one response. This affects the timing and clarity, making it slightly harder to follow and reducing its overall impact."
+            },
+            "overall": {
+                "joke_quality_score": 3.45,
+                "normalized_score": 0.6900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke effectively uses humor related to the software development process, particularly QA testing, which is relatable to those in the tech industry. The punchline about 'unable to replicate in a well-lit office environment' is particularly amusing, as it plays on the common frustration of bugs that can't be reproduced. While it may not be universally hilarious, it is likely to elicit chuckles from its target audience."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates cleverness through its use of industry-specific language and scenarios. The play on words with 'Works in my darkness' and 'illumination requirements unclear' shows a good understanding of both QA processes and humor. The inclusion of 'sprint for luminescence refactoring' adds an extra layer of wit, making it more than just a simple joke."
+            },
+            "originality": {
+                "score": 3,
+                "justification": "While the joke uses a familiar setup ('How many X does it take to screw in a lightbulb?'), it introduces fresh elements by incorporating software development jargon. The twist on the classic format with a tech spin is moderately original, though the underlying structure is well-trodden."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke is well-structured, with a clear setup and punchline. The progression from the initial question to the punchline is smooth, and the timing is effective, allowing the humor to build naturally. The use of multiple punchlines ('Works in my darkness', 'illumination requirements unclear', etc.) adds depth to the joke, enhancing its comedic impact."
+            },
+            "overall": {
+                "joke_quality_score": 3.8000000000000003,
+                "normalized_score": 0.76
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke but rather a placeholder text ('text') with no comedic content. It fails to evoke any laughter or amusement, as it lacks any elements of humor."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no cleverness in the response since it does not contain any wit, wordplay, or intelligent humor. It is merely a placeholder text without any attempt at clever construction."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not original as it does not present any joke or creative content. It is a generic placeholder ('text') that does not offer any fresh or unexpected humor."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, timing, or delivery. It is simply a placeholder text with no elements of a joke present."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response 'probability' lacks any comedic elements or punchline. It does not evoke laughter or amusement, failing to register as humorous."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit or intelligence demonstrated in the response. It lacks any clever wordplay, puns, or intellectual humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be considered original or fresh. It does not present any novel or unexpected elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup or punchline. It is confusing and does not adhere to any joke format."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke but rather a placeholder text ('text'). It lacks any comedic content or attempt at humor, resulting in no comedic effect or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no cleverness in the response as it does not contain any wit, wordplay, or intellectual humor. It is simply a placeholder text without any attempt at clever construction."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not original as it does not present any joke or creative content. It is a generic placeholder ('text') and does not offer any fresh or unexpected elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, timing, or delivery. It is merely a placeholder text without any elements of joke mechanics."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is essentially empty, with no content to evaluate for humor. As such, it fails to evoke any laughter or amusement, resulting in a score of 1 for funniness."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "Without any actual joke content, there is no demonstration of wit, intelligence, or cleverness. The response lacks any elements that could be considered clever, leading to a score of 1."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is devoid of any content, making it impossible to assess originality. It does not present any unique or fresh ideas, resulting in a score of 1 for originality."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any structure, including setup, punchline, or timing. Without these elements, it cannot be evaluated for structural quality, resulting in a score of 1."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is quite funny, especially with its extended metaphor of atoms as con artists. The humor is derived from the absurdity of attributing human-like deceitful characteristics to atoms, which is amusing and likely to elicit chuckles or smiles from most people."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "The joke is exceptionally clever, using scientific concepts and wordplay to create humor. The idea of atoms as 'con artists' and the detailed breakdown of their 'crimes' shows a sophisticated understanding of both science and humor."
+            },
+            "originality": {
+                "score": 4,
+                "justification": "While the initial setup of 'Why shouldn't you trust atoms?' is a common joke, the extended elaboration is highly original. The creative expansion into a narrative about atomic deception is fresh and unexpected, adding a unique twist to a familiar joke."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure is well-executed, with a clear setup and an extended punchline that builds on the initial joke. The timing is effective, and the delivery maintains interest throughout the elaboration. However, the length might slightly detract from the punchline's immediate impact."
+            },
+            "overall": {
+                "joke_quality_score": 4.25,
+                "normalized_score": 0.85
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is quite humorous, with a clever twist on the idea of a computer being passive-aggressive. The escalation from subtle hints to overt actions like printing a resignation letter is amusing and likely to elicit chuckles. The anthropomorphizing of the computer adds a layer of humor that many can relate to, especially in a tech-driven world."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "This joke demonstrates exceptional wit and intelligence. The use of digital passive-aggression as a concept is both clever and relatable. The wordplay with 'dead sea' and the idea of a technological cold war are sophisticated and show a deep understanding of humor mechanics."
+            },
+            "originality": {
+                "score": 4,
+                "justification": "The joke is mostly original, with a creative take on the relationship between humans and technology. While the concept of anthropomorphizing machines isn't entirely new, the execution and specific scenarios presented are fresh and inventive."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The structure is well-crafted, with a clear setup and a series of escalating punchlines. The timing is effective, and the delivery is smooth, leading to a satisfying conclusion. The joke maintains a good pace, keeping the audience engaged throughout."
+            },
+            "overall": {
+                "joke_quality_score": 4.25,
+                "normalized_score": 0.85
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny, with a mix of scientific humor and wordplay. The initial setup with the neutron and the bartender is amusing, but the extended narrative may lose some readers. The humor is niche, appealing more to those familiar with particle physics."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good cleverness, weaving scientific concepts with humor. The play on 'no charge' and the neutron's neutrality is witty, and the inclusion of various particles adds layers of intellectual humor."
+            },
+            "originality": {
+                "score": 4,
+                "justification": "The joke is quite original, taking a common setup (a neutron in a bar) and expanding it into a unique narrative involving multiple particles and scientific concepts. This fresh approach stands out from typical bar jokes."
+            },
+            "structure": {
+                "score": 3,
+                "justification": "The structure is adequate, with a clear setup and punchline. However, the extended narrative may dilute the impact of the punchline. The joke could benefit from a more concise delivery to enhance comedic timing."
+            },
+            "overall": {
+                "joke_quality_score": 3.45,
+                "normalized_score": 0.6900000000000001
+            }
+        },
+        {
+            "funniness": {
+                "score": 4,
+                "justification": "The joke is quite humorous, with a blend of puns and situational comedy. The initial punchline about the scarecrow being 'outstanding in his field' is a classic pun that sets a light-hearted tone. The subsequent narrative about the scarecrow's acceptance speech and afterparty antics adds layers of humor, eliciting chuckles and smiles. The imagery of straw falling into the punch bowl and the scarecrow slow-dancing with a rake are particularly amusing."
+            },
+            "cleverness": {
+                "score": 4,
+                "justification": "The joke demonstrates good wit and intelligence, particularly in its use of wordplay and situational humor. The initial pun is clever, and the extended narrative showcases thoughtful construction, with clever observations about fame and the scarecrow's interactions. The line about 'exploring fluid dynamics' during thunderstorms is a smart twist, adding intellectual humor."
+            },
+            "originality": {
+                "score": 4,
+                "justification": "While the initial pun is a familiar one, the joke's originality shines in its extended narrative. The detailed account of the scarecrow's acceptance speech, afterparty, and media scandal is a fresh take on a classic setup. The creative elements, such as the scarecrow's interactions and the 'Stalk Scandal,' contribute to its originality."
+            },
+            "structure": {
+                "score": 4,
+                "justification": "The joke is well-structured, with a clear setup and effective punchline. The initial pun serves as a strong foundation, and the subsequent narrative is well-paced, maintaining interest and comedic timing. The delivery is clear, with each element building on the previous one, leading to a satisfying conclusion."
+            },
+            "overall": {
+                "joke_quality_score": 4.0,
+                "normalized_score": 0.8
+            }
+        },
+        {
+            "funniness": {
+                "score": 3,
+                "justification": "The joke is moderately funny, with a clever twist on the concept of parallel lines. It may elicit a smile or chuckle from those familiar with mathematical concepts, but its humor is niche and may not resonate with a broader audience. The anthropomorphizing of geometric concepts adds a layer of amusement, but the joke's length and complexity might dilute its immediate comedic impact."
+            },
+            "cleverness": {
+                "score": 5,
+                "justification": "This joke is brilliantly clever, weaving mathematical concepts with human emotions and relationships. The use of terms like 'asymptotic valentines' and 'perpendicular compliments' showcases exceptional wit and a sophisticated understanding of both geometry and language. The anthropomorphism of lines and shapes is executed with intellectual humor, making it a standout in terms of cleverness."
+            },
+            "originality": {
+                "score": 4,
+                "justification": "The joke is very original, taking a fresh approach to the often-used theme of parallel lines. While the concept of parallel lines never meeting is not new, the detailed narrative and creative use of mathematical terminology make it unique. The idea of lines sending valentines and adopting a vector is inventive and unexpected, adding to its originality."
+            },
+            "structure": {
+                "score": 3,
+                "justification": "The structure is adequate, with a clear setup and a series of humorous observations. However, the joke's length and complexity might hinder its punchline delivery. The narrative style is engaging, but the lack of a concise punchline could affect its comedic timing. The joke reads more like a humorous story, which may not suit all audiences looking for quick wit."
+            },
+            "overall": {
+                "joke_quality_score": 3.7,
+                "normalized_score": 0.74
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is essentially non-existent, with no text or attempt at humor. As such, it fails to evoke any laughter or amusement, resulting in a score of 1 for funniness."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "Without any content or attempt at wit, the joke lacks any cleverness or intellectual humor. There are no elements of wordplay, puns, or sophisticated humor techniques to evaluate."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The absence of a joke means there is no opportunity for originality. The response does not present any fresh or unexpected elements, resulting in a score of 1 for originality."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The joke response lacks any structure, including setup, punchline, timing, or delivery. Without these elements, it cannot be evaluated for technical quality, leading to a score of 1 for structure."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke but rather a placeholder text ('probability'). It lacks any comedic elements or punchline that would evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or intellectual humor present in the response. The text 'probability' does not demonstrate any cleverness or sophistication in its construction."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not present any fresh or unexpected elements that would distinguish it from common jokes."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, or timing. It is simply a placeholder text without any comedic architecture."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response is empty, providing no content to evaluate for humor. Without any text, it fails to evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "An empty response lacks any demonstration of wit, intelligence, or cleverness. There are no elements to assess for clever construction or sophisticated humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "With no content provided, there is no opportunity to evaluate originality. The absence of a joke means it cannot be compared to existing humor for uniqueness or freshness."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any structure, as it is completely empty. Without a setup or punchline, there is no technical construction to assess."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a complete joke, but rather a placeholder text. As such, it fails to evoke any laughter or amusement, resulting in a score of 1 for funniness."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "Without a complete joke, there is no opportunity to assess wit, wordplay, or intellectual humor. The placeholder text lacks any clever elements, resulting in a score of 1 for cleverness."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is a placeholder and does not contain any original content or unique approach. It is not a joke, so it scores a 1 for originality."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, timing, or delivery. It is merely a placeholder text, resulting in a score of 1 for structure."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke but rather a JSON object with no comedic content. It fails to evoke any laughter or amusement, as it lacks any elements of humor."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or intelligent humor present in the response. It is a technical output rather than a clever joke, showing no sophistication or clever construction."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not present any fresh or unexpected comedic elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, timing, or delivery. It is a JSON object rather than a structured joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is essentially empty, with no actual joke content to evaluate. As such, it fails to evoke any laughter or amusement, resulting in a score of 1 for funniness."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "Without any content or clever elements present in the response, there is no demonstration of wit, wordplay, or intellectual humor. The score reflects the absence of cleverness."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response lacks any original content or novel approach, as it does not contain a joke. Therefore, it scores the lowest in originality."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response does not contain any joke structure, setup, or punchline. It is essentially a placeholder with no comedic architecture, resulting in a score of 1 for structure."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke but rather a placeholder text ('probability'). It lacks any comedic elements or punchline that would evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or intellectual humor present in the response. The text 'probability' does not demonstrate any cleverness or sophistication in humor."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not present any fresh or unexpected elements that would differentiate it from typical jokes."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, or timing. It is simply a placeholder text without any comedic architecture."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke but rather a placeholder text ('text') with an index. It lacks any comedic content or attempt at humor, resulting in no comedic effect or laughter."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no cleverness or wit present in the response. The placeholder text does not demonstrate any intellectual humor, wordplay, or clever observations."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not original as it does not contain any joke or creative content. It is a generic placeholder with no unique or fresh elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, timing, or delivery. It is simply a placeholder text without any elements of joke construction."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke but rather a string of text that lacks any comedic elements. It does not evoke laughter or amusement, failing to meet the basic criteria for funniness."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or intellectual humor present in the response. The text 'probability' does not demonstrate any cleverness or sophistication in its construction."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It lacks any fresh or unexpected elements that would distinguish it from common jokes."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, timing, or delivery. It is simply a text string without any comedic architecture."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a complete joke, but rather a placeholder text with no comedic content. As such, it fails to evoke any laughter or amusement, resulting in a score of 1 for funniness."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "The response lacks any elements of wit, wordplay, or intellectual humor. It is merely a placeholder text without any clever construction or concept, leading to a score of 1 for cleverness."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not an original joke but a placeholder text. It does not offer any fresh or unexpected humor, resulting in a score of 1 for originality."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, timing, or delivery. It is simply a placeholder text, earning a score of 1 for structure."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke but rather a string of text that lacks any comedic elements. It does not evoke laughter or amusement, failing to meet the basic criteria for funniness."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or intellectual humor present in the response. It is a literal string of text without any clever construction or concept."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It does not present any fresh or unexpected elements."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, timing, or delivery. It is simply a text string without any comedic architecture."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke but rather a placeholder text ('text') with an index number. It fails to evoke any laughter or amusement as it lacks any comedic content or structure."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or intellectual humor present in the response. The placeholder text does not demonstrate any cleverness or thoughtful construction."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It lacks any unique or fresh elements that would distinguish it from common jokes."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any joke structure, including setup, punchline, timing, or delivery. It is simply a placeholder text without any elements of a joke."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke but rather a string of text that lacks any comedic elements. It does not evoke laughter or amusement, failing to meet the basic criteria for funniness."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or intellectual humor present in the response. The text 'probability' does not demonstrate any cleverness or sophistication in its construction."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response is not a joke and therefore cannot be evaluated for originality. It lacks any creative or novel elements that would distinguish it from common jokes."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, timing, or delivery. It is simply a text string without any comedic architecture."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a complete joke, but rather a placeholder or an error message. It lacks any comedic content or structure that could evoke laughter or amusement."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no wit, wordplay, or clever construction present in the response. It appears to be a technical output rather than a crafted joke, thus lacking any clever elements."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response does not contain any original or creative elements. It is a generic placeholder text, offering no fresh or unexpected humor."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, or timing. It is not a joke but rather a technical output, making it impossible to evaluate its structural quality."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        },
+        {
+            "funniness": {
+                "score": 1,
+                "justification": "The joke response provided is not a joke in any recognizable form. It lacks any comedic elements or punchline that could evoke laughter or amusement. The text 'probability' does not contribute to humor, making it not funny."
+            },
+            "cleverness": {
+                "score": 1,
+                "justification": "There is no evidence of wit, wordplay, or intellectual humor in the response. The term 'probability' is used without context or clever manipulation, resulting in a lack of cleverness."
+            },
+            "originality": {
+                "score": 1,
+                "justification": "The response does not present any original or fresh comedic concept. It is not a joke, and thus cannot be evaluated for originality in humor."
+            },
+            "structure": {
+                "score": 1,
+                "justification": "The response lacks any recognizable joke structure, including setup, punchline, timing, or delivery. The text 'probability' does not form a coherent joke, resulting in no structure."
+            },
+            "overall": {
+                "joke_quality_score": 1.0,
+                "normalized_score": 0.2
+            }
+        }
+    ],
+    "overall_metrics": {
+        "funniness": 1.3170731707317074,
+        "cleverness": 1.4268292682926829,
+        "originality": 1.3414634146341464,
+        "structure": 1.3170731707317074,
+        "overall": 1.349390243902439,
+        "normalized_overall": 0.2698780487804876
+    },
+    "metadata": {
+        "experiment": "structure_with_prob [strict] (samples=5)",
+        "metric": "joke_quality",
+        "evaluation_framework": "Joke Quality Assessment",
+        "judge_model": "gpt-4o",
+        "num_responses": 82
+    }
+}
