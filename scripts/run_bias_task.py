@@ -18,7 +18,7 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 500,
+        'num_responses': 200,
         'num_prompts': 5,
         'target_words': 0, 
         'temperature': temperature,

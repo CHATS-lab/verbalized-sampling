@@ -142,7 +142,7 @@ class PromptFactory:
         if not strict_json and method in PromptFactory.METHOD_TO_FORMAT:
             format_type = PromptFactory.METHOD_TO_FORMAT[method]
             template = PromptTemplateFactory.get_template(task_type)
-            format_prompt = template.get_format_prompt(format_type)
+            format_prompt = template.get_format_prompt(format_type, num_samplings)
 
             system_prompt = f"{system_prompt}{format_prompt}"
             

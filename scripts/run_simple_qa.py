@@ -17,8 +17,8 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 5,
-        'num_prompts': 300, # current total: 300; total: 4326
+        'num_responses': 6,
+        'num_prompts': 10, # current total: 300; total: 4326
         'target_words': 0, 
         'temperature': temperature,
         'top_p': top_p,
@@ -84,27 +84,27 @@ if __name__ == "__main__":
         {
             'method': Method.MULTI_TURN,
             'strict_json': False,
-            'num_samples': 5,
+            'num_samples': 6,
         },
         {
             'method': Method.SEQUENCE,
             'strict_json': True,
-            'num_samples': 5,
+            'num_samples': 6,
         },
         {
             'method': Method.STRUCTURE_WITH_PROB,
             'strict_json': True,
-            'num_samples': 5,
+            'num_samples': 6,
         },
         {
             'method': Method.CHAIN_OF_THOUGHT,
             'strict_json': True,
-            'num_samples': 5,
+            'num_samples': 6,
         },
         {
             'method': Method.COMBINED,
             'strict_json': True,
-            'num_samples': 5,
+            'num_samples': 6,
             'num_samples_per_prompt': 2,
         }
     ]
@@ -131,15 +131,15 @@ if __name__ == "__main__":
     # )
 
 
-    run_method_tests(
-        task=Task.SIMPLE_QA,
-        model_name="google/gemini-2.5-flash", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
-        methods=methods,
-        metrics=["factuality"],
-        temperature=0.7,
-        top_p=1.0,
-        output_dir="method_results_simple_qa",
-    )
+    # run_method_tests(
+    #     task=Task.SIMPLE_QA,
+    #     model_name="google/gemini-2.5-flash", # google/gemini-2.5-pro, openai/gpt-4.1, anthropic/claude-4-sonnet
+    #     methods=methods,
+    #     metrics=["factuality"],
+    #     temperature=0.7,
+    #     top_p=1.0,
+    #     output_dir="method_results_simple_qa",
+    # )
 
 
     # run_method_tests(
@@ -176,6 +176,16 @@ if __name__ == "__main__":
     # run_method_tests(
     #     task=Task.SIMPLE_QA,
     #     model_name="deepseek-r1",
+    #     methods=methods,
+    #     metrics=["factuality"],
+    #     temperature=0.7,
+    #     top_p=1.0,
+    #     output_dir="method_results_simple_qa",
+    # )
+
+    # run_method_tests(
+    #     task=Task.SIMPLE_QA,
+    #     model_name="o3", # google/gemini-2.5-pro, gpt-4.1, anthropic/claude-4-sonnet
     #     methods=methods,
     #     metrics=["factuality"],
     #     temperature=0.7,
