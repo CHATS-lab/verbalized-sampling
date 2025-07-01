@@ -1,18 +1,15 @@
-from verbalized_sampling.pipeline import run_quick_comparison
-from verbalized_sampling.tasks import Task
-from verbalized_sampling.methods import Method
-from pathlib import Path
-import sys
-
-from verbalized_sampling.pipeline import Pipeline, PipelineConfig, ExperimentConfig, EvaluationConfig
+from verbalized_sampling.pipeline import run_quick_comparison, Pipeline, PipelineConfig, ExperimentConfig, EvaluationConfig
 from verbalized_sampling.tasks import Task
 from verbalized_sampling.methods import Method
 from pathlib import Path
 from typing import List, Dict, Any
+import sys
 
 def create_method_experiments(
     task: Task,
     model_name: str,
+    temperature: float,
+    top_p: float,
     methods: List[Dict[str, Any]],
 ) -> List[ExperimentConfig]:
     """Create experiments for testing specific method variations."""
@@ -24,7 +21,8 @@ def create_method_experiments(
         'num_responses': 500,
         'num_prompts': 1, # total: 145
         'target_words': 0, 
-        'temperature': 1,
+        'temperature': temperature,
+        'top_p': top_p,
         'random_seed': 42,
     }
     
@@ -45,17 +43,21 @@ def create_method_experiments(
     
     return experiments
 
+
 def run_method_tests(
     task: Task,
     model_name: str,
     methods: List[Dict[str, Any]],
     metrics: List[str], # "ngram"
+    temperature: float,
+    top_p: float,
     output_dir: str,
+    num_workers: int = 16,
 ) -> None:
     """Run tests for specific method variations."""
     print("🔬 Running Method Tests")
     
-    experiments = create_method_experiments(task, model_name, methods)
+    experiments = create_method_experiments(task, model_name, temperature, top_p, methods)
     print(f"📊 {len(experiments)} methods to test")
     
     for i, exp in enumerate(experiments, 1):
@@ -86,27 +88,114 @@ if __name__ == "__main__":
         {
             'method': Method.MULTI_TURN,
             'strict_json': False,
-            'num_samples': 10,
+            'num_samples': 20,
         },
         {
-            'method': Method.STRUCTURE,
+            'method': Method.SEQUENCE,
             'strict_json': True,
-            'num_samples': 10,
+            'num_samples': 20,
         },
         {
             'method': Method.STRUCTURE_WITH_PROB,
             'strict_json': True,
-            'num_samples': 10,
+            'num_samples': 20,
         },
+        {
+            'method': Method.CHAIN_OF_THOUGHT,
+            'strict_json': True,
+            'num_samples': 20,
+        },
+        # {
+        #     'method': Method.COMBINED,
+        #     'strict_json': True,
+        #     'num_samples': 20,
+        #     'num_samples_per_prompt': 10,
+        # }
     ]
     
+    # run_method_tests(
+    #     task=Task.STATE_NAME,
+    #     model_name="gpt-4.1-mini",
+    #     methods=methods,
+    #     metrics=["response_count"],
+    #     temperature=0.7,
+    #     top_p=1.0,    
+    #     output_dir="method_results_state_name",
+    # )
+
+
+    # run_method_tests(
+    #     task=Task.STATE_NAME,
+    #     model_name="gpt-4.1",
+    #     methods=methods,
+    #     metrics=["response_count"],
+    #     temperature=0.7,
+    #     top_p=1.0,
+    #     output_dir="method_results_state_name",
+    # )
+
+
+    # run_method_tests(
+    #     task=Task.STATE_NAME,
+    #     model_name="google/gemini-2.5-flash", 
+    #     methods=methods,
+    #     metrics=["response_count"],
+    #     temperature=0.7,
+    #     top_p=1.0,
+    #     output_dir="method_results_state_name",
+    # )
+
+
+    # run_method_tests(
+    #     task=Task.STATE_NAME,
+    #     model_name="google/gemini-2.5-pro", 
+    #     methods=methods,
+    #     metrics=["response_count"],
+    #     temperature=0.7,
+    #     top_p=1.0,
+    #     output_dir="method_results_state_name",
+    # )
+
+    
+    # run_method_tests(
+    #     task=Task.STATE_NAME,
+    #     model_name="anthropic/claude-4-sonnet", 
+    #     methods=methods,
+    #     metrics=["response_count"],
+    #     temperature=0.7,
+    #     top_p=1.0,
+    #     output_dir="method_results_state_name",
+    # )
+
     run_method_tests(
         task=Task.STATE_NAME,
-        model_name="google/gemini-2.0-flash-001", # google/gemini-2.5-pro, openai/gpt-4.1
+        model_name="o3", 
         methods=methods,
         metrics=["response_count"],
+        temperature=0.7,
+        top_p=1.0,
         output_dir="method_results_state_name",
     )
+
+    # run_method_tests(
+    #     task=Task.STATE_NAME,
+    #     model_name="llama-3.1-70b-instruct", 
+    #     methods=methods,
+    #     metrics=["response_count"],
+    #     temperature=0.7,
+    #     top_p=1.0,
+    #     output_dir="method_results_state_name",
+    # )
+
+    # run_method_tests(
+    #     task=Task.STATE_NAME,
+    #     model_name="deepseek-r1", 
+    #     methods=methods,
+    #     metrics=["response_count"],
+    #     temperature=0.7,
+    #     top_p=1.0,
+    #     output_dir="method_results_state_name",
+    # )
 
 
 # # Direct (Baseline)

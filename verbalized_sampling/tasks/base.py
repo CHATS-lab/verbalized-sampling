@@ -2,16 +2,19 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Any, Dict, List
 import json
+import ast
 from rich.progress import Progress
 from verbalized_sampling.methods import (
     PromptFactory, 
     Method,
     is_method_multi_turn,
+    is_method_combined,
     ResponseParser
 )
 import concurrent.futures
 from verbalized_sampling.llms import BaseLLM
 from verbalized_sampling.methods.schema import get_schema
+import math
 
 class BaseTask(ABC):
     """Base class for all tasks."""
@@ -22,6 +25,7 @@ class BaseTask(ABC):
                  num_responses: int = 3,
                  num_samples: int = 5,
                  num_prompts: int = 5,
+                 num_samples_per_prompt: int = 2,
                  target_words: int = 200,
                  random_seed: int = 42,
                  all_possible: bool = False,
@@ -32,6 +36,7 @@ class BaseTask(ABC):
         self.num_responses = num_responses
         self.num_samples = num_samples
         self.num_prompts = num_prompts
+        self.num_samples_per_prompt = num_samples_per_prompt
         self.target_words = target_words
         self.random_seed = random_seed
         self.all_possible = all_possible
@@ -45,12 +50,69 @@ class BaseTask(ABC):
             self.method, 
             num_samplings=self.num_samples,
             num_prompts=self.num_prompts,
+            num_samples_per_prompt=self.num_samples_per_prompt,
             target_words=self.target_words,
             random_seed=self.random_seed,
             all_possible=self.all_possible,
-            strict_json=self.strict_json
+            strict_json=self.strict_json,
         )
-    
+
+
+    def _run_combined(self, progress: Progress = None, task_id: int = None) -> List[Any]:
+        """Run combined multi-turn conversations with structured responses."""
+        initial_prompts = [prompt for prompt in self.get_prompt() for _ in range(self.num_responses)]
+        all_results = []
+        
+        num_turns = int(self.num_samples // self.num_samples_per_prompt)
+        remainder = self.num_samples % self.num_samples_per_prompt
+        
+        def _run_whole_conversation(initial_prompt: List[Dict[str, str]]):
+            chat_history = initial_prompt.copy()
+            turn_responses = []
+            global_index = 0
+            
+            def process_turn(current_prompts, num_samples):
+                nonlocal global_index
+                result = self.model._chat_with_format(current_prompts, schema=get_schema(self.method))
+                # print("Result: ", result)
+                
+                parsed_responses = ResponseParser.parse_response(self.method, result)
+                for i, response in enumerate(parsed_responses):
+                    response["index"] = global_index + i
+                
+                # print("parsed_responses: ", parsed_responses)
+                response_data = {
+                    "prompt": initial_prompt[-1]["content"],
+                    "responses": parsed_responses
+                }
+                turn_responses.append(response_data)
+                chat_history.append({"role": "assistant", "content": str(result)})
+                global_index += len(parsed_responses)
+            
+            # Process regular turns
+            for turn in range(num_turns):
+                current_prompts = (initial_prompt if turn == 0 else 
+                                 PromptFactory.get_combined_continuation(chat_history, self.num_samples_per_prompt, self.task_type, self.target_words))
+                process_turn(current_prompts, self.num_samples_per_prompt)
+            
+            # Process remainder turn
+            if remainder > 0:
+                continuation_prompt = PromptFactory.get_combined_continuation(chat_history, remainder, self.task_type, self.target_words)
+                process_turn(continuation_prompt, remainder)
+            
+            return turn_responses
+        
+        with concurrent.futures.ThreadPoolExecutor(max_workers=self.model.num_workers) as executor:
+            futures = [executor.submit(_run_whole_conversation, initial_prompt) for initial_prompt in initial_prompts]
+            for future in concurrent.futures.as_completed(futures):
+                turn_responses = future.result()
+                all_results.extend(turn_responses)
+                if progress and task_id is not None:
+                    progress.update(task_id, advance=len(turn_responses))
+        
+        return all_results
+
+
     def _run_multi_turn(
         self,
         progress: Progress = None,
@@ -67,7 +129,7 @@ class BaseTask(ABC):
                 if turn == 0:
                     current_prompts = initial_prompt
                 else:
-                    continuation_prompt = PromptFactory.get_multi_turn_continuation(chat_history)
+                    continuation_prompt = PromptFactory.get_multi_turn_continuation(chat_history, self.task_type, self.target_words)
                     current_prompts = continuation_prompt
                 # print(f"Current prompts: {current_prompts}")
                 result = self.model._chat(current_prompts)
@@ -95,6 +157,7 @@ class BaseTask(ABC):
                     progress.update(task_id, advance=len(turn_responses))
         
         return all_results
+            
 
     def run(
         self,
@@ -110,6 +173,7 @@ class BaseTask(ABC):
         print(f"  num_responses: {self.num_responses}")
         print(f"  num_samples: {self.num_samples}")
         print(f"  num_prompts: {self.num_prompts}")
+        print(f"  num_samples_per_prompt: {self.num_samples_per_prompt}")
         print(f"  target_words: {self.target_words}")
         print(f"  random_seed: {self.random_seed}")
         print(f"  max_turns: {self.max_turns}")
@@ -117,6 +181,9 @@ class BaseTask(ABC):
         # Check if this is a multi-turn method
         if is_method_multi_turn(self.method):
             return self._run_multi_turn(progress, task_id)
+        
+        if is_method_combined(self.method):
+            return self._run_combined(progress, task_id)
         
         # Original single-turn logic
         prompts = [prompt for prompt in self.get_prompt() for _ in range(self.num_responses)]

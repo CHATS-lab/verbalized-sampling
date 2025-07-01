@@ -16,7 +16,15 @@ OPENROUTER_MODELS_MAPPING = {
     # Gemini models
     "gemini-2.0-flash": "google/gemini-2.0-flash-001",
     "gemini-2.5-flash": "google/gemini-2.5-flash-preview",
-    "gemini-2.5-pro": "google/gemini-2.5-pro-preview",
+    "gemini-2.5-pro": "google/gemini-2.5-pro",
+    # OpenAI models
+    "gpt-4.1-mini": "openai/gpt-4.1-mini",
+    "gpt-4.1": "openai/gpt-4.1",
+    # meta-llama models
+    "llama-3.1-70b-instruct": "meta-llama/llama-3.1-70b-instruct",
+    # DeepSeek models
+    "deepseek-r1": "deepseek/deepseek-r1-0528",
+
 }
 
 class OpenRouterLLM(BaseLLM):
@@ -53,22 +61,36 @@ class OpenRouterLLM(BaseLLM):
 
     def _chat_with_format(self, messages: List[Dict[str, str]], schema: BaseModel) -> List[Dict[str, Any]]:
         """Chat with structured response format."""
-        if isinstance(schema, BaseModel):
-            schema = schema.model_json_schema()
-        
-        completion = self.client.chat.completions.create(
-            model=self.model_name,
-            messages=messages,
-            temperature=self.config.get("temperature", 0.7),
-            top_p=self.config.get("top_p", 0.9),
-            response_format=schema
-        )
-        
-        response = completion.choices[0].message.content
-        if response:
-            parsed_response = self._parse_response_with_schema(response, schema)
-            return parsed_response
-        return []
+        try:
+            if isinstance(schema, BaseModel):
+                schema = schema.model_json_schema()
+            
+            # print("Schema: ", schema)
+            
+            completion = self.client.chat.completions.create(
+                model=self.model_name,
+                messages=messages,
+                temperature=self.config.get("temperature", 0.7),
+                top_p=self.config.get("top_p", 0.9),
+                response_format=schema
+            )
+            
+            if completion is None or not completion.choices:
+                print(f"Error: No response from OpenRouter API for model {self.model_name}")
+                return []
+            
+            response = completion.choices[0].message.content
+            if response:
+                # print("Response: ", response)
+                parsed_response = self._parse_response_with_schema(response, schema)
+                return parsed_response
+            else:
+                print(f"Error: Empty response from OpenRouter API for model {self.model_name}")
+                return []
+                
+        except Exception as e:
+            print(f"Error in OpenRouter chat_with_format: {e}")
+            return []
 
     def _parse_response_with_schema(self, response: str, schema: BaseModel) -> List[Dict[str, Any]]:
         """Parse the response based on the provided schema."""
@@ -76,8 +98,9 @@ class OpenRouterLLM(BaseLLM):
             if isinstance(response, str):
                 parsed = json.loads(response)
                 
-                # Validate the parsed response against the schema
-                # validated_data = schema(**parsed)
+                # Handle double-escaped JSON strings (i.e., string inside a string)
+                if isinstance(parsed, str):
+                    parsed = json.loads(parsed)
                 
                 # Handle different schema types
                 if "responses" in parsed:
@@ -92,6 +115,12 @@ class OpenRouterLLM(BaseLLM):
                                 result.append({
                                     "response": resp["text"],
                                     "probability": resp["probability"]
+                                })
+                            elif isinstance(resp, dict) and "text" in resp and "confidence" in resp:
+                                # ResponseWithConfidence
+                                result.append({
+                                    "response": resp["text"],
+                                    "probability": resp["confidence"]
                                 })
                             elif isinstance(resp, dict) and "text" in resp:
                                 # Response

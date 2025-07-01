@@ -13,7 +13,6 @@ LITELLM_MODELS_MAPPING = {
     "claude-4-opus" : "anthropic/claude-opus-4-20250514",
     "claude-3.7-sonnet" : "anthropic/claude-3-7-sonnet-20250219",
     "anthropic/claude-3.7-sonnet" : "anthropic/claude-3-7-sonnet-20250219",
-    "openai/o3" : "o3",
 }
 
 
@@ -68,7 +67,9 @@ class LiteLLM(BaseLLM):
                 content = response.choices[0].message.content
                 
                 if json_schema is not None:
-                    return json.loads(content)
+                    parsed_content = json.loads(content)
+                    # print("Parsed content: ", parsed_content)
+                    return parsed_content
                 else:
                     return content
                     
