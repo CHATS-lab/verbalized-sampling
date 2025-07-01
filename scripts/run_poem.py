@@ -17,8 +17,8 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 5,
-        'num_prompts': 20, # current total: 300; total: 4326
+        'num_responses': 30,
+        'num_prompts': 100, # current total: 300; total: 4326
         'target_words': 200, 
         'temperature': temperature,
         'top_p': top_p,
@@ -67,6 +67,7 @@ def run_method_tests(
         evaluation=EvaluationConfig(metrics=metrics),
         output_base_dir=Path(f"{output_dir}/{model_basename}_{task.value}"),
         skip_existing=True,
+        num_workers=num_workers,
     )
     
     pipeline = Pipeline(config)
@@ -83,9 +84,14 @@ if __name__ == "__main__":
         },
         {
             'method': Method.MULTI_TURN,
-            'strict_json': False,
+            'strict_json': True,
             'num_samples': 5,
         },
+        # {
+        #     'method': Method.MULTI_TURN,
+        #     'strict_json': False,
+        #     'num_samples': 5,
+        # },
         {
             'method': Method.SEQUENCE,
             'strict_json': True,
@@ -96,11 +102,11 @@ if __name__ == "__main__":
             'strict_json': True,
             'num_samples': 5,
         },
-        {
-            'method': Method.CHAIN_OF_THOUGHT,
-            'strict_json': True,
-            'num_samples': 5,
-        },
+        # {
+        #     'method': Method.CHAIN_OF_THOUGHT,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        # },
         {
             'method': Method.COMBINED,
             'strict_json': True,
@@ -110,15 +116,30 @@ if __name__ == "__main__":
     ]
 
 
-    run_method_tests(
-        task=Task.POEM,
-        model_name="gpt-4.1-mini", # google/gemini-2.5-pro, gpt-4.1, anthropic/claude-4-sonnet
-        methods=methods,
-        metrics=["diversity"],
-        temperature=0.7,
-        top_p=1.0,    
-        output_dir="method_results_poem",
-    )
+    models = [
+        # "openai/gpt-4.1",
+        # "openai/gpt-4.1-mini",
+        # "google/gemini-2.5-flash",
+        # "meta-llama/llama-3.1-70b-instruct",
+        # "anthropic/claude-4-sonnet",
+        "anthropic/claude-3.7-sonnet",
+        # "google/gemini-2.5-pro",
+        # "openai/o3",
+        # "deepseek/deepseek-r1-0528",
+        # "openai/o3",
+    ]
+    for model in models:
+        model_basename = model.replace("/", "_")
+        run_method_tests(
+            task=Task.POEM,
+            model_name=model,
+            methods=methods,
+            metrics=["diversity", "ngram", "creative_writing_v3", "length"],
+            temperature=0.7,
+            top_p=1.0,
+            output_dir=f"poem_experiments_final/{model_basename}",
+            num_workers=32 if "claude" in model_basename else 128,
+        )
 
 
     # run_method_tests(

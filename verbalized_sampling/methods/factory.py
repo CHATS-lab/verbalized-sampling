@@ -144,8 +144,6 @@ class PromptFactory:
             format_prompt = template.get_format_prompt(format_type)
 
             system_prompt = f"{system_prompt}{format_prompt}"
-            
-        print("System prompt: ", system_prompt)
         
         return [
             {"role": "system", "content": system_prompt},
