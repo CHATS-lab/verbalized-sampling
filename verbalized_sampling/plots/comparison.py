@@ -198,7 +198,7 @@ class ComparisonPlotter:
                                           error_bar_type: str = "ci") -> None:
         """Create multi-subplot comparison chart with error bars."""
         
-        plt.figure(figsize=(4 * len(key_metric_names), 8))
+        plt.figure(figsize=(6 * len(key_metric_names), 8))
         
         # Enhanced colors for consistency
         colors = ['#8B8B8B', '#B8C5E1', '#5A5A5A', '#7CB8D4', '#003F7F']
