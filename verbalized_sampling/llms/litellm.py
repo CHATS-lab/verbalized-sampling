@@ -13,6 +13,9 @@ LITELLM_MODELS_MAPPING = {
     "claude-4-opus" : "anthropic/claude-opus-4-20250514",
     "claude-3.7-sonnet" : "anthropic/claude-3-7-sonnet-20250219",
     "anthropic/claude-3.7-sonnet" : "anthropic/claude-3-7-sonnet-20250219",
+    "google/gemini-2.5-pro" : "gemini/gemini-2.5-pro",
+    "google/gemini-2.5-flash" : "gemini/gemini-2.5-flash",
+    "google/gemini-2.0-flash" : "gemini/gemini-2.0-flash",
 }
 
 
@@ -45,7 +48,7 @@ class LiteLLM(BaseLLM):
         json_schema: Dict = None
     ):
         """Completion method based on the provided reference."""
-        tries = 3
+        tries = 5
         backoff = 1
         
         for i in range(tries):
