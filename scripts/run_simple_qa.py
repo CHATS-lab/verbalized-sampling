@@ -120,15 +120,15 @@ if __name__ == "__main__":
     #     output_dir="method_results_simple_qa",
     # )
 
-    # run_method_tests(
-    #     task=Task.SIMPLE_QA,
-    #     model_name="gpt-4.1", # google/gemini-2.5-pro, gpt-4.1, anthropic/claude-4-sonnet
-    #     methods=methods,
-    #     metrics=["factuality"],
-    #     temperature=0.7,
-    #     top_p=1.0,
-    #     output_dir="method_results_simple_qa",
-    # )
+    run_method_tests(
+        task=Task.SIMPLE_QA,
+        model_name="gpt-4.1", # google/gemini-2.5-pro, gpt-4.1, anthropic/claude-4-sonnet
+        methods=methods,
+        metrics=["factuality"],
+        temperature=0.7,
+        top_p=1.0,
+        output_dir="method_results_simple_qa",
+    )
 
 
     # run_method_tests(

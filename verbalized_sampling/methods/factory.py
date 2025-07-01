@@ -72,7 +72,6 @@ class PromptFactory:
             "poem": TaskType.CREATIVITY,
             "speech": TaskType.CREATIVITY,
             "story": TaskType.CREATIVITY,
-            "creative_story": TaskType.CREATIVITY,
             
             # Commonsense tasks
             "simple_qa": TaskType.COMMONSENSE,
