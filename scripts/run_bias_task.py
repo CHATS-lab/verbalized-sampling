@@ -18,7 +18,7 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 200,
+        'num_responses': 20,
         'num_prompts': 5,
         'target_words': 0, 
         'temperature': temperature,
@@ -80,59 +80,59 @@ if __name__ == "__main__":
     
     # Test multi-turn and JSON mode variations
     methods = [
-        {
-            'method': Method.DIRECT,
-            'strict_json': False,
-            'num_samples': 1,
-        },
-        {
-            'method': Method.MULTI_TURN,
-            'strict_json': False,
-            'num_samples': 20,
-        },
+        # {
+        #     'method': Method.DIRECT,
+        #     'strict_json': False,
+        #     'num_samples': 1,
+        # },
+        # {
+        #     'method': Method.MULTI_TURN,
+        #     'strict_json': False,
+        #     'num_samples': 20,
+        # },
         {
             'method': Method.SEQUENCE,
             'strict_json': True,
             'num_samples': 20,
         },
-        {
-            'method': Method.STRUCTURE_WITH_PROB,
-            'strict_json': True,
-            'num_samples': 20,
-        },
-        {
-            'method': Method.CHAIN_OF_THOUGHT,
-            'strict_json': True,
-            'num_samples': 20,
-        },
-        {
-            'method': Method.COMBINED,
-            'strict_json': True,
-            'num_samples': 20,
-            'num_samples_per_prompt': 10,
-        }
+        # {
+        #     'method': Method.STRUCTURE_WITH_PROB,
+        #     'strict_json': True,
+        #     'num_samples': 20,
+        # },
+        # {
+        #     'method': Method.CHAIN_OF_THOUGHT,
+        #     'strict_json': True,
+        #     'num_samples': 20,
+        # },
+        # {
+        #     'method': Method.COMBINED,
+        #     'strict_json': True,
+        #     'num_samples': 20,
+        #     'num_samples_per_prompt': 10,
+        # }
     ]
     
-    # run_method_tests(
-    #     task=Task.STATE_NAME,
-    #     model_name="gpt-4.1-mini",
-    #     methods=methods,
-    #     metrics=["response_count"],
-    #     temperature=0.7,
-    #     top_p=1.0,    
-    #     output_dir="method_results_bias",
-    # )
-
-
     run_method_tests(
         task=Task.STATE_NAME,
-        model_name="gpt-4.1",
+        model_name="gpt-4.1-mini",
         methods=methods,
         metrics=["response_count"],
         temperature=0.7,
-        top_p=1.0,
+        top_p=1.0,    
         output_dir="method_results_bias",
     )
+
+
+    # run_method_tests(
+    #     task=Task.STATE_NAME,
+    #     model_name="gpt-4.1",
+    #     methods=methods,
+    #     metrics=["response_count"],
+    #     temperature=0.7,
+    #     top_p=1.0,
+    #     output_dir="method_results_bias",
+    # )
 
 
     # run_method_tests(

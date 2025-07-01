@@ -40,9 +40,10 @@ class BasePromptTemplate:
         raise NotImplementedError
     
     def get_format_prompt(self, method: str, num_samplings: int) -> str:
+        print("num_samplings: ", num_samplings)
         """Get the format prompt for a specific method."""
         format_prompts = {
-            "sequence": """
+            "sequence": f"""
 Return ALL responses as a Python list of strings, in the following format:
 ["response1", "response2", "response3", ...]
 

@@ -145,7 +145,7 @@ class PromptFactory:
 
             system_prompt = f"{system_prompt}{format_prompt}"
             
-        # print("System prompt: ", system_prompt)
+        print("System prompt: ", system_prompt)
         
         return [
             {"role": "system", "content": system_prompt},
