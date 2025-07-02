@@ -238,6 +238,8 @@ class ComparisonPlotter:
                 else:
                     errors.append(0.0)
             
+            print(f"values: {values}")
+            print(f"errors: {errors}")
             # Calculate offset for grouped bars
             offset = (i - len(method_names)/2 + 0.5) * width
             
