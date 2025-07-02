@@ -301,6 +301,7 @@ class Pipeline:
                         
                     except Exception as e:
                         console.print(f"❌ {exp_name}/{metric}: Error - {str(e)}")
+                        raise e
                         evaluation_results[exp_name][metric] = None
                     
                     progress.advance(overall_task)

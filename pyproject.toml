@@ -30,6 +30,7 @@ dependencies = [
     "dedent",
     "scikit-learn",
     "litellm",
+    "google-genai",
 ]
 
 [project.optional-dependencies]

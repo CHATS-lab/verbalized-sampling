@@ -372,13 +372,13 @@ class CreativityIndexEvaluator(BaseEvaluator):
         coverage = sum(covered_flags) / len(covered_flags)
         return coverage
     
-    def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, Any]:
+    def compute_instance_metric(self, prompt: str, response: Dict) -> Dict[str, Any]:
         """Compute creativity index for a single response."""
-        tokens = self.tokenize_text(response)
+        tokens = self.tokenize_text(response['text'])
         
         if len(tokens) < self.min_ngram:
             return {
-                "response": response,
+                "response": response['text'],
                 "creativity_index": 1.0,  # High creativity for very short responses
                 "coverage": 0.0,
                 "matched_spans": [],
@@ -401,7 +401,7 @@ class CreativityIndexEvaluator(BaseEvaluator):
         avg_span_length = np.mean([span.end_index - span.start_index for span in matched_spans]) if matched_spans else 0.0
         
         return {
-            "response": response,
+            "response": response['text']    ,
             "creativity_index": float(creativity_index),
             "coverage": float(coverage),
             "matched_spans": [
