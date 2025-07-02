@@ -1,6 +1,6 @@
 from typing import Dict, List, Any, Optional
 import tiktoken
-from .base import BaseEvaluator, EvalResult
+from .base import BaseEvaluator, EvalResult, calculate_stats
 import ast
 
 class LengthEvaluator(BaseEvaluator):
@@ -9,10 +9,10 @@ class LengthEvaluator(BaseEvaluator):
         ("token_length", "violin")
     ]
     aggregate_plot_metrics = [
-        "mean_token_length"
+        "avg_token_length"
     ]
     key_plot_metrics = [
-        ("mean_token_length", "Length (Token)"),
+        ("avg_token_length", "Length (Token)"),
     ]
     
     def __init__(self, num_workers: int = 128):
@@ -39,12 +39,20 @@ class LengthEvaluator(BaseEvaluator):
         
         token_lengths = [metric["token_length"] for metric in instance_metrics]
         
+        # Calculate basic stats
+        length_stats = calculate_stats(token_lengths)
+        
         return {
-            "mean_token_length": sum(token_lengths) / len(token_lengths),
-            "min_token_length": min(token_lengths),
-            "max_token_length": max(token_lengths),
+            # Basic metrics (backward compatible)
+            "avg_token_length": length_stats["mean"],
+            "min_token_length": length_stats["min"],
+            "max_token_length": length_stats["max"],
             "total_tokens": sum(token_lengths),
-            "num_responses": len(instance_metrics)
+            "num_responses": len(instance_metrics),
+            
+            # New error statistics
+            "std_token_length": length_stats["std"],
+            "med_token_length": length_stats["median"],
         }
     
     def evaluate(self, prompts: List[str], responses: List[Dict], 

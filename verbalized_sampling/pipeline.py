@@ -302,6 +302,7 @@ class Pipeline:
                         
                     except Exception as e:
                         console.print(f"❌ {exp_name}/{metric}: Error - {str(e)}")
+                        raise e
                         evaluation_results[exp_name][metric] = None
                     
                     progress.advance(overall_task)
@@ -448,6 +449,14 @@ class Pipeline:
             'detailed_results', 'raw_responses', 'embeddings', 'similarity_matrix'
         }
         
+        # Define metrics that should show error statistics
+        ERROR_STAT_METRICS = {
+            'fluency', 'flexibility', 'originality', 'elaboration', 'overall', 'normalized_overall',
+            'f1', 'accuracy_given_attempted', 'pass_at_k_accuracy', 'top_at_k_accuracy', 
+            'first_response_accuracy', 'average_similarity', 'average_creativity_index',
+            'mean_token_length', 'average_ngram_diversity'
+        }
+        
         html = f"""
         <!DOCTYPE html>
         <html>
@@ -482,6 +491,11 @@ class Pipeline:
                 .method-tag {{ display: inline-block; background: #e0e0e0; padding: 3px 8px; border-radius: 3px; font-size: 0.8em; margin-right: 10px; }}
                 .task-tag {{ display: inline-block; background: #c8e6c9; padding: 3px 8px; border-radius: 3px; font-size: 0.8em; }}
                 pre {{ white-space: pre-wrap; word-wrap: break-word; }}
+                .error-stats {{ background: #fff3cd; padding: 10px; border-radius: 5px; border-left: 4px solid #ffc107; margin: 10px 0; }}
+                .error-stats h5 {{ margin: 0 0 10px 0; color: #856404; }}
+                .error-stats table {{ margin: 0; font-size: 0.9em; }}
+                .error-stats th, .error-stats td {{ padding: 4px 8px; border: 1px solid #ffeaa7; }}
+                .error-stats th {{ background-color: #fff8dc; }}
             </style>
         </head>
         <body>
@@ -536,52 +550,55 @@ class Pipeline:
         
         html += "</div>"
         
-        # Results summary with embedded plots
-        html += "<h2>📊 Results Summary</h2>"
-        for metric in self.config.evaluation.metrics:
-            html += f"<div class='metric-section'>"
-            html += f"<h3>{metric.title()} Results</h3>"
-            html += "<table><tr><th>Experiment</th>"
+        # Results Section with Error Statistics
+        html += "<h2>📊 Evaluation Results</h2>"
+        
+        for exp_name, exp_metrics in results.items():
+            html += f"<div class='experiment'>"
+            html += f"<h3>{exp_name}</h3>"
             
-            # Get metric keys from first result
-            first_result = None
-            for exp_name in results:
-                if metric in results[exp_name]:
-                    first_result = results[exp_name][metric]
-                    break
-            
-            if first_result:
-                # Filter out excluded metrics (long arrays/lists)
-                metric_keys = [key for key in first_result.overall_metrics.keys() 
-                              if key not in EXCLUDED_METRICS]
-                
-                for key in metric_keys:
-                    html += f"<th>{key.replace('_', ' ').title()}</th>"
-                html += "</tr>"
-                
-                for exp_name, exp_results in results.items():
-                    if metric in exp_results:
-                        result = exp_results[metric]
-                        html += f"<tr><td>{exp_name}</td>"
-                        for key in metric_keys:
-                            value = result.overall_metrics.get(key, 'N/A')
-                            if isinstance(value, (int, float)):
-                                html += f"<td class='number'>{value:.4f}</td>"
-                            else:
-                                html += f"<td>{value}</td>"
-                        html += "</tr>"
-                
-                # Add note about excluded metrics if any were filtered out
-                excluded_in_this_metric = [key for key in first_result.overall_metrics.keys() 
-                                         if key in EXCLUDED_METRICS]
-                if excluded_in_this_metric:
-                    html += f"<div class='excluded-note'>Note: Detailed arrays excluded from table: {', '.join(excluded_in_this_metric)}</div>"
+            for metric_name, result in exp_metrics.items():
+                if metric_name in EXCLUDED_METRICS:
+                    continue
                     
-            html += "</table>"
-            
-            # Embed plots for this metric
-            if metric in plot_results and plot_results[metric]:
-                html += self._embed_plots_for_metric(metric, plot_results[metric])
+                html += f"<div class='metric'>"
+                html += f"<h4>{metric_name.replace('_', ' ').title()}</h4>"
+                
+                # Create results table
+                html += "<table>"
+                html += "<tr><th>Metric</th><th>Value</th></tr>"
+                
+                for key, value in result.overall_metrics.items():
+                    if key in EXCLUDED_METRICS or key.endswith('_stats'):
+                        continue
+                    
+                    if isinstance(value, (int, float)):
+                        html += f"<tr><td>{key.replace('_', ' ').title()}</td><td class='number'>{value:.4f}</td></tr>"
+                    else:
+                        html += f"<tr><td>{key.replace('_', ' ').title()}</td><td>{str(value)}</td></tr>"
+                
+                html += "</table>"
+                
+                # Add error statistics for relevant metrics
+                for key, value in result.overall_metrics.items():
+                    if key.endswith('_stats') and key[:-6] in ERROR_STAT_METRICS:
+                        metric_base = key[:-6]  # Remove '_stats' suffix
+                        html += f"<div class='error-stats'>"
+                        html += f"<h5>📈 Error Statistics for {metric_base.replace('_', ' ').title()}</h5>"
+                        html += "<table>"
+                        html += "<tr><th>Statistic</th><th>Value</th></tr>"
+                        
+                        if isinstance(value, dict):
+                            for stat_name, stat_value in value.items():
+                                if isinstance(stat_value, (int, float)):
+                                    html += f"<tr><td>{stat_name.replace('_', ' ').title()}</td><td class='number'>{stat_value:.4f}</td></tr>"
+                                else:
+                                    html += f"<tr><td>{stat_name.replace('_', ' ').title()}</td><td>{str(stat_value)}</td></tr>"
+                        
+                        html += "</table>"
+                        html += "</div>"
+                
+                html += "</div>"
             
             html += "</div>"
         

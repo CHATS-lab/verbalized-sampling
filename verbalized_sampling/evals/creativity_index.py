@@ -59,12 +59,12 @@ class CreativityIndexEvaluator(BaseEvaluator):
         ("creativity_index", "violin")
     ]
     aggregate_plot_metrics = [
-        "average_creativity_index",
-        "average_coverage",
+        "avg_creativity_index",
+        "avg_coverage",
         "match_rate"
     ]
     key_plot_metrics = [
-        ("average_creativity_index", "Creativity (Infini-gram)"),
+        ("avg_creativity_index", "Creativity (Infini-gram)"),
     ]
 
     def __init__(self, 
@@ -372,13 +372,13 @@ class CreativityIndexEvaluator(BaseEvaluator):
         coverage = sum(covered_flags) / len(covered_flags)
         return coverage
     
-    def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, Any]:
+    def compute_instance_metric(self, prompt: str, response: Dict) -> Dict[str, Any]:
         """Compute creativity index for a single response."""
-        tokens = self.tokenize_text(response)
+        tokens = self.tokenize_text(response['text'])
         
         if len(tokens) < self.min_ngram:
             return {
-                "response": response,
+                "response": response['text'],
                 "creativity_index": 1.0,  # High creativity for very short responses
                 "coverage": 0.0,
                 "matched_spans": [],
@@ -401,7 +401,7 @@ class CreativityIndexEvaluator(BaseEvaluator):
         avg_span_length = np.mean([span.end_index - span.start_index for span in matched_spans]) if matched_spans else 0.0
         
         return {
-            "response": response,
+            "response": response['text']    ,
             "creativity_index": float(creativity_index),
             "coverage": float(coverage),
             "matched_spans": [
@@ -424,9 +424,9 @@ class CreativityIndexEvaluator(BaseEvaluator):
         """Aggregate creativity metrics across all responses."""
         if not instance_metrics:
             return {
-                "average_creativity_index": 0.0,
+                "avg_creativity_index": 0.0,
                 "std_creativity_index": 0.0,
-                "average_coverage": 0.0,
+                "avg_coverage": 0.0,
                 "std_coverage": 0.0,
                 "total_responses": 0,
                 "responses_with_matches": 0,
@@ -439,16 +439,16 @@ class CreativityIndexEvaluator(BaseEvaluator):
         responses_with_matches = sum(1 for m in instance_metrics if m["matched_spans"])
         
         return {
-            "average_creativity_index": float(np.mean(creativity_scores)),
+            "avg_creativity_index": float(np.mean(creativity_scores)),
             "std_creativity_index": float(np.std(creativity_scores)),
-            "average_coverage": float(np.mean(coverage_scores)),
+            "avg_coverage": float(np.mean(coverage_scores)),
             "std_coverage": float(np.std(coverage_scores)),
             "min_creativity_index": float(np.min(creativity_scores)),
             "max_creativity_index": float(np.max(creativity_scores)),
             "total_responses": len(instance_metrics),
             "responses_with_matches": responses_with_matches,
             "match_rate": float(responses_with_matches / len(instance_metrics)),
-            "average_span_length": float(np.mean(span_lengths)) if span_lengths else 0.0,
+            "avg_span_length": float(np.mean(span_lengths)) if span_lengths else 0.0,
             "method": self.method,
             "corpus": self.corpus,
             "min_ngram": self.min_ngram,

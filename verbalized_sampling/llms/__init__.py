@@ -7,6 +7,7 @@ from verbalized_sampling.methods import Method, is_method_structured
 from .embed import get_embedding_model
 from .litellm import LiteLLM
 from .openai import OpenAILLM
+from .google import GoogleLLM
 
 __all__ = ["get_model", "get_embedding_model"]
 
@@ -15,6 +16,7 @@ LLM_REGISTRY: Dict[str, Type[BaseLLM]] = {
     "openrouter": OpenRouterLLM,
     "litellm": LiteLLM,
     "openai": OpenAILLM,
+    "google": GoogleLLM,
 }
 
 def get_model(model_name: str, 
@@ -32,6 +34,8 @@ def get_model(model_name: str,
             model_class = LLM_REGISTRY["litellm"]
     elif "gpt" in model_name or "o3" in model_name:
         model_class = LLM_REGISTRY["openai"]
+    # elif ("gemini" in model_name) and (os.environ.get("GEMINI_API_KEY") is not None):
+    #     model_class = LLM_REGISTRY["litellm"]
     else:
         model_class = LLM_REGISTRY["vllm" if use_vllm else "openrouter"]
     

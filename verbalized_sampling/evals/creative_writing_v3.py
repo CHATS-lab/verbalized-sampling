@@ -94,15 +94,15 @@ class CreativeWritingV3Evaluator(BaseEvaluator):
         ("Average_Score", "violin")
     ]
     aggregate_plot_metrics = [
-        "Average_Score",
+        "avg_score",
     ]
     key_plot_metrics = [
-        ("Average_Score", "Quality (LLM-as-Judge)"),
+        ("avg_score", "Quality (LLM-as-Judge)"),
     ]
     
-    def __init__(self, judge_model: str = "anthropic/claude-4-sonnet", num_workers: int = 64):
+    def __init__(self, judge_model: str = "anthropic/claude-3.7-sonnet", num_workers: int = 16):
         # Reduce number of workers to 8 to avoid rate limiting since calling claude
-        super().__init__("creative_writing_v3", num_workers=32)
+        super().__init__("creative_writing_v3", num_workers=16)
         
         self.judge_model = get_model(judge_model, method="direct", config={"temperature": 0.0})
         
@@ -147,25 +147,39 @@ class CreativeWritingV3Evaluator(BaseEvaluator):
         if not filtered_metrics:
             return {}
         
+        from .base import calculate_stats
+        
         # Get all unique metric names across all instances
         all_metric_names = set()
         for metric in filtered_metrics:
             all_metric_names.update(metric.keys())
         
-        # Calculate averages for each metric
+        # Calculate averages and std for each metric
         aggregated = {}
         for metric_name in all_metric_names:
             values = [metric.get(metric_name, 0.0) for metric in filtered_metrics if metric_name in metric]
             if values:
-                avg_value = sum(values) / len(values)
+                stats = calculate_stats(values)
                 # Normalize the aggregated average
-                aggregated[f"avg_{metric_name.lower().replace(' ', '_')}"] = avg_value
+                avg_key = f"avg_{metric_name.lower().replace(' ', '_')}"
+                std_key = f"std_{metric_name.lower().replace(' ', '_')}"
+                aggregated[avg_key] = stats["mean"]
+                aggregated[std_key] = stats["std"]
 
         if aggregated:  # Only calculate average if there are aggregated metrics
-            overall_avg = sum(aggregated.values()) / len(aggregated)
-            aggregated["Average_Score"] = overall_avg
+            # Calculate overall average from the mean metrics (excluding std metrics)
+            mean_metrics = {k: v for k, v in aggregated.items() if k.startswith("avg_")}
+            if mean_metrics:
+                overall_stats = calculate_stats(list(mean_metrics.values()))
+                aggregated["avg_score"] = overall_stats["mean"]
+                aggregated["std_score"] = overall_stats["std"]
+            else:
+                aggregated["avg_score"] = 0.0
+                aggregated["std_score"] = 0.0
         else:
-            aggregated["Average_Score"] = 0.0
+            aggregated["avg_score"] = 0.0
+            aggregated["std_score"] = 0.0
+        
         return aggregated
     
     def evaluate(self, prompts: List[str], responses: List[str], 

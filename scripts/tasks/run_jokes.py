@@ -102,27 +102,34 @@ if __name__ == "__main__":
             'strict_json': True,
             'num_samples': 5,
         },
+        {
+            'method': Method.COMBINED,
+            'strict_json': True,
+            'num_samples': 5,
+            'num_samples_per_prompt': 2,
+        }
     ]
      
     models = [
-        # "openai/gpt-4.1",
-        # "openai/gpt-4.1-mini",
-        # "google/gemini-2.5-flash",
+        "openai/gpt-4.1",
+        "openai/gpt-4.1-mini",
+        "google/gemini-2.5-flash",
         # "anthropic/claude-4-sonnet",
         # "anthropic/claude-3.7-sonnet",
-        "google/gemini-2.5-pro",
+        # "google/gemini-2.5-pro",
         # "openai/o3",
         # "deepseek/deepseek-r1-0528",
+        # "meta-llama/llama-3.1-70b-instruct"
         # "openai/o3",
     ]
     for model in models:
         model_basename = model.replace("/", "_")
         run_method_tests(
-            task=Task.POEM,
+            task=Task.JOKE,
             model_name=model,
             methods=methods,
-            metrics=["diversity", "ngram", "creative_writing_v3"],
-            output_dir=f"poem_experiments_final/{model_basename}",
+            metrics=["diversity", "ngram", "joke_quality"],
+            output_dir=f"joke_experiments_final/{model_basename}",
             num_workers=32 if "claude" in model_basename else 128,
         )
     # run_method_tests(
