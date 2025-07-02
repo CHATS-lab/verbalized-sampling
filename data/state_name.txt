@@ -1,1 +1,5 @@
 Name a US State. Only provide the answer without explanation or punctuation.
+Name a National Park of the United States. Only provide the answer without explanation or punctuation.
+Name a country in Europe. Only provide the answer without explanation or punctuation.
+Name a chemical element. Only provide the answer without explanation or punctuation.
+Name a constellation recognized by the International Astronomical Union. Only provide the answer without explanation or punctuation.

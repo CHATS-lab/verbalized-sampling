@@ -144,13 +144,24 @@ if __name__ == "__main__":
 
     # run_method_tests(
     #     task=Task.POEM,
-    #     model_name="gpt-4.1", 
+    #     model_name="gpt-4.1-mini", # google/gemini-2.5-pro, gpt-4.1, anthropic/claude-4-sonnet
     #     methods=methods,
     #     metrics=["diversity"],
     #     temperature=0.7,
-    #     top_p=1.0,
+    #     top_p=1.0,    
     #     output_dir="method_results_poem",
     # )
+
+
+    run_method_tests(
+        task=Task.POEM,
+        model_name="gpt-4.1", 
+        methods=methods,
+        metrics=["diversity"],
+        temperature=0.7,
+        top_p=1.0,
+        output_dir="method_results_poem",
+    )
 
 
     # run_method_tests(
