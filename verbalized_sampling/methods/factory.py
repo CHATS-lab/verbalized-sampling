@@ -18,6 +18,14 @@ class Method(str, Enum):
     MULTI_TURN = "multi_turn"
     CHAIN_OF_THOUGHT = "chain_of_thought"
     COMBINED = "combined"
+
+    # DIRECT = "Baseline"
+    # SEQUENCE = "Sequence" 
+    # STRUCTURE = "Structure"
+    # STRUCTURE_WITH_PROB = "Verbalized Sampling"
+    # MULTI_TURN = "Multi-turn"
+    # CHAIN_OF_THOUGHT = "Verbalized Sampling (CoT)"
+    # COMBINED = "Verbalized Sampling (Combined)"
     # SELF_REFLECTION = "self_reflection"
     # TEMPERATURE_SAMPLING = "temperature_sampling"
 
@@ -144,8 +152,6 @@ class PromptFactory:
             format_prompt = template.get_format_prompt(format_type, num_samplings)
 
             system_prompt = f"{system_prompt}{format_prompt}"
-            
-        print("System prompt: ", system_prompt)
         
         return [
             {"role": "system", "content": system_prompt},

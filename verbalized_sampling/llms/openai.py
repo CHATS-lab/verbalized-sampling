@@ -24,6 +24,8 @@ GPT_MODELS_MAPPING = {
     "o3-mini": "o3-mini",
     "o3": "o3",
     "o4-mini": "o4-mini-2025-04-16",
+    "openai/o3": "o3",
+    "openai/o3-mini": "o3-mini",
 }
 
 

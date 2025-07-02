@@ -7,6 +7,7 @@ import json
 import numpy as np
 from tqdm import tqdm
 from abc import ABC
+from scipy import stats
 
 class EvalResultEncoder(json.JSONEncoder):
     """Custom JSON encoder for EvalResult."""
@@ -141,6 +142,8 @@ class BaseEvaluator(ABC):
                 total=len(prompts),
                 desc=f"Computing {self.name} metrics"
             ))
+        
+        # Use the enhanced aggregation method that includes error statistics
         overall_metrics = self.aggregate_metrics(instance_metrics)
         return EvalResult(instance_metrics, overall_metrics, metadata)
 
@@ -153,5 +156,46 @@ class BaseEvaluator(ABC):
     def load_results(cls, input_path: Union[str, Path]) -> EvalResult:
         """Load evaluation results from a file."""
         # Implementation details...
+
+def calculate_stats(values: List[float]) -> Dict[str, float]:
+    """
+    Calculate basic statistics for a list of values.
+    
+    Args:
+        values: List of numeric values
+        
+    Returns:
+        Dictionary containing mean, std, min, max, etc.
+    """
+    if not values:
+        return {
+            "mean": 0.0,
+            "std": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "median": 0.0,
+            "count": 0
+        }
+    
+    values = np.array([float(v) for v in values if v is not None and not np.isnan(v)])
+    
+    if len(values) == 0:
+        return {
+            "mean": 0.0,
+            "std": 0.0, 
+            "min": 0.0,
+            "max": 0.0,
+            "median": 0.0,
+            "count": 0
+        }
+    
+    return {
+        "mean": float(np.mean(values)),
+        "std": float(np.std(values, ddof=1)) if len(values) > 1 else 0.0,
+        "min": float(np.min(values)),
+        "max": float(np.max(values)),
+        "median": float(np.median(values)),
+        "count": len(values)
+    }
 
         

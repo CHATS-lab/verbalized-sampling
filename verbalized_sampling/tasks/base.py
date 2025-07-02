@@ -15,6 +15,7 @@ import concurrent.futures
 from verbalized_sampling.llms import BaseLLM
 from verbalized_sampling.methods.schema import get_schema
 import math
+from tqdm import tqdm
 
 class BaseTask(ABC):
     """Base class for all tasks."""
@@ -104,7 +105,7 @@ class BaseTask(ABC):
         
         with concurrent.futures.ThreadPoolExecutor(max_workers=self.model.num_workers) as executor:
             futures = [executor.submit(_run_whole_conversation, initial_prompt) for initial_prompt in initial_prompts]
-            for future in concurrent.futures.as_completed(futures):
+            for future in tqdm(concurrent.futures.as_completed(futures), total=len(futures), desc="Running combined method"):
                 turn_responses = future.result()
                 all_results.extend(turn_responses)
                 if progress and task_id is not None:
@@ -131,7 +132,6 @@ class BaseTask(ABC):
                 else:
                     continuation_prompt = PromptFactory.get_multi_turn_continuation(chat_history, self.task_type, self.target_words)
                     current_prompts = continuation_prompt
-                # print(f"Current prompts: {current_prompts}")
                 result = self.model._chat(current_prompts)
 
                 initial_prompt_content = initial_prompt[-1]["content"]
@@ -149,9 +149,8 @@ class BaseTask(ABC):
         
         with concurrent.futures.ThreadPoolExecutor(max_workers=self.model.num_workers) as executor:
             futures = [executor.submit(_run_whole_conversation, initial_prompt) for initial_prompt in initial_prompts]
-            for future in concurrent.futures.as_completed(futures):
+            for future in tqdm(concurrent.futures.as_completed(futures), total=len(futures), desc="Running multi-turn method"):
                 turn_responses = future.result()
-                # print(f"Turn responses: {turn_responses}")
                 all_results.extend(turn_responses)
                 if progress and task_id is not None:
                     progress.update(task_id, advance=len(turn_responses))

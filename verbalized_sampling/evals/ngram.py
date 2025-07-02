@@ -12,10 +12,11 @@ class NgramEvaluator(BaseEvaluator):
         ("response_length", "histogram")
     ]
     aggregate_plot_metrics = [
-        "average_rouge_l"
+        "avg_rouge_l",
+        "avg_response_length",
     ]
     key_plot_metrics = [
-        ("average_rouge_l", "N-gram (ROUGE-L)"),
+        ("avg_rouge_l", "N-gram (ROUGE-L)"),
     ]
     
     def __init__(self, num_workers: int = 128):
@@ -74,11 +75,12 @@ class NgramEvaluator(BaseEvaluator):
         """Compute ROUGE-L metrics across all responses."""
         if len(instance_metrics) <= 1:
             return {
-                "average_rouge_l": 0.0,
+                "avg_rouge_l": 0.0,
                 "min_rouge_l": 0.0,
                 "max_rouge_l": 0.0,
                 "std_rouge_l": 0.0,
-                "average_response_length": 0.0,
+                "avg_response_length": 0.0,
+                "std_response_length": 0.0, 
                 "pairwise_rouge_l_scores": []
             }
         
@@ -104,20 +106,22 @@ class NgramEvaluator(BaseEvaluator):
         if all_rouge_l_scores:
             scores_array = np.array(all_rouge_l_scores)
             metrics = {
-                "average_rouge_l": float(scores_array.mean()),
+                "avg_rouge_l": float(scores_array.mean()),
                 "min_rouge_l": float(scores_array.min()),
                 "max_rouge_l": float(scores_array.max()),
                 "std_rouge_l": float(scores_array.std()),
-                "average_response_length": float(np.mean([m["response_length"] for m in instance_metrics])),
+                "avg_response_length": float(np.mean([m["response_length"] for m in instance_metrics])),
+                "std_response_length": float(np.std([m["response_length"] for m in instance_metrics])),
                 "pairwise_rouge_l_scores": pairwise_scores
             }
         else:
             metrics = {
-                "average_rouge_l": 0.0,
+                "avg_rouge_l": 0.0,
                 "min_rouge_l": 0.0,
                 "max_rouge_l": 0.0,
                 "std_rouge_l": 0.0,
-                "average_response_length": float(np.mean([m["response_length"] for m in instance_metrics])),
+                "avg_response_length": float(np.mean([m["response_length"] for m in instance_metrics])),
+                "std_response_length": float(np.std([m["response_length"] for m in instance_metrics])),
                 "pairwise_rouge_l_scores": []
             }
         
