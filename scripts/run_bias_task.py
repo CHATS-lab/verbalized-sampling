@@ -18,7 +18,7 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 20,
+        'num_responses': 500,
         'num_prompts': 5,
         'target_words': 0, 
         'temperature': temperature,
@@ -113,15 +113,15 @@ if __name__ == "__main__":
         }
     ]
     
-    run_method_tests(
-        task=Task.STATE_NAME,
-        model_name="gpt-4.1-mini",
-        methods=methods,
-        metrics=["response_count"],
-        temperature=0.7,
-        top_p=1.0,    
-        output_dir="method_results_bias",
-    )
+    # run_method_tests(
+    #     task=Task.STATE_NAME,
+    #     model_name="gpt-4.1-mini",
+    #     methods=methods,
+    #     metrics=["response_count"],
+    #     temperature=0.7,
+    #     top_p=1.0,    
+    #     output_dir="method_results_bias",
+    # )
 
 
     # run_method_tests(
@@ -177,15 +177,15 @@ if __name__ == "__main__":
     #     output_dir="method_results_bias",
     # )
 
-    # run_method_tests(
-    #     task=Task.STATE_NAME,
-    #     model_name="llama-3.1-70b-instruct", 
-    #     methods=methods,
-    #     metrics=["response_count"],
-    #     temperature=0.7,
-    #     top_p=1.0,
-    #     output_dir="method_results_bias",
-    # )
+    run_method_tests(
+        task=Task.STATE_NAME,
+        model_name="llama-3.1-70b-instruct", 
+        methods=methods,
+        metrics=["response_count"],
+        temperature=0.7,
+        top_p=1.0,
+        output_dir="method_results_bias",
+    )
 
     # run_method_tests(
     #     task=Task.STATE_NAME,

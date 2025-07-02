@@ -145,7 +145,7 @@ class PromptFactory:
 
             system_prompt = f"{system_prompt}{format_prompt}"
             
-        # print("System prompt: ", system_prompt)
+        print("System prompt: ", system_prompt)
         
         return [
             {"role": "system", "content": system_prompt},
@@ -158,7 +158,7 @@ class PromptFactory:
         task_type = PromptFactory._get_task_type_from_task_name(task)
         template = PromptTemplateFactory.get_template(task_type)
         continuation_prompt = template.get_continue_prompt(num_samplings=1, target_words=target_words)
-        # print("Continuation prompt: ", continuation_prompt)
+        print("Continuation prompt: ", continuation_prompt)
         
         return chat_history + [{"role": "user", "content": continuation_prompt}]
 
@@ -168,7 +168,7 @@ class PromptFactory:
         task_type = PromptFactory._get_task_type_from_task_name(task)
         template = PromptTemplateFactory.get_template(task_type)
         continuation_prompt = template.get_continue_prompt(num_samplings=num_samplings_per_prompt, target_words=target_words)
-        # print("Continuation prompt: ", continuation_prompt)
+        print("Continuation prompt: ", continuation_prompt)
         
         return chat_history + [{"role": "user", "content": continuation_prompt}]
     

@@ -131,7 +131,7 @@ class FactualityEvaluator(BaseEvaluator):
     def __init__(self, judge_model: str = "gpt-4.1", num_workers: int = 64):
         super().__init__("factuality", num_workers=num_workers)
         model_config = {
-            "temperature": 0.1,
+            "temperature": 0.0,
         }
         self.judge_model = get_model(judge_model, method="direct", config=model_config, strict_json=True)
         self.df = pd.read_csv("https://openaipublic.blob.core.windows.net/simple-evals/simple_qa_test_set.csv")
