@@ -18,11 +18,12 @@ def create_method_experiments(
         'task': task,
         'model_name': model_name,
         'num_responses': 30,
-        'num_prompts': 100, # current total: 300; total: 4326
+        'num_prompts': 10, # current total: 300; total: 4326
         'target_words': 200, 
         'temperature': temperature,
         'top_p': top_p,
         'random_seed': 42,
+        'use_vllm': True, # Use litellm for all models
     }
     
     experiments = []
@@ -82,37 +83,37 @@ if __name__ == "__main__":
             'strict_json': False,
             'num_samples': 1,
         },
-        {
-            'method': Method.MULTI_TURN,
-            'strict_json': True,
-            'num_samples': 5,
-        },
         # {
         #     'method': Method.MULTI_TURN,
-        #     'strict_json': False,
+        #     'strict_json': True,
         #     'num_samples': 5,
         # },
-        {
-            'method': Method.SEQUENCE,
-            'strict_json': True,
-            'num_samples': 5,
-        },
-        {
-            'method': Method.STRUCTURE_WITH_PROB,
-            'strict_json': True,
-            'num_samples': 5,
-        },
-        {
-            'method': Method.CHAIN_OF_THOUGHT,
-            'strict_json': True,
-            'num_samples': 5,
-        },
-        {
-            'method': Method.COMBINED,
-            'strict_json': True,
-            'num_samples': 5,
-            'num_samples_per_prompt': 2,
-        }
+        # # {
+        # #     'method': Method.MULTI_TURN,
+        # #     'strict_json': False,
+        # #     'num_samples': 5,
+        # # },
+        # {
+        #     'method': Method.SEQUENCE,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        # },
+        # {
+        #     'method': Method.STRUCTURE_WITH_PROB,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        # },
+        # {
+        #     'method': Method.CHAIN_OF_THOUGHT,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        # },
+        # {
+        #     'method': Method.COMBINED,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        #     'num_samples_per_prompt': 2,
+        # }
     ]
 
 
@@ -120,8 +121,8 @@ if __name__ == "__main__":
         # "openai/gpt-4.1",
         # "openai/gpt-4.1-mini",
         # "google/gemini-2.5-flash",
+        # # "meta-llama/llama-3.1-70b-instruct",
         "meta-llama/Llama-3.1-70B-Instruct",
-        # "meta-llama/llama-3.3-70b-instruct",
         # "anthropic/claude-4-sonnet",
         # "google/gemini-2.5-pro",
         # "anthropic/claude-3.7-sonnet",
@@ -138,7 +139,7 @@ if __name__ == "__main__":
             metrics=["diversity", "ngram", "creative_writing_v3", "length"],
             temperature=0.7,
             top_p=1.0,
-            output_dir=f"poem_experiments_final/{model_basename}",
+            output_dir=f"poem_experiments_test/{model_basename}",
             num_workers=16 if "claude" in model_basename else 128,
         )
 

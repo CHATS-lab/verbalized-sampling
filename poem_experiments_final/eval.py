@@ -4,7 +4,7 @@ import numpy as np
 for model in ["anthropic/claude-4-sonnet", 
               "google/gemini-2.5-pro", 
               "openai/o3",
-              "meta-llama/llama-3.1-70b-instruct",
+              "meta-llama/Llama-3.3-70B-Instruct",
               "google/gemini-2.5-flash",
                 "anthropic/claude-3.7-sonnet",
                 "deepseek/deepseek-r1-0528",
