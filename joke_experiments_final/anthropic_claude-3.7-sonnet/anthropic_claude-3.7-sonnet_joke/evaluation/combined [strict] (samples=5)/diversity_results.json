@@ -1,0 +1,1514 @@
+{
+  "instance_metrics": [
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 11,
+      "vocabulary_richness": 1.0,
+      "response": "I'm reading a book on anti-gravity. It's impossible to put down.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why don't scientists trust atoms? Because they make up everything.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 12,
+      "vocabulary_richness": 0.9230769230769231,
+      "response": "I started a band called 999 Megabytes. We haven't gotten a gig yet.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 18,
+      "unique_words": 17,
+      "vocabulary_richness": 0.9444444444444444,
+      "response": "I asked the librarian if the library had any books on paranoia. She whispered, 'They're right behind you...'",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 13,
+      "vocabulary_richness": 1.0,
+      "response": "I was going to tell a time-traveling joke, but you didn't like it.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 9,
+      "unique_words": 9,
+      "vocabulary_richness": 1.0,
+      "response": "The rotation of the earth really makes my day.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 12,
+      "vocabulary_richness": 0.8571428571428571,
+      "response": "I'd tell you a chemistry joke, but I know I wouldn't get a reaction.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 11,
+      "vocabulary_richness": 1.0,
+      "response": "I'm reading a book on anti-gravity. It's impossible to put down.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why don't scientists trust atoms? Because they make up everything.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 11,
+      "vocabulary_richness": 1.0,
+      "response": "I have a photographic memory, but it was never fully developed.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 13,
+      "vocabulary_richness": 1.0,
+      "response": "Parallel lines have so much in common. It's a shame they'll never meet.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 17,
+      "unique_words": 17,
+      "vocabulary_richness": 1.0,
+      "response": "I asked the librarian if they had any books on paranoia. She whispered, 'They're right behind you...'",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 24,
+      "unique_words": 23,
+      "vocabulary_richness": 0.9583333333333334,
+      "response": "My vocabulary has improved so much since I started using thesaurus.com. Now I'm not just happy about it, I'm ecstatic, elated, euphoric, and enthusiastic.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 12,
+      "vocabulary_richness": 0.8571428571428571,
+      "response": "I'd tell you a chemistry joke, but I know I wouldn't get a reaction.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 20,
+      "unique_words": 20,
+      "vocabulary_richness": 1.0,
+      "response": "Why did the potato go to therapy? Because it had too many eyes but still couldn't see its own value.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 23,
+      "unique_words": 22,
+      "vocabulary_richness": 0.9565217391304348,
+      "response": "I told my wife she should embrace her mistakes. She gave me a hug and said, 'I love you too, you couch potato.'",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 15,
+      "vocabulary_richness": 0.9375,
+      "response": "What do you call a potato that's always looking for a fight? A tater tot-ally aggressive!",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 20,
+      "unique_words": 18,
+      "vocabulary_richness": 0.9,
+      "response": "Scientists have discovered a potato that can tell jokes. They're calling it a com-medi-yam, but it's just a spud-dering mess.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 8,
+      "unique_words": 8,
+      "vocabulary_richness": 1.0,
+      "response": "What's a potato's favorite type of music? Mash-ups!",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 11,
+      "vocabulary_richness": 1.0,
+      "response": "I'm reading a book on anti-gravity. It's impossible to put down.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why don't scientists trust atoms? Because they make up everything.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 12,
+      "vocabulary_richness": 0.9230769230769231,
+      "response": "I started a band called 999 Megabytes. We haven't gotten a gig yet.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 13,
+      "vocabulary_richness": 1.0,
+      "response": "I was going to tell a time-traveling joke, but you didn't like it.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 13,
+      "vocabulary_richness": 1.0,
+      "response": "Parallel lines have so much in common. It's a shame they'll never meet.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 17,
+      "unique_words": 17,
+      "vocabulary_richness": 1.0,
+      "response": "I asked the librarian if they had any books on paranoia. She whispered, 'They're right behind you...'",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 12,
+      "vocabulary_richness": 0.9230769230769231,
+      "response": "I'm on a seafood diet. Every time I see food, I eat it.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 20,
+      "unique_words": 19,
+      "vocabulary_richness": 0.95,
+      "response": "I told my coffee mug it was getting too attached to me. It said, 'Don't worry, I can handle it.'",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 11,
+      "vocabulary_richness": 1.0,
+      "response": "Why did the coffee file a police report? It got mugged!",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 19,
+      "unique_words": 19,
+      "vocabulary_richness": 1.0,
+      "response": "I tried to break up with coffee once, but it was an instant mistake. We're still brewing a relationship.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "Scientists have discovered that coffee has feelings. It's just really good at espresso-ing them.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 32,
+      "unique_words": 30,
+      "vocabulary_richness": 0.9375,
+      "response": "I've been drinking so much coffee lately that I started vibrating. My doctor said I need to cut back, but I told him that's just my way of burning calories without exercise.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 12,
+      "vocabulary_richness": 0.9230769230769231,
+      "response": "Why did the potato cross the road? Because he saw a fork ahead!",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 16,
+      "vocabulary_richness": 1.0,
+      "response": "I just watched a documentary about how potatoes are grown. It was quite down to earth.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 13,
+      "vocabulary_richness": 1.0,
+      "response": "What do you call a potato that's always looking for trouble? An agi-tater!",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 13,
+      "vocabulary_richness": 0.9285714285714286,
+      "response": "Scientists have discovered a potato that can tell jokes. They're calling it a commen-tater.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "My potato started reciting Shakespeare. I think it's a spec-tater.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 21,
+      "unique_words": 19,
+      "vocabulary_richness": 0.9047619047619048,
+      "response": "I tried to take a photo of a potato wearing sunglasses, but the quality was terrible. It was just too starchy.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 12,
+      "unique_words": 12,
+      "vocabulary_richness": 1.0,
+      "response": "Potatoes make terrible basketball players. They always get mashed in the paint.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 8,
+      "unique_words": 8,
+      "vocabulary_richness": 1.0,
+      "response": "What's a potato's favorite type of music? Mash-ups!",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why don't scientists trust atoms? Because they make up everything.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 11,
+      "vocabulary_richness": 1.0,
+      "response": "I'm reading a book on anti-gravity. It's impossible to put down.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 17,
+      "unique_words": 15,
+      "vocabulary_richness": 0.8823529411764706,
+      "response": "I used to be a baker, but I couldn't make enough dough. Also, I kept getting battered.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 13,
+      "vocabulary_richness": 1.0,
+      "response": "Parallel lines have so much in common. It's a shame they'll never meet.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 10,
+      "vocabulary_richness": 0.9090909090909091,
+      "response": "I'm terrified of elevators, so I'm taking steps to avoid them.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 21,
+      "unique_words": 20,
+      "vocabulary_richness": 0.9523809523809523,
+      "response": "The scarecrow won an award for being outstanding in his field. He was just doing what he was raised to do.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 12,
+      "vocabulary_richness": 0.9230769230769231,
+      "response": "I'm on a seafood diet. Every time I see food, I eat it.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 13,
+      "vocabulary_richness": 1.0,
+      "response": "Why don't potatoes ever get lost? Because they always keep their eyes peeled!",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 13,
+      "vocabulary_richness": 0.9285714285714286,
+      "response": "I started a band called '1023 Megabytes'... but we haven't got a gig yet.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 23,
+      "unique_words": 22,
+      "vocabulary_richness": 0.9565217391304348,
+      "response": "What did the potato say to its date? 'I find you a-peeling, but I'm really just a spec-tater in the game of love.'",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 20,
+      "unique_words": 19,
+      "vocabulary_richness": 0.95,
+      "response": "Scientists have discovered that potatoes have the same DNA structure as humans. They're just a little more down to earth.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 25,
+      "unique_words": 23,
+      "vocabulary_richness": 0.92,
+      "response": "I tried to make mashed potatoes for dinner, but they kept saying 'please stop, you're hurting us!' I guess they were just being too sensitive.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 13,
+      "vocabulary_richness": 1.0,
+      "response": "Why don't potatoes ever get lost? Because they always keep their eyes peeled!",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 17,
+      "unique_words": 15,
+      "vocabulary_richness": 0.8823529411764706,
+      "response": "I was going to make a potato joke, but I was afraid you might find it half-baked.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 15,
+      "vocabulary_richness": 1.0,
+      "response": "What do you call a potato that's afraid to jump into boiling water? A hesi-tater!",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 19,
+      "unique_words": 18,
+      "vocabulary_richness": 0.9473684210526315,
+      "response": "Scientists have discovered that potatoes have the same emotional range as humans. They're just better at mashin' their feelings.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 19,
+      "unique_words": 18,
+      "vocabulary_richness": 0.9473684210526315,
+      "response": "I told my potato to stop being so negative, but it just kept saying 'I yam what I yam.'",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 21,
+      "unique_words": 19,
+      "vocabulary_richness": 0.9047619047619048,
+      "response": "I told my coffee mug it was getting too attached to me. It said it just couldn't handle being without me.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 11,
+      "vocabulary_richness": 1.0,
+      "response": "Why did the coffee file a police report? It got mugged.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 15,
+      "vocabulary_richness": 0.9375,
+      "response": "I'm on a seafood diet when it comes to coffee. I see coffee, I drink it.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "Scientists have discovered that coffee has feelings. It's just really good at expressing itself.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 15,
+      "vocabulary_richness": 1.0,
+      "response": "My coffee maker and I had a fight this morning. It kept dripping with sarcasm.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 23,
+      "unique_words": 21,
+      "vocabulary_richness": 0.9130434782608695,
+      "response": "I've been trying to break up with coffee, but it's been a bitter end. It keeps saying 'we're grounds for a good relationship.'",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 28,
+      "unique_words": 25,
+      "vocabulary_richness": 0.8928571428571429,
+      "response": "Coffee is like quantum physics - it both exists and doesn't exist in my cup simultaneously until I look at it in the morning, then it immediately disappears.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 25,
+      "unique_words": 23,
+      "vocabulary_richness": 0.92,
+      "response": "I asked my coffee where it's been all my life, and it replied, 'Waiting for you to percolate up the courage to ask me out.'",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 26,
+      "unique_words": 22,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "I told my coffee mug it was getting old, but it just replied 'I'm just getting a little stained with age, unlike you who's getting wrinkles.'",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 19,
+      "unique_words": 19,
+      "vocabulary_richness": 1.0,
+      "response": "Why don't coffee beans ever get into arguments? Because they know how to espresso themselves without getting too steamed.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 17,
+      "unique_words": 15,
+      "vocabulary_richness": 0.8823529411764706,
+      "response": "I tried to make coffee this morning but I couldn't get started without having my coffee first.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 31,
+      "unique_words": 30,
+      "vocabulary_richness": 0.967741935483871,
+      "response": "Scientists have discovered that people who drink coffee are at a lower risk of depression. Probably because after spending $7 on a latte, you're too broke to care about anything else.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 12,
+      "unique_words": 12,
+      "vocabulary_richness": 1.0,
+      "response": "My coffee was feeling sad, so I told it to perk up.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 15,
+      "vocabulary_richness": 0.9375,
+      "response": "I named my coffee 'Wifi' because without it I have no connection to the outside world.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 29,
+      "unique_words": 26,
+      "vocabulary_richness": 0.896551724137931,
+      "response": "Coffee is like a relationship - it starts out hot and steamy, but eventually it just leaves you bitter and with trust issues when it goes cold on you.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 19,
+      "unique_words": 16,
+      "vocabulary_richness": 0.8421052631578947,
+      "response": "I like my coffee how I like my humor - dark, strong, and making everyone around me slightly uncomfortable.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why don't scientists trust atoms? Because they make up everything!",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 15,
+      "vocabulary_richness": 0.9375,
+      "response": "What's the best thing about Switzerland? I don't know, but the flag is a big plus.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 11,
+      "vocabulary_richness": 1.0,
+      "response": "I'm reading a book on anti-gravity. It's impossible to put down!",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 21,
+      "unique_words": 19,
+      "vocabulary_richness": 0.9047619047619048,
+      "response": "Why did the quantum physicist cross the road? They didn't. They were simultaneously on both sides and neither side until observed.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 17,
+      "unique_words": 17,
+      "vocabulary_richness": 1.0,
+      "response": "I asked the librarian if they had any books on paranoia. She whispered, 'They're right behind you...'",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 8,
+      "vocabulary_richness": 0.8,
+      "response": "Time flies like an arrow. Fruit flies like a banana.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 9,
+      "unique_words": 9,
+      "vocabulary_richness": 1.0,
+      "response": "What do you call a fake noodle? An impasta!",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why don't scientists trust atoms? Because they make up everything!",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 15,
+      "vocabulary_richness": 0.9375,
+      "response": "What's the best thing about Switzerland? I don't know, but the flag is a big plus.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 13,
+      "vocabulary_richness": 1.0,
+      "response": "I was going to tell a time-traveling joke, but you didn't like it.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 13,
+      "vocabulary_richness": 1.0,
+      "response": "Parallel lines have so much in common. It's a shame they'll never meet.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 17,
+      "unique_words": 17,
+      "vocabulary_richness": 1.0,
+      "response": "I asked the librarian if she had any books on paranoia. She whispered, 'They're right behind you...'",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 21,
+      "unique_words": 20,
+      "vocabulary_richness": 0.9523809523809523,
+      "response": "What's a quantum physicist's favorite dinosaur? A Schrodingersaurus - it's both extinct and not extinct until you open the fossil record.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 18,
+      "unique_words": 18,
+      "vocabulary_richness": 1.0,
+      "response": "I just found out my friend is addicted to drinking brake fluid. He says he can stop anytime.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 21,
+      "unique_words": 19,
+      "vocabulary_richness": 0.9047619047619048,
+      "response": "I told my coffee mug it was getting too attached to me. It said it just couldn't handle being without me.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 11,
+      "vocabulary_richness": 1.0,
+      "response": "Why did the coffee file a police report? It got mugged.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 12,
+      "unique_words": 12,
+      "vocabulary_richness": 1.0,
+      "response": "I tried to make coffee underwater once. It was a total drip.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 15,
+      "vocabulary_richness": 1.0,
+      "response": "Scientists have discovered that coffee has feelings. They know this because it's always getting depresso.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 27,
+      "unique_words": 25,
+      "vocabulary_richness": 0.9259259259259259,
+      "response": "My coffee warned me not to visit the doctor. Apparently, it heard the doctor always tells people to cut down on caffeine. Talk about grounds for concern!",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 29,
+      "unique_words": 26,
+      "vocabulary_richness": 0.896551724137931,
+      "response": "I've been drinking so much coffee lately that when I donate blood, the nurse puts a coffee filter on the IV line and serves it to the waiting room.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 25,
+      "unique_words": 25,
+      "vocabulary_richness": 1.0,
+      "response": "Coffee is like a relationship - it keeps me awake all night and makes my heart beat faster, but I still can't live without it.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 21,
+      "unique_words": 21,
+      "vocabulary_richness": 1.0,
+      "response": "My coffee is like my coding skills - both function best after several tries and usually require debugging in the morning.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 13,
+      "vocabulary_richness": 1.0,
+      "response": "Why don't potatoes ever get lost? Because they always keep their eyes peeled!",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 15,
+      "vocabulary_richness": 0.9375,
+      "response": "I started a band called '1023 Megabytes'... we haven't gotten a gig yet, but we're potato.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 13,
+      "vocabulary_richness": 0.9285714285714286,
+      "response": "What do you call a potato that's always looking for a fight? An agi-tater!",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 13,
+      "vocabulary_richness": 0.9285714285714286,
+      "response": "Scientists have discovered a potato that can tell jokes. They're calling it a commen-tater.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 22,
+      "unique_words": 20,
+      "vocabulary_richness": 0.9090909090909091,
+      "response": "Time flies like an arrow. Fruit flies like a banana. And potato flies? That's when you really need to clean your kitchen.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 20,
+      "unique_words": 19,
+      "vocabulary_richness": 0.95,
+      "response": "I asked my potato what it wanted to be when it grew up. It said, 'I don't know, mash happens.'",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 13,
+      "vocabulary_richness": 0.9285714285714286,
+      "response": "What's a potato's favorite type of horror movie? Anything with a good slice-and-dice scene.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 23,
+      "unique_words": 21,
+      "vocabulary_richness": 0.9130434782608695,
+      "response": "I tried to make a potato battery for my science project, but it didn't work. Guess you could say it was a spud-dud.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 24,
+      "unique_words": 21,
+      "vocabulary_richness": 0.875,
+      "response": "I told my coffee mug it was getting too attached to me. It said it just couldn't help it, I was its daily grind.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 28,
+      "unique_words": 26,
+      "vocabulary_richness": 0.9285714285714286,
+      "response": "Scientists have discovered that drinking too much coffee can make you jump time. One minute it's 9 AM, and suddenly it's 3 PM and you've sent 47 emails.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 15,
+      "vocabulary_richness": 1.0,
+      "response": "Why did the coffee file a police report? Because it got mugged every single morning.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 34,
+      "unique_words": 30,
+      "vocabulary_richness": 0.8823529411764706,
+      "response": "Coffee is like a relationship - it starts out hot and steamy, but if you don't pay attention, it gets cold and bitter. Unlike relationships though, you can just microwave coffee and try again.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 26,
+      "unique_words": 23,
+      "vocabulary_richness": 0.8846153846153846,
+      "response": "I asked my coffee where it wanted to go on vacation. It said it just wanted to take a breather and be less grounded for once.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why don't scientists trust atoms? Because they make up everything!",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 19,
+      "unique_words": 14,
+      "vocabulary_richness": 0.7368421052631579,
+      "response": "What's the difference between a poorly dressed man on a trampoline and a well-dressed man on a trampoline? Attire.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 6,
+      "unique_words": 6,
+      "vocabulary_richness": 1.0,
+      "response": "I've invented a new word! Plagiarism.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 17,
+      "unique_words": 17,
+      "vocabulary_richness": 1.0,
+      "response": "I asked the librarian if they had any books on paranoia. She whispered, 'They're right behind you...'",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why don't scientists trust atoms? Because they make up everything!",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 11,
+      "vocabulary_richness": 1.0,
+      "response": "What do you call a fish with no eyes? A fsh!",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 6,
+      "unique_words": 6,
+      "vocabulary_richness": 1.0,
+      "response": "I've invented a new word: plagiarism.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 26,
+      "unique_words": 24,
+      "vocabulary_richness": 0.9230769230769231,
+      "response": "I asked the gym instructor if he could teach me to do the splits. He replied, 'How flexible are you?' I said, 'I can't make Tuesdays.'",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 11,
+      "vocabulary_richness": 1.0,
+      "response": "I'm reading a book on anti-gravity. It's impossible to put down.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why don't scientists trust atoms? Because they make up everything.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 12,
+      "vocabulary_richness": 0.9230769230769231,
+      "response": "I started a band called 999 Megabytes. We haven't gotten a gig yet.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 12,
+      "vocabulary_richness": 0.8,
+      "response": "I would tell you a chemistry joke, but I know I wouldn't get a reaction.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 25,
+      "unique_words": 25,
+      "vocabulary_richness": 1.0,
+      "response": "I've been trying to come up with a joke about Schr\u00f6dinger's cat, but I can't decide if it's funny or not until you observe it.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 14,
+      "vocabulary_richness": 0.875,
+      "response": "My vocabulary has been getting ambidextrous lately. On the other hand, it's also been getting sinister.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "I'm on a whiskey diet. I've lost three days already.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 13,
+      "vocabulary_richness": 1.0,
+      "response": "Why don't potatoes ever get lost? Because they always keep their eyes peeled!",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 15,
+      "vocabulary_richness": 1.0,
+      "response": "I entered my potato in a beauty contest. It didn't win, but it got mashed.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 21,
+      "unique_words": 21,
+      "vocabulary_richness": 1.0,
+      "response": "What did the potato say to its valentine? I only have eyes for you, and about 8 of them at that.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 31,
+      "unique_words": 30,
+      "vocabulary_richness": 0.967741935483871,
+      "response": "Scientists have discovered that potatoes have the same DNA structure as introverts. They both do their best work underground and get uncomfortable when someone tries to expose them before they're ready.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 28,
+      "unique_words": 24,
+      "vocabulary_richness": 0.8571428571428571,
+      "response": "I asked my potato what it wanted to be when it grew up. It said, 'I'm not sure, but I'm definitely not going to be a couch potato!'",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 11,
+      "vocabulary_richness": 1.0,
+      "response": "I'm reading a book on anti-gravity. It's impossible to put down.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why don't scientists trust atoms? Because they make up everything.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 11,
+      "vocabulary_richness": 1.0,
+      "response": "I have a photographic memory, but it was never fully developed.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 13,
+      "vocabulary_richness": 1.0,
+      "response": "Parallel lines have so much in common. It's a shame they'll never meet.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 12,
+      "vocabulary_richness": 0.9230769230769231,
+      "response": "I started a band called 999 Megabytes. We haven't gotten a gig yet.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 21,
+      "unique_words": 19,
+      "vocabulary_richness": 0.9047619047619048,
+      "response": "The rotation of the earth really makes my day. The revolution around the sun is what keeps me going all year.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 12,
+      "vocabulary_richness": 0.8571428571428571,
+      "response": "I'd tell you a chemistry joke, but I know I wouldn't get a reaction.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why do programmers prefer dark mode? Because light attracts bugs!",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 15,
+      "vocabulary_richness": 0.9375,
+      "response": "I was going to tell you a joke about UDP, but you might not get it.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 15,
+      "vocabulary_richness": 1.0,
+      "response": "Why was the JavaScript developer sad? Because he didn't know how to 'null' his feelings.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 18,
+      "unique_words": 17,
+      "vocabulary_richness": 0.9444444444444444,
+      "response": "A SQL query walks into a bar, walks up to two tables and asks, 'Can I join you?'",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 19,
+      "unique_words": 19,
+      "vocabulary_richness": 1.0,
+      "response": "I've been trying to come up with a programming joke in Assembly, but it's too low-level for most people.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 23,
+      "unique_words": 23,
+      "vocabulary_richness": 1.0,
+      "response": "Why did the quantum computer go to therapy? It had too many entanglement issues and couldn't stop being in multiple states at once.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 25,
+      "unique_words": 24,
+      "vocabulary_richness": 0.96,
+      "response": "My code doesn't have bugs. It just develops random unexpected features that happen to look exactly like bugs would if they existed, which they don't.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 15,
+      "vocabulary_richness": 1.0,
+      "response": "Why do programmers always mix up Christmas and Halloween? Because Oct 31 == Dec 25.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why do programmers prefer dark mode? Because light attracts bugs!",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 15,
+      "vocabulary_richness": 0.9375,
+      "response": "I was going to tell you a joke about UDP, but you might not get it.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 18,
+      "unique_words": 17,
+      "vocabulary_richness": 0.9444444444444444,
+      "response": "A SQL query walks into a bar, walks up to two tables and asks, 'Can I join you?'",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 16,
+      "vocabulary_richness": 1.0,
+      "response": "Why did the functional programmer get thrown out of school? Because they refused to take classes.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 15,
+      "vocabulary_richness": 0.9375,
+      "response": "How many programmers does it take to change a light bulb? None, that's a hardware problem.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 13,
+      "vocabulary_richness": 0.8666666666666667,
+      "response": "I named my dog 'Exception' so I can tell people I have Exception handling experience.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "Why don't programmers like nature? It has too many bugs and no debugging tool.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 15,
+      "vocabulary_richness": 1.0,
+      "response": "Why was the JavaScript developer sad? Because he didn't know how to 'null' his feelings.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why do programmers prefer dark mode? Because light attracts bugs!",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 15,
+      "vocabulary_richness": 0.9375,
+      "response": "I was going to tell you a joke about UDP, but you might not get it.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 15,
+      "vocabulary_richness": 1.0,
+      "response": "Why was the JavaScript developer sad? Because he didn't know how to 'null' his feelings.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 17,
+      "unique_words": 16,
+      "vocabulary_richness": 0.9411764705882353,
+      "response": "I've been trying to come up with a programming pun, but it's hard to function under pressure.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 15,
+      "vocabulary_richness": 1.0,
+      "response": "Why do programmers always mix up Christmas and Halloween? Because Oct 31 == Dec 25.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 21,
+      "unique_words": 19,
+      "vocabulary_richness": 0.9047619047619048,
+      "response": "I told my coffee mug it was getting too attached to me. It said it just couldn't handle being without me.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 11,
+      "vocabulary_richness": 1.0,
+      "response": "Why did the coffee file a police report? It got mugged!",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 17,
+      "unique_words": 16,
+      "vocabulary_richness": 0.9411764705882353,
+      "response": "I'm on a seafood diet when it comes to coffee. I see coffee, and I drink it.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 26,
+      "unique_words": 25,
+      "vocabulary_richness": 0.9615384615384616,
+      "response": "Scientists have discovered that coffee contains trace amounts of a chemical that makes people believe they're funny. Unfortunately, the effect wears off before their coworkers arrive.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 15,
+      "vocabulary_richness": 1.0,
+      "response": "My coffee and I are like a cult - we have daily grounds for worship.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 17,
+      "unique_words": 16,
+      "vocabulary_richness": 0.9411764705882353,
+      "response": "I named my coffee bean 'Usain Bolt' because it's always running through my system at record speeds.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 33,
+      "unique_words": 31,
+      "vocabulary_richness": 0.9393939393939394,
+      "response": "Coffee is like a therapist - it listens to all my problems without interrupting, then helps me solve them one sip at a time. Except it costs $5 instead of $150 per session.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 33,
+      "unique_words": 30,
+      "vocabulary_richness": 0.9090909090909091,
+      "response": "I've been trying to break up with coffee, but it's a brew-tal relationship. Every time I say it's over, it keeps pulling me back with its rich, aromatic promises of a better morning.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why do programmers prefer dark mode? Because light attracts bugs!",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 15,
+      "vocabulary_richness": 0.9375,
+      "response": "I was going to tell you a joke about UDP, but you might not get it.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 18,
+      "unique_words": 17,
+      "vocabulary_richness": 0.9444444444444444,
+      "response": "A SQL query walks into a bar, walks up to two tables and asks, 'Can I join you?'",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 19,
+      "unique_words": 17,
+      "vocabulary_richness": 0.8947368421052632,
+      "response": "Why did the quantum programmer quit their job? They were both working and not working at the same time.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 19,
+      "unique_words": 19,
+      "vocabulary_richness": 1.0,
+      "response": "I've been trying to come up with a programming joke in Assembly, but it's too low-level for most people.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 17,
+      "unique_words": 16,
+      "vocabulary_richness": 0.9411764705882353,
+      "response": "Why did the functional programmer get thrown out of the restaurant? They refused to handle side dishes!",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 20,
+      "unique_words": 20,
+      "vocabulary_richness": 1.0,
+      "response": "My code doesn't have bugs. It just develops random unexpected features that I didn't explicitly tell it not to develop.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why do Java developers wear glasses? Because they can't C#.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why do programmers prefer dark mode? Because light attracts bugs!",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 15,
+      "vocabulary_richness": 0.9375,
+      "response": "I was going to tell you a joke about UDP, but you might not get it.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 18,
+      "unique_words": 17,
+      "vocabulary_richness": 0.9444444444444444,
+      "response": "A SQL query walks into a bar, walks up to two tables and asks, 'Can I join you?'",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 16,
+      "vocabulary_richness": 1.0,
+      "response": "Why did the functional programmer get thrown out of school? Because they refused to take classes.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 12,
+      "vocabulary_richness": 0.9230769230769231,
+      "response": "The generation of random numbers is too important to be left to chance.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 13,
+      "vocabulary_richness": 1.0,
+      "response": "Why did the developer go broke? Because they used up all their cache!",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 21,
+      "unique_words": 20,
+      "vocabulary_richness": 0.9523809523809523,
+      "response": "I've been trying to come up with a programming joke in binary, but I can only think of 10 of them.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 15,
+      "vocabulary_richness": 1.0,
+      "response": "Why do programmers always mix up Christmas and Halloween? Because Oct 31 == Dec 25!",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why don't scientists trust atoms? Because they make up everything!",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 15,
+      "vocabulary_richness": 0.9375,
+      "response": "What's the best thing about Switzerland? I don't know, but the flag is a big plus.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 11,
+      "vocabulary_richness": 1.0,
+      "response": "I'm reading a book on anti-gravity. It's impossible to put down!",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 22,
+      "unique_words": 20,
+      "vocabulary_richness": 0.9090909090909091,
+      "response": "Why did the quantum physicist cross the road? They didn't. They were simultaneously on both sides and everywhere in between until observed.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 17,
+      "unique_words": 17,
+      "vocabulary_richness": 1.0,
+      "response": "I asked the librarian if they had any books on paranoia. She whispered, 'They're right behind you...'",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 8,
+      "vocabulary_richness": 0.8,
+      "response": "Time flies like an arrow. Fruit flies like a banana.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 12,
+      "vocabulary_richness": 0.8571428571428571,
+      "response": "I tried to sue the airline for losing my luggage. I lost my case.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why do programmers prefer dark mode? Because light attracts bugs!",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 15,
+      "vocabulary_richness": 0.9375,
+      "response": "I was going to tell you a joke about UDP, but you might not get it.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 18,
+      "unique_words": 17,
+      "vocabulary_richness": 0.9444444444444444,
+      "response": "A SQL query walks into a bar, walks up to two tables and asks, 'Can I join you?'",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 16,
+      "vocabulary_richness": 1.0,
+      "response": "Why did the functional programmer get thrown out of school? Because they refused to take classes.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 15,
+      "vocabulary_richness": 0.9375,
+      "response": "How many programmers does it take to change a light bulb? None, that's a hardware problem.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 13,
+      "vocabulary_richness": 1.0,
+      "response": "Why did the developer go broke? Because he used up all his cache!",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 21,
+      "unique_words": 20,
+      "vocabulary_richness": 0.9523809523809523,
+      "response": "I've been trying to come up with a programming joke in binary, but I can only think of 10 of them.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why do Java developers wear glasses? Because they don't C#.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why don't scientists trust atoms? Because they make up everything!",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 15,
+      "vocabulary_richness": 0.9375,
+      "response": "What's the best thing about Switzerland? I don't know, but the flag is a big plus.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "I've developed a new theory about inertia, but honestly, it's not gaining any momentum.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 8,
+      "unique_words": 8,
+      "vocabulary_richness": 1.0,
+      "response": "The rotation of earth really makes my day.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 17,
+      "unique_words": 17,
+      "vocabulary_richness": 1.0,
+      "response": "I asked the librarian if they had any books on paranoia. She whispered, 'They're right behind you...'",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 8,
+      "vocabulary_richness": 0.8,
+      "response": "Time flies like an arrow. Fruit flies like a banana.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 12,
+      "vocabulary_richness": 0.8571428571428571,
+      "response": "I tried to sue the airport for losing my luggage. I lost my case.",
+      "prompt": "Tell me a joke.\n"
+    }
+  ],
+  "overall_metrics": {
+    "avg_diversity": 0.3483374608229955,
+    "std_diversity": 0.10452628420795097,
+    "min_diversity": 0.0,
+    "max_diversity": 0.5028351223641252,
+    "avg_response_length": 16.107981220657276,
+    "std_response_length": 5.506649681669137,
+    "avg_unique_words": 15.352112676056338,
+    "std_unique_words": 4.959549369600869,
+    "avg_vocabulary_richness": 0.9596542005507271,
+    "std_vocabulary_richness": 0.051635188943773475,
+    "total_cost": 8.604000000000001e-05
+  },
+  "metadata": {
+    "experiment": "combined [strict] (samples=5)",
+    "metric": "diversity",
+    "embedding_model": "text-embedding-3-small",
+    "device": "cpu"
+  }
+}
