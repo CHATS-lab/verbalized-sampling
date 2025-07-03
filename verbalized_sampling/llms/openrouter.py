@@ -15,7 +15,7 @@ OPENROUTER_MODELS_MAPPING = {
     "claude-3.7-sonnet": "anthropic/claude-3.7-sonnet",
     # Gemini models
     "gemini-2.0-flash": "google/gemini-2.0-flash-001",
-    "gemini-2.5-flash": "google/gemini-2.5-flash-preview",
+    "gemini-2.5-flash": "google/gemini-2.5-flash",
     "gemini-2.5-pro": "google/gemini-2.5-pro",
     # OpenAI models
     "gpt-4.1-mini": "openai/gpt-4.1-mini",

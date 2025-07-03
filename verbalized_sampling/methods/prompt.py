@@ -209,7 +209,7 @@ class CommonsensePromptTemplate(BasePromptTemplate):
     
     def get_base_prompt(self, **kwargs) -> str:
         return """
-Provide your best-guess response for the given question. Output ONLY the response, with no explanations or extra text.
+Generate a response for the given question. Output ONLY the response, with no explanations or extra text.
 """
     
     def get_standard_prompt(self, num_samplings: int = 5, **kwargs) -> str:
@@ -228,9 +228,9 @@ Output ONLY the response, with no explanations or extra text.
 Provide your {num_samplings} best-guess responses for the given question that you think could be correct using chain-of-thought reasoning.
 
 First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
-Then, under "responses", return a list of dictionaries. Each dictionary must include:
+Then, return the responses in JSON format with the key: "responses" (a list of dicts with 'text' and 'probability'):
 - 'text': the response string only (no explanation or extra text).
-- 'probability': a score from 0.0 to 1.0 representing how likely each response is to be correct (1.0 = very likely, 0.0 = very unlikely).
+- 'probability': a score from 0.0 to 1.0 representing how likely each response would be (1.0 = very likely, 0.0 = very unlikely).
 
 Give ONLY the JSON object, no explanations or extra text.
 """
@@ -260,10 +260,17 @@ Provide {num_samplings} alternative responses for the original input prompt that
     
     def get_format_prompt(self, method: str, num_samplings: int) -> str:
         if method == "structure_with_prob":
+#             return """
+# Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
+# - 'text': the response string only (no explanation or extra text).
+# - 'probability': a score from 0.0 to 1.0 representing how likely each response is to be correct (1.0 = very likely, 0.0 = very unlikely).
+
+# Give ONLY the JSON object, with no explanations or extra text.
+# """
             return """
 Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
 - 'text': the response string only (no explanation or extra text).
-- 'probability': a score from 0.0 to 1.0 representing how likely each response is to be correct (1.0 = very likely, 0.0 = very unlikely).
+- 'probability': a score from 0.0 to 1.0 representing how likely each response would be (1.0 = very likely, 0.0 = very unlikely).
 
 Give ONLY the JSON object, with no explanations or extra text.
 """
