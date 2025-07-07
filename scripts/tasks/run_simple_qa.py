@@ -23,6 +23,7 @@ def create_method_experiments(
         'temperature': temperature,
         'top_p': top_p,
         'random_seed': 42,
+        "use_vllm": True,
     }
     
     experiments = []
@@ -76,31 +77,31 @@ def run_method_tests(
 
 if __name__ == "__main__":
     methods = [
-        # {
-        #     'method': Method.DIRECT,
-        #     'strict_json': False,
-        #     'num_samples': 1,
-        # },
-        # {
-        #     'method': Method.MULTI_TURN,
-        #     'strict_json': False,
-        #     'num_samples': 5,
-        # },
-        # {
-        #     'method': Method.SEQUENCE,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
-        # {
-        #     'method': Method.STRUCTURE_WITH_PROB,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
-        # {
-        #     'method': Method.CHAIN_OF_THOUGHT,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
+        {
+            'method': Method.DIRECT,
+            'strict_json': False,
+            'num_samples': 1,
+        },
+        {
+            'method': Method.MULTI_TURN,
+            'strict_json': False,
+            'num_samples': 5,
+        },
+        {
+            'method': Method.SEQUENCE,
+            'strict_json': True,
+            'num_samples': 5,
+        },
+        {
+            'method': Method.STRUCTURE_WITH_PROB,
+            'strict_json': True,
+            'num_samples': 5,
+        },
+        {
+            'method': Method.CHAIN_OF_THOUGHT,
+            'strict_json': True,
+            'num_samples': 5,
+        },
         {
             'method': Method.COMBINED,
             'strict_json': True,
@@ -115,7 +116,7 @@ if __name__ == "__main__":
         # "gpt-4.1",
         # "gemini-2.5-flash",
         # "gemini-2.5-pro",
-        "llama-3.1-70b-instruct",
+        "meta-llama/Llama-3.1-70B-Instruct"
         # "anthropic/claude-4-sonnet",
         # "deepseek-r1",
         # "o3",

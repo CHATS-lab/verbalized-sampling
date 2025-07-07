@@ -120,13 +120,13 @@ if __name__ == "__main__":
         # "openai/gpt-4.1",
         # "openai/gpt-4.1-mini",
         # "google/gemini-2.5-flash",
-        "meta-llama/Llama-3.1-70B-Instruct",
+        # "meta-llama/Llama-3.1-70B-Instruct",
         # "meta-llama/llama-3.3-70b-instruct",
         # "anthropic/claude-4-sonnet",
         # "google/gemini-2.5-pro",
         # "anthropic/claude-3.7-sonnet",
         # "openai/o3",
-        # "deepseek/deepseek-r1-0528",
+        "deepseek/deepseek-r1-0528",
         # "openai/o3",
     ]
     for model in models:
