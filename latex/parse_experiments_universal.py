@@ -346,18 +346,17 @@ def main():
     
     # Model directory mapping - same for both experiments
     models = {
-        "Claude-4-Sonnet": "anthropic_claude-4-sonnet",
-        "Claude-3.7-Sonnet": "anthropic_claude-3.7-sonnet", 
-        "Gemini-2.5-Pro": "google_gemini-2.5-pro",
-        "Gemini-2.5-Flash": "google_gemini-2.5-flash",
-        "GPT-4.1": "openai_gpt-4.1",
-        "GPT-4.1-Mini": "openai_gpt-4.1-mini",
-        "Llama-3.1-70B": "meta-llama_Llama-3.1-70B-Instruct",
-        "deepseek-r1": "deepseek_deepseek-r1-0528",
-        "GPT-o3": "openai_o3",
+        "Claude-4-Sonnet": "claude-4-sonnet",
+        "Gemini-2.5-Pro": "gemini-2.5-pro",
+        "Gemini-2.5-Flash": "gemini-2.5-flash",
+        "GPT-4.1": "gpt-4.1",
+        "GPT-4.1-Mini": "gpt-4.1-mini",
+        "Llama-3.1-70B": "llama-3.1-70b-instruct",
+        "DeepSeek-R1": "deepseek-r1",
+        "GPT-o3": "o3",
     }
     
-    base_dir = f"{args.experiment}_experiments_final"
+    base_dir = f"method_results_{args.experiment}"
     suffix = f"_{args.experiment}"
     all_results = {}
     

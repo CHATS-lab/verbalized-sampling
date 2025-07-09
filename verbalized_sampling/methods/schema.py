@@ -26,8 +26,28 @@ from .factory import Method
 # Tool calling schemas for Claude/Anthropic
 def get_tool_schema(method: Method) -> List[Dict[str, Any]]:
     """Get tool calling schema for the specified method."""
-    
-    if method == Method.SEQUENCE:
+
+    if method == Method.DIRECT_COT:
+        return [{
+            "name": "generate_response_with_reasoning",
+            "description": "Generate a response with step-by-step reasoning",
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "reasoning": {
+                        "type": "string",
+                        "description": "Step-by-step reasoning process"
+                    },
+                    "response": {
+                        "type": "string",
+                        "description": "The response text"
+                    }
+                },
+                "required": ["reasoning", "response"]
+            }
+        }]
+        
+    elif method == Method.SEQUENCE:
         return [{
             "name": "generate_responses",
             "description": "Generate multiple responses in sequence format",
@@ -201,6 +221,30 @@ def get_tool_schema(method: Method) -> List[Dict[str, Any]]:
         return None
 
 # Legacy JSON schema support for OpenAI/OpenRouter
+DirectCoTResponse = {
+    "type": "json_schema",
+    "json_schema": {
+        "name": "direct_response",
+        "strict": True,
+        "schema": {
+            "type": "object",
+            "properties": {
+                "reasoning": {
+                    "type": "string",
+                    "description": "Step-by-step reasoning process"
+                },
+                "response": {
+                    "type": "string",
+                    "description": "The response text"
+                }
+            },
+            "required": ["reasoning", "response"],
+            "additionalProperties": False
+        },
+        "strict": True
+    }
+}
+
 
 SequenceResponse ={
     "type": "json_schema",
@@ -383,7 +427,9 @@ def get_schema(method: Method, use_tools: bool = False) -> Any:
         method: The sampling method
         use_tools: Whether to use tool calling (True for Claude) or JSON schema (False for OpenAI/OpenRouter)
     """
-    if method == Method.SEQUENCE:
+    if method == Method.DIRECT_COT:
+        return DirectCoTResponse
+    elif method == Method.SEQUENCE:
         return SequenceResponse
     elif method == Method.STRUCTURE:
         return StructuredResponseList

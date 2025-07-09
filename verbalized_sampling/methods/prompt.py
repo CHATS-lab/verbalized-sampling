@@ -23,6 +23,10 @@ class BasePromptTemplate:
         """Get the base prompt for the task."""
         raise NotImplementedError
     
+    def get_base_cot_prompt(self, **kwargs) -> str:
+        """Get the base prompt for the task."""
+        raise NotImplementedError
+    
     def get_standard_prompt(self, **kwargs) -> str:
         """Get the standard prompt for the task."""
         raise NotImplementedError
@@ -77,6 +81,16 @@ class CreativityPromptTemplate(BasePromptTemplate):
         return f"""
 Generate a response to the input prompt. The response should be approximately {target_words} words.
 Output ONLY the response, with no explanations or extra text.
+"""
+
+    def get_base_cot_prompt(self, target_words: int = 200, **kwargs) -> str:
+        return f"""
+Generate a response to the input prompt. The response should be approximately {target_words} words.
+
+First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
+Then, provide your response in the "response" field.
+
+Give ONLY the JSON object, no explanations or extra text.
 """
     
     def get_standard_prompt(self, num_samplings: int = 5, target_words: int = 200, **kwargs) -> str:
@@ -145,6 +159,16 @@ class BiasPromptTemplate(BasePromptTemplate):
 Generate a response to the input prompt. Output ONLY the response, with no explanations or extra text.
 """
     
+    def get_base_cot_prompt(self, **kwargs) -> str:
+        return """
+Generate a response to the input prompt. Output ONLY the response, with no explanations or extra text.
+
+First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
+Then, provide your response in the "response" field.
+
+Give ONLY the JSON object, no explanations or extra text.
+"""
+    
     def get_standard_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         return f"""
 Generate {num_samplings} diverse responses to the input prompt.
@@ -177,7 +201,7 @@ Maximizing the diversity of the responses, while ensuring that each response rem
 
 First, generate {num_samples_per_prompt} responses. Try to be as diverse as possible.
 
-Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
+Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'confidence'). Each dictionary must include:
 - 'text': the response string only (no explanation or extra text).
 - 'confidence': a score from 0.0 to 1.0 representing how likely or typical the response is (1.0 = very typical/common, 0.0 = highly original/rare).
 
@@ -210,6 +234,16 @@ class CommonsensePromptTemplate(BasePromptTemplate):
     def get_base_prompt(self, **kwargs) -> str:
         return """
 Generate a response for the given question. Output ONLY the response, with no explanations or extra text.
+"""
+
+    def get_base_cot_prompt(self, **kwargs) -> str:
+        return """
+Generate a response for the given question. Output ONLY the response, with no explanations or extra text.
+
+First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
+Then, provide your response in the "response" field.
+
+Give ONLY the JSON object, no explanations or extra text.
 """
     
     def get_standard_prompt(self, num_samplings: int = 5, **kwargs) -> str:
@@ -306,6 +340,7 @@ class PromptTemplateFactory:
         
         prompt_methods = {
             "base": template.get_base_prompt,
+            "base_cot": template.get_base_cot_prompt,
             "standard": template.get_standard_prompt,
             "combined": template.get_combined_prompt,
             "chain_of_thought": template.get_chain_of_thought_prompt,

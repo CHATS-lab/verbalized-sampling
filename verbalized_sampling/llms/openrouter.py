@@ -81,7 +81,6 @@ class OpenRouterLLM(BaseLLM):
             
             response = completion.choices[0].message.content
             if response:
-                # print("Response: ", response)
                 parsed_response = self._parse_response_with_schema(response, schema)
                 return parsed_response
             else:
@@ -140,6 +139,11 @@ class OpenRouterLLM(BaseLLM):
                     if "text" in parsed:
                         return [{
                             "response": parsed["text"],
+                            "probability": parsed.get("probability", 1.0)
+                        }]
+                    elif 'response' in parsed:
+                        return [{
+                            "response": parsed["response"],
                             "probability": parsed.get("probability", 1.0)
                         }]
                     
