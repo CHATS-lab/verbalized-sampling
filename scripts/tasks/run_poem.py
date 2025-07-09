@@ -17,8 +17,8 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 30,
-        'num_prompts': 100, # current total: 300; total: 4326
+        'num_responses': 5,
+        'num_prompts': 1, # current total: 300; total: 4326
         'target_words': 200, 
         'temperature': temperature,
         'top_p': top_p,
@@ -77,41 +77,46 @@ def run_method_tests(
 
 if __name__ == "__main__":
     methods = [
-        {
-            'method': Method.DIRECT,
-            'strict_json': False,
-            'num_samples': 1,
-        },
-        {
-            'method': Method.MULTI_TURN,
-            'strict_json': True,
-            'num_samples': 5,
-        },
+        # {
+        #     'method': Method.DIRECT,
+        #     'strict_json': False,
+        #     'num_samples': 1,
+        # },
+        # {
+        #     'method': Method.MULTI_TURN,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        # },
         # {
         #     'method': Method.MULTI_TURN,
         #     'strict_json': False,
         #     'num_samples': 5,
         # },
-        {
-            'method': Method.SEQUENCE,
-            'strict_json': True,
-            'num_samples': 5,
-        },
-        {
-            'method': Method.STRUCTURE_WITH_PROB,
-            'strict_json': True,
-            'num_samples': 5,
-        },
+        # {
+        #     'method': Method.SEQUENCE,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        # },
+        # {
+        #     'method': Method.STRUCTURE_WITH_PROB,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        # },
         # {
         #     'method': Method.CHAIN_OF_THOUGHT,
         #     'strict_json': True,
         #     'num_samples': 5,
         # },
+        # {
+        #     'method': Method.COMBINED,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        #     'num_samples_per_prompt': 2,
+        # }
         {
-            'method': Method.COMBINED,
+            'method': Method.DIRECT_COT,
             'strict_json': True,
-            'num_samples': 5,
-            'num_samples_per_prompt': 2,
+            'num_samples': 1,
         }
     ]
 
@@ -153,15 +158,15 @@ if __name__ == "__main__":
     # )
 
 
-    run_method_tests(
-        task=Task.POEM,
-        model_name="gpt-4.1", 
-        methods=methods,
-        metrics=["diversity"],
-        temperature=0.7,
-        top_p=1.0,
-        output_dir="method_results_poem",
-    )
+    # run_method_tests(
+    #     task=Task.POEM,
+    #     model_name="gpt-4.1", 
+    #     methods=methods,
+    #     metrics=["diversity"],
+    #     temperature=0.7,
+    #     top_p=1.0,
+    #     output_dir="method_results_poem",
+    # )
 
 
     # run_method_tests(

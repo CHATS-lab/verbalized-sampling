@@ -12,6 +12,7 @@ from .prompt import (
 class Method(str, Enum):
     """Available sampling methods for verbalized sampling experiments."""
     DIRECT = "direct"
+    DIRECT_COT = "direct_cot"
     SEQUENCE = "sequence" 
     STRUCTURE = "structure"
     STRUCTURE_WITH_PROB = "structure_with_prob"
@@ -48,7 +49,7 @@ def is_method_combined(method: Method) -> bool:
 
 class PromptTemplate(BaseModel):
     """Base class for prompt templates."""
-    system_prompt: str = "Generate 5 different responses to your interlocutor that are coherent with the chat history and aligned with your persona. Output in JSON format with keys: 'responses' (list of dicts with 'text' and 'probability'). The probability field represents the empirical probability of each response, ranging from 0 to 1. Only output the JSON object, no other text."
+    system_prompt: str
     user_prompt: str
     response_format: Optional[Dict[str, Any]] = None
 
@@ -97,6 +98,8 @@ class PromptFactory:
         """Map method to prompt type."""
         if method == Method.DIRECT or method == Method.MULTI_TURN:
             return "base"
+        elif method == Method.DIRECT_COT:
+            return "base_cot"
         elif method == Method.COMBINED:
             return "combined"
         elif all_possible:
@@ -128,7 +131,7 @@ class PromptFactory:
         
         # Get the prompt template
         try:
-            if method == Method.DIRECT or method == Method.MULTI_TURN:
+            if method == Method.DIRECT or method == Method.MULTI_TURN or method == Method.DIRECT_COT:
                 system_prompt = PromptTemplateFactory.get_prompt(
                     task_type=task_type,
                     prompt_type=prompt_type,
@@ -153,6 +156,8 @@ class PromptFactory:
 
             system_prompt = f"{system_prompt}{format_prompt}"
         
+        print("System prompt: ", system_prompt)
+        
         return [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": prompt}
@@ -164,7 +169,7 @@ class PromptFactory:
         task_type = PromptFactory._get_task_type_from_task_name(task)
         template = PromptTemplateFactory.get_template(task_type)
         continuation_prompt = template.get_continue_prompt(num_samplings=1, target_words=target_words)
-        # print("Continuation prompt: ", continuation_prompt)
+        print("Continuation prompt: ", continuation_prompt)
         
         return chat_history + [{"role": "user", "content": continuation_prompt}]
 
@@ -174,7 +179,7 @@ class PromptFactory:
         task_type = PromptFactory._get_task_type_from_task_name(task)
         template = PromptTemplateFactory.get_template(task_type)
         continuation_prompt = template.get_continue_prompt(num_samplings=num_samplings_per_prompt, target_words=target_words)
-        # print("Continuation prompt: ", continuation_prompt)
+        print("Continuation prompt: ", continuation_prompt)
         
         return chat_history + [{"role": "user", "content": continuation_prompt}]
     

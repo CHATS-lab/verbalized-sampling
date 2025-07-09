@@ -61,6 +61,10 @@ class ResponseCountPlotter(EvaluatorSpecificPlotter):
 class FactualityPlotter(EvaluatorSpecificPlotter):
     """Creates factuality-specific plots."""
     
+    def __init__(self, figsize: tuple = (15, 8), colors: List[str] = None):
+        self.figsize = figsize
+        self.colors = colors or ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd']
+    
     def create_plots(self, comparison_data: List[ComparisonData], output_dir: Path):
         # Collect data from all methods
         all_data = []

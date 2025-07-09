@@ -15,6 +15,7 @@ def maybe_rename_response(response: Dict) -> Dict:
     if "confidence" in response:
         response["probability"] = response["confidence"]
         del response["confidence"]
+    
     return response
 
 class ParseError(Exception):
@@ -31,6 +32,8 @@ class ResponseParser:
         match method:
             case Method.DIRECT:
                 return ResponseParser.parse_direct(response)
+            case Method.DIRECT_COT:
+                return ResponseParser.parse_direct_cot(response)
             case Method.SEQUENCE:
                 return ResponseParser.parse_sequence(response)
             case Method.STRUCTURE:
@@ -52,10 +55,24 @@ class ResponseParser:
         return [{'text': response}]
     
     @staticmethod
+    def parse_direct_cot(response: str) -> List[Dict]:
+        """Parse direct response with chain-of-thought."""
+        if isinstance(response, list):
+            return [maybe_rename_response(item) for item in response]
+        elif isinstance(response, dict):
+            return [maybe_rename_response(response)]
+        else:
+           try:
+                parsed = ResponseParser._extract_json(response)
+                return [{'text': parsed["response"]}]
+           except Exception:
+                return [{'text': response}]
+    
+    @staticmethod
     def parse_sequence(response: str) -> List[Dict]:
         """Parse sequence response expecting Python list format."""
         if isinstance(response, list):
-            return [{'text': item["response"] if (isinstance(item, dict) and "response" in item) else item} for item in response]
+            return [maybe_rename_response(item) for item in response]
         elif isinstance(response, dict):
             response_list = response["responses"]
             return [{'text': item} for item in response_list]
