@@ -131,6 +131,11 @@ class GoogleLLM(BaseLLM):
                         "response": parsed["text"],
                         "probability": parsed.get("probability", 1.0)
                     }]
+                elif "response" in parsed:
+                    return [{
+                        "response": parsed["response"],
+                        "probability": parsed.get("probability", 1.0)
+                    }]
                 
                 # Fallback for unexpected but valid JSON
                 return [{"response": str(parsed), "probability": 1.0}]
