@@ -105,11 +105,16 @@ if __name__ == "__main__":
         #     'strict_json': True,
         #     'num_samples': 20,
         # },
+        # {
+        #     'method': Method.COMBINED,
+        #     'strict_json': True,
+        #     'num_samples': 20,
+        #     'num_samples_per_prompt': 10,
+        # }
         {
-            'method': Method.COMBINED,
+            'method': Method.DIRECT_COT,
             'strict_json': True,
-            'num_samples': 20,
-            'num_samples_per_prompt': 10,
+            'num_samples': 1,
         }
     ]
 
@@ -121,7 +126,7 @@ if __name__ == "__main__":
         # "gemini-2.5-flash",
         # "gemini-2.5-pro",
         "llama-3.1-70b-instruct",
-        # "anthropic/claude-4-sonnet",
+        # "claude-4-sonnet",
         # "deepseek-r1",
         # "o3",
     ]

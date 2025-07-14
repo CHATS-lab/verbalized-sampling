@@ -101,11 +101,16 @@ if __name__ == "__main__":
         #     'strict_json': True,
         #     'num_samples': 5,
         # },
-        {
-            'method': Method.COMBINED,
+        # {
+        #     'method': Method.COMBINED,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        #     'num_samples_per_prompt': 2,
+        # }
+         {
+            'method': Method.DIRECT_COT,
             'strict_json': True,
-            'num_samples': 5,
-            'num_samples_per_prompt': 2,
+            'num_samples': 1,
         }
     ]
 

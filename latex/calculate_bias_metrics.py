@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 # Maps canonical method keys to (display name, matching substring in dir name)
 METHOD_MAP = {
     "direct": ("Direct", "direct"),
+    "direct_cot": ("Direct CoT", "direct_cot"),
     "sequence": ("Sequence", "sequence"),
     "multi_turn": ("Multi-turn", "multi_turn"),
     "vs_standard": ("VS Standard", "structure_with_prob"),
@@ -42,9 +43,23 @@ def plot_error_bars_all_models_methods(metrics_values, all_model_names, plot_met
                     for method_name, method_data in metrics_values[model_name].items():
                         if match_substr in method_name:
                             vals.extend(method_data[metric])
-                means.append(np.mean(vals) if vals else np.nan)
-                stds.append(np.std(vals) if vals else np.nan)
-            ax.bar(x + i * bar_width, means, yerr=stds, width=bar_width, label=METHOD_MAP[method][0], color=colors(i))
+                mean_val = np.mean(vals) if vals else np.nan
+                std_val = np.std(vals) if vals else np.nan
+                # Ensure error bars don't go below 0 for non-negative metrics
+                if not np.isnan(mean_val) and not np.isnan(std_val):
+                    if metric in ["precision", "unique_recall_rate"]:
+                        lower_error = min(std_val, mean_val)
+                        upper_error = std_val
+                    else:
+                        lower_error = std_val
+                        upper_error = std_val
+                else:
+                    lower_error = std_val
+                    upper_error = std_val
+                means.append(mean_val)
+                stds.append([lower_error, upper_error])
+                print(f"{model_name} {METHOD_MAP[method][0]}: {mean_val:.2f}$_{{\\pm {std_val:.2f}}}$") # 4.14$_{\pm 0.44}$
+            ax.bar(x + i * bar_width, means, yerr=np.array(stds).T, width=bar_width, label=METHOD_MAP[method][0], color=colors(i))
         ax.set_xticks(x + bar_width * (n_methods - 1) / 2)
         ax.set_xticklabels(all_model_names, rotation=30, ha='right')
         ax.set_title(f"{metric_labels[metric]} (per model, grouped by method)")
@@ -52,105 +67,13 @@ def plot_error_bars_all_models_methods(metrics_values, all_model_names, plot_met
         ax.legend(title='Method')
         plt.tight_layout()
         plt.show()
-
-def plot_error_bars_methods_overall(metrics_values, all_model_names, plot_metrics, metric_labels, all_methods):
-    """
-    Draw error bars for each method, aggregated over all models, for each metric.
-    """
-    import matplotlib.pyplot as plt
-    import numpy as np
-
-    for metric in plot_metrics:
-        display_names = [METHOD_MAP[m][0] for m in all_methods]
-        means = []
-        stds = []
-        for method in all_methods:
-            vals = []
-            for model_name in all_model_names:
-                if model_name in metrics_values:
-                    for method_name, method_data in metrics_values[model_name].items():
-                        if METHOD_MAP[method][1] in method_name:
-                            vals.extend(method_data[metric])
-            means.append(np.mean(vals) if vals else np.nan)
-            stds.append(np.std(vals) if vals else np.nan)
-        fig, ax = plt.subplots(figsize=(10, 5))
-        x = np.arange(len(all_methods))
-        ax.bar(display_names, means, yerr=stds, capsize=5)
-        ax.set_title(f"{metric_labels[metric]} (all models aggregated)")
-        ax.set_ylabel('Mean ± Std')
-        plt.tight_layout()
-        plt.show()
-
-def annotate_ttest_baselines(metrics_values, all_model_names, plot_metrics, all_methods, ax):
-    """
-    Calculate t-tests between VS methods and baseline methods for each metric.
-    Annotate the graph with significance.
-    """
-    from scipy.stats import ttest_ind
-    import numpy as np
-
-    baseline_methods = ["direct", "sequence", "multi_turn"]
-    vs_methods = ["vs_standard", "vs_cot", "vs_combined"]
-    
-    for metric_idx, metric in enumerate(plot_metrics):
-        print(f"\n=== T-TESTS for {metric} ===")
-        for baseline_method in baseline_methods:
-            for vs_method in vs_methods:
-                vals_baseline = []
-                vals_vs = []
-                for model_name in all_model_names:
-                    if model_name in metrics_values:
-                        for method_name, method_data in metrics_values[model_name].items():
-                            if baseline_method.lower() in method_name.lower():
-                                vals_baseline.extend(method_data[metric])
-                            if vs_method.lower() in method_name.lower():
-                                vals_vs.extend(method_data[metric])
-                
-                if vals_baseline and vals_vs:
-                    t_stat, p_val = ttest_ind(vals_baseline, vals_vs, equal_var=False)
-                    
-                    # Determine significance level
-                    if p_val < 0.001:
-                        sig = '***'
-                    elif p_val < 0.01:
-                        sig = '**'
-                    elif p_val < 0.05:
-                        sig = '*'
-                    else:
-                        sig = 'ns'
-                    
-                    # Print results
-                    print(f"{METHOD_MAP[vs_method][0]} vs {METHOD_MAP[baseline_method][0]}: p={p_val:.4g} (t={t_stat:.2f}) {sig}")
-                    
-                    # Calculate position for annotation
-                    baseline_idx = baseline_methods.index(baseline_method)
-                    vs_idx = vs_methods.index(vs_method)
-                    x_pos = baseline_idx + (vs_idx * len(baseline_methods))
-                    
-                    # Calculate y position above the bars
-                    baseline_mean = np.mean(vals_baseline)
-                    vs_mean = np.mean(vals_vs)
-                    baseline_std = np.std(vals_baseline)
-                    vs_std = np.std(vals_vs)
-                    y_pos = max(baseline_mean, vs_mean) + max(baseline_std, vs_std) + 0.05
-                    
-                    # Annotate with t-statistic and p-value
-                    annotation_text = f"t={t_stat:.2f}\np={p_val:.3f}\n{sig}"
-                    ax.annotate(annotation_text, 
-                               xy=(x_pos, y_pos),
-                               xytext=(0, 10),
-                               textcoords='offset points',
-                               ha='center', va='bottom',
-                               color='red', fontsize=8,
-                               bbox=dict(boxstyle='round,pad=0.3', facecolor='white', alpha=0.8),
-                               arrowprops=dict(arrowstyle='->', color='red', lw=1))
                         
 
 def ttest_vs_vs_baseline(metrics_values, all_model_names, plot_metrics):
     """
     Calculate t-tests between each VS method and each baseline method for each metric.
     """
-    baseline_methods = ["direct", "sequence", "multi_turn"]
+    baseline_methods = ["direct", "direct_cot", "sequence", "multi_turn"]
     vs_methods = ["vs_standard", "vs_cot", "vs_combined"]
     for metric in plot_metrics:
         print(f"\n=== T-TESTS for {metric} ===")
@@ -209,17 +132,15 @@ def main():
     }
 
     # Group methods
-    
     all_methods = [
         "direct",
+        "direct_cot",
         "sequence",
         "multi_turn",
         "vs_standard",
         "vs_cot",
         "vs_combined"
     ]
-
-    
 
     # Collect all data
     metrics_values = {}
@@ -267,7 +188,7 @@ def main():
     # print(metrics_values)
 
     # 1. Draw error bar graph for all models and all methods
-    # plot_error_bars_all_models_methods(metrics_values, all_model_names, plot_metrics, metric_labels, all_methods)
+    plot_error_bars_all_models_methods(metrics_values, all_model_names, plot_metrics, metric_labels, all_methods)
 
     # 2. Draw error bar graph for only the methods over all the models
     #    and annotate t-test for baselines
@@ -283,11 +204,30 @@ def main():
                     for method_name, method_data in metrics_values[model_name].items():
                         if METHOD_MAP[method][1] in method_name:
                             vals.extend(method_data[metric])
-            means.append(np.mean(vals) if vals else np.nan)
-            stds.append(np.std(vals) if vals else np.nan)
+            mean_val = np.mean(vals) if vals else np.nan
+            std_val = np.std(vals) if vals else np.nan
+            
+            # Ensure error bars don't go below 0 for non-negative metrics
+            if not np.isnan(mean_val) and not np.isnan(std_val):
+                # For metrics that should be non-negative (precision, unique_recall_rate)
+                if metric in ["precision", "unique_recall_rate"]:
+                    # Cap the lower error bar at 0
+                    lower_error = min(std_val, mean_val)
+                    upper_error = std_val
+                else:
+                    # For other metrics (like kl_divergence), allow full error bars
+                    lower_error = std_val
+                    upper_error = std_val
+            else:
+                lower_error = std_val
+                upper_error = std_val
+            
+            means.append(mean_val)
+            stds.append([lower_error, upper_error])  # Use asymmetric error bars
+        
         fig, ax = plt.subplots(figsize=(10, 5))
         x = np.arange(len(all_methods))
-        ax.bar(display_names, means, yerr=stds, capsize=5)
+        ax.bar(display_names, means, yerr=np.array(stds).T, capsize=5)
         ax.set_title(f"{metric_labels[metric]} (all models aggregated)")
         ax.set_ylabel('Mean ± Std')
         # 3. Calculate t-test for all three baseline, direct, sequence, multi-turn and annotate
