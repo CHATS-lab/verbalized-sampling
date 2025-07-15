@@ -86,3 +86,15 @@ class VLLMOpenAI(BaseLLM):
             except:
                 # If all else fails, return a single response with probability 1.0
                 return [{"text": response, "probability": 1.0}]
+
+    def _complete(self, prompt: str) -> str:
+        """Send a completion prompt to the model and get the response."""
+        response = self.client.completions.create(
+            model=self.model_name,
+            prompt=prompt,
+            **self.config
+        )
+        response_text = response.choices[0].text
+        if response_text:
+            response_text = response_text.replace("\n", "")
+        return response_text

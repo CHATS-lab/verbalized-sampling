@@ -1,4 +1,4 @@
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Union
 from enum import Enum
 import os
 import random
@@ -12,6 +12,7 @@ from .prompt import (
 class Method(str, Enum):
     """Available sampling methods for verbalized sampling experiments."""
     DIRECT = "direct"
+    DIRECT_BASE = "direct_base"
     DIRECT_COT = "direct_cot"
     SEQUENCE = "sequence" 
     STRUCTURE = "structure"
@@ -46,6 +47,10 @@ def is_method_multi_turn(method: Method) -> bool:
 def is_method_combined(method: Method) -> bool:
     """Check if a method requires combined sampling."""
     return method == Method.COMBINED
+
+def is_method_base_model(method: Method) -> bool:
+    """Check if a method is for base models (no chat template)."""
+    return method == Method.DIRECT_BASE
 
 class PromptTemplate(BaseModel):
     """Base class for prompt templates."""
@@ -98,6 +103,8 @@ class PromptFactory:
         """Map method to prompt type."""
         if method == Method.DIRECT or method == Method.MULTI_TURN:
             return "base"
+        elif method == Method.DIRECT_BASE:
+            return "base"
         elif method == Method.DIRECT_COT:
             return "base_cot"
         elif method == Method.COMBINED:
@@ -120,7 +127,7 @@ class PromptFactory:
         all_possible: bool = False,
         strict_json: bool = False,
         task_type: TaskType = None,
-    ) -> List[Dict[str, str]]:
+    ) -> Union[List[Dict[str, str]], str]:
         """Pack a prompt using the new class-based prompt system."""
         
         # Get prompt type based on method
@@ -131,7 +138,7 @@ class PromptFactory:
         
         # Get the prompt template
         try:
-            if method == Method.DIRECT or method == Method.MULTI_TURN or method == Method.DIRECT_COT:
+            if method == Method.DIRECT or method == Method.MULTI_TURN or method == Method.DIRECT_COT or method == Method.DIRECT_BASE:
                 system_prompt = PromptTemplateFactory.get_prompt(
                     task_type=task_type,
                     prompt_type=prompt_type,
@@ -157,6 +164,12 @@ class PromptFactory:
             system_prompt = f"{system_prompt}{format_prompt}"
         
         print("System prompt: ", system_prompt)
+        
+        # Handle base model format (no chat template, just completion)
+        if method == Method.DIRECT_BASE:
+            # Combine system prompt and user prompt for base model completion
+            combined_prompt = f"{system_prompt}\n\n{prompt}"
+            return f"<|begin_of_text|>{combined_prompt}"
         
         return [
             {"role": "system", "content": system_prompt},
@@ -193,11 +206,13 @@ class PromptFactory:
         random_seed: int = None,
         target_words: int = 200,
         **kwargs,
-    ) -> List[List[Dict[str, str]]]:
+    ) -> List[Union[List[Dict[str, str]], str]]:
         """Get a prompt for a specific task and format.
         
         Returns:
-            List[List[Dict[str, str]]]: A list of prompts, each containing a system and user message.
+            List[Union[List[Dict[str, str]], str]]: A list of prompts, each containing either:
+                - A list of system and user messages (for chat models)
+                - A string prompt (for base models)
         """
         prompt_path = f"data/{task}.txt"
 
@@ -219,8 +234,9 @@ class PromptFactory:
         # Determine task type for new prompt system
         task_type = PromptFactory._get_task_type_from_task_name(task)
         
-        return [
-            PromptFactory.pack_prompt(
+        packed_prompts = []
+        for prompt in prompts:
+            packed_prompt = PromptFactory.pack_prompt(
                 method, 
                 prompt, 
                 num_samplings=num_samplings, 
@@ -228,6 +244,7 @@ class PromptFactory:
                 target_words=target_words, 
                 task_type=task_type,
                 **kwargs
-            ) 
-            for prompt in prompts
-        ]
+            )
+            packed_prompts.append(packed_prompt)
+        
+        return packed_prompts

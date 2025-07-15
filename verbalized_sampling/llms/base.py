@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Callable, T
+from typing import Any, Dict, List, Callable, T, Union
 import concurrent.futures
 from pydantic import BaseModel
 from tqdm import tqdm
@@ -28,17 +28,30 @@ class BaseLLM(ABC):
         """Send a single message to the model and get the response in JSON format."""
         pass
     
-    def chat(self, messages: List, schema: BaseModel = None) -> List[str]:
-        if not self.strict_json:
-            CHAT_FUNC = self._chat
-        else:
-            if schema is None:
-                raise ValueError("Schema is required for strict JSON mode.")
-            CHAT_FUNC = partial(self._chat_with_format, schema=schema)
-        if self.num_workers > 1:
-            return self._parallel_execute(CHAT_FUNC, messages)
-        else:
-            return [CHAT_FUNC(message) for message in messages] 
+    def _complete(self, prompt: str) -> str:
+        """Send a completion prompt to the model and get the response."""
+        # Default implementation - subclasses can override
+        raise NotImplementedError("Completion not implemented for this model")
+    
+    def chat(self, messages: List[Union[List[Dict[str, str]], str]], schema: BaseModel = None) -> List[str]:
+        # Handle mixed list of chat messages and completion prompts
+        results = []
+        
+        for message in messages:
+            if isinstance(message, str):
+                # This is a completion prompt
+                result = self._complete(message)
+            else:
+                # This is a chat message
+                if not self.strict_json:
+                    result = self._chat(message)
+                else:
+                    if schema is None:
+                        raise ValueError("Schema is required for strict JSON mode.")
+                    result = self._chat_with_format(message, schema)
+            results.append(result)
+        
+        return results 
 
 
     def _parallel_execute(self, func: Callable[[List[Dict[str, str]]], T], messages_list: List[List[Dict[str, str]]]) -> List[T]:

@@ -9,6 +9,7 @@ from verbalized_sampling.methods import (
     Method,
     is_method_multi_turn,
     is_method_combined,
+    is_method_base_model,
     ResponseParser
 )
 import concurrent.futures
@@ -156,7 +157,32 @@ class BaseTask(ABC):
                     progress.update(task_id, advance=len(turn_responses))
         
         return all_results
+    
+    def _run_base_model(
+        self,
+        progress: Progress = None,
+        task_id: int = None,
+    ) -> List[Any]:
+        """Run base model completions."""
+        prompts = [prompt for prompt in self.get_prompt() for _ in range(self.num_responses)]
+        results = self.model.chat(prompts)
+        parsed_results = []
+
+        for prompt, result in zip(prompts, results):
+            # For base models, the prompt is a string, not a message list
+            prompt_text = prompt if isinstance(prompt, str) else prompt[-1]["content"]
+            # Use the ResponseParser to get unified format
+            parsed_responses = ResponseParser.parse_response(self.method, result)
             
+            parsed_results.append({
+                "prompt": prompt_text,
+                "responses": parsed_responses
+            })
+            
+            if progress and task_id is not None:
+                progress.update(task_id, advance=1)
+        
+        return parsed_results
 
     def run(
         self,
@@ -183,6 +209,10 @@ class BaseTask(ABC):
         
         if is_method_combined(self.method):
             return self._run_combined(progress, task_id)
+        
+        # Check if this is a base model method
+        if is_method_base_model(self.method):
+            return self._run_base_model(progress, task_id)
         
         # Original single-turn logic
         prompts = [prompt for prompt in self.get_prompt() for _ in range(self.num_responses)]

@@ -32,6 +32,8 @@ class ResponseParser:
         match method:
             case Method.DIRECT:
                 return ResponseParser.parse_direct(response)
+            case Method.DIRECT_BASE:
+                return ResponseParser.parse_direct(response)
             case Method.DIRECT_COT:
                 return ResponseParser.parse_direct_cot(response)
             case Method.SEQUENCE:
