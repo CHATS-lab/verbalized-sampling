@@ -81,37 +81,42 @@ if __name__ == "__main__":
     
     # Test multi-turn and JSON mode variations
     methods = [
+        # {
+        #     'method': Method.DIRECT,
+        #     'strict_json': False,
+        #     'num_samples': 1,
+        # },
         {
-            'method': Method.DIRECT,
+            'method': Method.DIRECT_BASE,
             'strict_json': False,
             'num_samples': 1,
         },
-        {
-            'method': Method.MULTI_TURN,
-            'strict_json': False,
-            'num_samples': 20,
-        },
-        {
-            'method': Method.SEQUENCE,
-            'strict_json': True,
-            'num_samples': 20,
-        },
-        {
-            'method': Method.STRUCTURE_WITH_PROB,
-            'strict_json': True,
-            'num_samples': 20,
-        },
-        {
-            'method': Method.CHAIN_OF_THOUGHT,
-            'strict_json': True,
-            'num_samples': 20,
-        },
-        {
-            'method': Method.COMBINED,
-            'strict_json': True,
-            'num_samples': 20,
-            'num_samples_per_prompt': 10,
-        }
+        # {
+        #     'method': Method.MULTI_TURN,
+        #     'strict_json': False,
+        #     'num_samples': 20,
+        # },
+        # {
+        #     'method': Method.SEQUENCE,
+        #     'strict_json': True,
+        #     'num_samples': 20,
+        # },
+        # {
+        #     'method': Method.STRUCTURE_WITH_PROB,
+        #     'strict_json': True,
+        #     'num_samples': 20,
+        # },
+        # {
+        #     'method': Method.CHAIN_OF_THOUGHT,
+        #     'strict_json': True,
+        #     'num_samples': 20,
+        # },
+        # {
+        #     'method': Method.COMBINED,
+        #     'strict_json': True,
+        #     'num_samples': 20,
+        #     'num_samples_per_prompt': 10,
+        # }
     ]
 
 
@@ -121,7 +126,8 @@ if __name__ == "__main__":
         # "gpt-4.1",
         # "gemini-2.5-flash",
         # "gemini-2.5-pro",
-        "meta-llama/Llama-3.1-70B-Instruct",
+        # "meta-llama/Llama-3.1-70B-Instruct",
+        "meta-llama/Llama-3.1-70B",
         # "anthropic/claude-4-sonnet",
         # "deepseek-r1",
         # "o3",

@@ -18,7 +18,7 @@ def create_method_experiments(
         'task': task,
         'model_name': model_name,
         'num_responses': 30,
-        'num_prompts': 10, # current total: 300; total: 4326
+        'num_prompts': 100, # current total: 300; total: 4326
         'target_words': 200, 
         'temperature': temperature,
         'top_p': top_p,
@@ -67,7 +67,7 @@ def run_method_tests(
         experiments=experiments,
         evaluation=EvaluationConfig(metrics=metrics),
         output_base_dir=Path(f"{output_dir}/{model_basename}_{task.value}"),
-        skip_existing=True,
+        skip_existing=False,
         num_workers=num_workers,
     )
     
@@ -79,7 +79,7 @@ def run_method_tests(
 if __name__ == "__main__":
     methods = [
         {
-            'method': Method.DIRECT,
+            'method': Method.DIRECT_BASE,
             'strict_json': False,
             'num_samples': 1,
         },
@@ -122,7 +122,8 @@ if __name__ == "__main__":
         # "openai/gpt-4.1-mini",
         # "google/gemini-2.5-flash",
         # # "meta-llama/llama-3.1-70b-instruct",
-        "meta-llama/Llama-3.1-70B-Instruct",
+        # "meta-llama/Llama-3.1-70B-Instruct",
+        "meta-llama/Llama-3.1-70B",
         # "anthropic/claude-4-sonnet",
         # "google/gemini-2.5-pro",
         # "anthropic/claude-3.7-sonnet",
@@ -153,17 +154,6 @@ if __name__ == "__main__":
     #     top_p=1.0,    
     #     output_dir="method_results_poem",
     # )
-
-
-    run_method_tests(
-        task=Task.POEM,
-        model_name="gpt-4.1", 
-        methods=methods,
-        metrics=["diversity"],
-        temperature=0.7,
-        top_p=1.0,
-        output_dir="method_results_poem",
-    )
 
 
     # run_method_tests(

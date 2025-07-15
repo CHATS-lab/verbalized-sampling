@@ -31,27 +31,24 @@ class BaseLLM(ABC):
     def _complete(self, prompt: str) -> str:
         """Send a completion prompt to the model and get the response."""
         # Default implementation - subclasses can override
-        raise NotImplementedError("Completion not implemented for this model")
+        pass
     
     def chat(self, messages: List[Union[List[Dict[str, str]], str]], schema: BaseModel = None) -> List[str]:
         # Handle mixed list of chat messages and completion prompts
         results = []
         
-        for message in messages:
+        def _func(message: List[Dict[str, str]]) -> str:
             if isinstance(message, str):
-                # This is a completion prompt
-                result = self._complete(message)
+                return self._complete(message)
             else:
-                # This is a chat message
                 if not self.strict_json:
-                    result = self._chat(message)
+                    return self._chat(message)
                 else:
                     if schema is None:
                         raise ValueError("Schema is required for strict JSON mode.")
-                    result = self._chat_with_format(message, schema)
-            results.append(result)
+                    return self._chat_with_format(message, schema)
         
-        return results 
+        return self._parallel_execute(_func, messages)
 
 
     def _parallel_execute(self, func: Callable[[List[Dict[str, str]]], T], messages_list: List[List[Dict[str, str]]]) -> List[T]:

@@ -166,25 +166,52 @@ class BaseTask(ABC):
         progress: Progress = None,
         task_id: int = None,
     ) -> List[Any]:
-        """Run base model completions."""
-        prompts = [prompt for prompt in self.get_prompt() for _ in range(self.num_responses)]
+        """Run base model completions with oversampling and filtering."""
+        import math
+
+        oversample_factor = 1.5
+        num_prompts = len(self.get_prompt())
+        prompts = [prompt for prompt in self.get_prompt() for _ in range(math.ceil(self.num_responses * oversample_factor))]
+
         results = self.model.chat(prompts)
         parsed_results = []
 
-        for prompt, result in zip(prompts, results):
+        # Group results by original prompt (since we oversampled)
+        for i in range(num_prompts):
+            # Get all completions for this prompt
+            prompt = self.get_prompt()[i]
+            start = i * math.ceil(self.num_responses * oversample_factor)
+            end = (i + 1) * math.ceil(self.num_responses * oversample_factor)
+            completions = results[start:end]
+
+            # Filter completions: non-empty and at least 20 words
+            valid_completions = []
+            for result in completions:
+                parsed = ResponseParser.parse_response(self.method, result)
+                # parsed can be a list or a string, handle both
+                if isinstance(parsed, list):
+                    for resp in parsed:
+                        text = resp if isinstance(resp, str) else resp.get("text", "")
+                        if text and len(text.split()) >= 20:
+                            valid_completions.append(resp)
+                else:
+                    text = parsed if isinstance(parsed, str) else parsed.get("text", "")
+                    if text and len(text.split()) >= 20:
+                        valid_completions.append(parsed)
+
+                if len(valid_completions) >= self.num_responses:
+                    break
+
             # For base models, the prompt is a string, not a message list
             prompt_text = prompt if isinstance(prompt, str) else prompt[-1]["content"]
-            # Use the ResponseParser to get unified format
-            parsed_responses = ResponseParser.parse_response(self.method, result)
-            
-            parsed_results.append({
-                "prompt": prompt_text,
-                "responses": parsed_responses
-            })
-            
-            if progress and task_id is not None:
-                progress.update(task_id, advance=1)
-        
+            for i in range(len(valid_completions)):
+                parsed_results.append({
+                    "prompt": prompt_text,
+                    "responses": [valid_completions[i]]
+                })
+                if progress and task_id is not None:
+                    progress.update(task_id, advance=1)
+
         return parsed_results
 
     def run(
