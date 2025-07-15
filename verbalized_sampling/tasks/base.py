@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 import json
 import ast
 from rich.progress import Progress
@@ -45,7 +45,7 @@ class BaseTask(ABC):
         self.strict_json = strict_json
         self.max_turns = num_samples
         
-    def get_prompt(self) -> List[List[Dict[str, str]]]:
+    def get_prompt(self) -> List[Union[List[Dict[str, str]], str]]:
         """Get the prompt for the task."""
         return PromptFactory.get_prompt(
             self.task_type, 

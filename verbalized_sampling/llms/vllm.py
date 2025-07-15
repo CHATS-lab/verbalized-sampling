@@ -67,12 +67,26 @@ class VLLMOpenAI(BaseLLM):
 
     def _complete(self, prompt: str) -> str:
         """Send a completion prompt to the model and get the response."""
+        # Use appropriate stop tokens for base models
+        config = self.config.copy()
+        if 'stop' not in config:
+            config['stop'] = [
+                "<|endoftext|>", 
+                "</s>",
+                "<|end_of_text|>",
+                "### User:",
+                "### Assistant:"
+            ]
+        
+        if "max_tokens" not in config:
+            config["max_tokens"] = 400
+        
         response = self.client.completions.create(
             model=self.model_name,
             prompt=prompt,
-            **self.config
+            **config
         )
         response_text = response.choices[0].text
         if response_text:
-            response_text = response_text.replace("\n", "")
+            response_text = response_text.strip()
         return response_text

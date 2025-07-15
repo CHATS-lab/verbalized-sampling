@@ -104,7 +104,7 @@ class PromptFactory:
         if method == Method.DIRECT or method == Method.MULTI_TURN:
             return "base"
         elif method == Method.DIRECT_BASE:
-            return "base"
+            return "base_model"
         elif method == Method.DIRECT_COT:
             return "base_cot"
         elif method == Method.COMBINED:
@@ -127,6 +127,7 @@ class PromptFactory:
         all_possible: bool = False,
         strict_json: bool = False,
         task_type: TaskType = None,
+        task_name: str = None,
     ) -> Union[List[Dict[str, str]], str]:
         """Pack a prompt using the new class-based prompt system."""
         
@@ -142,7 +143,8 @@ class PromptFactory:
                 system_prompt = PromptTemplateFactory.get_prompt(
                     task_type=task_type,
                     prompt_type=prompt_type,
-                    target_words=target_words
+                    target_words=target_words,
+                    task_name=task_name
                 )
             else:
                 system_prompt = PromptTemplateFactory.get_prompt(
@@ -150,7 +152,8 @@ class PromptFactory:
                     prompt_type=prompt_type,
                     num_samplings=num_samplings,
                     num_samples_per_prompt=num_samples_per_prompt if method == Method.COMBINED else None,
-                    target_words=target_words
+                    target_words=target_words,
+                    task_name=task_name
                 )
         except Exception as e:
             print(f"Warning: Could not get prompt from new system: {e}")
@@ -167,9 +170,9 @@ class PromptFactory:
         
         # Handle base model format (no chat template, just completion)
         if method == Method.DIRECT_BASE:
-            # Combine system prompt and user prompt for base model completion
-            combined_prompt = f"{system_prompt}\n\n{prompt}"
-            return f"<|begin_of_text|>{combined_prompt}"
+            # Format for base model completion using the same pattern as test_base_model.py
+            combined_prompt = f"### User: {system_prompt}\n{prompt}\n### Assistant: "
+            return combined_prompt
         
         return [
             {"role": "system", "content": system_prompt},
@@ -214,7 +217,11 @@ class PromptFactory:
                 - A list of system and user messages (for chat models)
                 - A string prompt (for base models)
         """
-        prompt_path = f"data/{task}.txt"
+        # Handle poem task with clean data
+        if task == "poem":
+            prompt_path = "data/poem_titles.txt"
+        else:
+            prompt_path = f"data/{task}.txt"
 
         if not os.path.exists(prompt_path):
             raise ValueError(f"Prompt file {prompt_path} not found.")
@@ -222,7 +229,9 @@ class PromptFactory:
         prompts = []
         with open(prompt_path, "r") as f:
             for line in f:
-                prompts.append(line)
+                line = line.strip()
+                if line:  # Skip empty lines
+                    prompts.append(line)
         
         # TODO add selection of prompts
         if (num_prompts is not None) and (random_seed is not None):
@@ -243,6 +252,7 @@ class PromptFactory:
                 num_samples_per_prompt=num_samples_per_prompt, 
                 target_words=target_words, 
                 task_type=task_type,
+                task_name=task,
                 **kwargs
             )
             packed_prompts.append(packed_prompt)
