@@ -8,11 +8,17 @@ import json
 from typing import Dict, Any
 from verbalized_sampling.llms.vllm import VLLMOpenAI
 
+MODEL_NAME = "meta-llama/Llama-3.1-70B"
+BASE_URL = "http://localhost:8000/v1"
+prompt = """### User: Write a 200 word story starting with the line: 
+I stand alone in darkness,
+### Assistant: """
+
 def test_base_model_completion(
     prompt: str,
-    model_name: str = "your-base-model-name",
-    base_url: str = "http://localhost:8000/v1",
-    max_tokens: int = 100,
+    model_name: str = MODEL_NAME,
+    base_url: str = BASE_URL,
+    max_tokens: int = 400,
     temperature: float = 0.7,
     stop_tokens: list = None
 ):
@@ -30,11 +36,21 @@ def test_base_model_completion(
     
     # Default stop tokens for base models
     if stop_tokens is None:
-        stop_tokens = ["\n\n", "User:", "Human:", "Assistant:", "<|endoftext|>", "</s>"]
+        stop_tokens = [
+            # "\n\n", 
+            # "User:", 
+            # "Human:", 
+            # "Assistant:", 
+            "<|endoftext|>", 
+            "</s>",
+            "<|end_of_text|>",
+            "### User:",
+            "### Assistant:"
+        ]
     
     # Configuration for the model
     config = {
-        "base_url": base_url,
+        # "base_url": base_url,
         "max_tokens": max_tokens,
         "temperature": temperature,
         "stop": stop_tokens,
@@ -70,13 +86,8 @@ def interactive_test():
     print("=" * 50)
     
     # Default configuration - modify these as needed
-    model_name = input("Enter model name (or press Enter for default): ").strip()
-    if not model_name:
-        model_name = "your-base-model-name"
-    
-    base_url = input("Enter base URL (or press Enter for localhost:8000): ").strip()
-    if not base_url:
-        base_url = "http://localhost:8000/v1"
+    model_name = MODEL_NAME
+    base_url = BASE_URL
     
     while True:
         print("\n" + "-" * 30)
@@ -111,11 +122,5 @@ def interactive_test():
 
 if __name__ == "__main__":
     import sys
-    
-    if len(sys.argv) > 1:
-        # Command line mode
-        prompt = " ".join(sys.argv[1:])
-        test_base_model_completion(prompt)
-    else:
-        # Interactive mode
-        interactive_test()
+
+    test_base_model_completion(prompt)
