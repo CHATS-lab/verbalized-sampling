@@ -80,6 +80,9 @@ class BaseTask(ABC):
                 
                 parsed_responses = ResponseParser.parse_response(self.method, result)
                 for i, response in enumerate(parsed_responses):
+                    if isinstance(response, str):
+                        # If the response is a string, convert it to a dict
+                        response = {"text": response}
                     response["index"] = global_index + i
                 
                 # print("parsed_responses: ", parsed_responses)

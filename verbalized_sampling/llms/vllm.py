@@ -32,14 +32,7 @@ class VLLMOpenAI(BaseLLM):
                 schema_json = schema.model_json_schema()
             else:
                 schema_json = schema
-                
-            # completion = self.client.beta.chat.completions.parse(
-            #     model=self.model_name,
-            #     messages=messages,
-            #     response_format=schema_json,
-            #     extra_body=dict(guided_decoding_backend="auto"),
-            #     **self.config
-            # )
+            
             completion = self.client.chat.completions.create(
                 model=self.model_name,
                 messages=messages,
@@ -51,21 +44,6 @@ class VLLMOpenAI(BaseLLM):
             # Parse the JSON response
             parsed_json = json.loads(response)
             return parsed_json
-            # parsed_responses = []
-            
-            # message = completion.choices[0].message
-            # assert message.parsed
-            
-            # # Extract responses from the parsed message
-            # if hasattr(message.parsed, 'responses'):
-            #     for resp in message.parsed.responses:
-            #         parsed_responses.append({
-            #             "text": resp.text,
-            #             "probability": resp.probability
-            #         })
-            #     return parsed_responses
-            # else:
-            #     raise ValueError("No responses found in the parsed message")
             
         except Exception as e:
             print(f"Error in guided decoding: {e}")

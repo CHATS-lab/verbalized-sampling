@@ -24,6 +24,7 @@ def create_method_experiments(
         'temperature': temperature,
         'top_p': top_p,
         'random_seed': 42,
+        "use_vllm": True,
     }
     
     experiments = []
@@ -80,31 +81,31 @@ if __name__ == "__main__":
     
     # Test multi-turn and JSON mode variations
     methods = [
-        # {
-        #     'method': Method.DIRECT,
-        #     'strict_json': False,
-        #     'num_samples': 1,
-        # },
-        # {
-        #     'method': Method.MULTI_TURN,
-        #     'strict_json': False,
-        #     'num_samples': 20,
-        # },
-        # {
-        #     'method': Method.SEQUENCE,
-        #     'strict_json': True,
-        #     'num_samples': 20,
-        # },
-        # {
-        #     'method': Method.STRUCTURE_WITH_PROB,
-        #     'strict_json': True,
-        #     'num_samples': 20,
-        # },
-        # {
-        #     'method': Method.CHAIN_OF_THOUGHT,
-        #     'strict_json': True,
-        #     'num_samples': 20,
-        # },
+        {
+            'method': Method.DIRECT,
+            'strict_json': False,
+            'num_samples': 1,
+        },
+        {
+            'method': Method.MULTI_TURN,
+            'strict_json': False,
+            'num_samples': 20,
+        },
+        {
+            'method': Method.SEQUENCE,
+            'strict_json': True,
+            'num_samples': 20,
+        },
+        {
+            'method': Method.STRUCTURE_WITH_PROB,
+            'strict_json': True,
+            'num_samples': 20,
+        },
+        {
+            'method': Method.CHAIN_OF_THOUGHT,
+            'strict_json': True,
+            'num_samples': 20,
+        },
         {
             'method': Method.COMBINED,
             'strict_json': True,
@@ -120,7 +121,7 @@ if __name__ == "__main__":
         # "gpt-4.1",
         # "gemini-2.5-flash",
         # "gemini-2.5-pro",
-        "llama-3.1-70b-instruct",
+        "meta-llama/Llama-3.1-70B-Instruct",
         # "anthropic/claude-4-sonnet",
         # "deepseek-r1",
         # "o3",

@@ -77,42 +77,41 @@ def run_method_tests(
 
 if __name__ == "__main__":
     methods = [
-        # {
-        #     'method': Method.DIRECT,
-        #     'strict_json': False,
-        #     'num_samples': 1,
-        # },
+        {
+            'method': Method.DIRECT,
+            'strict_json': False,
+            'num_samples': 1,
+        },
+        {
+            'method': Method.DIRECT_COT,
+            'strict_json': True,
+            'num_samples': 1,
+        },
+        {
+            'method': Method.MULTI_TURN,
+            'strict_json': True,
+            'num_samples': 5,
+        },
         # {
         #     'method': Method.MULTI_TURN,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
-        # {
-        #     'method': Method.MULTI_TURN,
         #     'strict_json': False,
         #     'num_samples': 5,
         # },
-        # {
-        #     'method': Method.SEQUENCE,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
-        # {
-        #     'method': Method.STRUCTURE_WITH_PROB,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
-        # {
-        #     'method': Method.CHAIN_OF_THOUGHT,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
-        # {
-        #     'method': Method.COMBINED,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        #     'num_samples_per_prompt': 2,
-        # }
+        {
+            'method': Method.SEQUENCE,
+            'strict_json': True,
+            'num_samples': 5,
+        },
+        {
+            'method': Method.STRUCTURE_WITH_PROB,
+            'strict_json': True,
+            'num_samples': 5,
+        },
+        {
+            'method': Method.CHAIN_OF_THOUGHT,
+            'strict_json': True,
+            'num_samples': 5,
+        },
         {
             'method': Method.DIRECT_COT,
             'strict_json': True,
@@ -122,15 +121,16 @@ if __name__ == "__main__":
 
 
     models = [
-        # "openai/gpt-4.1",
-        # "openai/gpt-4.1-mini",
-        # "google/gemini-2.5-flash",
-        # "meta-llama/llama-3.1-70b-instruct",
-        # "anthropic/claude-4-sonnet",
+        "openai/gpt-4.1",
+        "openai/gpt-4.1-mini",
+        "google/gemini-2.5-flash",
+        # "meta-llama/Llama-3.1-70B-Instruct",
+        # "meta-llama/llama-3.3-70b-instruct",
+        "anthropic/claude-4-sonnet",
+        "google/gemini-2.5-pro",
         "anthropic/claude-3.7-sonnet",
-        # "google/gemini-2.5-pro",
-        # "openai/o3",
-        # "deepseek/deepseek-r1-0528",
+        "openai/o3",
+        "deepseek/deepseek-r1-0528",
         # "openai/o3",
     ]
     for model in models:
@@ -143,7 +143,7 @@ if __name__ == "__main__":
             temperature=0.7,
             top_p=1.0,
             output_dir=f"poem_experiments_final/{model_basename}",
-            num_workers=32 if "claude" in model_basename else 128,
+            num_workers=16 if "claude" in model_basename else 128,
         )
 
 

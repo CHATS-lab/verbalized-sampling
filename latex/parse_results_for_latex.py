@@ -3,26 +3,33 @@ import os
 import numpy as np
 from pathlib import Path
 
+METHODS = {
+    "Baseline": "direct (samples=1)",
+    "Baseline CoT": "direct_cot [strict] (samples=1)",
+    "Sequence": "sequence [strict] (samples=5)", 
+    "Multi-turn": "multi_turn [strict] (samples=5)",
+    "Standard": "structure_with_prob [strict] (samples=5)",
+    "CoT": "chain_of_thought [strict] (samples=5)",
+    "Combined": "combined [strict] (samples=5)"
+}
 def load_metric(model_dir, method, metric_file, metric_key):
     """Load a specific metric from a results file"""
     file_path = os.path.join(model_dir, "evaluation", method, metric_file)
     try:
         with open(file_path, 'r') as f:
             data = json.load(f)
-        return data.get('overall_metrics', {}).get(metric_key, None)
-    except (FileNotFoundError, json.JSONDecodeError, KeyError):
+        result = data.get('overall_metrics', {}).get(metric_key, None)
+        if method.startswith("direct_cot") and metric_key == "avg_diversity":
+            print(f"DEBUG: Loading {metric_key} from {file_path}: {result}")
+        return result
+    except (FileNotFoundError, json.JSONDecodeError, KeyError) as e:
+        if method.startswith("direct_cot"):
+            print(f"DEBUG: Error loading {metric_key} from {file_path}: {e}")
         return None
 
 def get_model_results(model_dir, model_name):
     """Extract all metrics for a model"""
-    methods = {
-        "Baseline": "direct (samples=1)",
-        "Sequence": "sequence [strict] (samples=5)", 
-        "Multi-turn": "multi_turn [strict] (samples=5)",
-        "Standard": "structure_with_prob [strict] (samples=5)",
-        "CoT": "chain_of_thought [strict] (samples=5)",
-        "Combined": "combined [strict] (samples=5)"
-    }
+    methods = METHODS
     
     results = {"model": model_name}
     
@@ -116,11 +123,11 @@ def generate_latex_table():
             continue
             
         # Find best values across all methods for highlighting
-        all_diversity = [results[method]["diversity"] for method in ["Baseline", "Sequence", "Multi-turn", "Standard", "CoT", "Combined"] 
+        all_diversity = [results[method]["diversity"] for method in METHODS.keys() 
                         if results.get(method) and results[method]["diversity"] is not None]
-        all_rouge_l = [results[method]["rouge_l"] for method in ["Baseline", "Sequence", "Multi-turn", "Standard", "CoT", "Combined"] 
+        all_rouge_l = [results[method]["rouge_l"] for method in METHODS.keys() 
                       if results.get(method) and results[method]["rouge_l"] is not None]
-        all_quality = [results[method]["quality"] for method in ["Baseline", "Sequence", "Multi-turn", "Standard", "CoT", "Combined"] 
+        all_quality = [results[method]["quality"] for method in METHODS.keys() 
                       if results.get(method) and results[method]["quality"] is not None]
         
         best_diversity = max(all_diversity) if all_diversity else None
@@ -130,6 +137,13 @@ def generate_latex_table():
         # Print baseline
         if baseline["diversity"] is not None:
             print(f"& Baseline & {format_metric(baseline['diversity'], baseline['diversity'] == best_diversity)} & {format_metric(baseline['rouge_l'], baseline['rouge_l'] == best_rouge_l)} & {format_metric(baseline['quality'], baseline['quality'] == best_quality)} \\\\")
+
+        # Print baseline CoT
+        baseline_cot = results.get("Baseline CoT")
+        if baseline_cot and any(v is not None for v in baseline_cot.values()):
+            print(f"& Baseline CoT & {format_metric(baseline_cot['diversity'], baseline_cot['diversity'] == best_diversity)} & {format_metric(baseline_cot['rouge_l'], baseline_cot['rouge_l'] == best_rouge_l)} & {format_metric(baseline_cot['quality'], baseline_cot['quality'] == best_quality)} \\\\")
+        else:
+            print(f"Missing Baseline CoT for {model_name}")
         
         # Print other methods
         for method in ["Sequence", "Multi-turn"]:
