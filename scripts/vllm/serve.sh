@@ -6,4 +6,4 @@ vllm serve $MODEL_NAME \
     --tensor-parallel-size $TENSOR_PARALLEL_SIZE \
     --port 8000 \
     --host 0.0.0.0 \
-    --dtype bfloat16 \
+    --dtype bfloat16

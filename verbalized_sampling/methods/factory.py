@@ -218,7 +218,7 @@ class PromptFactory:
                 - A string prompt (for base models)
         """
         # Handle poem task with clean data
-        if task == "poem":
+        if (task == "poem") and (method == Method.DIRECT_BASE):
             prompt_path = "data/poem_titles.txt"
         else:
             prompt_path = f"data/{task}.txt"
