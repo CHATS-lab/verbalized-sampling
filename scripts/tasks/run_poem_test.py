@@ -67,7 +67,7 @@ def run_method_tests(
         experiments=experiments,
         evaluation=EvaluationConfig(metrics=metrics),
         output_base_dir=Path(f"{output_dir}/{model_basename}_{task.value}"),
-        skip_existing=False,
+        skip_existing=True,
         num_workers=num_workers,
     )
     

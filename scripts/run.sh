@@ -1,7 +1,7 @@
 # python scripts/tasks/run_bias_task.py
 MODELS=(
     # allenai/Llama-3.1-Tulu-3-70B-SFT
-    allenai/Llama-3.1-Tulu-3-70B-DPO
+    # allenai/Llama-3.1-Tulu-3-70B-DPO
     allenai/Llama-3.1-Tulu-3-70B
 )
 EVAL_ENGINE="vllm"
