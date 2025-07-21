@@ -4,6 +4,7 @@ import json
 from openai import OpenAI
 import os
 from pydantic import BaseModel
+import time
 
 T = TypeVar('T')
 
@@ -61,35 +62,44 @@ class OpenRouterLLM(BaseLLM):
 
     def _chat_with_format(self, messages: List[Dict[str, str]], schema: BaseModel) -> List[Dict[str, Any]]:
         """Chat with structured response format."""
-        try:
-            if isinstance(schema, BaseModel):
-                schema = schema.model_json_schema()
-            
-            # print("Schema: ", schema)
-            
-            completion = self.client.chat.completions.create(
-                model=self.model_name,
-                messages=messages,
-                temperature=self.config.get("temperature", 0.7),
-                top_p=self.config.get("top_p", 0.9),
-                response_format=schema
-            )
-            
-            if completion is None or not completion.choices:
-                print(f"Error: No response from OpenRouter API for model {self.model_name}")
-                return []
-            
-            response = completion.choices[0].message.content
-            if response:
-                parsed_response = self._parse_response_with_schema(response, schema)
-                return parsed_response
-            else:
-                print(f"Error: Empty response from OpenRouter API for model {self.model_name}")
-                return []
+        tries = 5
+        backoff = 1
+        for i in range(tries):
+            try:
+                if isinstance(schema, BaseModel):
+                    schema = schema.model_json_schema()
                 
-        except Exception as e:
-            print(f"Error in OpenRouter chat_with_format: {e}")
-            return []
+                # print("Schema: ", schema)
+                
+                completion = self.client.chat.completions.create(
+                    model=self.model_name,
+                    messages=messages,
+                    temperature=self.config.get("temperature", 0.7),
+                    top_p=self.config.get("top_p", 0.9),
+                    response_format=schema
+                )
+                
+                if completion is None or not completion.choices:
+                    print(f"Error: No response from OpenRouter API for model {self.model_name}")
+                
+                response = completion.choices[0].message.content
+                if response:
+                    # print("Response: ", response)
+                    parsed_response = self._parse_response_with_schema(response, schema)
+                    return parsed_response
+                else:
+                    print(f"Error: Empty response from OpenRouter API for model {self.model_name}")
+                    
+            except Exception as e:
+                print(f"Error in OpenRouter chat_with_format: {e}")
+                
+                if i < tries - 1:
+                    print(f"Retrying in {backoff} seconds...")
+                    time.sleep(backoff)
+                    backoff *= 2
+                else:
+                    print("Max retries reached. Returning empty response.")
+                    return [{"response": "", "probability": 1.0}]
 
     def _parse_response_with_schema(self, response: str, schema: BaseModel) -> List[Dict[str, Any]]:
         """Parse the response based on the provided schema."""

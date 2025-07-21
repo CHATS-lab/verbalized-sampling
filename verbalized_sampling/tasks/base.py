@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 import json
 import ast
 from rich.progress import Progress
@@ -9,6 +9,7 @@ from verbalized_sampling.methods import (
     Method,
     is_method_multi_turn,
     is_method_combined,
+    is_method_base_model,
     ResponseParser
 )
 import concurrent.futures
@@ -44,7 +45,7 @@ class BaseTask(ABC):
         self.strict_json = strict_json
         self.max_turns = num_samples
         
-    def get_prompt(self) -> List[List[Dict[str, str]]]:
+    def get_prompt(self) -> List[Union[List[Dict[str, str]], str]]:
         """Get the prompt for the task."""
         return PromptFactory.get_prompt(
             self.task_type, 
@@ -79,6 +80,9 @@ class BaseTask(ABC):
                 
                 parsed_responses = ResponseParser.parse_response(self.method, result)
                 for i, response in enumerate(parsed_responses):
+                    if isinstance(response, str):
+                        # If the response is a string, convert it to a dict
+                        response = {"text": response}
                     response["index"] = global_index + i
                 
                 # print("parsed_responses: ", parsed_responses)
@@ -156,7 +160,59 @@ class BaseTask(ABC):
                     progress.update(task_id, advance=len(turn_responses))
         
         return all_results
-            
+    
+    def _run_base_model(
+        self,
+        progress: Progress = None,
+        task_id: int = None,
+    ) -> List[Any]:
+        """Run base model completions with oversampling and filtering."""
+        import math
+
+        oversample_factor = 1.5
+        num_prompts = len(self.get_prompt())
+        prompts = [prompt for prompt in self.get_prompt() for _ in range(math.ceil(self.num_responses * oversample_factor))]
+
+        results = self.model.chat(prompts)
+        parsed_results = []
+
+        # Group results by original prompt (since we oversampled)
+        for i in range(num_prompts):
+            # Get all completions for this prompt
+            prompt = self.get_prompt()[i]
+            start = i * math.ceil(self.num_responses * oversample_factor)
+            end = (i + 1) * math.ceil(self.num_responses * oversample_factor)
+            completions = results[start:end]
+
+            # Filter completions: non-empty and at least 20 words
+            valid_completions = []
+            for result in completions:
+                parsed = ResponseParser.parse_response(self.method, result)
+                # parsed can be a list or a string, handle both
+                if isinstance(parsed, list):
+                    for resp in parsed:
+                        text = resp if isinstance(resp, str) else resp.get("text", "")
+                        if text and len(text.split()) >= 20:
+                            valid_completions.append(resp)
+                else:
+                    text = parsed if isinstance(parsed, str) else parsed.get("text", "")
+                    if text and len(text.split()) >= 20:
+                        valid_completions.append(parsed)
+
+                if len(valid_completions) >= self.num_responses:
+                    break
+
+            # For base models, the prompt is a string, not a message list
+            prompt_text = prompt if isinstance(prompt, str) else prompt[-1]["content"]
+            for i in range(len(valid_completions)):
+                parsed_results.append({
+                    "prompt": prompt_text,
+                    "responses": [valid_completions[i]]
+                })
+                if progress and task_id is not None:
+                    progress.update(task_id, advance=1)
+
+        return parsed_results
 
     def run(
         self,
@@ -183,6 +239,10 @@ class BaseTask(ABC):
         
         if is_method_combined(self.method):
             return self._run_combined(progress, task_id)
+        
+        # Check if this is a base model method
+        if is_method_base_model(self.method):
+            return self._run_base_model(progress, task_id)
         
         # Original single-turn logic
         prompts = [prompt for prompt in self.get_prompt() for _ in range(self.num_responses)]

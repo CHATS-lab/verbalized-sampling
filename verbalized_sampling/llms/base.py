@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Callable, T
+from typing import Any, Dict, List, Callable, T, Union
 import concurrent.futures
 from pydantic import BaseModel
 from tqdm import tqdm
@@ -28,17 +28,27 @@ class BaseLLM(ABC):
         """Send a single message to the model and get the response in JSON format."""
         pass
     
-    def chat(self, messages: List, schema: BaseModel = None) -> List[str]:
-        if not self.strict_json:
-            CHAT_FUNC = self._chat
-        else:
-            if schema is None:
-                raise ValueError("Schema is required for strict JSON mode.")
-            CHAT_FUNC = partial(self._chat_with_format, schema=schema)
-        if self.num_workers > 1:
-            return self._parallel_execute(CHAT_FUNC, messages)
-        else:
-            return [CHAT_FUNC(message) for message in messages] 
+    def _complete(self, prompt: str) -> str:
+        """Send a completion prompt to the model and get the response."""
+        # Default implementation - subclasses can override
+        pass
+    
+    def chat(self, messages: List[Union[List[Dict[str, str]], str]], schema: BaseModel = None) -> List[str]:
+        # Handle mixed list of chat messages and completion prompts
+        results = []
+        
+        def _func(message: List[Dict[str, str]]) -> str:
+            if isinstance(message, str):
+                return self._complete(message)
+            else:
+                if not self.strict_json:
+                    return self._chat(message)
+                else:
+                    if schema is None:
+                        raise ValueError("Schema is required for strict JSON mode.")
+                    return self._chat_with_format(message, schema)
+        
+        return self._parallel_execute(_func, messages)
 
 
     def _parallel_execute(self, func: Callable[[List[Dict[str, str]]], T], messages_list: List[List[Dict[str, str]]]) -> List[T]:

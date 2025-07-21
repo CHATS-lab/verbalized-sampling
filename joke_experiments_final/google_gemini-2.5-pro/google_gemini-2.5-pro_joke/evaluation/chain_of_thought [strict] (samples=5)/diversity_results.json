@@ -1,0 +1,1073 @@
+{
+  "instance_metrics": [
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why don't scientists trust atoms? Because they make up everything.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 20,
+      "unique_words": 19,
+      "vocabulary_richness": 0.95,
+      "response": "An Englishman, an Irishman, and a Scotsman walk into a bar. The bartender says, \"Is this some kind of joke?\"",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 114,
+      "unique_words": 78,
+      "vocabulary_richness": 0.6842105263157895,
+      "response": "A man is stuck in traffic and says to himself, \"I'd give anything to get out of this jam.\" Suddenly, a genie appears in his passenger seat. \"I can grant you three wishes,\" the genie says, \"but whatever you wish for, your worst enemy gets double.\" The man thinks for a moment and says, \"Okay, for my first wish, I want a beautiful house.\" Poof, he's in a beautiful house. But his enemy has two. \"For my second wish, I want a million dollars.\" Poof, a million dollars is in his account. His enemy gets two million. \"And your final wish?\" the genie asks. The man smiles and says, \"Beat me half to death.\"",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 20,
+      "unique_words": 15,
+      "vocabulary_richness": 0.75,
+      "response": "What's the difference between a hippo and a Zippo? One is really heavy, and the other is a little lighter.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 11,
+      "vocabulary_richness": 1.0,
+      "response": "I asked my dog what's two minus two. He said nothing.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 12,
+      "unique_words": 12,
+      "vocabulary_richness": 1.0,
+      "response": "Why can you never trust an atom? Because they make up everything.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 31,
+      "unique_words": 25,
+      "vocabulary_richness": 0.8064516129032258,
+      "response": "A man walks into a library and asks the librarian for a cheeseburger. The librarian says, \"Sir, this is a library.\" The man whispers, \"Oh, right. (Can I get a cheeseburger?)\"",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 10,
+      "vocabulary_richness": 0.9090909090909091,
+      "response": "I have a joke about a broken pencil... but it's pointless.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 17,
+      "unique_words": 17,
+      "vocabulary_richness": 1.0,
+      "response": "I told my suitcase there would be no vacation this year. Now I'm dealing with emotional baggage.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 13,
+      "vocabulary_richness": 1.0,
+      "response": "Parallel lines have so much in common. It\u2019s a shame they\u2019ll never meet.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "Why did the scarecrow win an award? Because he was outstanding in his field.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 21,
+      "unique_words": 21,
+      "vocabulary_richness": 1.0,
+      "response": "Two antennas met on a roof, fell in love, and got married. The ceremony wasn\u2019t much, but the reception was incredible.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 19,
+      "unique_words": 19,
+      "vocabulary_richness": 1.0,
+      "response": "A man walks into a library and asks for books about paranoia. The librarian whispers, 'They're right behind you!'",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 13,
+      "unique_words": 13,
+      "vocabulary_richness": 1.0,
+      "response": "Parallel lines have so much in common. It's a shame they'll never meet.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "Why can't you see elephants hiding in trees? Because they're really good at it.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 13,
+      "vocabulary_richness": 0.9285714285714286,
+      "response": "The past, the present, and the future walk into a bar. It was tense.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 17,
+      "unique_words": 17,
+      "vocabulary_richness": 1.0,
+      "response": "I told my suitcase there will be no vacation this year. Now I'm dealing with emotional baggage.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 14,
+      "vocabulary_richness": 0.9333333333333333,
+      "response": "I have a joke about a time-traveling chameleon, but you've already heard it next week.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 24,
+      "unique_words": 24,
+      "vocabulary_richness": 1.0,
+      "response": "I tried to write a joke about parallel universes, but in every other version, it wasn't funny. So I'm just telling you this one.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 37,
+      "unique_words": 32,
+      "vocabulary_richness": 0.8648648648648649,
+      "response": "What do you call a magic owl? 'Houdini,' the owl hooted, before vanishing in a puff of smoke, leaving the forest biologist to question his grant funding, his career choices, and the very nature of observable reality.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why don't scientists trust atoms? Because they make up everything.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 21,
+      "unique_words": 21,
+      "vocabulary_richness": 1.0,
+      "response": "Two antennas met on a roof, fell in love, and got married. The ceremony wasn\u2019t much, but the reception was incredible.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "What do you call a fish with no eyes? Fsh.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 21,
+      "unique_words": 20,
+      "vocabulary_richness": 0.9523809523809523,
+      "response": "A man walks into a library and asks the librarian for books about paranoia. The librarian whispers, 'They're right behind you!'",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 17,
+      "unique_words": 16,
+      "vocabulary_richness": 0.9411764705882353,
+      "response": "I told my computer I needed a break, and now it won't stop sending me Kit-Kat ads.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "What do you call cheese that isn't yours? Nacho cheese.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why do programmers prefer dark mode? Because light attracts bugs.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 33,
+      "unique_words": 28,
+      "vocabulary_richness": 0.8484848484848485,
+      "response": "A horse walks into a bar. The bartender says, 'Why the long face?' The horse, incapable of understanding human language or the concept of a pun, promptly has a panic attack and leaves.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 30,
+      "unique_words": 26,
+      "vocabulary_richness": 0.8666666666666667,
+      "response": "My therapist told me to write letters to the people I hate and then burn them. I did that, but now I'm not sure what to do with the letters.",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 67,
+      "unique_words": 52,
+      "vocabulary_richness": 0.7761194029850746,
+      "response": "A panda walks into a restaurant, orders a sandwich, eats it, then draws a gun and fires two shots in the air. 'Why?' asks the confused waiter, as the panda heads for the exit. The panda throws a badly punctuated wildlife manual over its shoulder. 'I'm a panda,' it says. 'Look it up.' The waiter turns to the entry for 'Panda' and reads: 'Eats, shoots and leaves.'",
+      "prompt": "Tell me a joke.\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "What do you call a potato with glasses? A spec-tater.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 24,
+      "unique_words": 22,
+      "vocabulary_richness": 0.9166666666666666,
+      "response": "A potato says to its child, 'I have something important to tell you.' It takes a deep breath and says, 'I am your tater.'",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 25,
+      "unique_words": 23,
+      "vocabulary_richness": 0.92,
+      "response": "A potato walks into a bar. The bartender says, 'Sorry, we don't serve food.' The potato replies, 'That's fine, I'm just here to get pickled.'",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 12,
+      "unique_words": 12,
+      "vocabulary_richness": 1.0,
+      "response": "What is a potato's favorite philosophical quote? 'I think, therefore I yam.'",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 15,
+      "vocabulary_richness": 0.9375,
+      "response": "Why was the potato so calm? Because it was in its zen garden, feeling very grounded.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "What do you call a potato with glasses? A spec-tater.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 15,
+      "vocabulary_richness": 0.9375,
+      "response": "Why did the potato quit his job as a detective? He couldn't keep his eyes peeled.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 15,
+      "vocabulary_richness": 0.9375,
+      "response": "I was going to tell you a potato joke, but I'm worried it's a bit half-baked.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 18,
+      "unique_words": 17,
+      "vocabulary_richness": 0.9444444444444444,
+      "response": "A potato was walking down the street when it got into a fight. Now it's a mashed potato.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 9,
+      "vocabulary_richness": 0.9,
+      "response": "What's a potato's life philosophy? I think, therefore I yam.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 13,
+      "vocabulary_richness": 0.9285714285714286,
+      "response": "Why did the potato get the sportscasting job? Because he was a great common-tater.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "What do you call a lazy spud? A couch potato.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 24,
+      "unique_words": 23,
+      "vocabulary_richness": 0.9583333333333334,
+      "response": "A potato is sitting on a couch, looking sad. His friend asks, 'What's wrong?' The potato sighs and says, 'I'm having an exi-starch-ential crisis.'",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "What did the potato say to its sweetheart? I only have eyes for you.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 22,
+      "unique_words": 20,
+      "vocabulary_richness": 0.9090909090909091,
+      "response": "Two potatoes are growing in a field. One says, 'It's getting hot out here.' The other says, 'I know, I'm getting baked!'",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 15,
+      "vocabulary_richness": 1.0,
+      "response": "Why are potatoes so good at solving mysteries? Because they always keep their eyes peeled.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 34,
+      "unique_words": 29,
+      "vocabulary_richness": 0.8529411764705882,
+      "response": "A young potato tells his father, 'Dad, when I grow up, I want to be a sportscaster!' The father sighs and says, 'That\u2019s a nice dream, but you\u2019re more likely to be a common-tater.'",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 15,
+      "vocabulary_richness": 1.0,
+      "response": "What do you call a potato that's reluctant to jump into hot oil? A hesi-tater.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 21,
+      "unique_words": 20,
+      "vocabulary_richness": 0.9523809523809523,
+      "response": "What did the potato say on its first date? 'It's so nice to finally meet you. I've seen you on Tuber.'",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 18,
+      "unique_words": 16,
+      "vocabulary_richness": 0.8888888888888888,
+      "response": "Why was the potato so calm? Because it was in its zen garden, meditating on its inner starch.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 15,
+      "vocabulary_richness": 1.0,
+      "response": "What do you call a potato that's reluctant to jump into hot oil?\nA hesi-tater.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 40,
+      "unique_words": 36,
+      "vocabulary_richness": 0.9,
+      "response": "A potato is walking down the street when its friend gets hit by a bus. It rushes over and a paramedic asks, \"Is he going to be okay?\" The potato replies, \"I don't know, he looks pretty mashed to me.\"",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 43,
+      "unique_words": 34,
+      "vocabulary_richness": 0.7906976744186046,
+      "response": "A young potato sat in the pantry, contemplating its future. \"Will I be mashed? Will I be fried?\" it wondered. A wise old garlic bulb next to it replied, \"Don't worry about the big picture. Just try to be a-peeling in the moment.\"",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 12,
+      "unique_words": 12,
+      "vocabulary_richness": 1.0,
+      "response": "What do you call a potato that's good with computers?\nA micro-chip.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 21,
+      "unique_words": 20,
+      "vocabulary_richness": 0.9523809523809523,
+      "response": "What did one potato say to the other?\nNothing. Potatoes are root vegetables and lack the vocal cords necessary for speech.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "What do you call a lazy potato? A couch potato.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 26,
+      "unique_words": 22,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the potato break up with the sweet potato? He said she was too sweet and he couldn't see 'eye' to 'eye' with her anymore.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 10,
+      "vocabulary_richness": 0.9090909090909091,
+      "response": "What do you call a potato with a monocle? A spec-tater.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 10,
+      "vocabulary_richness": 0.9090909090909091,
+      "response": "What is a potato's life philosophy? I think, therefore I yam.",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 25,
+      "unique_words": 18,
+      "vocabulary_richness": 0.72,
+      "response": "A potato walks into a bar. The bartender says, 'We have a drink named after you!' The potato replies, 'You have a drink named Steve?'",
+      "prompt": "Tell me a joke about potatoes"
+    },
+    {
+      "response_length": 9,
+      "unique_words": 9,
+      "vocabulary_richness": 1.0,
+      "response": "What do you call a sad coffee? A depresso.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 11,
+      "vocabulary_richness": 1.0,
+      "response": "Why did the coffee file a police report? It got mugged!",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 23,
+      "unique_words": 22,
+      "vocabulary_richness": 0.9565217391304348,
+      "response": "My coffee maker is the most motivated thing in my house. It's the first one up every morning, and it starts working immediately.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 19,
+      "unique_words": 15,
+      "vocabulary_richness": 0.7894736842105263,
+      "response": "I like my coffee like I like my soul. Dark, bitter, and too hot for anyone else to handle.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 36,
+      "unique_words": 29,
+      "vocabulary_richness": 0.8055555555555556,
+      "response": "A man walks into a coffee shop and asks for a ground coffee. The barista hands him a cup full of dirt. The man says, 'What's this?!' The barista replies, 'You said you wanted ground coffee.'",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 18,
+      "unique_words": 18,
+      "vocabulary_richness": 1.0,
+      "response": "My wife said she's leaving me because of my coffee addiction. I told her she has no grounds.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 24,
+      "unique_words": 21,
+      "vocabulary_richness": 0.875,
+      "response": "Decaf coffee is like a hug from someone you don't really like. The intention is there, but you're not getting what you really need.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 12,
+      "unique_words": 12,
+      "vocabulary_richness": 1.0,
+      "response": "My morning coffee is basically just a firmware update for my brain.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 29,
+      "unique_words": 28,
+      "vocabulary_richness": 0.9655172413793104,
+      "response": "I drank so much coffee today, I'm pretty sure my blood type is now Arabica. The mosquitos that bite me can now pull all-nighters to finish their evil plans.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 37,
+      "unique_words": 34,
+      "vocabulary_richness": 0.918918918918919,
+      "response": "What did the coffee bean say in therapy? 'I just feel so empty inside. I'm constantly being roasted, then ground down by the pressures of the world, and then someone pours hot water all over my problems.'",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 26,
+      "unique_words": 21,
+      "vocabulary_richness": 0.8076923076923077,
+      "response": "I'm not a morning person. I'm not even a 'person' until I've had coffee. Before that, I'm just a vaguely person-shaped collection of grunts and sighs.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 8,
+      "unique_words": 8,
+      "vocabulary_richness": 1.0,
+      "response": "How does Moses make his coffee? Hebrews it.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 25,
+      "unique_words": 24,
+      "vocabulary_richness": 0.96,
+      "response": "The life of a coffee bean is tragic. It spends its whole life getting roasted, only to be put in hot water at the end.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "I tried to write a joke about decaf coffee, but it had no punchline.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 20,
+      "unique_words": 17,
+      "vocabulary_richness": 0.85,
+      "response": "A man asks a barista for a coffee 'on the grounds'. The barista hands him a cup full of dirt.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 11,
+      "vocabulary_richness": 1.0,
+      "response": "What do you call a sad cup of coffee? A depresso.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 11,
+      "vocabulary_richness": 1.0,
+      "response": "Why did the coffee file a police report? It got mugged!",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 17,
+      "unique_words": 16,
+      "vocabulary_richness": 0.9411764705882353,
+      "response": "My coffee and I have the perfect relationship. It's dark, bitter, and keeps me up at night.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 27,
+      "unique_words": 24,
+      "vocabulary_richness": 0.8888888888888888,
+      "response": "I was going to make a joke about decaf coffee, but I couldn't come up with a good punchline. There just wasn't enough material to work with.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 37,
+      "unique_words": 35,
+      "vocabulary_richness": 0.9459459459459459,
+      "response": "A man tells his doctor, 'I can't stop drinking coffee. I have it 20 times a day.' The doctor says, 'Wow, don't you ever sleep?' The man replies, 'Sure, but who can sleep with all that coffee?'",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 11,
+      "vocabulary_richness": 1.0,
+      "response": "Why did the coffee file a police report? It got mugged!",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 6,
+      "unique_words": 6,
+      "vocabulary_richness": 1.0,
+      "response": "What's the opposite of coffee? Sneezy.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 24,
+      "unique_words": 19,
+      "vocabulary_richness": 0.7916666666666666,
+      "response": "I'm not a morning person. I'm not even a 'person' until my second cup. Before that, I'm just a vaguely humanoid-shaped collection of grievances.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 30,
+      "unique_words": 28,
+      "vocabulary_richness": 0.9333333333333333,
+      "response": "A tea bag asked a coffee bean, 'Why are you so jittery?' The coffee bean replied, 'You would be too if you got roasted, ground up, and scalded every morning!'",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 34,
+      "unique_words": 30,
+      "vocabulary_richness": 0.8823529411764706,
+      "response": "A man sips his coffee and says to the barista, 'This coffee has seen things.' The barista nods. 'Indeed.' The man takes another sip. 'It tastes of... existential dread and a forgotten Netflix password.'",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 11,
+      "vocabulary_richness": 1.0,
+      "response": "What do you call a sad cup of coffee? A depresso.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 11,
+      "vocabulary_richness": 1.0,
+      "response": "Why did the coffee file a police report? It got mugged!",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 18,
+      "unique_words": 16,
+      "vocabulary_richness": 0.8888888888888888,
+      "response": "My coffee and I have the perfect relationship. I get to be myself, and it has its perks.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 19,
+      "unique_words": 19,
+      "vocabulary_richness": 1.0,
+      "response": "A coffee bean's wife filed for divorce. He was a little bitter, but she claimed he had no grounds.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 29,
+      "unique_words": 26,
+      "vocabulary_richness": 0.896551724137931,
+      "response": "My coffee maker has a personality setting. This morning I set it to 'passive-aggressive.' It didn't brew the coffee, it just sat there sighing until I made it myself.",
+      "prompt": "Make a joke about coffee\n"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 15,
+      "vocabulary_richness": 1.0,
+      "response": "Why do programmers always mix up Halloween and Christmas? Because Oct 31 equals Dec 25.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 31,
+      "unique_words": 27,
+      "vocabulary_richness": 0.8709677419354839,
+      "response": "A programmer's wife tells him: 'Go to the store and get a loaf of bread. If they have eggs, get a dozen.' The programmer came back with 12 loaves of bread.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "I've got a great UDP joke, but I don't know if you'll get it.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 19,
+      "unique_words": 19,
+      "vocabulary_richness": 1.0,
+      "response": "Some people, when confronted with a problem, think 'I know, I'll use regular expressions.' Now they have two problems.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 2,
+      "unique_words": 2,
+      "vocabulary_richness": 1.0,
+      "response": "['hip', 'hip']",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 15,
+      "vocabulary_richness": 1.0,
+      "response": "Why do programmers always mix up Halloween and Christmas? Because Oct 31 == Dec 25.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 15,
+      "vocabulary_richness": 0.9375,
+      "response": "Debugging is like being the detective in a crime movie where you are also the murderer.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "Why was the JavaScript developer sad? Because he didn't know how to `console` himself.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 29,
+      "unique_words": 24,
+      "vocabulary_richness": 0.8275862068965517,
+      "response": "A programmer puts two glasses on his bedside table before going to sleep. A full one, in case he gets thirsty, and an empty one, in case he doesn't.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 15,
+      "vocabulary_richness": 1.0,
+      "response": "Why don't programmers like to go outside? The sunlight has a terrible cache invalidation policy.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 17,
+      "unique_words": 15,
+      "vocabulary_richness": 0.8823529411764706,
+      "response": "There are 10 types of people in the world: those who understand binary, and those who don't.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 18,
+      "unique_words": 18,
+      "vocabulary_richness": 1.0,
+      "response": "A SQL query walks into a bar, goes up to two tables and asks, 'Can I join you?'",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "How do you comfort a JavaScript developer? You `console` them.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 30,
+      "unique_words": 26,
+      "vocabulary_richness": 0.8666666666666667,
+      "response": "A programmer's spouse tells them, 'Go to the store and get a loaf of bread. If they have eggs, get a dozen.' The programmer returns with 12 loaves of bread.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 28,
+      "unique_words": 26,
+      "vocabulary_richness": 0.9285714285714286,
+      "response": "A programmer is struggling to open a jar. Their non-technical friend says, 'Just twist it!' The programmer mutters, 'I am, but the documentation for this API is terrible.'",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 17,
+      "unique_words": 15,
+      "vocabulary_richness": 0.8823529411764706,
+      "response": "There are 10 types of people in the world: those who understand binary, and those who don't.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 30,
+      "unique_words": 26,
+      "vocabulary_richness": 0.8666666666666667,
+      "response": "A programmer's spouse tells them, \"Go to the store and get a loaf of bread. If they have eggs, get a dozen.\" The programmer returns with 12 loaves of bread.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 18,
+      "unique_words": 18,
+      "vocabulary_richness": 1.0,
+      "response": "A SQL query walks into a bar, goes up to two tables and asks, \"Can I join you?\"",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why do programmers prefer dark mode? Because light attracts bugs.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 12,
+      "unique_words": 12,
+      "vocabulary_richness": 1.0,
+      "response": "Why did the programmer quit his job? Because he didn't get arrays.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 30,
+      "unique_words": 26,
+      "vocabulary_richness": 0.8666666666666667,
+      "response": "A programmer's spouse tells them, \"Go to the store and get a loaf of bread. If they have eggs, get a dozen.\" The programmer returns with 12 loaves of bread.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 18,
+      "unique_words": 16,
+      "vocabulary_richness": 0.8888888888888888,
+      "response": "A programmer gets stuck in the shower because the instructions on the shampoo bottle said: Lather, Rinse, Repeat.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 17,
+      "unique_words": 15,
+      "vocabulary_richness": 0.8823529411764706,
+      "response": "There are 10 types of people in the world: those who understand binary, and those who don't.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 10,
+      "unique_words": 10,
+      "vocabulary_richness": 1.0,
+      "response": "Why do programmers prefer dark mode? Because light attracts bugs.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 15,
+      "vocabulary_richness": 1.0,
+      "response": "There are two hard things in computer science: cache invalidation, naming things, and off-by-one errors.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 16,
+      "vocabulary_richness": 1.0,
+      "response": "There are only two hard things in Computer Science: cache invalidation, naming things, and off-by-one errors.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 15,
+      "vocabulary_richness": 0.9375,
+      "response": "Debugging is like being the detective in a crime movie where you are also the murderer.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 18,
+      "unique_words": 17,
+      "vocabulary_richness": 0.9444444444444444,
+      "response": "An SQL query walks into a bar, walks up to two tables and asks, 'Can I join you?'",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 18,
+      "unique_words": 18,
+      "vocabulary_richness": 1.0,
+      "response": "You'd think a pirate's favorite programming language would be R, but their first love is always the C.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 16,
+      "unique_words": 14,
+      "vocabulary_richness": 0.875,
+      "response": "A CSS selector walks into a bar, and a table in a back corner falls over.",
+      "prompt": "Tell me a programming joke\n"
+    },
+    {
+      "response_length": 17,
+      "unique_words": 15,
+      "vocabulary_richness": 0.8823529411764706,
+      "response": "There are 10 types of people in the world: those who understand binary, and those who don't.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 20,
+      "unique_words": 18,
+      "vocabulary_richness": 0.9,
+      "response": "Ren\u00e9 Descartes walks into a bar. The bartender asks, \"Fancy a drink?\" Descartes replies, \"I think not,\" and promptly disappears.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 13,
+      "vocabulary_richness": 0.9285714285714286,
+      "response": "The past, the present, and the future walk into a bar. It was tense.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 21,
+      "unique_words": 20,
+      "vocabulary_richness": 0.9523809523809523,
+      "response": "A neutron walks into a bar and orders a drink. \"How much?\" he asks. The bartender replies, \"For you, no charge.\"",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 13,
+      "vocabulary_richness": 0.9285714285714286,
+      "response": "The past, the present, and the future walk into a bar. It was tense.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 22,
+      "unique_words": 20,
+      "vocabulary_richness": 0.9090909090909091,
+      "response": "Ren\u00e9 Descartes walks into a bar. The bartender asks, 'Would you like a beer?' Descartes says, 'I think not,' and promptly disappears.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 20,
+      "unique_words": 20,
+      "vocabulary_richness": 1.0,
+      "response": "A photon checks into a hotel and is asked if he has any luggage. He replies, 'No, I'm traveling light.'",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 15,
+      "vocabulary_richness": 1.0,
+      "response": "Why do programmers always mix up Halloween and Christmas? Because Oct 31 equals Dec 25.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 20,
+      "unique_words": 18,
+      "vocabulary_richness": 0.9,
+      "response": "Ren\u00e9 Descartes walks into a bar. The bartender says, 'Fancy a drink?' Descartes replies, 'I think not,' and promptly vanishes.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 13,
+      "vocabulary_richness": 0.9285714285714286,
+      "response": "The past, the present, and the future walked into a bar. It was tense.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 62,
+      "unique_words": 50,
+      "vocabulary_richness": 0.8064516129032258,
+      "response": "Heisenberg and Schr\u00f6dinger are driving together when they get pulled over. The cop asks Heisenberg, 'Do you know how fast you were going?' Heisenberg replies, 'No, but I know exactly where I am.' The cop, annoyed, goes to search the trunk. He comes back and says, 'Do you know you have a dead cat in here?' Schr\u00f6dinger yells, 'Well, I do now!'",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 26,
+      "unique_words": 24,
+      "vocabulary_richness": 0.9230769230769231,
+      "response": "Pavlov is sitting at a pub enjoying a pint when the phone rings. He jumps up and shouts, 'Oh crap, I forgot to feed the dogs!'",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 34,
+      "unique_words": 29,
+      "vocabulary_richness": 0.8529411764705882,
+      "response": "I was at a job interview today. They said, 'We're looking for someone who is responsible.' I said, 'I'm your man. In my last job, whenever anything went wrong, they said I was responsible.'",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 55,
+      "unique_words": 46,
+      "vocabulary_richness": 0.8363636363636363,
+      "response": "Jean-Paul Sartre is sitting at a French caf\u00e9, revising his draft of Being and Nothingness. He says to the waitress, 'I'd like a coffee with sugar, but no cream.' The waitress replies, 'I'm sorry, monsieur, but we're out of cream. We only have milk. Can I get you a coffee with sugar, but no milk?'",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 28,
+      "unique_words": 24,
+      "vocabulary_richness": 0.8571428571428571,
+      "response": "Heisenberg gets pulled over for speeding. The cop asks him, 'Do you know how fast you were going?' Heisenberg replies, 'No, but I know exactly where I am!'",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 13,
+      "vocabulary_richness": 0.9285714285714286,
+      "response": "The past, the present, and the future walk into a bar. It was tense.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 31,
+      "unique_words": 27,
+      "vocabulary_richness": 0.8709677419354839,
+      "response": "A programmer's wife tells him, 'Go to the store and buy a loaf of bread. If they have eggs, buy a dozen.' The programmer came back with 12 loaves of bread.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 32,
+      "unique_words": 26,
+      "vocabulary_richness": 0.8125,
+      "response": "A Roman walks into a bar and asks for a martinus. 'You mean a martini?' the bartender asks. The Roman replies, 'If I wanted a double, I would have asked for it!'",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 11,
+      "unique_words": 11,
+      "vocabulary_richness": 1.0,
+      "response": "I'm reading a book on anti-gravity. It's impossible to put down.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 39,
+      "unique_words": 33,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Heisenberg is driving down the highway when a cop pulls him over. The cop walks up to the window and asks, 'Do you know how fast you were going?' Heisenberg replies, 'No, but I know exactly where I am!'",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 13,
+      "vocabulary_richness": 0.9285714285714286,
+      "response": "The past, the present, and the future walked into a bar. It was tense.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 32,
+      "unique_words": 26,
+      "vocabulary_richness": 0.8125,
+      "response": "A Roman walks into a bar and asks for a martinus. 'You mean a martini?' the bartender asks. The Roman replies, 'If I wanted a double, I would have asked for it!'",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 15,
+      "vocabulary_richness": 1.0,
+      "response": "Why do programmers always mix up Halloween and Christmas? Because Oct 31 equals Dec 25.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 13,
+      "vocabulary_richness": 0.9285714285714286,
+      "response": "The past, the present, and the future walk into a bar. It was tense.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 21,
+      "unique_words": 19,
+      "vocabulary_richness": 0.9047619047619048,
+      "response": "Ren\u00e9 Descartes walks into a bar. The bartender asks, 'Would you like a drink?' Descartes replies, 'I think not,' and vanishes.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 15,
+      "unique_words": 15,
+      "vocabulary_richness": 1.0,
+      "response": "Why do programmers always mix up Halloween and Christmas? Because Oct 31 equals Dec 25.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 28,
+      "unique_words": 24,
+      "vocabulary_richness": 0.8571428571428571,
+      "response": "A police officer pulls over Werner Heisenberg. 'Do you know how fast you were going?' the officer asks. Heisenberg replies, 'No, but I know exactly where I am!'",
+      "prompt": "Give me a witty joke that's also clever\n"
+    },
+    {
+      "response_length": 14,
+      "unique_words": 14,
+      "vocabulary_richness": 1.0,
+      "response": "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+      "prompt": "Give me a witty joke that's also clever\n"
+    }
+  ],
+  "overall_metrics": {
+    "avg_diversity": 0.3318714234051637,
+    "std_diversity": 0.09372367153312179,
+    "min_diversity": 0.0,
+    "max_diversity": 0.49209816726870775,
+    "avg_response_length": 20.433333333333334,
+    "std_response_length": 12.586035015242954,
+    "avg_unique_words": 18.493333333333332,
+    "std_unique_words": 9.29078829828661,
+    "avg_vocabulary_richness": 0.9351522725198375,
+    "std_vocabulary_richness": 0.07107336898543168,
+    "total_cost": 8.11e-05
+  },
+  "metadata": {
+    "experiment": "chain_of_thought [strict] (samples=5)",
+    "metric": "diversity",
+    "embedding_model": "text-embedding-3-small",
+    "device": "cpu"
+  }
+}

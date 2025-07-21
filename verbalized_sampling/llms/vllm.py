@@ -15,6 +15,9 @@ class VLLMOpenAI(BaseLLM):
 
     def _chat(self, messages: List[Dict[str, str]]) -> str:
         """Basic chat functionality without structured response format."""
+        if 'max_tokens' not in self.config:
+            self.config['max_tokens'] = 4096
+        
         response = self.client.chat.completions.create(
             model=self.model_name,
             messages=messages,
@@ -32,14 +35,7 @@ class VLLMOpenAI(BaseLLM):
                 schema_json = schema.model_json_schema()
             else:
                 schema_json = schema
-                
-            # completion = self.client.beta.chat.completions.parse(
-            #     model=self.model_name,
-            #     messages=messages,
-            #     response_format=schema_json,
-            #     extra_body=dict(guided_decoding_backend="auto"),
-            #     **self.config
-            # )
+            
             completion = self.client.chat.completions.create(
                 model=self.model_name,
                 messages=messages,
@@ -51,21 +47,6 @@ class VLLMOpenAI(BaseLLM):
             # Parse the JSON response
             parsed_json = json.loads(response)
             return parsed_json
-            # parsed_responses = []
-            
-            # message = completion.choices[0].message
-            # assert message.parsed
-            
-            # # Extract responses from the parsed message
-            # if hasattr(message.parsed, 'responses'):
-            #     for resp in message.parsed.responses:
-            #         parsed_responses.append({
-            #             "text": resp.text,
-            #             "probability": resp.probability
-            #         })
-            #     return parsed_responses
-            # else:
-            #     raise ValueError("No responses found in the parsed message")
             
         except Exception as e:
             print(f"Error in guided decoding: {e}")
@@ -86,3 +67,29 @@ class VLLMOpenAI(BaseLLM):
             except:
                 # If all else fails, return a single response with probability 1.0
                 return [{"text": response, "probability": 1.0}]
+
+    def _complete(self, prompt: str) -> str:
+        """Send a completion prompt to the model and get the response."""
+        # Use appropriate stop tokens for base models
+        config = self.config.copy()
+        if 'stop' not in config:
+            config['stop'] = [
+                "<|endoftext|>", 
+                "</s>",
+                "<|end_of_text|>",
+                "### User:",
+                "### Assistant:"
+            ]
+        
+        if "max_tokens" not in config:
+            config["max_tokens"] = 400
+        
+        response = self.client.completions.create(
+            model=self.model_name,
+            prompt=prompt,
+            **config
+        )
+        response_text = response.choices[0].text
+        if response_text:
+            response_text = response_text.strip()
+        return response_text
