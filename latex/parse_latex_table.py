@@ -534,6 +534,158 @@ def plot_diversity_vs_quality_scatter(all_results, output_dir="plots"):
         
         print(f"✓ Saved minimal diversity vs quality plot for {model_name}")
 
+def plot_diversity_vs_quality_average(all_results, output_dir="plots"):
+    """Create scatter plot showing average diversity vs quality across all models for each method"""
+    
+    import matplotlib.pyplot as plt
+    import numpy as np
+    import os
+    
+    # Create output directory if it doesn't exist
+    os.makedirs(output_dir, exist_ok=True)
+    
+    # Set up the plotting style (exactly like 2x2)
+    plt.rcParams.update({
+        'font.family': 'sans-serif',
+        'font.size': 12,
+        'axes.labelsize': 16,
+        'axes.titlesize': 18,
+        'xtick.labelsize': 14,
+        'ytick.labelsize': 14,
+        'legend.fontsize': 14,
+        'axes.linewidth': 1.0,
+        'grid.alpha': 0.3,
+        'grid.linewidth': 0.8
+    })
+    
+    method_names = ["Direct", "CoT", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Combined"]
+    # Use colorful palette for all methods (exactly like 2x2)
+    base_colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', 
+                   '#9467bd', '#8c564b', '#e377c2']
+    markers = ['x', 'x', 'x', 'x', '*', '*', '*']
+    
+    # Calculate averages across all models for each method
+    method_averages = {}
+    
+    for method in method_names:
+        diversity_values = []
+        quality_values = []
+        
+        # Collect values from all models
+        for model_name, results in all_results.items():
+            data = results.get(method)
+            if data and data["diversity"] is not None and data["quality"] is not None:
+                diversity_values.append(data["diversity"])
+                quality_values.append(data["quality"])
+        
+        if diversity_values and quality_values:
+            method_averages[method] = {
+                'diversity': np.mean(diversity_values),
+                'quality': np.mean(quality_values)
+            }
+    
+    # Create single subplot (mimic 2x2 structure but single plot)
+    fig, ax = plt.subplots(figsize=(6, 4))
+    
+    # First, collect all points to find Pareto optimal ones (exactly like 2x2)
+    all_points = []
+    for i, method in enumerate(method_names):
+        if method in method_averages:
+            avg_data = method_averages[method]
+            all_points.append((avg_data['diversity'], avg_data['quality'], method, i))
+    
+    # Find Pareto optimal points
+    pareto_mask = find_pareto_frontier([p[0] for p in all_points], [p[1] for p in all_points])
+    
+    # Plot each method (exactly like 2x2 implementation)
+    for i, method in enumerate(method_names):
+        if method in method_averages:
+            avg_data = method_averages[method]
+            div = avg_data['diversity']
+            qual = avg_data['quality']
+            
+            # Check if this point is Pareto optimal
+            point_idx = next((j for j, p in enumerate(all_points) if p[2] == method), -1)
+            is_pareto_optimal = point_idx >= 0 and pareto_mask[point_idx]
+            
+            # Plot the main point with consistent marker for each method
+            marker_style = markers[i]
+            base_size = 120
+            base_linewidth = 1.5
+            
+            # Make Pareto optimal points larger and bolder
+            if is_pareto_optimal:
+                size = base_size * 1.5
+                linewidth = base_linewidth
+                edge_color = 'black'
+                edge_width = 1.5
+            else:
+                size = base_size
+                linewidth = base_linewidth
+                edge_color = None
+                edge_width = 0
+            
+            # Use different markers and hatches for VS methods vs others (exactly like 2x2)
+            if method.startswith("VS-"):
+                # VS methods: hatched star markers
+                ax.scatter(div, qual, color=base_colors[i], marker=marker_style, 
+                          s=size, alpha=0.9, label=method, zorder=5, 
+                          linewidth=linewidth, hatch='///')
+            else:
+                # Baseline methods: solid x markers
+                ax.scatter(div, qual, color=base_colors[i], marker=marker_style, 
+                          s=size, alpha=0.7, label=method, zorder=5, 
+                          linewidth=linewidth)
+            
+            # Add bold outline for Pareto optimal points
+            if is_pareto_optimal:
+                ax.scatter(div, qual, facecolors='none', edgecolors=edge_color, 
+                          marker=marker_style, s=size + 50, linewidth=edge_width, 
+                          alpha=1.0, zorder=6)
+    
+    # Configure subplot (exactly like 2x2)
+    ax.set_xlabel('Diversity (%)', fontsize=16, fontweight='bold')
+    ax.set_ylabel('Quality (%)', fontsize=16, fontweight='bold')
+    # ax.set_title('Average Diversity vs Quality Across All Models', fontsize=18, fontweight='bold')
+    ax.grid(True, alpha=0.3)
+    
+    # Add Pareto optimal arrow with independent text positioning (exactly like 2x2)
+    # First add the arrow
+    ax.annotate('', xy=(0.95, 0.95), xytext=(0.85, 0.85),
+               xycoords='axes fraction', textcoords='axes fraction',
+               arrowprops=dict(arrowstyle='->', lw=3, color='red', alpha=0.7))
+    # Then add the text separately
+    ax.text(0.85, 0.88, 'Pareto optimal', transform=ax.transAxes, 
+           fontsize=12, color='red', fontweight='bold', ha='right')
+    
+    # Add more headroom to axes (exactly like 2x2)
+    x_min, x_max = ax.get_xlim()
+    y_min, y_max = ax.get_ylim()
+    x_range = x_max - x_min
+    y_range = y_max - y_min
+    ax.set_xlim(x_min - 0.05 * x_range, x_max + 0.20 * x_range)
+    ax.set_ylim(y_min - 0.05 * y_range, y_max + 0.20 * y_range)
+    
+    # Add legend above the plot (matching 2x2 style)
+    handles, labels = ax.get_legend_handles_labels()
+    if handles:  # Only add legend if we have data
+        fig.legend(handles, labels, loc='upper center', bbox_to_anchor=(0.5, 1.00), 
+                  ncol=4, fontsize=12, frameon=False, 
+                  borderaxespad=0)
+    
+    # Adjust layout to make room for legend (exactly like 2x2)
+    plt.tight_layout()
+    plt.subplots_adjust(top=0.88)
+    
+    # Save the figure
+    plt.savefig(f'{output_dir}/diversity_vs_quality_average.png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'{output_dir}/diversity_vs_quality_average.pdf', bbox_inches='tight')
+    plt.close()
+    
+    print(f"✓ Saved average diversity vs quality plot")
+    
+    return method_averages
+
 def plot_diversity_vs_quality_2x2(all_results, output_dir="plots"):
     """Create 2x2 subplot layout with Claude-4, Gemini-2.5-Pro, GPT-4.1, and Deepseek-R1"""
     
@@ -1202,6 +1354,7 @@ def main():
     plot_method_averages(all_results)
     # plot_individual_models(all_results)
     # plot_diversity_vs_quality_scatter(all_results)
+    plot_diversity_vs_quality_average(all_results)
     plot_diversity_vs_quality_2x2(all_results)
     
     # Generate advanced analysis plots
