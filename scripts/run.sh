@@ -1,13 +1,16 @@
 # python scripts/tasks/run_bias_task.py
 MODELS=(
-    # allenai/Llama-3.1-Tulu-3-70B-SFT
-    # allenai/Llama-3.1-Tulu-3-70B-DPO
-    allenai/Llama-3.1-Tulu-3-70B
+    allenai/Llama-3.1-Tulu-3-70B-SFT
+    allenai/Llama-3.1-Tulu-3-70B-DPO
+    # allenai/Llama-3.1-Tulu-3-70B
+    # allenai/Llama-3.1-Tulu-3-8B-SFT
+    # allenai/Llama-3.1-Tulu-3-8B-DPO
+    # allenai/Llama-3.1-Tulu-3-8B
 )
 EVAL_ENGINE="vllm"
-CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
+CUDA_VISIBLE_DEVICES=0,1,2,3
 SERVER_PORT=8000
-TENSOR_PARALLEL_SIZE=8
+TENSOR_PARALLEL_SIZE=4
 SERVER_HOST=0.0.0.0
 SERVER_STARTUP_TIMEOUT=1200
 SERVER_URL="http://0.0.0.0:8000/v1"
@@ -76,7 +79,7 @@ stop_server() {
 }
 
 for MODEL_NAME in ${MODELS[@]}; do
-    start_server
+    # start_server
     python scripts/tasks/run_poem_test.py --model $MODEL_NAME
-    stop_server
+    # stop_server
 done
