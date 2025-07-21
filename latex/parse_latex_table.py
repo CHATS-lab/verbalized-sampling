@@ -547,29 +547,28 @@ def plot_diversity_vs_quality_2x2(all_results, output_dir="plots"):
     # Set up the plotting style
     plt.rcParams.update({
         'font.family': 'sans-serif',
-        'font.size': 10,
-        'axes.labelsize': 12,
-        'axes.titlesize': 13,
-        'xtick.labelsize': 10,
-        'ytick.labelsize': 10,
-        'legend.fontsize': 11,
+        'font.size': 12,
+        'axes.labelsize': 16,
+        'axes.titlesize': 18,
+        'xtick.labelsize': 14,
+        'ytick.labelsize': 14,
+        'legend.fontsize': 14,
         'axes.linewidth': 1.0,
         'grid.alpha': 0.3,
         'grid.linewidth': 0.8
     })
     
     method_names = ["Direct", "CoT", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Combined"]
-    # Use consistent markers with same colors
-    # Grayscale-friendly colors
-    base_colors = ['#000000', '#333333', '#666666', '#999999', 
-              '#0066CC', '#CC0000', '#00CC66']
-    markers = ['o', 's', 'D', '^', 'o', 's', 'D']
+    # Use colorful palette for all methods
+    base_colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', 
+                   '#9467bd', '#8c564b', '#e377c2']
+    markers = ['x', 'x', 'x', 'x', '*', '*', '*']
     
     # Define the 4 models we want to plot
     target_models = ["Claude-4-Sonnet", "Gemini-2.5-Pro", "GPT-4.1", "Deepseek-R1"]
     
     # Create 2x2 subplot layout
-    fig, axes = plt.subplots(2, 2, figsize=(6, 7))
+    fig, axes = plt.subplots(2, 2, figsize=(8, 6))
     axes = axes.flatten()
     
     # Plot each model
@@ -597,6 +596,16 @@ def plot_diversity_vs_quality_2x2(all_results, output_dir="plots"):
                     break
         
         if model_results is not None:
+            # First, collect all points to find Pareto optimal ones
+            all_points = []
+            for i, method in enumerate(method_names):
+                data = model_results.get(method)
+                if data and data["diversity"] is not None and data["quality"] is not None:
+                    all_points.append((data["diversity"], data["quality"], method, i))
+            
+            # Find Pareto optimal points
+            pareto_mask = find_pareto_frontier([p[0] for p in all_points], [p[1] for p in all_points])
+            
             # Plot each method for this model
             for i, method in enumerate(method_names):
                 data = model_results.get(method)
@@ -604,39 +613,83 @@ def plot_diversity_vs_quality_2x2(all_results, output_dir="plots"):
                     div = data["diversity"]
                     qual = data["quality"]
                     
+                    # Check if this point is Pareto optimal
+                    point_idx = next((j for j, p in enumerate(all_points) if p[2] == method), -1)
+                    is_pareto_optimal = point_idx >= 0 and pareto_mask[point_idx]
+                    
                     # Plot the main point with consistent marker for each method
                     marker_style = markers[i]
-                    # Use filled markers for VS methods, unfilled for others
-                    if method.startswith("VS-"):
-                        ax.scatter(div, qual, color=base_colors[i], marker=marker_style, 
-                                  s=120, alpha=0.9, label=method if idx == 0 else "", zorder=5, 
-                                  edgecolors='black', linewidth=0.5)
+                    base_size = 120
+                    base_linewidth = 1.5
+                    
+                    # Make Pareto optimal points larger and bolder
+                    if is_pareto_optimal:
+                        size = base_size * 1.5
+                        linewidth = base_linewidth
+                        edge_color = 'black'
+                        edge_width = 1.5
                     else:
-                        ax.scatter(div, qual, facecolors='none', edgecolors=base_colors[i], 
-                                  marker=marker_style, s=120, alpha=0.9, 
-                                  label=method if idx == 0 else "", zorder=5, linewidth=0.5)
+                        size = base_size
+                        linewidth = base_linewidth
+                        edge_color = None
+                        edge_width = 0
+                    
+                    # Use different markers and hatches for VS methods vs others
+                    if method.startswith("VS-"):
+                        # VS methods: hatched star markers
+                        scatter = ax.scatter(div, qual, color=base_colors[i], marker=marker_style, 
+                                  s=size, alpha=0.9, label=method if idx == 0 else "", zorder=5, 
+                                  linewidth=linewidth, hatch='///')
+                    else:
+                        # Baseline methods: solid x markers
+                        scatter = ax.scatter(div, qual, color=base_colors[i], marker=marker_style, 
+                                  s=size, alpha=0.7, label=method if idx == 0 else "", zorder=5, 
+                                  linewidth=linewidth)
+                    
+                    # Add bold outline for Pareto optimal points
+                    if is_pareto_optimal:
+                        ax.scatter(div, qual, facecolors='none', edgecolors=edge_color, 
+                                  marker=marker_style, s=size + 50, linewidth=edge_width, 
+                                  alpha=1.0, zorder=6)
             
             # Configure subplot
-            ax.set_xlabel('Diversity (%)', fontsize=12, fontweight='bold')
-            ax.set_ylabel('Quality (%)', fontsize=12, fontweight='bold')
-            ax.set_title(f'{model_name}', fontsize=13, fontweight='bold')
+            ax.set_xlabel('Diversity (%)', fontsize=16, fontweight='bold')
+            ax.set_ylabel('Quality (%)', fontsize=16, fontweight='bold')
+            ax.set_title(f'{model_name}', fontsize=18, fontweight='bold')
             ax.grid(True, alpha=0.3)
+            
+            # Add Pareto optimal arrow with independent text positioning
+            # First add the arrow
+            ax.annotate('', xy=(0.95, 0.95), xytext=(0.85, 0.85),
+                       xycoords='axes fraction', textcoords='axes fraction',
+                       arrowprops=dict(arrowstyle='->', lw=3, color='red', alpha=0.7))
+            # Then add the text separately
+            ax.text(0.85, 0.88, 'Pareto optimal', transform=ax.transAxes, 
+                   fontsize=12, color='red', fontweight='bold', ha='right')
+            
+            # Add more headroom to axes
+            x_min, x_max = ax.get_xlim()
+            y_min, y_max = ax.get_ylim()
+            x_range = x_max - x_min
+            y_range = y_max - y_min
+            ax.set_xlim(x_min - 0.05 * x_range, x_max + 0.20 * x_range)
+            ax.set_ylim(y_min - 0.05 * y_range, y_max + 0.20 * y_range)
             
         else:
             # If model not found, show empty plot with message
             ax.text(0.5, 0.5, f'{model_name}\n(No data available)', 
                    ha='center', va='center', transform=ax.transAxes, 
                    fontsize=12, color='gray')
-            ax.set_xlabel('Diversity (%)', fontsize=12, fontweight='bold')
-            ax.set_ylabel('Quality (%)', fontsize=12, fontweight='bold')
-            ax.set_title(f'{model_name}', fontsize=13, fontweight='bold')
+            ax.set_xlabel('Diversity (%)', fontsize=16, fontweight='bold')
+            ax.set_ylabel('Quality (%)', fontsize=16, fontweight='bold')
+            ax.set_title(f'{model_name}', fontsize=18, fontweight='bold')
             ax.grid(True, alpha=0.3)
     
     # Add legend above the entire plot (matching original style)
     handles, labels = axes[0].get_legend_handles_labels()
     if handles:  # Only add legend if we have data
-        fig.legend(handles, labels, loc='upper center', bbox_to_anchor=(0.5, 0.97), 
-                  ncol=4, fontsize=8, frameon=False, 
+        fig.legend(handles, labels, loc='upper center', bbox_to_anchor=(0.5, 1.00), 
+                  ncol=4, fontsize=12, frameon=False, 
                   borderaxespad=0)
     
     # Adjust layout to make room for legend
@@ -774,7 +827,7 @@ def plot_combined_pareto_scatter(all_results, output_dir="plots"):
     return vs_on_frontier, total_on_frontier
 
 def perform_statistical_tests(all_results):
-    """Perform statistical significance tests between methods"""
+    """Perform statistical significance tests between VS-CoT and all baseline methods"""
     method_names = ["Direct", "CoT", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Combined"]
     
     # Collect data for each method across all models
@@ -792,28 +845,29 @@ def perform_statistical_tests(all_results):
                 method_data[method]['diversity'].append(data["diversity"])
                 method_data[method]['quality'].append(data["quality"])
     
-    # Compare VS methods against Direct baseline
-    baseline_method = "Direct"
+    # Compare VS-CoT against all baseline methods
+    best_vs_method = "VS-CoT"
+    baseline_methods = ["Direct", "CoT", "Sequence", "Multi-turn"]
     statistical_results = {}
     
-    if method_data[baseline_method]['diversity'] and method_data[baseline_method]['quality']:
-        baseline_div = method_data[baseline_method]['diversity']
-        baseline_qual = method_data[baseline_method]['quality']
+    if method_data[best_vs_method]['diversity'] and method_data[best_vs_method]['quality']:
+        vs_div = method_data[best_vs_method]['diversity']
+        vs_qual = method_data[best_vs_method]['quality']
         
-        for method in method_names:
-            if method.startswith("VS-") and method_data[method]['diversity']:
-                method_div = method_data[method]['diversity']
-                method_qual = method_data[method]['quality']
+        for baseline_method in baseline_methods:
+            if method_data[baseline_method]['diversity']:
+                baseline_div = method_data[baseline_method]['diversity']
+                baseline_qual = method_data[baseline_method]['quality']
                 
                 # Perform t-tests (assuming normal distribution)
-                div_stat, div_pvalue = stats.ttest_ind(method_div, baseline_div, alternative='greater')
-                qual_stat, qual_pvalue = stats.ttest_ind(method_qual, baseline_qual, alternative='greater')
+                div_stat, div_pvalue = stats.ttest_ind(vs_div, baseline_div, alternative='greater')
+                qual_stat, qual_pvalue = stats.ttest_ind(vs_qual, baseline_qual, alternative='greater')
                 
-                statistical_results[method] = {
+                statistical_results[baseline_method] = {
                     'diversity_pvalue': div_pvalue,
                     'quality_pvalue': qual_pvalue,
-                    'diversity_improvement': np.mean(method_div) - np.mean(baseline_div),
-                    'quality_improvement': np.mean(method_qual) - np.mean(baseline_qual)
+                    'diversity_improvement': np.mean(vs_div) - np.mean(baseline_div),
+                    'quality_improvement': np.mean(vs_qual) - np.mean(baseline_qual)
                 }
     
     return statistical_results
@@ -907,8 +961,11 @@ def plot_method_averages(all_results, output_dir="plots"):
     
     # Set up the plotting style
     plt.style.use('seaborn-v0_8')
-    colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b']
+    colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2']
     method_names = ["Direct", "CoT", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Combined"]
+    
+    # Perform statistical tests
+    stat_results = perform_statistical_tests(all_results)
     
     # Calculate averages and std across all models for each method
     method_stats = {}
@@ -944,7 +1001,7 @@ def plot_method_averages(all_results, output_dir="plots"):
                 method_stds[method][metric] = 0
     
     metrics = [
-        ('diversity', 'Average Diversity (%)', 'Higher is Better'),
+        ('diversity', 'Average Diversity (%)', ''),
         ('rouge_l', 'Average Rouge-L (%)', 'Lower is Better'),
         ('quality', 'Average Quality Score (%)', 'Higher is Better')
     ]
@@ -955,25 +1012,32 @@ def plot_method_averages(all_results, output_dir="plots"):
         means = [method_means[method][metric_key] for method in method_names]
         stds = [method_stds[method][metric_key] for method in method_names]
         
+        # Create bars with hatches for VS methods
         bars = ax.bar(method_names, means, yerr=stds, capsize=5, 
                      color=colors[:len(method_names)], alpha=0.8, 
                      edgecolor='black', linewidth=1)
+        
+        # Add hatches to VS methods (last 3 bars)
+        for i, bar in enumerate(bars[-3:], start=len(bars)-3):
+            bar.set_hatch('///')
         
         # Add value labels on bars
         for bar, mean, std in zip(bars, means, stds):
             height = bar.get_height()
             ax.text(bar.get_x() + bar.get_width()/2., height + std + 0.5,
                    f'{mean:.1f}±{std:.1f}', ha='center', va='bottom', 
-                   fontsize=10, fontweight='bold')
+                   fontsize=12, fontweight='bold')
         
-        ax.set_xlabel('Methods', fontsize=12, fontweight='bold')
-        ax.set_ylabel(metric_title, fontsize=12, fontweight='bold')
-        ax.set_title(f'{metric_title} - Average Across All Models\n({direction})', 
-                    fontsize=14, fontweight='bold', pad=20)
+        ax.set_xlabel('Methods', fontsize=16, fontweight='bold')
+        ax.set_ylabel(metric_title, fontsize=16, fontweight='bold')
+        ax.set_title(f'{metric_title} - Average Across All Models', 
+                    fontsize=18, fontweight='bold', pad=20)
         ax.grid(True, alpha=0.3, axis='y')
+        ax.tick_params(axis='x', labelsize=14)
+        ax.tick_params(axis='y', labelsize=14)
         
         # Rotate x-axis labels for better readability
-        plt.xticks(rotation=45, ha='right')
+        plt.xticks(rotation=0)
         
         # Highlight best performing method
         if metric_key == 'rouge_l':  # Lower is better
@@ -984,12 +1048,34 @@ def plot_method_averages(all_results, output_dir="plots"):
         bars[best_idx].set_edgecolor('red')
         bars[best_idx].set_linewidth(3)
         
+        # Add p-test results annotation in top left
+        if stat_results and metric_key in ['diversity', 'quality']:
+            p_text_lines = ["Statistical test results:", "VS-CoT"]
+            for baseline_method, results in stat_results.items():
+                p_val = results[f'{metric_key}_pvalue']
+                if p_val < 0.001:
+                    sig_marker = '***'
+                elif p_val < 0.01:
+                    sig_marker = '**'
+                elif p_val < 0.05:
+                    sig_marker = '*'
+                else:
+                    sig_marker = 'ns'
+                p_text_lines.append(f"vs {baseline_method}: {sig_marker} (p={p_val:.3f})")
+            
+            p_text = '\n'.join(p_text_lines)
+            ax.text(0.02, 0.98, p_text, transform=ax.transAxes, fontsize=14, 
+                   verticalalignment='top', horizontalalignment='left',
+                   bbox=dict(boxstyle="round,pad=0.5", facecolor="lightyellow", alpha=0.8),
+                   fontweight='bold')
+        
         plt.tight_layout()
         plt.savefig(f'{output_dir}/method_average_{metric_key}.png', dpi=300, bbox_inches='tight')
         plt.savefig(f'{output_dir}/method_average_{metric_key}.pdf', bbox_inches='tight')
         plt.close()
         
         print(f"✓ Saved {metric_title} method average plot")
+
 
 def main():
     # Model directory mapping
@@ -1112,10 +1198,10 @@ def main():
     print("="*50)
     
     # Generate original plots
-    plot_model_comparison(all_results)
+    # plot_model_comparison(all_results)
     plot_method_averages(all_results)
-    plot_individual_models(all_results)
-    plot_diversity_vs_quality_scatter(all_results)
+    # plot_individual_models(all_results)
+    # plot_diversity_vs_quality_scatter(all_results)
     plot_diversity_vs_quality_2x2(all_results)
     
     # Generate advanced analysis plots
