@@ -23,6 +23,10 @@ class BasePromptTemplate:
         """Get the base prompt for the task."""
         raise NotImplementedError
     
+    def get_base_model_prompt(self, **kwargs) -> str:
+        """Get the base model prompt for the task."""
+        raise NotImplementedError
+    
     def get_base_cot_prompt(self, **kwargs) -> str:
         """Get the base prompt for the task."""
         raise NotImplementedError
@@ -77,11 +81,24 @@ class CreativityPromptTemplate(BasePromptTemplate):
     def __init__(self):
         super().__init__(TaskType.CREATIVITY)
     
-    def get_base_prompt(self, target_words: int = 200, **kwargs) -> str:
-        return f"""
-Generate a response to the input prompt. The response should be approximately {target_words} words.
+    def get_base_prompt(self, target_words: int = 200, task_name: str = None, **kwargs) -> str:
+        word_constraint = f" The response should be approximately {target_words} words." if target_words > 0 else ""
+        
+        # Provide more specific instructions for poem writing
+        if task_name == "poem":
+            return f"""
+Write a poem inspired by the given line or phrase.{word_constraint}
+Create something original, creative, and meaningful. The poem can be in any style or form.
+Output ONLY the poem, with no explanations or extra text.
+"""
+        else:
+            return f"""
+Generate a response to the input prompt.{word_constraint}
 Output ONLY the response, with no explanations or extra text.
 """
+
+    def get_base_model_prompt(self, target_words: int = 200, task_name: str = None, **kwargs) -> str:
+        return f"Write a 200 word story starting with the line: "
 
     def get_base_cot_prompt(self, target_words: int = 200, **kwargs) -> str:
         return f"""
@@ -94,20 +111,23 @@ Give ONLY the JSON object, no explanations or extra text.
 """
     
     def get_standard_prompt(self, num_samplings: int = 5, target_words: int = 200, **kwargs) -> str:
+        word_constraint = f" Each response should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
-Generate {num_samplings} creative and diverse responses to the input prompt. Each response should be approximately {target_words} words.
+Generate {num_samplings} creative and diverse responses to the input prompt.{word_constraint}
 Maximizing both creativity and diversity, while ensuring that each response remains high-quality and relevant to the input prompt.
 """
     
     def get_standard_all_possible_prompt(self, target_words: int = 200, **kwargs) -> str:
+        word_constraint = f" Each response should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
-Generate all possible responses to the input prompt. Each response should be approximately {target_words} words.
+Generate all possible responses to the input prompt.{word_constraint}
 Maximizing both creativity and diversity, while ensuring that each response remains high-quality and relevant to the input prompt.
 """
 
     def get_chain_of_thought_prompt(self, num_samplings: int = 5, target_words: int = 200, **kwargs) -> str:
+        word_constraint = f" Each response should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
-Generate {num_samplings} creative and diverse responses to the input prompt using chain-of-thought reasoning. Each response should be approximately {target_words} words.
+Generate {num_samplings} creative and diverse responses to the input prompt using chain-of-thought reasoning.{word_constraint}
 Maximizing both creativity and diversity, while ensuring that each response remains high-quality and relevant to the input prompt.
 
 First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
@@ -119,8 +139,9 @@ Give ONLY the JSON object, no explanations or extra text.
 """
 
     def get_combined_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, target_words: int = 200, **kwargs) -> str:
+        word_constraint = f" Each response should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
-You will generate a total of {num_samplings} creative and diverse responses to the input prompt. Each response should be approximately {target_words} words.
+You will generate a total of {num_samplings} creative and diverse responses to the input prompt.{word_constraint}
 Maximizing both creativity and diversity of the responses, while ensuring that each response remains high-quality and relevant to the input prompt.
 
 First, generate {num_samples_per_prompt} creative and diverse responses. 
@@ -340,6 +361,7 @@ class PromptTemplateFactory:
         
         prompt_methods = {
             "base": template.get_base_prompt,
+            "base_model": template.get_base_model_prompt,
             "base_cot": template.get_base_cot_prompt,
             "standard": template.get_standard_prompt,
             "combined": template.get_combined_prompt,

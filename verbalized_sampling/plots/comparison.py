@@ -272,8 +272,7 @@ class ComparisonPlotter:
         plt.ylabel('Score', fontsize=12, fontweight='bold')
         plt.xticks(x, [plot_title for _, plot_title in key_metric_names], fontsize=11)
         
-        if not show_error_bars:
-            plt.ylim(0, ylim)
+        plt.ylim(0, ylim)
 
         # Add legend
         plt.legend(loc='lower center', bbox_to_anchor=(0.5, -0.15),
@@ -359,7 +358,7 @@ class ComparisonPlotter:
                 
                 metric_values[metric].append(float(value) if value is not None else 0.0)
                 
-                if metric.startswith("avg_"):
+                if (metric.startswith("avg_")) and (metric.replace("avg_", "std_") in data.result.overall_metrics):
                     error_key = metric.replace('avg_', 'std_')
                     error = data.result.overall_metrics[error_key]
                     metric_errors[metric].append(error)

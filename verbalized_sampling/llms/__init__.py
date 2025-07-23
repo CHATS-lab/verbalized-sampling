@@ -34,6 +34,8 @@ def get_model(model_name: str,
             model_class = LLM_REGISTRY["litellm"]
     elif "gpt" in model_name or "o3" in model_name:
         model_class = LLM_REGISTRY["openai"]
+    elif "llama" in model_name.lower():
+        model_class = LLM_REGISTRY["vllm"]
     # elif ("gemini" in model_name) and (os.environ.get("GEMINI_API_KEY") is not None):
     #     model_class = LLM_REGISTRY["litellm"]
     else:

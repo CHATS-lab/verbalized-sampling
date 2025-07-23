@@ -16,6 +16,7 @@ LITELLM_MODELS_MAPPING = {
     "google/gemini-2.5-pro" : "gemini/gemini-2.5-pro",
     "google/gemini-2.5-flash" : "gemini/gemini-2.5-flash",
     "google/gemini-2.0-flash" : "gemini/gemini-2.0-flash",
+    # "meta-llama/llama-3.3-70b-instruct" : "fireworks_ai/accounts/fireworks/models/llama-v3p3-70b-instruct",
 }
 
 
