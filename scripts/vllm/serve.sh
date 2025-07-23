@@ -1,5 +1,5 @@
-# MODEL_NAME="meta-llama/Llama-3.1-70B-Instruct"
-MODEL_NAME="meta-llama/Llama-3.1-70B"
+MODEL_NAME="meta-llama/Llama-3.1-70B-Instruct"
+# MODEL_NAME="meta-llama/Llama-3.1-70B"
 TENSOR_PARALLEL_SIZE=8
 
 vllm serve $MODEL_NAME \
