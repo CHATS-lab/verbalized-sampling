@@ -10,7 +10,7 @@ def plot_training_progression(output_dir="plots/ablation"):
     
     # Model directory mapping for training progression
     models = {
-        "Llama-Base-70B": "meta-llama_Llama-3.1-70B",
+        "Base Model": "meta-llama_Llama-3.1-70B",
         "Tulu-SFT-70B": "allenai_Llama-3.1-Tulu-3-70B-SFT", 
         "Tulu-DPO-70B": "allenai_Llama-3.1-Tulu-3-70B-DPO",
         "Tulu-Final-70B": "allenai_Llama-3.1-Tulu-3-70B"
@@ -33,38 +33,41 @@ def plot_training_progression(output_dir="plots/ablation"):
     
     # Load diversity results
     results_data = {}
+    base_model_score = None
+    
+    # Separate base model and training stages
+    training_models = {k: v for k, v in models.items() if k != "Base Model"}
+    
     for method_name in methods_mapping.keys():
         results_data[method_name] = []
     
-    for stage_name, model_dir in models.items():
+    # Get base model score separately
+    if "Base Model" in models:
+        model_path = os.path.join(base_dir, models["Base Model"], f"{models['Base Model']}_poem")
+        method_dir = base_model_methods["Direct"]
+        file_path = os.path.join(model_path, "evaluation", method_dir, "diversity_results.json")
+        try:
+            with open(file_path, 'r') as f:
+                data = json.load(f)
+            diversity_score = data.get('overall_metrics', {}).get('avg_diversity', None)
+            base_model_score = diversity_score * 100 if diversity_score else None
+        except (FileNotFoundError, json.JSONDecodeError):
+            base_model_score = None
+    
+    # Load training progression data (excluding base model)
+    for stage_name, model_dir in training_models.items():
         model_path = os.path.join(base_dir, model_dir, f"{model_dir}_poem")
         
-        if stage_name == "Llama-Base-70B":
-            # Base model only has direct sampling
-            method_dir = base_model_methods["Direct"]
+        # Training models have all methods
+        for method_name, method_dir in methods_mapping.items():
             file_path = os.path.join(model_path, "evaluation", method_dir, "diversity_results.json")
             try:
                 with open(file_path, 'r') as f:
                     data = json.load(f)
                 diversity_score = data.get('overall_metrics', {}).get('avg_diversity', None)
-                results_data["Direct"].append(diversity_score * 100 if diversity_score else None)
+                results_data[method_name].append(diversity_score * 100 if diversity_score else None)
             except (FileNotFoundError, json.JSONDecodeError):
-                results_data["Direct"].append(None)
-            
-            # Other methods not available for base model
-            for method in ["Sequence", "Verbalized Sampling", "Multi-Turn"]:
-                results_data[method].append(None)
-        else:
-            # Other models have all methods
-            for method_name, method_dir in methods_mapping.items():
-                file_path = os.path.join(model_path, "evaluation", method_dir, "diversity_results.json")
-                try:
-                    with open(file_path, 'r') as f:
-                        data = json.load(f)
-                    diversity_score = data.get('overall_metrics', {}).get('avg_diversity', None)
-                    results_data[method_name].append(diversity_score * 100 if diversity_score else None)
-                except (FileNotFoundError, json.JSONDecodeError):
-                    results_data[method_name].append(None)
+                results_data[method_name].append(None)
     
     # Set up seaborn style for beautiful plots
     sns.set_style("whitegrid")
@@ -79,7 +82,7 @@ def plot_training_progression(output_dir="plots/ablation"):
     })
     
     # Create the plot with seaborn styling
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(9, 6))
     ax = plt.gca()
     
     # Set up beautiful colors and markers
@@ -91,8 +94,8 @@ def plot_training_progression(output_dir="plots/ablation"):
     }
     markers = {'Direct': 'o', 'Sequence': 's', 'Multi-Turn': 'D', 'Verbalized Sampling': '^'}
     
-    x_positions = range(len(models))
-    x_labels = list(models.keys())
+    x_positions = range(len(training_models))
+    x_labels = list(training_models.keys())
     
     # Plot each method with larger markers and better styling
     for method_name, values in results_data.items():
@@ -110,6 +113,15 @@ def plot_training_progression(output_dir="plots/ablation"):
                    linewidth=4, markersize=16, label=method_name, alpha=0.9,
                    markeredgecolor='white', markeredgewidth=2.5)
     
+    # Add base model as horizontal dotted red line
+    if base_model_score is not None:
+        ax.axhline(y=base_model_score, color='red', linestyle='--', linewidth=3, 
+                  alpha=0.8)
+        # Add inline annotation for base model
+        ax.text(len(x_positions) - 1.3, base_model_score - 0.5, 'Base Model', 
+               fontsize=16, fontweight='bold', color='red',
+               ha='left', va='top')
+    
     # Customize the plot with seaborn styling
     ax.set_xlabel('Training Stage', fontsize=18, fontweight='bold')
     ax.set_ylabel('Diversity Score (%)', fontsize=18, fontweight='bold')
@@ -125,14 +137,20 @@ def plot_training_progression(output_dir="plots/ablation"):
     # Put legend on top
     ax.legend(fontsize=16, loc='upper center', bbox_to_anchor=(0.5, 1.15), ncol=4, frameon=True)
     
-    # Set better y-axis limits with padding
-    y_min = min([min([v for v in values if v is not None]) for values in results_data.values() if any(v is not None for v in values)])
-    y_max = max([max([v for v in values if v is not None]) for values in results_data.values() if any(v is not None for v in values)])
+    # Set better y-axis limits with padding (include base model score)
+    all_values = []
+    for values in results_data.values():
+        all_values.extend([v for v in values if v is not None])
+    if base_model_score is not None:
+        all_values.append(base_model_score)
+    
+    y_min = min(all_values)
+    y_max = max(all_values)
     y_range = y_max - y_min
     ax.set_ylim(y_min - 0.05 * y_range, y_max + 0.05 * y_range)
     
     # Add improvement arrow for Tulu-DPO-70B
-    dpo_stage_idx = 2  # Tulu-DPO-70B is the 3rd stage (index 2)
+    dpo_stage_idx = 1  # Tulu-DPO-70B is the 2nd stage (index 1) in training progression
     
     # Get the diversity values for Direct and Verbalized Sampling at DPO stage
     direct_value = results_data["Direct"][dpo_stage_idx] if len(results_data["Direct"]) > dpo_stage_idx else None
