@@ -1,6 +1,13 @@
+#!/usr/bin/env python3
+"""
+Unified LaTeX table generator for both poem and story experiments.
+Parses results and generates LaTeX-formatted tables for publications.
+"""
+
 import json
 import os
 import numpy as np
+import argparse
 from pathlib import Path
 
 METHODS = {
@@ -12,41 +19,43 @@ METHODS = {
     "CoT": "chain_of_thought [strict] (samples=5)",
     "Combined": "combined [strict] (samples=5)"
 }
-def load_metric(model_dir, method, metric_file, metric_key):
-    """Load a specific metric from a results file"""
+
+def load_metric_with_std(model_dir, method, metric_file, avg_key, std_key):
+    """Load a specific metric with standard deviation from a results file"""
     file_path = os.path.join(model_dir, "evaluation", method, metric_file)
     try:
         with open(file_path, 'r') as f:
             data = json.load(f)
-        result = data.get('overall_metrics', {}).get(metric_key, None)
-        if method.startswith("direct_cot") and metric_key == "avg_diversity":
-            print(f"DEBUG: Loading {metric_key} from {file_path}: {result}")
-        return result
+        overall_metrics = data.get('overall_metrics', {})
+        avg_result = overall_metrics.get(avg_key, None)
+        std_result = overall_metrics.get(std_key, None)
+        return avg_result, std_result
     except (FileNotFoundError, json.JSONDecodeError, KeyError) as e:
-        if method.startswith("direct_cot"):
-            print(f"DEBUG: Error loading {metric_key} from {file_path}: {e}")
-        return None
+        return None, None
 
 def get_model_results(model_dir, model_name):
-    """Extract all metrics for a model"""
+    """Extract all metrics for a model with standard deviations"""
     methods = METHODS
     
     results = {"model": model_name}
     
     for method_name, method_dir in methods.items():
         # Get diversity (higher is better)
-        diversity = load_metric(model_dir, method_dir, "diversity_results.json", "avg_diversity")
+        diversity_avg, diversity_std = load_metric_with_std(model_dir, method_dir, "diversity_results.json", "avg_diversity", "std_diversity")
         
         # Get Rouge-L (lower is better - convert to percentage and multiply by 100)
-        rouge_l = load_metric(model_dir, method_dir, "ngram_results.json", "avg_rouge_l")
+        rouge_l_avg, rouge_l_std = load_metric_with_std(model_dir, method_dir, "ngram_results.json", "avg_rouge_l", "std_rouge_l")
         
         # Get quality score (convert from 0-1 scale to 0-100 scale)
-        quality = load_metric(model_dir, method_dir, "creative_writing_v3_results.json", "avg_score")
+        quality_avg, quality_std = load_metric_with_std(model_dir, method_dir, "creative_writing_v3_results.json", "avg_score", "std_score")
         
         results[method_name] = {
-            "diversity": diversity * 100 if diversity is not None else None,  # Convert to percentage
-            "rouge_l": rouge_l * 100 if rouge_l is not None else None,        # Convert to percentage  
-            "quality": quality * 100 if quality is not None else None         # Convert to 0-100 scale
+            "diversity": diversity_avg * 100 if diversity_avg is not None else None,
+            "diversity_std": diversity_std * 100 if diversity_std is not None else None,
+            "rouge_l": rouge_l_avg * 100 if rouge_l_avg is not None else None,
+            "rouge_l_std": rouge_l_std * 100 if rouge_l_std is not None else None,
+            "quality": quality_avg * 100 if quality_avg is not None else None,
+            "quality_std": quality_std * 100 if quality_std is not None else None
         }
     
     return results
@@ -67,18 +76,18 @@ def calculate_improvements(baseline, method):
     
     return improvements
 
-def format_metric(value, is_best=False):
-    """Format metric value for LaTeX table"""
-    if value is None:
+def format_metric_with_std(value, std_value, is_best=False):
+    """Format metric value with standard deviation for LaTeX table"""
+    if value is None or std_value is None:
         return "N/A"
     
-    formatted = f"{value:.1f}"
+    formatted = f"{value:.1f}$_{{\\pm{{{std_value:.1f}}}}}$"
     if is_best:
         formatted = f"\\textbf{{{formatted}}}"
     
     return formatted
 
-def generate_latex_table():
+def generate_latex_table(task_type):
     """Generate LaTeX table from all model results"""
     
     # Model directory mapping
@@ -95,12 +104,21 @@ def generate_latex_table():
         "DeepSeek-R1": "deepseek_deepseek-r1-0528"
     }
     
-    base_dir = "poem_experiments_final"
+    # Task-specific configuration
+    if task_type == "poem":
+        base_dir = "poem_experiments_final"
+        task_suffix = "poem"
+    elif task_type == "story":
+        base_dir = "story_experiments_final"
+        task_suffix = "book"
+    else:
+        raise ValueError("task_type must be 'poem' or 'story'")
+    
     all_results = {}
     
     # Collect results for all models
     for model_name, model_dir_name in models.items():
-        model_path = os.path.join(base_dir, model_dir_name, f"{model_dir_name}_poem")
+        model_path = os.path.join(base_dir, model_dir_name, f"{model_dir_name}_{task_suffix}")
         if os.path.exists(model_path):
             results = get_model_results(model_path, model_name)
             all_results[model_name] = results
@@ -110,7 +128,7 @@ def generate_latex_table():
     
     # Generate LaTeX table
     print("\n" + "="*80)
-    print("LATEX TABLE DATA")
+    print(f"LATEX TABLE DATA - {task_type.upper()}")
     print("="*80)
     
     for model_name, results in all_results.items():
@@ -122,41 +140,74 @@ def generate_latex_table():
             print("No baseline data available")
             continue
             
+        # Count available methods to determine multirow span
+        available_methods = []
+        method_order = ["Baseline", "Baseline CoT", "Sequence", "Multi-turn", "Standard", "CoT", "Combined"]
+        
+        for method in method_order:
+            if method in results and results[method] and any(v is not None for v in [results[method].get('diversity'), results[method].get('rouge_l'), results[method].get('quality')]):
+                available_methods.append(method)
+        
+        if not available_methods:
+            print("No valid methods found")
+            continue
+            
         # Find best values across all methods for highlighting
-        all_diversity = [results[method]["diversity"] for method in METHODS.keys() 
-                        if results.get(method) and results[method]["diversity"] is not None]
-        all_rouge_l = [results[method]["rouge_l"] for method in METHODS.keys() 
-                      if results.get(method) and results[method]["rouge_l"] is not None]
-        all_quality = [results[method]["quality"] for method in METHODS.keys() 
-                      if results.get(method) and results[method]["quality"] is not None]
+        all_diversity = [results[method]["diversity"] for method in available_methods 
+                        if results[method]["diversity"] is not None]
+        all_rouge_l = [results[method]["rouge_l"] for method in available_methods 
+                      if results[method]["rouge_l"] is not None]
+        all_quality = [results[method]["quality"] for method in available_methods 
+                      if results[method]["quality"] is not None]
         
         best_diversity = max(all_diversity) if all_diversity else None
         best_rouge_l = min(all_rouge_l) if all_rouge_l else None  # Lower is better for Rouge-L
         best_quality = max(all_quality) if all_quality else None
         
-        # Print baseline
-        if baseline["diversity"] is not None:
-            print(f"& Baseline & {format_metric(baseline['diversity'], baseline['diversity'] == best_diversity)} & {format_metric(baseline['rouge_l'], baseline['rouge_l'] == best_rouge_l)} & {format_metric(baseline['quality'], baseline['quality'] == best_quality)} \\\\")
-
-        # Print baseline CoT
-        baseline_cot = results.get("Baseline CoT")
-        if baseline_cot and any(v is not None for v in baseline_cot.values()):
-            print(f"& Baseline CoT & {format_metric(baseline_cot['diversity'], baseline_cot['diversity'] == best_diversity)} & {format_metric(baseline_cot['rouge_l'], baseline_cot['rouge_l'] == best_rouge_l)} & {format_metric(baseline_cot['quality'], baseline_cot['quality'] == best_quality)} \\\\")
-        else:
-            print(f"Missing Baseline CoT for {model_name}")
+        # Print with multirow
+        multirow_span = len(available_methods)
         
-        # Print other methods
-        for method in ["Sequence", "Multi-turn"]:
-            data = results.get(method)
-            if data and any(v is not None for v in data.values()):
-                print(f"& {method} & {format_metric(data['diversity'], data['diversity'] == best_diversity)} & {format_metric(data['rouge_l'], data['rouge_l'] == best_rouge_l)} & {format_metric(data['quality'], data['quality'] == best_quality)} \\\\")
-        
-        # Print Verbalized Sampling methods
-        print("& \\textbf{Verbalized Sampling} \\\\")
-        for method, display_name in [("Standard", "$\\hookrightarrow$ Standard"), ("CoT", "$\\hookrightarrow$ CoT"), ("Combined", "$\\hookrightarrow$ Combined")]:
-            data = results.get(method)
-            if data and any(v is not None for v in data.values()):
-                print(f"& {display_name} & {format_metric(data['diversity'], data['diversity'] == best_diversity)} & {format_metric(data['rouge_l'], data['rouge_l'] == best_rouge_l)} & {format_metric(data['quality'], data['quality'] == best_quality)} \\\\")
+        for i, method in enumerate(available_methods):
+            data = results[method]
+            
+            # Format method name
+            if method == "Baseline":
+                method_display = "Direct"
+            elif method == "Baseline CoT":
+                method_display = "CoT"
+            elif method == "Standard":
+                method_display = "$\\hookrightarrow$ Standard"
+            elif method == "CoT":
+                method_display = "$\\hookrightarrow$ CoT"
+            elif method == "Combined":
+                method_display = "$\\hookrightarrow$ Combined"
+            else:
+                method_display = method
+            
+            # Add Verbalized Sampling header before first VS method
+            if method == "Standard" and i > 0:
+                print("& \\textbf{Verbalized Sampling} \\\\")
+            
+            # Format metrics with standard deviations
+            diversity_formatted = format_metric_with_std(
+                data["diversity"], data["diversity_std"], 
+                data["diversity"] == best_diversity if data["diversity"] is not None else False
+            )
+            rouge_l_formatted = format_metric_with_std(
+                data["rouge_l"], data["rouge_l_std"], 
+                data["rouge_l"] == best_rouge_l if data["rouge_l"] is not None else False
+            )
+            quality_formatted = format_metric_with_std(
+                data["quality"], data["quality_std"], 
+                data["quality"] == best_quality if data["quality"] is not None else False
+            )
+            
+            # Print row with multirow on first iteration
+            if i == 0:
+                print(f"\\multirow{{{multirow_span}}}{{*}}{{{model_name}}}")
+                print(f"& {method_display} & {diversity_formatted} & {rouge_l_formatted} & {quality_formatted} \\\\")
+            else:
+                print(f"& {method_display} & {diversity_formatted} & {rouge_l_formatted} & {quality_formatted} \\\\")
         
         # Calculate improvements for the best VS method (find the one with best overall performance)
         vs_methods = ["Standard", "CoT", "Combined"]
@@ -165,7 +216,7 @@ def generate_latex_table():
         
         for method in vs_methods:
             data = results.get(method)
-            if data and all(v is not None for v in data.values()):
+            if data and all(v is not None for v in [data.get('diversity'), data.get('rouge_l'), data.get('quality')]):
                 # Simple scoring: normalize each metric and sum (diversity + quality - rouge_l)
                 score = (data["diversity"] / 100) + (data["quality"] / 100) - (data["rouge_l"] / 100)
                 if score > best_vs_score:
@@ -207,7 +258,7 @@ def generate_latex_table():
         
         for method in vs_methods:
             data = results.get(method)
-            if data and all(v is not None for v in data.values()):
+            if data and all(v is not None for v in [data.get('diversity'), data.get('rouge_l'), data.get('quality')]):
                 score = (data["diversity"] / 100) + (data["quality"] / 100) - (data["rouge_l"] / 100)
                 if score > best_vs_score:
                     best_vs_score = score
@@ -229,5 +280,20 @@ def generate_latex_table():
     if total_quality_imp:
         print(f"Average Quality Improvement: +{np.mean(total_quality_imp):.1f}% (±{np.std(total_quality_imp):.1f}%)")
 
+def main():
+    parser = argparse.ArgumentParser(description='Generate LaTeX tables for poem or story experiments')
+    parser.add_argument('--task', choices=['poem', 'story', 'both'], default='both',
+                        help='Which task to generate tables for (default: both)')
+    
+    args = parser.parse_args()
+    
+    if args.task == 'both':
+        print("Generating LaTeX tables for both poem and story experiments...")
+        generate_latex_table('poem')
+        print("\n" + "="*80 + "\n")
+        generate_latex_table('story')
+    else:
+        generate_latex_table(args.task)
+
 if __name__ == "__main__":
-    generate_latex_table()
+    main()

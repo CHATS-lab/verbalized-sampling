@@ -5,7 +5,7 @@ import os
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-def plot_training_progression(output_dir="plots/ablation"):
+def plot_training_progression(output_dir="latex_figures"):
     """Create line plot showing diversity improvement across training progression"""
     
     # Model directory mapping for training progression
@@ -179,15 +179,19 @@ def plot_training_progression(output_dir="plots/ablation"):
     ax.set_facecolor('#FAFAFA')
     
     # Save the plot with proper spacing for top legend
-    os.makedirs(output_dir, exist_ok=True)
+    ablation_output_dir = os.path.join(output_dir, "ablation", "training_progression")
+    os.makedirs(ablation_output_dir, exist_ok=True)
     plt.tight_layout()
     plt.subplots_adjust(top=0.85)  # Make room for top legend
-    plt.savefig(f'{output_dir}/training_progression_diversity.png', dpi=300, bbox_inches='tight', facecolor='white')
-    plt.savefig(f'{output_dir}/training_progression_diversity.pdf', bbox_inches='tight', facecolor='white')
+    plt.savefig(f'{ablation_output_dir}/training_progression_diversity.png', dpi=300, bbox_inches='tight', facecolor='white')
+    plt.savefig(f'{ablation_output_dir}/training_progression_diversity.pdf', bbox_inches='tight', facecolor='white')
     plt.close()
     
-    print(f" Saved training progression diversity plot")
-    print(f"  Data points collected:")
+    print(f"✓ Saved training progression diversity plot")
+    print(f"📁 Results saved to: latex_figures/ablation/training_progression/")
+    print(f"📊 Generated files:")
+    print(f"  - training_progression_diversity.png/pdf")
+    print(f"📈 Data points collected:")
     for method, values in results_data.items():
         valid_count = sum(1 for v in values if v is not None)
         print(f"    {method}: {valid_count}/{len(values)} stages")
