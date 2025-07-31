@@ -19,7 +19,7 @@ def create_method_experiments(
         'task': task,
         'model_name': model_name,
         'num_responses': 500,
-        'num_prompts': 5,
+        'num_prompts': 1,
         'target_words': 0, 
         'temperature': temperature,
         'top_p': top_p,
@@ -80,11 +80,11 @@ if __name__ == "__main__":
     
     # Test multi-turn and JSON mode variations
     methods = [
-        # {
-        #     'method': Method.DIRECT,
-        #     'strict_json': False,
-        #     'num_samples': 1,
-        # },
+        {
+            'method': Method.DIRECT,
+            'strict_json': False,
+            'num_samples': 1,
+        },
         # {
         #     'method': Method.MULTI_TURN,
         #     'strict_json': False,
@@ -105,29 +105,29 @@ if __name__ == "__main__":
         #     'strict_json': True,
         #     'num_samples': 20,
         # },
-        # {
-        #     'method': Method.COMBINED,
-        #     'strict_json': True,
-        #     'num_samples': 20,
-        #     'num_samples_per_prompt': 10,
-        # }
         {
-            'method': Method.DIRECT_COT,
+            'method': Method.COMBINED,
             'strict_json': True,
-            'num_samples': 1,
+            'num_samples': 20,
+            'num_samples_per_prompt': 5,
         }
+        # {
+        #     'method': Method.DIRECT_COT,
+        #     'strict_json': True,
+        #     'num_samples': 1,
+        # }
     ]
 
 
     models = [
-        "gpt-4.1-mini",
+        # "gpt-4.1-mini",
         "gpt-4.1",
-        "gemini-2.5-flash",
-        "gemini-2.5-pro",
-        "llama-3.1-70b-instruct",
-        "anthropic/claude-4-sonnet",
-        "deepseek-r1",
-        "o3",
+        # "gemini-2.5-flash",
+        # "gemini-2.5-pro",
+        # "llama-3.1-70b-instruct",
+        # "anthropic/claude-4-sonnet",
+        # "deepseek-r1",
+        # "o3",
     ]
     for model in models:
         model_basename = model.replace("/", "_")

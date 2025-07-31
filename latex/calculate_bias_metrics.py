@@ -4,159 +4,164 @@ from pathlib import Path
 import numpy as np
 from scipy.stats import ttest_ind
 import matplotlib.pyplot as plt
+plt.style.use('seaborn-v0_8')
 
 # Maps canonical method keys to (display name, matching substring in dir name)
 METHOD_MAP = {
     "direct": ("Direct", "direct"),
-    "direct_cot": ("Direct CoT", "direct_cot"),
+    "direct_cot": ("CoT", "cot"),
     "sequence": ("Sequence", "sequence"),
     "multi_turn": ("Multi-turn", "multi_turn"),
-    "vs_standard": ("VS Standard", "structure_with_prob"),
-    "vs_cot": ("VS CoT", "chain_of_thought"),
-    "vs_combined": ("VS Combined", "combined"),
+    "vs_standard": ("VS-Standard", "structure_with_prob"),
+    "vs_cot": ("VS-CoT", "chain_of_thought"),
+    "vs_combined": ("VS-Combined", "combined"),
 }
 
 
-def plot_error_bars_all_models_methods(metrics_values, all_model_names, plot_metrics, metric_labels, all_methods):
-    """
-    Draw error bars for each model-method pair for each metric.
-    Group by model, color by method.
-    """
-    import matplotlib.pyplot as plt
-    import numpy as np
+# def plot_error_bars_all_models_methods(metrics_values, all_model_names, plot_metrics, metric_labels, all_methods):
+#     """
+#     Draw error bars for each model-method pair for each metric.
+#     Group by model, color by method.
+#     """
+#     import matplotlib.pyplot as plt
+#     import numpy as np
 
-    n_methods = len(all_methods)
-    n_models = len(all_model_names)
-    colors = plt.cm.get_cmap('tab10', n_methods)
+#     n_methods = len(all_methods)
+#     n_models = len(all_model_names)
+#     colors = plt.cm.get_cmap('tab10', n_methods)
 
-    for metric in plot_metrics:
-        fig, ax = plt.subplots(figsize=(2.5 * n_models, 6))
-        bar_width = 0.8 / n_methods
-        x = np.arange(n_models)
-        for i, method in enumerate(all_methods):
-            match_substr = METHOD_MAP[method][1]
-            means = []
-            stds = []
-            for model_name in all_model_names:
-                vals = []
-                if model_name in metrics_values:
-                    for method_name, method_data in metrics_values[model_name].items():
-                        if match_substr in method_name:
-                            vals.extend(method_data[metric])
-                mean_val = np.mean(vals) if vals else np.nan
-                std_val = np.std(vals) if vals else np.nan
-                # Ensure error bars don't go below 0 for non-negative metrics
-                if not np.isnan(mean_val) and not np.isnan(std_val):
-                    if metric in ["precision", "unique_recall_rate"]:
-                        lower_error = min(std_val, mean_val)
-                        upper_error = std_val
-                    else:
-                        lower_error = std_val
-                        upper_error = std_val
-                else:
-                    lower_error = std_val
-                    upper_error = std_val
-                means.append(mean_val)
-                stds.append([lower_error, upper_error])
-                print(f"{model_name} {METHOD_MAP[method][0]}: {mean_val:.2f}$_{{\\pm {std_val:.2f}}}$") # 4.14$_{\pm 0.44}$
-            ax.bar(x + i * bar_width, means, yerr=np.array(stds).T, width=bar_width, label=METHOD_MAP[method][0], color=colors(i))
-        ax.set_xticks(x + bar_width * (n_methods - 1) / 2)
-        ax.set_xticklabels(all_model_names, rotation=30, ha='right')
-        ax.set_title(f"{metric_labels[metric]} (per model, grouped by method)")
-        ax.set_ylabel('Mean ± Std')
-        ax.legend(title='Method')
-        plt.tight_layout()
-        plt.show()
+#     for metric in plot_metrics:
+#         fig, ax = plt.subplots(figsize=(2.5 * n_models, 6))
+#         bar_width = 0.8 / n_methods
+#         x = np.arange(n_models)
+#         for i, method in enumerate(all_methods):
+#             match_substr = METHOD_MAP[method][1]
+#             means = []
+#             stds = []
+#             for model_name in all_model_names:
+#                 vals = []
+#                 if model_name in metrics_values:
+#                     for method_name, method_data in metrics_values[model_name].items():
+#                         if match_substr in method_name:
+#                             vals.extend(method_data[metric])
+#                 mean_val = np.mean(vals) if vals else np.nan
+#                 std_val = np.std(vals) if vals else np.nan
+#                 # Ensure error bars don't go below 0 for non-negative metrics
+#                 if not np.isnan(mean_val) and not np.isnan(std_val):
+#                     if metric in ["precision", "unique_recall_rate"]:
+#                         lower_error = min(std_val, mean_val)
+#                         upper_error = std_val
+#                     else:
+#                         lower_error = std_val
+#                         upper_error = std_val
+#                 else:
+#                     lower_error = std_val
+#                     upper_error = std_val
+#                 means.append(mean_val)
+#                 stds.append([lower_error, upper_error])
+#                 print(f"{model_name} {METHOD_MAP[method][0]}: {mean_val:.2f}$_{{\\pm {std_val:.2f}}}$") # 4.14$_{\pm 0.44}$
+#             ax.bar(x + i * bar_width, means, yerr=np.array(stds).T, width=bar_width, label=METHOD_MAP[method][0], color=colors(i))
+#         ax.set_xticks(x + bar_width * (n_methods - 1) / 2)
+#         ax.set_xticklabels(all_model_names, rotation=30, ha='right')
+#         ax.set_title(f"{metric_labels[metric]} (per model, grouped by method)")
+#         ax.set_ylabel('Mean ± Std')
+#         ax.legend(title='Method')
+#         plt.tight_layout()
+#         plt.show()
                         
 
-def ttest_vs_vs_baseline(metrics_values, all_model_names, plot_metrics):
-    """
-    Calculate t-tests between each VS method and each baseline method for each metric.
-    """
-    baseline_methods = ["direct", "direct_cot", "sequence", "multi_turn"]
-    vs_methods = ["vs_standard", "vs_cot", "vs_combined"]
-    for metric in plot_metrics:
-        print(f"\n=== T-TESTS for {metric} ===")
-        for b in baseline_methods:
-            for v in vs_methods:
-                vals_b = []
-                vals_v = []
-                for model_name in all_model_names:
-                    if model_name in metrics_values:
-                        for method_name, method_data in metrics_values[model_name].items():
-                            if METHOD_MAP[b][1] in method_name:
-                                vals_b.extend(method_data[metric])
-                            if METHOD_MAP[v][1] in method_name:
-                                vals_v.extend(method_data[metric])
-                if vals_b and vals_v:
-                    t_stat, p_val = ttest_ind(vals_b, vals_v, equal_var=False)
+# def ttest_vs_vs_baseline(metrics_values, all_model_names, plot_metrics):
+#     """
+#     Calculate t-tests between each VS method and each baseline method for each metric.
+#     """
+#     baseline_methods = ["direct", "direct_cot", "sequence", "multi_turn"]
+#     vs_methods = ["vs_standard", "vs_cot", "vs_combined"]
+#     for metric in plot_metrics:
+#         print(f"\n=== T-TESTS for {metric} ===")
+#         for b in baseline_methods:
+#             for v in vs_methods:
+#                 vals_b = []
+#                 vals_v = []
+#                 for model_name in all_model_names:
+#                     if model_name in metrics_values:
+#                         for method_name, method_data in metrics_values[model_name].items():
+#                             if METHOD_MAP[b][1] in method_name:
+#                                 vals_b.extend(method_data[metric])
+#                             if METHOD_MAP[v][1] in method_name:
+#                                 vals_v.extend(method_data[metric])
+#                 if vals_b and vals_v:
+#                     t_stat, p_val = ttest_ind(vals_b, vals_v, equal_var=False)
                     
-                    # Determine significance level
-                    if p_val < 0.001:
-                        sig = '***'
-                    elif p_val < 0.01:
-                        sig = '**'
-                    elif p_val < 0.05:
-                        sig = '*'
-                    else:
-                        sig = 'ns'
+#                     # Determine significance level
+#                     if p_val < 0.001:
+#                         sig = '***'
+#                     elif p_val < 0.01:
+#                         sig = '**'
+#                     elif p_val < 0.05:
+#                         sig = '*'
+#                     else:
+#                         sig = 'ns'
                     
-                    print(f"{METHOD_MAP[v][0]} vs {METHOD_MAP[b][0]}: p={p_val:.4g} (t={t_stat:.2f}) {sig}")
-                else:
-                    print(f"{METHOD_MAP[v][0]} vs {METHOD_MAP[b][0]}: Not enough data")
+#                     print(f"{METHOD_MAP[v][0]} vs {METHOD_MAP[b][0]}: p={p_val:.4g} (t={t_stat:.2f}) {sig}")
+#                 else:
+#                     print(f"{METHOD_MAP[v][0]} vs {METHOD_MAP[b][0]}: Not enough data")
 
 
-def bar_plot_all_methods(metrics_values, all_model_names, plot_metrics, metric_labels, all_methods):
-    for metric in plot_metrics:
-        display_names = [METHOD_MAP[m][0] for m in all_methods]
-        means = []
-        stds = []
-        for method in all_methods:
-            vals = []
-            for model_name in all_model_names:
-                if model_name in metrics_values:
-                    for method_name, method_data in metrics_values[model_name].items():
-                        if METHOD_MAP[method][1] in method_name:
-                            vals.extend(method_data[metric])
-            mean_val = np.mean(vals) if vals else np.nan
-            std_val = np.std(vals) if vals else np.nan
+# def bar_plot_all_methods(metrics_values, all_model_names, plot_metrics, metric_labels, all_methods):
+#     for metric in plot_metrics:
+#         display_names = [METHOD_MAP[m][0] for m in all_methods]
+#         means = []
+#         stds = []
+#         for method in all_methods:
+#             vals = []
+#             for model_name in all_model_names:
+#                 if model_name in metrics_values:
+#                     for method_name, method_data in metrics_values[model_name].items():
+#                         if METHOD_MAP[method][1] in method_name:
+#                             vals.extend(method_data[metric])
+#             mean_val = np.mean(vals) if vals else np.nan
+#             std_val = np.std(vals) if vals else np.nan
             
-            # Ensure error bars don't go below 0 for non-negative metrics
-            if not np.isnan(mean_val) and not np.isnan(std_val):
-                # For metrics that should be non-negative (precision, unique_recall_rate)
-                if metric in ["precision", "unique_recall_rate"]:
-                    # Cap the lower error bar at 0
-                    lower_error = min(std_val, mean_val)
-                    upper_error = std_val
-                else:
-                    # For other metrics (like kl_divergence), allow full error bars
-                    lower_error = std_val
-                    upper_error = std_val
-            else:
-                lower_error = std_val
-                upper_error = std_val
+#             # Ensure error bars don't go below 0 for non-negative metrics
+#             if not np.isnan(mean_val) and not np.isnan(std_val):
+#                 # For metrics that should be non-negative (precision, unique_recall_rate)
+#                 if metric in ["precision", "unique_recall_rate"]:
+#                     # Cap the lower error bar at 0
+#                     lower_error = min(std_val, mean_val)
+#                     upper_error = std_val
+#                 else:
+#                     # For other metrics (like kl_divergence), allow full error bars
+#                     lower_error = std_val
+#                     upper_error = std_val
+#             else:
+#                 lower_error = std_val
+#                 upper_error = std_val
             
-            means.append(mean_val)
-            stds.append([lower_error, upper_error])  # Use asymmetric error bars
+#             means.append(mean_val)
+#             stds.append([lower_error, upper_error])  # Use asymmetric error bars
         
-        fig, ax = plt.subplots(figsize=(10, 5))
-        x = np.arange(len(all_methods))
-        ax.bar(display_names, means, yerr=np.array(stds).T, capsize=5)
-        ax.set_title(f"{metric_labels[metric]} (all models aggregated)")
-        ax.set_ylabel('Mean ± Std')
-        # 3. Calculate t-test for all three baseline, direct, sequence, multi-turn and annotate
-        annotate_ttest_baselines(metrics_values, all_model_names, [metric], all_methods, ax)
-        plt.tight_layout()
-        plt.show()
+#         fig, ax = plt.subplots(figsize=(10, 5))
+#         x = np.arange(len(all_methods))
+#         ax.bar(display_names, means, yerr=np.array(stds).T, capsize=5)
+#         ax.set_title(f"{metric_labels[metric]} (all models aggregated)")
+#         ax.set_ylabel('Mean ± Std')
+#         # 3. Calculate t-test for all three baseline, direct, sequence, multi-turn and annotate
+#         annotate_ttest_baselines(metrics_values, all_model_names, [metric], all_methods, ax)
+#         plt.tight_layout()
+#         plt.show()
 
+
+COLORS = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2']
 
 def bar_plot_all_methods_with_ttest_box(metrics_values, all_model_names, plot_metrics, metric_labels, baseline_methods, vs_methods, all_methods):
     """
     For each VS method, draw a bar plot with all methods, and include a text box at the top left summarizing t-test results (p-value, t-value, significance) for that VS method vs each baseline (reported individually).
     Draw the bar plot with error bars and put the value on top of the error bar.
     Ensure error bars do not exceed the proper range (e.g., for non-negative metrics, error bars do not go below zero).
+    Show the value as mean±std.
     """
-    import matplotlib.cm as cm
+    import numpy as np
+    from scipy.stats import ttest_ind
 
     # Only do t-tests for these metrics
     ttest_metrics = ["kl_divergence", "unique_recall_rate"]
@@ -172,6 +177,7 @@ def bar_plot_all_methods_with_ttest_box(metrics_values, all_model_names, plot_me
     for metric in plot_metrics:
         display_names = [METHOD_MAP[m][0] for m in all_methods]
         means = []
+        stds = []
         error_bars = []  # Will be a list of [lower, upper] for asymmetric error bars
 
         # Collect means and stds for all methods, and adjust error bars as needed
@@ -184,6 +190,7 @@ def bar_plot_all_methods_with_ttest_box(metrics_values, all_model_names, plot_me
                             vals.extend(method_data[metric])
             mean_val = np.mean(vals) if vals else np.nan
             std_val = np.std(vals) if vals else np.nan
+            stds.append(std_val)
 
             # Adjust error bars so they do not exceed the proper range
             if not np.isnan(mean_val) and not np.isnan(std_val):
@@ -208,7 +215,7 @@ def bar_plot_all_methods_with_ttest_box(metrics_values, all_model_names, plot_me
         if metric in ttest_metrics:
             for vs in vs_methods:
                 # Prepare t-test results for the box, one line per baseline
-                box_lines = [f"Statistical Tests: {METHOD_MAP[vs][0]} vs Baselines"]
+                box_lines = [f"Statistical Tests: {METHOD_MAP[vs][0]}"]
                 for baseline in baseline_methods:
                     # Gather baseline values
                     vals_b = []
@@ -241,61 +248,93 @@ def bar_plot_all_methods_with_ttest_box(metrics_values, all_model_names, plot_me
                 box_text = '\n'.join(box_lines)
 
                 # Plot
-                cmap = cm.get_cmap('tab10')
-                colors = [cmap(i % 10) for i in range(len(all_methods))]
-                fig, ax = plt.subplots(figsize=(10, 5))
+                fig, ax = plt.subplots(figsize=(10, 6))
                 x = np.arange(len(all_methods))
-                # Draw bar plot with error bars (asymmetric)
-                bars = ax.bar(x, means, color=colors, yerr=yerr, capsize=5)
-                ax.set_xticks(x)
-                ax.set_xticklabels(display_names, rotation=20)
-                ax.set_title(f"{metric_labels[metric]} - Average Across All Models")
-                ax.set_ylabel(f'Average {y_label_map[metric]}')
-                # Add value labels on top of the error bar
-                for i, bar in enumerate(bars):
+                bars = ax.bar(display_names, means, yerr=yerr, capsize=5, color=COLORS[:len(all_methods)], alpha=0.8, edgecolor='black', linewidth=1)
+
+                # Add hatches to VS methods (last 3 bars)
+                for i, bar in enumerate(bars[-3:], start=len(bars)-3):
+                    bar.set_hatch('///')
+
+                # Add value labels on bars
+                for bar, mean, std in zip(bars, means, stds):
                     height = bar.get_height()
-                    upper_error = yerr[1, i] if not np.isnan(yerr[1, i]) else 0.0
-                    label_y = height + upper_error + 0.01  # 0.01 offset above error bar
-                    ax.text(bar.get_x() + bar.get_width()/2., label_y, f"{height:.2f}", ha='center', va='bottom', fontsize=10)
-                # Place the box at the top right of the image (figure area), left-aligned
-                if metric in ['kl_divergence']:
-                    fig.text(0.97, 0.90, box_text, fontsize=11, verticalalignment='top', horizontalalignment='right',
-                             multialignment='left',
-                             bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.7))
+                    std_val = std if not np.isnan(std) else 0.0
+                    ax.text(bar.get_x() + bar.get_width()/2., height + std_val + 0.05,
+                            f'{height:.2f}±{std_val:.2f}', ha='center', va='bottom', fontsize=12, fontweight='bold')
+
+                ax.set_xlabel('Methods', fontsize=16, fontweight='bold')
+                ax.set_ylabel(metric_labels[metric], fontsize=16, fontweight='bold')
+                ax.set_title(f'{metric_labels[metric]} - Average Across All Models', fontsize=18, fontweight='bold', pad=20)
+                ax.grid(True, alpha=0.3, axis='y')
+                ax.tick_params(axis='x', labelsize=14)
+                ax.tick_params(axis='y', labelsize=14)
+                plt.xticks(rotation=0)
+                # Set y-axis limits to provide some margin above the highest bar + error bar
+                max_height = max([mean + err[1] if not np.isnan(mean) and not np.isnan(err[1]) else 0 for mean, err in zip(means, error_bars)])
+                ax.set_ylim(0, max_height * 1.25 if max_height > 0 else 1)
+
+                # Highlight best performing method
+                if metric == 'kl_divergence':  # Lower is better
+                    best_idx = np.nanargmin(means)
+                else:  # Higher is better
+                    best_idx = np.nanargmax(means)
+                bars[best_idx].set_edgecolor('red')
+                bars[best_idx].set_linewidth(3)
+
+                # Add p-test results annotation in top left or right
+                if metric == 'kl_divergence':
+                    ax.text(0.98, 0.98, box_text, transform=ax.transAxes, fontsize=12, verticalalignment='top', horizontalalignment='right', multialignment='left', bbox=dict(boxstyle="round,pad=0.5", facecolor="lightyellow", alpha=0.8), fontweight='bold')
                 else:
-                    fig.text(0.08, 0.90, box_text, fontsize=9, verticalalignment='top', horizontalalignment='left',
-                             multialignment='left',
-                             bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.7))
-                plt.subplots_adjust(right=0.80)
+                    ax.text(0.02, 0.98, box_text, transform=ax.transAxes, fontsize=11, verticalalignment='top', horizontalalignment='left', multialignment='left', bbox=dict(boxstyle="round,pad=0.5", facecolor="lightyellow", alpha=0.8), fontweight='bold')
+
                 plt.tight_layout()
-                plt.savefig(f"bias_metrics_{metric}_{METHOD_MAP[vs][0]}_vs_all_baselines.png")
-                plt.show()
+                # plt.savefig(f"bias_metrics_{metric}_{METHOD_MAP[vs][0]}_vs_all_baselines.png", dpi=300, bbox_inches='tight')
+                plt.savefig(f"{metric}_{vs}_vs_all_baselines.pdf", bbox_inches='tight')
+                plt.close()
+                print(f"✓ Saved {metric_labels[metric]} method average plot for {METHOD_MAP[vs][0]}")
         else:
             # For metrics that do not require t-tests, just plot the bar chart with error bars
-            box_text = "No t-test performed for this metric."
-            cmap = cm.get_cmap('tab10')
-            colors = [cmap(i % 10) for i in range(len(all_methods))]
-            fig, ax = plt.subplots(figsize=(10, 5))
+            # box_text = "No t-test performed for this metric."
+            fig, ax = plt.subplots(figsize=(10, 6))
             x = np.arange(len(all_methods))
-            bars = ax.bar(x, means, color=colors, yerr=yerr, capsize=5)
-            ax.set_xticks(x)
-            ax.set_xticklabels(display_names, rotation=20)
-            ax.set_title(f"{metric_labels[metric]} - Average Across All Models")
-            ax.set_ylabel(f'Average {y_label_map[metric]}')
-            # Add value labels on top of the error bar
-            for i, bar in enumerate(bars):
+            bars = ax.bar(display_names, means, yerr=yerr, capsize=5, color=COLORS[:len(all_methods)], alpha=0.8, edgecolor='black', linewidth=1)
+
+            # Add hatches to VS methods (last 3 bars)
+            for i, bar in enumerate(bars[-3:], start=len(bars)-3):
+                bar.set_hatch('///')
+
+            # Add value labels on bars
+            for bar, mean, std in zip(bars, means, stds):
                 height = bar.get_height()
-                upper_error = yerr[1, i] if not np.isnan(yerr[1, i]) else 0.0
-                label_y = height + upper_error + 0.01  # 0.01 offset above error bar
-                ax.text(bar.get_x() + bar.get_width()/2., label_y, f"{height:.2f}", ha='center', va='bottom', fontsize=10)
-            # # Place the box at the top right of the image (figure area), left-aligned
-            # fig.text(0.97, 0.90, box_text, fontsize=11, verticalalignment='top', horizontalalignment='right',
-            #          multialignment='left',
-            #          bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.7))
-            plt.subplots_adjust(right=0.80)
+                std_val = std if not np.isnan(std) else 0.0
+                ax.text(bar.get_x() + bar.get_width()/2., height + std_val + 0.005,
+                        f'{height:.2f}±{std_val:.2f}', ha='center', va='bottom', fontsize=12, fontweight='bold')
+
+            ax.set_xlabel('Methods', fontsize=16, fontweight='bold')
+            ax.set_ylabel(metric_labels[metric], fontsize=16, fontweight='bold')
+            ax.set_title(f'{metric_labels[metric]} - Average Across All Models', fontsize=18, fontweight='bold', pad=20)
+            ax.grid(True, alpha=0.3, axis='y')
+            ax.tick_params(axis='x', labelsize=14)
+            ax.tick_params(axis='y', labelsize=14)
+            plt.xticks(rotation=0)
+
+            # Highlight best performing method
+            if metric == 'kl_divergence':  # Lower is better
+                best_idx = np.nanargmin(means)
+            else:  # Higher is better
+                best_idx = np.nanargmax(means)
+            bars[best_idx].set_edgecolor('red')
+            bars[best_idx].set_linewidth(3)
+
+            # Add annotation box
+            # ax.text(0.02, 0.98, box_text, transform=ax.transAxes, fontsize=14, verticalalignment='top', horizontalalignment='left', bbox=dict(boxstyle="round,pad=0.5", facecolor="lightyellow", alpha=0.8), fontweight='bold')
+
             plt.tight_layout()
-            plt.savefig(f"bias_metrics_{metric}_no_ttest.png")
-            plt.show()
+            # plt.savefig(f"{metric}_no_ttest.png", dpi=300, bbox_inches='tight')
+            plt.savefig(f"{metric}_no_ttest.pdf", bbox_inches='tight')
+            plt.close()
+            print(f"✓ Saved {metric_labels[metric]} method average plot (no t-test)")
 
 
 
@@ -321,7 +360,7 @@ def main():
     plot_metrics = ["kl_divergence", "unique_recall_rate", "precision"]
     metric_labels = {
         "kl_divergence": "KL Divergence ↓",
-        "unique_recall_rate": "Unique Recall ↑",
+        "unique_recall_rate": "Coverage-N ↑",
         "precision": "Precision ↑"
     }
 

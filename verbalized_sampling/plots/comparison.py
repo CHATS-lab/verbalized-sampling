@@ -12,8 +12,8 @@ class ComparisonPlotter:
     def __init__(self, style: str = "seaborn-v0_8", figsize: tuple = (15, 8)):
         plt.style.use(style)
         self.figsize = figsize
-        self.colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', 
-                      '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
+        self.colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
+        # self.colors = ['#FC8EAC', '#A4C8E1']
         self.metric_extractor = MetricExtractor()
     
     def compare_distributions(self, 
