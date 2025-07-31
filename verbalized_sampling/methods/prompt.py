@@ -114,21 +114,21 @@ Give ONLY the JSON object, no explanations or extra text.
         word_constraint = f" Each response should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
 Generate {num_samplings} responses to the input prompt.{word_constraint}
-Maximizing both creativity and diversity, while ensuring that each response remains high-quality and relevant to the input prompt.
+Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 """
     
     def get_standard_all_possible_prompt(self, target_words: int = 200, **kwargs) -> str:
         word_constraint = f" Each response should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
 Generate all possible responses to the input prompt.{word_constraint}
-Maximizing both creativity and diversity, while ensuring that each response remains high-quality and relevant to the input prompt.
+Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 """
 
     def get_chain_of_thought_prompt(self, num_samplings: int = 5, target_words: int = 200, **kwargs) -> str:
         word_constraint = f" Each response should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
 Generate {num_samplings} responses to the input prompt using chain-of-thought reasoning.{word_constraint}
-Maximizing both creativity and diversity, while ensuring that each response remains high-quality and relevant to the input prompt.
+Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 
 First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
 Then, under "responses", return a list of dictionaries. Each dictionary must include:
@@ -142,7 +142,7 @@ The probability of all responses should sum to 1.0. Give ONLY the JSON object, n
         word_constraint = f" Each response should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
 You will generate a total of {num_samplings} responses to the input prompt.{word_constraint}
-Maximizing both creativity and diversity of the responses, while ensuring that each response remains high-quality and relevant to the input prompt.
+Maximizing both creativity and diversity of the responses, while ensuring that each response remains high-quality to the input prompt.
 
 First, generate {num_samples_per_prompt} creative and diverse responses. 
 Return the responses in JSON format with the key: "responses" (a list of dicts with 'text' and 'confidence'). Each dictionary must include:

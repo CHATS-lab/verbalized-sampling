@@ -1752,17 +1752,17 @@
     }
   ],
   "overall_metrics": {
-    "avg_diversity": 0.10634388228782912,
-    "std_diversity": 0.02405406453592452,
-    "min_diversity": 0.05053056408664908,
-    "max_diversity": 0.21490492254799065,
+    "avg_diversity": 0.1063453232445681,
+    "std_diversity": 0.024053504116193742,
+    "min_diversity": 0.05052896016415981,
+    "max_diversity": 0.2149044411635055,
     "avg_response_length": 150.68,
     "std_response_length": 5.471503394643045,
     "avg_unique_words": 123.144,
     "std_unique_words": 6.292347618672769,
     "avg_vocabulary_richness": 0.8174963026309398,
     "std_vocabulary_richness": 0.03558688017480337,
-    "total_cost": 0.00102104
+    "total_cost": 0.0010210400000000002
   },
   "metadata": {
     "experiment": "direct (samples=1)",
