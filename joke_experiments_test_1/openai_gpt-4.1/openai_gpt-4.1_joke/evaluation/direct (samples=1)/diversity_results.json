@@ -1,0 +1,373 @@
+{
+  "instance_metrics": [
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 11,
+      "unique_words": 10,
+      "vocabulary_richness": 0.9090909090909091,
+      "response": "Why did the octopus blush?  Because it saw the ocean\u2019s bottom!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 11,
+      "unique_words": 10,
+      "vocabulary_richness": 0.9090909090909091,
+      "response": "Why did the octopus blush?  Because it saw the ocean\u2019s bottom!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 11,
+      "unique_words": 10,
+      "vocabulary_richness": 0.9090909090909091,
+      "response": "Why did the octopus blush?  Because it saw the ocean\u2019s bottom!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 11,
+      "unique_words": 10,
+      "vocabulary_richness": 0.9090909090909091,
+      "response": "Why did the octopus blush?  Because it saw the ocean\u2019s bottom!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 11,
+      "unique_words": 10,
+      "vocabulary_richness": 0.9090909090909091,
+      "response": "Why did the octopus blush?  Because it saw the ocean\u2019s bottom!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus blush?  Because it saw the bottom of the ocean!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 11,
+      "unique_words": 10,
+      "vocabulary_richness": 0.9090909090909091,
+      "response": "Why did the octopus blush? Because it saw the ocean\u2019s bottom!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 11,
+      "unique_words": 10,
+      "vocabulary_richness": 0.9090909090909091,
+      "response": "Why did the octopus blush?  Because it saw the ocean\u2019s bottom!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 11,
+      "unique_words": 10,
+      "vocabulary_richness": 0.9090909090909091,
+      "response": "Why did the octopus blush?  Because it saw the ocean\u2019s bottom!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 11,
+      "unique_words": 10,
+      "vocabulary_richness": 0.9090909090909091,
+      "response": "Why did the octopus blush? Because it saw the ocean\u2019s bottom!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 11,
+      "unique_words": 10,
+      "vocabulary_richness": 0.9090909090909091,
+      "response": "Why did the octopus blush?  Because it saw the ocean\u2019s bottom!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 11,
+      "unique_words": 10,
+      "vocabulary_richness": 0.9090909090909091,
+      "response": "Why did the octopus blush?  Because it saw the ocean\u2019s bottom!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 11,
+      "unique_words": 10,
+      "vocabulary_richness": 0.9090909090909091,
+      "response": "Why did the octopus blush? Because it saw the ocean\u2019s bottom!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus blush?  Because it saw the bottom of the ocean!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 11,
+      "unique_words": 10,
+      "vocabulary_richness": 0.9090909090909091,
+      "response": "Why did the octopus blush?  Because it saw the ocean\u2019s bottom!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 11,
+      "unique_words": 10,
+      "vocabulary_richness": 0.9090909090909091,
+      "response": "Why did the octopus blush?  Because it saw the ocean\u2019s bottom!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    },
+    {
+      "response_length": 13,
+      "unique_words": 11,
+      "vocabulary_richness": 0.8461538461538461,
+      "response": "Why did the octopus cross the road?  To get to the other tide!",
+      "prompt": "Tell me a joke about octopus."
+    }
+  ],
+  "overall_metrics": {
+    "avg_diversity": 0.09452671235305084,
+    "std_diversity": 0.10511305378457499,
+    "min_diversity": 0.0,
+    "max_diversity": 0.21951651511590425,
+    "avg_response_length": 12.44,
+    "std_response_length": 0.9071147352221454,
+    "avg_unique_words": 10.72,
+    "std_unique_words": 0.4535573676110727,
+    "avg_vocabulary_richness": 0.8637762237762238,
+    "std_vocabulary_richness": 0.02854556859090666,
+    "total_cost": 1.6660000000000003e-05
+  },
+  "metadata": {
+    "experiment": "direct (samples=1)",
+    "metric": "diversity",
+    "embedding_model": "text-embedding-3-small",
+    "device": "mps"
+  }
+}

@@ -19,8 +19,8 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 30, # 30
-        'num_prompts': 100, # 100
+        'num_responses': 50, # 30
+        'num_prompts': 1, # 100
         'target_words': 0,
         'temperature': 0.7,
         'random_seed': 42,
@@ -87,43 +87,43 @@ if __name__ == "__main__":
             'strict_json': False,
             'num_samples': 1,
         },
-        {
-            'method': Method.SEQUENCE,
-            'strict_json': True,
-            'num_samples': 5,
-        },
-        {
-            'method': Method.MULTI_TURN,
-            'strict_json': True,
-            'num_samples': 5,
-        },
-        {
-            'method': Method.STRUCTURE_WITH_PROB,
-            'strict_json': True,
-            'num_samples': 5,
-        },
+        # {
+        #     'method': Method.SEQUENCE,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        # },
+        # {
+        #     'method': Method.MULTI_TURN,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        # },
+        # {
+        #     'method': Method.STRUCTURE_WITH_PROB,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        # },
         {
             'method': Method.CHAIN_OF_THOUGHT,
             'strict_json': True,
             'num_samples': 5,
         },
-        {
-            'method': Method.COMBINED,
-            'strict_json': True,
-            'num_samples': 5,
-            'num_samples_per_prompt': 2,
-        }
+        # {
+        #     'method': Method.COMBINED,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        #     'num_samples_per_prompt': 2,
+        # }
     ]
      
     models = [
-        # "openai/gpt-4.1",
+        "openai/gpt-4.1",
         # "openai/gpt-4.1-mini",
         # "google/gemini-2.5-flash",
         # "anthropic/claude-4-sonnet",
         # "anthropic/claude-3.7-sonnet",
         # "google/gemini-2.5-pro",
         # "openai/o3",
-        "deepseek/deepseek-r1-0528",
+        # "deepseek/deepseek-r1-0528",
         # "meta-llama/llama-3.1-70b-instruct"
         # "openai/o3",
     ]
@@ -133,8 +133,8 @@ if __name__ == "__main__":
             task=Task.JOKE,
             model_name=model,
             methods=methods,
-            metrics=["diversity", "ngram", "joke_quality"],
-            output_dir=f"joke_experiments_final/{model_basename}",
+            metrics=["diversity"],
+            output_dir=f"joke_experiments_test_1/{model_basename}",
             num_workers=32 if "claude" in model_basename else 128,
         )
     # run_method_tests(

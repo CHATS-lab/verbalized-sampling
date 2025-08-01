@@ -1229,6 +1229,13 @@ def plot_method_averages(all_results, output_dir="plots"):
         print(f"✓ Saved {metric_title} method average plot")
 
 
+def plot_diversity_vs_quality_model(all_results, model_name, output_dir="plots"):
+    """
+    Plot the diversity vs quality scatter plot for a specific model.
+    """
+    plot_diversity_vs_quality_average({model_name: all_results[model_name]})
+    
+
 def main():
     # Model directory mapping
     models = {
@@ -1244,6 +1251,7 @@ def main():
     }
     
     base_dir = "poem_experiments_final"
+    # base_dir = "method_results_bias"
     all_results = {}
     
     # Output file
@@ -1351,12 +1359,13 @@ def main():
     
     # Generate original plots
     # plot_model_comparison(all_results)
-    plot_method_averages(all_results)
+    # plot_method_averages(all_results)
     # plot_individual_models(all_results)
     # plot_diversity_vs_quality_scatter(all_results)
-    plot_diversity_vs_quality_average(all_results)
-    plot_diversity_vs_quality_2x2(all_results)
-    
+    # plot_diversity_vs_quality_average(all_results)
+    # plot_diversity_vs_quality_2x2(all_results)
+    plot_diversity_vs_quality_model(all_results, "GPT-o3") 
+
     # Generate advanced analysis plots
     print("\n" + "="*30)
     print("ADVANCED ANALYSIS")
