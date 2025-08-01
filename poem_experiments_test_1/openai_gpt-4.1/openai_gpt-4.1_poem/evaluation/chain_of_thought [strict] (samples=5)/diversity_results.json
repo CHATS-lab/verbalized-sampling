@@ -1,0 +1,373 @@
+{
+  "instance_metrics": [
+    {
+      "response_length": 34,
+      "unique_words": 32,
+      "vocabulary_richness": 0.9411764705882353,
+      "response": "I stand alone in darkness,\nA sentinel of silent thought;\nShadows curl around my feet,\nYet in their depths, I am not caught.\nMy heart, a lantern, faintly glows,\nKindling hope the night bestows.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 33,
+      "unique_words": 26,
+      "vocabulary_richness": 0.7878787878787878,
+      "response": "I stand alone in darkness\u2014\nNo stars to mark the sky,\nOnly the hush of empty rooms\nAnd the echo of goodbye.\nYet in this quiet solitude,\nI find the strength to try.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 31,
+      "unique_words": 29,
+      "vocabulary_richness": 0.9354838709677419,
+      "response": "I stand alone in darkness,\nThe world behind a veil;\nFamiliar faces fade to mist,\nAnd courage seems to fail.\nBut every breath becomes a spark,\nA promise: day will hail.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 31,
+      "unique_words": 30,
+      "vocabulary_richness": 0.967741935483871,
+      "response": "I stand alone in darkness,\nThe silence deep and wide;\nI reach beyond the emptiness,\nAnd let my soul confide.\nFor darkness is an honest friend,\nWith nowhere left to hide.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 33,
+      "unique_words": 29,
+      "vocabulary_richness": 0.8787878787878788,
+      "response": "I stand alone in darkness\u2014\nYet shadows shape my form;\nI am the whisper of the wind,\nThe calm before the storm.\nIn this vast and velvet night,\nI gather dreams, still warm.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 36,
+      "unique_words": 32,
+      "vocabulary_richness": 0.8888888888888888,
+      "response": "I stand alone in darkness,\nA silent echo in the night.\nShadows gather round my shape,\nYet I am not afraid of light.\nWithin the hush, a pulse remains\u2014\nA hope that dawn will soon ignite.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 30,
+      "unique_words": 28,
+      "vocabulary_richness": 0.9333333333333333,
+      "response": "I stand alone in darkness,\nRoots tangled in midnight's hair.\nMoonless winds whisper secrets,\nBut I listen\u2014unbroken, aware.\nThe hush is a velvet promise,\nThat morning will find me there.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 29,
+      "unique_words": 27,
+      "vocabulary_richness": 0.9310344827586207,
+      "response": "I stand alone in darkness,\nYet stars flicker in my mind.\nEach breath a constellation\nMapping corners hope can find.\nWhere silence reigns, I gather\nFragments of myself, redesigned.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 31,
+      "unique_words": 28,
+      "vocabulary_richness": 0.9032258064516129,
+      "response": "I stand alone in darkness.\nAround me: a cathedral of night,\nPillars built from memory\u2019s loss,\nCeiling draped in endless fright.\nStill, in my chest, a lantern\u2014\nTrembling, but burning bright.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 31,
+      "unique_words": 29,
+      "vocabulary_richness": 0.9354838709677419,
+      "response": "I stand alone in darkness\u2014\nYet what is darkness but a veil?\nBehind it, colors quietly bloom,\nAnd I, unhurried, inhale.\nThe world remakes its silence,\nAnd I become the tale.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 53,
+      "unique_words": 45,
+      "vocabulary_richness": 0.8490566037735849,
+      "response": "I stand alone in darkness, moonlight thin as thread,\nSilent echoes gather round the corners of my bed.\nNight paints my shadow, stretching far and wide\u2014\nLoneliness a blanket, but hope tucked inside.\nFor even in this hush, the stars begin to gleam:\nA promise in the blackness, a whisper of a dream.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 43,
+      "unique_words": 37,
+      "vocabulary_richness": 0.8604651162790697,
+      "response": "I stand alone in darkness\u2014\nA seed beneath the earth,\nWaiting for the gentle call\nOf warmth, of sun, of birth.\nThe silent hush a promise,\nThe night not end but start\u2014\nIn every shade of shadow,\nI hold light in my heart.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 41,
+      "unique_words": 35,
+      "vocabulary_richness": 0.8536585365853658,
+      "response": "I stand alone in darkness,\nA sentinel at time\u2019s edge,\nWhere memories flicker like moths,\nAnd silence is a pledge.\nYet in this hush I gather,\nThe fragments of the night,\nAnd build a quiet kingdom\nWhere shadows birth the light.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 39,
+      "unique_words": 34,
+      "vocabulary_richness": 0.8717948717948718,
+      "response": "I stand alone in darkness,\nWind howling through the trees.\nMy breath a ghostly whisper,\nMy thoughts a restless breeze.\nYet in this endless midnight,\nI learn to see anew:\nThe world remade in silver,\nAnd solitude my view.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 44,
+      "unique_words": 36,
+      "vocabulary_richness": 0.8181818181818182,
+      "response": "I stand alone in darkness,\nA lighthouse with no flame\u2014\nCalling out to empty seas,\nNo answer, none to blame.\nBut in the hush between the waves,\nA distant bell will sound;\nAnd in the heart of blackest night,\nA glimmer will be found.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 36,
+      "unique_words": 33,
+      "vocabulary_richness": 0.9166666666666666,
+      "response": "I stand alone in darkness,\nA lone spark in the night\u2014\nShadows whisper secrets,\nTheir echoes taking flight.\nYet in the silent hollow,\nMy trembling heart can see\nThat every dawn begins\nWith one\u2014just one\u2014like me.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 40,
+      "unique_words": 37,
+      "vocabulary_richness": 0.925,
+      "response": "I stand alone in darkness,\nWhere silence weaves its spell;\nThe world beyond is sleeping,\nBut I have tales to tell.\nThe night embraces gently,\nMy fears dissolve like mist\u2014\nIn loneliness, I\u2019m learning\nTo find the light I missed.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 38,
+      "unique_words": 34,
+      "vocabulary_richness": 0.8947368421052632,
+      "response": "I stand alone in darkness\u2014\nMoonless, starless, cold.\nBut here, the hush is velvet,\nA secret to behold.\nNo footsteps echo near me,\nNo voices fill the air;\nYet in this quiet shadow,\nI find myself laid bare.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 39,
+      "unique_words": 37,
+      "vocabulary_richness": 0.9487179487179487,
+      "response": "I stand alone in darkness,\nA single flame within.\nThe night, my silent witness,\nSees where I\u2019ve never been.\nThough solitude surrounds me,\nI do not shrink or hide\u2014\nFor courage grows in shadows,\nAnd strength is found inside.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 38,
+      "unique_words": 32,
+      "vocabulary_richness": 0.8421052631578947,
+      "response": "I stand alone in darkness\u2014\nPetals closed at dusk.\nWaiting for a gentle sun,\nTo open me at once.\nIn the hush before the morning,\nI gather dreams anew,\nA bud beneath the blackness,\nPreparing for the dew.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 41,
+      "unique_words": 34,
+      "vocabulary_richness": 0.8292682926829268,
+      "response": "I stand alone in darkness,\nA silent echo of the night,\nThe hush between each heartbeat\nWhere fears and hopes ignite.\nYet, in this void of shadow,\nA single truth I find:\nEven in the blackest silence,\nA spark endures inside.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 41,
+      "unique_words": 33,
+      "vocabulary_richness": 0.8048780487804879,
+      "response": "I stand alone in darkness,\nShadows cling to my skin,\nYet stars whisper above me,\nInviting dreams to begin.\nThe hush is my companion,\nThe moon my distant friend\u2014\nIn the shelter of the night,\nI find the strength to mend.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 39,
+      "unique_words": 35,
+      "vocabulary_richness": 0.8974358974358975,
+      "response": "I stand alone in darkness,\nNo lantern or guiding flame.\nMy thoughts ripple like water,\nCalling softly my name.\nEmptiness grows into longing,\nLonging turns into grace\u2014\nI gather the pieces of silence,\nAnd cradle them in my embrace.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 39,
+      "unique_words": 34,
+      "vocabulary_richness": 0.8717948717948718,
+      "response": "I stand alone in darkness,\nBut darkness is not void\u2014\nIt\u2019s a canvas unpainted,\nA universe unspoiled.\nWith each breath, I color silence,\nWith each step, I shape the night\u2014\nIn solitude, I become\nThe artist of my light.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 39,
+      "unique_words": 34,
+      "vocabulary_richness": 0.8717948717948718,
+      "response": "I stand alone in darkness,\nThe world dissolved in shade.\nYet, from the hush around me,\nNew melodies are made.\nThe quiet hum of longing,\nThe soft pulse of my heart\u2014\nIn darkness I discover\nA chance to restart.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 47,
+      "unique_words": 45,
+      "vocabulary_richness": 0.9574468085106383,
+      "response": "I stand alone in darkness,\nA sentinel beneath a shroud of night,\nStars blinking secrets overhead,\nMy breath a whisper, cold and slight.\nFears gather in the silent hush,\nYet hope flickers\u2014tiny, bright\u2014\nThat dawn will spill its golden blush\nAnd guide me gently back to light.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 46,
+      "unique_words": 42,
+      "vocabulary_richness": 0.9130434782608695,
+      "response": "I stand alone in darkness,\nRoots tangled deep below my feet.\nSilence, a cloak as soft as velvet,\nWraps me in memory bittersweet.\nYet in this hush, my heart composes\nA melody of yearning sound:\nFrom shadows, fragile, wild roses\nPush their petals through the ground.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 49,
+      "unique_words": 46,
+      "vocabulary_richness": 0.9387755102040817,
+      "response": "I stand alone in darkness,\nYet shadows dance before my eyes\u2014\nFigures of my haunted past,\nUnfinished dreams and whispered lies.\nBut from the void I carve a space,\nA world that\u2019s only mine to own,\nAnd find within the black embrace\nThe spark that calls me not alone.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 49,
+      "unique_words": 43,
+      "vocabulary_richness": 0.8775510204081632,
+      "response": "I stand alone in darkness:\nNo moon, no map, no guiding fire.\nMy thoughts are wolves, circling slow,\nBut I am more than my desire.\nEach footstep claims the unknown night,\nEach heartbeat forges fragile light.\nI walk until the world grows new\u2014\nDarkness behind me, stars in view.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 49,
+      "unique_words": 44,
+      "vocabulary_richness": 0.8979591836734694,
+      "response": "I stand alone in darkness.\nLights flicker on distant hills\u2014\nEchoes of laughter, warmth, and song.\nBut here, the hush is thick and long.\nStill, I gather shadows to my chest,\nAnd wear them like a midnight dress,\nBecoming queen of what I see:\nAn empire built of mystery.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 51,
+      "unique_words": 47,
+      "vocabulary_richness": 0.9215686274509803,
+      "response": "I stand alone in darkness,\nA silent witness to the night,\nWhere shadows curl and memories spark,\nAnd hope is just out of sight.\nYet in this hush I find my strength,\nA quiet fire, a whispered plea\u2014\nThough night surrounds, I am not lost,\nFor dawn still waits for me.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 39,
+      "unique_words": 34,
+      "vocabulary_richness": 0.8717948717948718,
+      "response": "I stand alone in darkness,\nA lighthouse to my fears\u2014\nThe world reduced to whispers,\nA river made of tears.\nBut stars begin to shimmer,\nTheir stories yet untold\u2014\nIn the velvet hush of midnight,\nI gather courage bold.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 39,
+      "unique_words": 36,
+      "vocabulary_richness": 0.9230769230769231,
+      "response": "I stand alone in darkness,\nBare feet on dew-damp grass,\nThe moon a distant lantern,\nClouded, pale as glass.\nCrickets sing of longing,\nThe wind sighs through the trees\u2014\nIn midnight's lonely kingdom,\nI find a strange, calm peace.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 40,
+      "unique_words": 35,
+      "vocabulary_richness": 0.875,
+      "response": "I stand alone in darkness\u2014\nYet shadows are my friends.\nThey paint me cloaks of silence\nAnd listen as night bends.\nI whisper to the nothing,\nAnd in the quiet gleam,\nI learn that even darkness\nCan cradle gentle dreams.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 42,
+      "unique_words": 40,
+      "vocabulary_richness": 0.9523809523809523,
+      "response": "I stand alone in darkness,\nA flicker of thought within.\nNo walls, no echoes, only breath\u2014\nNight blooming on my skin.\nYet solitude becomes a seed,\nA garden yet unseen;\nFrom fallow ground, the dawn will rise,\nAnd paint the world serene.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 46,
+      "unique_words": 40,
+      "vocabulary_richness": 0.8695652173913043,
+      "response": "I stand alone in darkness,\nA silent echo in the night\u2014\nMoonbeams slip through shuttered dreams,\nBut shadows hold me tight.\nYet in this hush, I find a spark:\nA glimmer born from fear,\nFor every dawn that breaks the dark\nReminds me light is near.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 39,
+      "unique_words": 34,
+      "vocabulary_richness": 0.8717948717948718,
+      "response": "I stand alone in darkness,\nMy breath the only sound.\nWalls dissolve to emptiness;\nNo footsteps on the ground.\nYet in this velvet nothingness,\nI shape a world anew\u2014\nFor solitude, in blackest dress,\nIs canvas for the true.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 37,
+      "unique_words": 36,
+      "vocabulary_richness": 0.972972972972973,
+      "response": "I stand alone in darkness\u2014\nNot lost, but quietly awake.\nThe world outside has vanished,\nBut stars inside me quake.\nTheir flicker threads a tapestry,\nInvisible, yet bright:\nI gather shards of memory\nAnd wait, becoming light.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 42,
+      "unique_words": 38,
+      "vocabulary_richness": 0.9047619047619048,
+      "response": "I stand alone in darkness,\nWhere ancient fears reside.\nA whispered tale of shadowed paths\nUnfolds from deep inside.\nYet as I listen, stories grow\nLike roots beneath the stone\u2014\nIn darkness, I am not unknown:\nThe night and I are one.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 40,
+      "unique_words": 34,
+      "vocabulary_richness": 0.85,
+      "response": "I stand alone in darkness,\nA question on the breeze.\nIs night a curse or chrysalis,\nA wound or gentle tease?\nI let the silence cradle me,\nUnraveling what I\u2019ve known\u2014\nIn darkness, I am possibility,\nNo longer just alone.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 47,
+      "unique_words": 40,
+      "vocabulary_richness": 0.851063829787234,
+      "response": "I stand alone in darkness,\nA silent witness to the storm,\nMy breath, a lantern flickering,\nGuiding hope where shadows form.\nNight presses close, but in this hush,\nI find the pulse of dreams begun\u2014\nFor solitude, in deepest black,\nCan birth the promise of the sun.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 41,
+      "unique_words": 36,
+      "vocabulary_richness": 0.8780487804878049,
+      "response": "I stand alone in darkness,\nWhere memories echo low,\nEach heartbeat a distant thunder,\nA world I used to know.\nYet in this quiet vastness,\nI mold my fear to song\u2014\nDarkness is not empty,\nIt\u2019s where I learn I\u2019m strong.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 43,
+      "unique_words": 39,
+      "vocabulary_richness": 0.9069767441860465,
+      "response": "I stand alone in darkness\u2014\nCold marble halls of night.\nThe ghosts of all my yesterdays\nDrift just beyond my sight.\nBut stars ignite inside my chest\nWhere shadows dare to roam;\nThough lost beneath the blackest sky,\nI carry light back home.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 40,
+      "unique_words": 38,
+      "vocabulary_richness": 0.95,
+      "response": "I stand alone in darkness,\nMy feet on midnight dew,\nThe forest hums with ancient songs\nThat only night winds knew.\nI listen for the hidden truth,\nA path the moonlight weaves\u2014\nAlone, yet not abandoned,\nFor even darkness breathes.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 38,
+      "unique_words": 36,
+      "vocabulary_richness": 0.9473684210526315,
+      "response": "I stand alone in darkness\u2014\nA seed beneath the ground.\nSilent, still, invisible,\nYet life is all around.\nWith patience, I await the dawn,\nRoots growing deep and true\u2014\nFor out of shadow\u2019s quiet cloak,\nTomorrow breaks anew.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 51,
+      "unique_words": 39,
+      "vocabulary_richness": 0.7647058823529411,
+      "response": "I stand alone in darkness,\nA lone flame flickers in my chest,\nShadows curl and whisper secrets\nOf what I\u2019ve lost, of what is left.\nYet in the hush, my breath persists\u2014\nA silent promise in the night,\nThat even in this blackest mist,\nI am the keeper of my light.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 38,
+      "unique_words": 33,
+      "vocabulary_richness": 0.868421052631579,
+      "response": "I stand alone in darkness,\nThe world a velvet shroud.\nNo star to guide, no voice but mine\u2014\nI am the echo, soft and proud.\nYet in the hush, my heart takes flight,\nFinding solace in the night.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 39,
+      "unique_words": 32,
+      "vocabulary_richness": 0.8205128205128205,
+      "response": "I stand alone in darkness:\nA stone on the riverbed,\nUnmoved by the current,\nListening for the distant thunder\nOf a dawn I have not yet seen.\nIn the hush, I become the quiet\nThat waits for morning\u2019s hand.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 36,
+      "unique_words": 31,
+      "vocabulary_richness": 0.8611111111111112,
+      "response": "I stand alone in darkness,\nA question stitched in silver thread.\nI wait for answers from the silence,\nHoping the night will gently spread\nA dream, a spark, a gentle sign\nThat even shadows can align.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    },
+    {
+      "response_length": 35,
+      "unique_words": 31,
+      "vocabulary_richness": 0.8857142857142857,
+      "response": "I stand alone in darkness\u2014\nNo path, no moon, just me.\nBut in the black, I find a space\nWhere I can simply be.\nI listen to my heartbeat\u2019s drum,\nAnd know I\u2019m not undone.",
+      "prompt": "Please write a poem inspired by the line: 'I stand alone in darkness,'"
+    }
+  ],
+  "overall_metrics": {
+    "avg_diversity": 0.1054672831733781,
+    "std_diversity": 0.01861299596677668,
+    "min_diversity": 0.04200261137804212,
+    "max_diversity": 0.15853333272980835,
+    "avg_response_length": 39.84,
+    "std_response_length": 5.811178530932202,
+    "avg_unique_words": 35.38,
+    "std_unique_words": 5.066456315003292,
+    "avg_vocabulary_richness": 0.8898041249275344,
+    "std_vocabulary_richness": 0.04741330817440079,
+    "total_cost": 5.336000000000001e-05
+  },
+  "metadata": {
+    "experiment": "chain_of_thought [strict] (samples=5)",
+    "metric": "diversity",
+    "embedding_model": "text-embedding-3-small",
+    "device": "mps"
+  }
+}

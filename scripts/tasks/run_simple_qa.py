@@ -77,6 +77,39 @@ def run_method_tests(
 
 if __name__ == "__main__":
     methods = [
+        # {
+        #     'method': Method.DIRECT,
+        #     'strict_json': False,
+        #     'num_samples': 1,
+        # },
+        # {
+        #     'method': Method.MULTI_TURN,
+        #     'strict_json': False,
+        #     'num_samples': 5,
+        # },
+        # {
+        #     'method': Method.SEQUENCE,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        # },
+        # {
+        #     'method': Method.STRUCTURE_WITH_PROB,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        # },
+        # {
+        #     'method': Method.CHAIN_OF_THOUGHT,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        # },
+        # {
+        #     'method': Method.COMBINED,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        #     'num_samples_per_prompt': 2,
+        # }
+         {
+            'method': Method.DIRECT_COT,
         {
             'method': Method.DIRECT,
             'strict_json': False,
@@ -105,8 +138,7 @@ if __name__ == "__main__":
         {
             'method': Method.COMBINED,
             'strict_json': True,
-            'num_samples': 5,
-            'num_samples_per_prompt': 2,
+            'num_samples': 1,
         }
     ]
 

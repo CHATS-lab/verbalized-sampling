@@ -19,7 +19,7 @@ def create_method_experiments(
         'task': task,
         'model_name': model_name,
         'num_responses': 500,
-        'num_prompts': 5,
+        'num_prompts': 1,
         'target_words': 0, 
         'temperature': temperature,
         'top_p': top_p,
@@ -85,43 +85,72 @@ if __name__ == "__main__":
             'strict_json': False,
             'num_samples': 1,
         },
-        {
-            'method': Method.MULTI_TURN,
-            'strict_json': False,
-            'num_samples': 20,
-        },
-        {
-            'method': Method.SEQUENCE,
-            'strict_json': True,
-            'num_samples': 20,
-        },
-        {
-            'method': Method.STRUCTURE_WITH_PROB,
-            'strict_json': True,
-            'num_samples': 20,
-        },
-        {
-            'method': Method.CHAIN_OF_THOUGHT,
-            'strict_json': True,
-            'num_samples': 20,
-        },
+        # {
+        #     'method': Method.MULTI_TURN,
+        #     'strict_json': False,
+        #     'num_samples': 20,
+        # },
+        # {
+        #     'method': Method.SEQUENCE,
+        #     'strict_json': True,
+        #     'num_samples': 20,
+        # },
+        # {
+        #     'method': Method.STRUCTURE_WITH_PROB,
+        #     'strict_json': True,
+        #     'num_samples': 20,
+        # },
+        # {
+        #     'method': Method.CHAIN_OF_THOUGHT,
+        #     'strict_json': True,
+        #     'num_samples': 20,
+        # },
         {
             'method': Method.COMBINED,
             'strict_json': True,
             'num_samples': 20,
-            'num_samples_per_prompt': 10,
+            'num_samples_per_prompt': 5,
         }
+        # {
+        #     'method': Method.DIRECT_COT,
+        #     'strict_json': True,
+        #     'num_samples': 1,
+        # }
     ]
+
+
+    models = [
+        # "gpt-4.1-mini",
+        "gpt-4.1",
+        # "gemini-2.5-flash",
+        # "gemini-2.5-pro",
+        # "llama-3.1-70b-instruct",
+        # "anthropic/claude-4-sonnet",
+        # "deepseek-r1",
+        # "o3",
+    ]
+    for model in models:
+        model_basename = model.replace("/", "_")
+        run_method_tests(
+            task=Task.STATE_NAME,
+            model_name=model,
+            methods=methods,
+            metrics=["response_count"],
+            temperature=0.7,
+            top_p=1.0,
+            output_dir="method_results_state_name",
+            num_workers=16 if any(x in model_basename for x in ["claude", "gemini"]) else 32,
+        )
     
-    run_method_tests(
-        task=Task.STATE_NAME,
-        model_name="gpt-4.1-mini",
-        methods=methods,
-        metrics=["response_count"],
-        temperature=0.7,
-        top_p=1.0,    
-        output_dir="method_results_state_name",
-    )
+    # run_method_tests(
+    #     task=Task.STATE_NAME,
+    #     model_name="gpt-4.1-mini",
+    #     methods=methods,
+    #     metrics=["response_count"],
+    #     temperature=0.7,
+    #     top_p=1.0,    
+    #     output_dir="method_results_state_name",
+    # )
 
 
     # run_method_tests(

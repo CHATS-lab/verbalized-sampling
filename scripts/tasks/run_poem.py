@@ -17,13 +17,13 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 30,
-        'num_prompts': 100, # current total: 300; total: 4326
-        'target_words': 200, 
+        'num_responses': 50,
+        'num_prompts': 1, # current total: 300; total: 4326
+        'target_words': 100, 
         'temperature': temperature,
         'top_p': top_p,
         'random_seed': 42,
-        "use_vllm": True,
+        "use_vllm": False,
     }
     
     experiments = []
@@ -103,26 +103,26 @@ if __name__ == "__main__":
         #     'strict_json': True,
         #     'num_samples': 5,
         # },
-        {
-            'method': Method.STRUCTURE_WITH_PROB,
-            'strict_json': True,
-            'num_samples': 5,
-        },
+        # {
+        #     'method': Method.STRUCTURE_WITH_PROB,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        # },
         {
             'method': Method.CHAIN_OF_THOUGHT,
             'strict_json': True,
             'num_samples': 5,
         },
-        {
-            'method': Method.COMBINED,
-            'strict_json': True,
-            'num_samples': 5,
-        },
+        # {
+        #     'method': Method.COMBINED,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        # },
     ]
 
 
     models = [
-        # "openai/gpt-4.1",
+        "openai/gpt-4.1",
         # "openai/gpt-4.1-mini",
         # "google/gemini-2.5-flash",
         # "meta-llama/Llama-3.1-70B-Instruct",
@@ -140,10 +140,10 @@ if __name__ == "__main__":
             task=Task.POEM,
             model_name=model,
             methods=methods,
-            metrics=["diversity", "ngram", "creative_writing_v3", "length"],
+            metrics=["diversity"], # "ngram", "creative_writing_v3", "length"
             temperature=0.7,
             top_p=1.0,
-            output_dir=f"poem_experiments_final/{model_basename}",
+            output_dir=f"poem_experiments_test_1/{model_basename}",
             num_workers=16 if "claude" in model_basename else 128,
         )
 
