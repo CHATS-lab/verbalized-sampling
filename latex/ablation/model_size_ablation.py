@@ -9,6 +9,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+from matplotlib.patches import Patch
 from scipy import stats
 from scipy.spatial import ConvexHull
 import argparse
@@ -282,6 +283,257 @@ def plot_size_comparison_scatter(results_by_size, output_dir="latex_figures"):
     
     print("✓ Saved model size comparison scatter plots")
     return pareto_stats
+
+def plot_cognitive_burden_analysis_subfigures(results_by_size, output_dir="latex_figures"):
+    """Generate subfigures with separate legend for LaTeX integration"""
+    
+    # Create ablation-specific subdirectory
+    ablation_output_dir = os.path.join(output_dir, "ablation", "model_size")
+    os.makedirs(ablation_output_dir, exist_ok=True)
+    
+    method_names = ["Direct", "CoT", "Sequence", "Multi-turn", 
+                   "VS-Standard", "VS-CoT", "VS-Combined"]
+    
+    # Define cognitive complexity levels for each method
+    cognitive_complexity = {
+        "Direct": 1,           # Baseline - no extra burden
+        "CoT": 2,             # Think step-by-step - moderate burden
+        "Sequence": 3,        # Generate multiple responses - higher burden
+        "Multi-turn": 4,      # Conversational format - complex burden
+        "VS-Standard": 5,     # JSON + confidence - high burden
+        "VS-CoT": 6,         # JSON + reasoning + confidence - very high burden
+        "VS-Combined": 7      # Most complex format - maximum burden
+    }
+    
+    # Calculate performance changes relative to Direct baseline
+    size_method_deltas = {}
+    
+    for size_category, results in results_by_size.items():
+        size_method_deltas[size_category] = {}
+        
+        # Calculate deltas for each method
+        for method_name in method_names[1:]:  # Skip Direct
+            diversity_deltas = []
+            quality_deltas = []
+            
+            for model_name, model_results in results.items():
+                method_data = model_results.get(method_name)
+                direct_data = model_results.get("Direct")
+                
+                if (method_data and method_data["quality"] is not None and 
+                    direct_data and direct_data["quality"] is not None):
+                    
+                    div_delta = method_data["diversity"] - direct_data["diversity"]
+                    qual_delta = method_data["quality"] - direct_data["quality"]
+                    
+                    diversity_deltas.append(div_delta)
+                    quality_deltas.append(qual_delta)
+            
+            if diversity_deltas and quality_deltas:
+                size_method_deltas[size_category][method_name] = {
+                    'diversity_delta_mean': np.mean(diversity_deltas),
+                    'diversity_delta_std': np.std(diversity_deltas),
+                    'quality_delta_mean': np.mean(quality_deltas),
+                    'quality_delta_std': np.std(quality_deltas),
+                    'n_models': len(diversity_deltas),
+                    'complexity': cognitive_complexity[method_name]
+                }
+    
+    # Set up plotting style
+    plt.rcParams.update({
+        'font.family': 'serif',
+        'font.size': 14,
+        'axes.labelsize': 16,
+        'axes.titlesize': 18,
+        'xtick.labelsize': 14,
+        'ytick.labelsize': 14,
+        'legend.fontsize': 16,
+        'axes.linewidth': 1.2
+    })
+    
+    # Methods to show (excluding Direct since we're showing deltas)
+    methods_subset = ["Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Combined"]
+    x_methods = np.arange(len(methods_subset))
+    width = 0.35
+    
+    # Prepare data
+    large_diversity_changes = []
+    small_diversity_changes = []
+    large_div_errors = []
+    small_div_errors = []
+    large_quality_changes = []
+    small_quality_changes = []
+    large_qual_errors = []
+    small_qual_errors = []
+    
+    for method in methods_subset:
+        # Diversity data
+        large_div_val = size_method_deltas.get('large', {}).get(method, {}).get('diversity_delta_mean', 0)
+        small_div_val = size_method_deltas.get('small', {}).get(method, {}).get('diversity_delta_mean', 0)
+        large_div_err = size_method_deltas.get('large', {}).get(method, {}).get('diversity_delta_std', 0)
+        small_div_err = size_method_deltas.get('small', {}).get(method, {}).get('diversity_delta_std', 0)
+        
+        large_diversity_changes.append(large_div_val)
+        small_diversity_changes.append(small_div_val)
+        large_div_errors.append(large_div_err)
+        small_div_errors.append(small_div_err)
+        
+        # Quality data
+        large_qual_val = size_method_deltas.get('large', {}).get(method, {}).get('quality_delta_mean', 0)
+        small_qual_val = size_method_deltas.get('small', {}).get(method, {}).get('quality_delta_mean', 0)
+        large_qual_err = size_method_deltas.get('large', {}).get(method, {}).get('quality_delta_std', 0)
+        small_qual_err = size_method_deltas.get('small', {}).get(method, {}).get('quality_delta_std', 0)
+        
+        large_quality_changes.append(large_qual_val)
+        small_quality_changes.append(small_qual_val)
+        large_qual_errors.append(large_qual_err)
+        small_qual_errors.append(small_qual_err)
+    
+    # ============================================
+    # Option 1: Create separate legend-only figure
+    # ============================================
+    
+    # Create diversity plot WITHOUT legend
+    fig1, ax1 = plt.subplots(figsize=(8, 6))
+    
+    bars1 = ax1.bar(x_methods - width/2, small_diversity_changes, width, 
+                   yerr=small_div_errors, capsize=3, 
+                   color='#B565A7', alpha=0.8, label='Small Models (GPT-4.1-Mini, Gemini-2.5-Flash)')
+    bars2 = ax1.bar(x_methods + width/2, large_diversity_changes, width, 
+                   yerr=large_div_errors, capsize=3, 
+                   color='#5B9BD5', alpha=0.8, label='Large Models (GPT-4.1, Gemini-2.5-Pro)')
+    
+    ax1.axhline(y=0, color='black', linestyle='-', alpha=0.5)
+    ax1.set_ylabel('Diversity Change vs Direct (%)', fontweight='bold', fontsize=16)
+    ax1.set_title('Diversity Impact by Model Size', fontweight='bold', fontsize=18)
+    ax1.set_xticks(x_methods)
+    ax1.set_xticklabels(methods_subset, fontsize=14)
+    ax1.tick_params(axis='y', labelsize=14)
+    ax1.grid(True, alpha=0.3, axis='y')
+    
+    # Add subfigure label
+    # ax1.text(-0.12, 1.02, '(a)', transform=ax1.transAxes, fontsize=16, fontweight='bold')
+    
+    fig1.savefig(f'{ablation_output_dir}/diversity_no_legend.pdf', bbox_inches='tight', facecolor='white')
+    fig1.savefig(f'{ablation_output_dir}/diversity_no_legend.png', dpi=300, bbox_inches='tight', facecolor='white')
+    plt.close(fig1)
+    
+    # Create quality plot WITHOUT legend
+    fig2, ax2 = plt.subplots(figsize=(8, 6))
+    
+    bars3 = ax2.bar(x_methods - width/2, small_quality_changes, width, 
+                   yerr=small_qual_errors, capsize=3, 
+                   color='#B565A7', alpha=0.8, label='Small Models')
+    bars4 = ax2.bar(x_methods + width/2, large_quality_changes, width, 
+                   yerr=large_qual_errors, capsize=3, 
+                   color='#5B9BD5', alpha=0.8, label='Large Models')
+    
+    ax2.axhline(y=0, color='black', linestyle='-', alpha=0.5)
+    ax2.set_ylabel('Quality Change vs Direct (%)', fontweight='bold', fontsize=16)
+    ax2.set_title('Quality Impact by Model Size', fontweight='bold', fontsize=18)
+    ax2.set_xticks(x_methods)
+    ax2.set_xticklabels(methods_subset, fontsize=14)
+    ax2.tick_params(axis='y', labelsize=14)
+    ax2.grid(True, alpha=0.3, axis='y')
+    
+    # Add subfigure label
+    # ax2.text(-0.12, 1.02, '(b)', transform=ax2.transAxes, fontsize=16, fontweight='bold')
+    
+    fig2.savefig(f'{ablation_output_dir}/quality_no_legend.pdf', bbox_inches='tight', facecolor='white')
+    fig2.savefig(f'{ablation_output_dir}/quality_no_legend.png', dpi=300, bbox_inches='tight', facecolor='white')
+    plt.close(fig2)
+    
+    # Create a separate figure with ONLY the legend (same width as plot figures)
+    fig_legend = plt.figure(figsize=(8, 0.8))
+    ax_legend = fig_legend.add_subplot(111)
+    ax_legend.axis('off')
+    
+    # Create simple patches for cleaner legend
+    legend_elements = [
+        Patch(facecolor='#B565A7', label='Small Models (GPT-4.1-Mini, Gemini-2.5-Flash)'),
+        Patch(facecolor='#5B9BD5', label='Large Models (GPT-4.1, Gemini-2.5-Pro)')
+    ]
+    
+    # Add legend with clean formatting
+    ax_legend.legend(handles=legend_elements, loc='center', ncol=2, frameon=False, fontsize=16,
+                    handlelength=2, handletextpad=0.5, columnspacing=2)
+    
+    fig_legend.savefig(f'{ablation_output_dir}/legend_only.pdf', bbox_inches='tight', pad_inches=0, facecolor='white')
+    fig_legend.savefig(f'{ablation_output_dir}/legend_only.png', dpi=300, bbox_inches='tight', pad_inches=0, facecolor='white')
+    plt.close(fig_legend)
+    
+    # ============================================
+    # Option 2: Combined figure with custom layout
+    # ============================================
+    
+    # Create figure with GridSpec for custom layout
+    fig_combined = plt.figure(figsize=(16, 8))
+    gs = fig_combined.add_gridspec(3, 2, height_ratios=[1, 20, 1], width_ratios=[1, 1], hspace=0.4, wspace=0.3)
+    
+    # Legend axis (spans both columns at top)
+    ax_legend_combined = fig_combined.add_subplot(gs[0, :])
+    ax_legend_combined.axis('off')
+    
+    # Plot axes
+    ax1_combined = fig_combined.add_subplot(gs[1, 0])
+    ax2_combined = fig_combined.add_subplot(gs[1, 1])
+    
+    # Plot diversity data
+    bars1_combined = ax1_combined.bar(x_methods - width/2, small_diversity_changes, width, 
+                                     yerr=small_div_errors, capsize=3, 
+                                     color='#B565A7', alpha=0.8, label='Small Models (GPT-4.1-Mini, Gemini-2.5-Flash)')
+    bars2_combined = ax1_combined.bar(x_methods + width/2, large_diversity_changes, width, 
+                                     yerr=large_div_errors, capsize=3, 
+                                     color='#5B9BD5', alpha=0.8, label='Large Models (GPT-4.1, Gemini-2.5-Pro)')
+    
+    ax1_combined.axhline(y=0, color='black', linestyle='-', alpha=0.5)
+    ax1_combined.set_ylabel('Diversity Change vs Direct (%)', fontweight='bold', fontsize=16)
+    ax1_combined.set_title('Diversity Impact by Model Size', fontweight='bold', fontsize=18)
+    ax1_combined.set_xticks(x_methods)
+    ax1_combined.set_xticklabels(methods_subset, fontsize=14)
+    ax1_combined.tick_params(axis='y', labelsize=14)
+    ax1_combined.grid(True, alpha=0.3, axis='y')
+    
+    # Plot quality data
+    bars3_combined = ax2_combined.bar(x_methods - width/2, small_quality_changes, width, 
+                                     yerr=small_qual_errors, capsize=3, 
+                                     color='#B565A7', alpha=0.8)
+    bars4_combined = ax2_combined.bar(x_methods + width/2, large_quality_changes, width, 
+                                     yerr=large_qual_errors, capsize=3, 
+                                     color='#5B9BD5', alpha=0.8)
+    
+    ax2_combined.axhline(y=0, color='black', linestyle='-', alpha=0.5)
+    ax2_combined.set_ylabel('Quality Change vs Direct (%)', fontweight='bold', fontsize=16)
+    ax2_combined.set_title('Quality Impact by Model Size', fontweight='bold', fontsize=18)
+    ax2_combined.set_xticks(x_methods)
+    ax2_combined.set_xticklabels(methods_subset, fontsize=14)
+    ax2_combined.tick_params(axis='y', labelsize=14)
+    ax2_combined.grid(True, alpha=0.3, axis='y')
+    
+    # Create legend in the top center
+    handles = [bars1_combined, bars2_combined]
+    labels = ['Small Models (GPT-4.1-Mini, Gemini-2.5-Flash)', 
+              'Large Models (GPT-4.1, Gemini-2.5-Pro)']
+    ax_legend_combined.legend(handles, labels, loc='center', ncol=2, frameon=False, 
+                             bbox_to_anchor=(0.5, 0.5), fontsize=16)
+    
+    # Add subfigure labels
+    ax1_combined.text(-0.12, 1.02, '(a)', transform=ax1_combined.transAxes, fontsize=16, fontweight='bold')
+    ax2_combined.text(-0.12, 1.02, '(b)', transform=ax2_combined.transAxes, fontsize=16, fontweight='bold')
+    
+    fig_combined.savefig(f'{ablation_output_dir}/combined_figure_with_legend.pdf', bbox_inches='tight', facecolor='white')
+    fig_combined.savefig(f'{ablation_output_dir}/combined_figure_with_legend.png', dpi=300, bbox_inches='tight', facecolor='white')
+    plt.close(fig_combined)
+    
+    print("✓ Saved cognitive burden analysis subfigures")
+    print("📁 Generated files:")
+    print("  - diversity_no_legend.pdf/png (subfigure a)")
+    print("  - quality_no_legend.pdf/png (subfigure b)")
+    print("  - legend_only.pdf/png (separate legend)")
+    print("  - combined_figure_with_legend.pdf/png (all-in-one version)")
+    print("📊 Methods analyzed: Sequence, Multi-turn, VS-Standard, VS-CoT, VS-Combined")
+    
+    return size_method_deltas
 
 def plot_cognitive_burden_analysis(results_by_size, output_dir="latex_figures"):
     """Analyze cognitive burden effects focusing on Sequence, Multi-turn, and VS-Standard methods"""
@@ -776,8 +1028,11 @@ def main():
     pareto_stats = plot_size_comparison_scatter(results_by_size, args.output_dir)
     method_stats = plot_method_effectiveness_by_size(results_by_size, args.output_dir)
     
-    # NEW: Generate cognitive burden analysis
-    cognitive_stats = plot_cognitive_burden_analysis(results_by_size, args.output_dir)
+    # NEW: Generate cognitive burden analysis with subfigures
+    cognitive_stats = plot_cognitive_burden_analysis_subfigures(results_by_size, args.output_dir)
+    
+    # Also generate original combined plot
+    plot_cognitive_burden_analysis(results_by_size, args.output_dir)
     
     # Generate summary statistics
     generate_summary_statistics(results_by_size, pareto_stats, method_stats)
@@ -789,7 +1044,11 @@ def main():
     print("📋 Generated files:")
     print("  - model_size_diversity_quality_comparison.png/pdf")
     print("  - method_effectiveness_by_size.png/pdf")
-    print("  - cognitive_burden_analysis.png/pdf (NEW: Investigates quality drops)")
+    print("  - cognitive_burden_analysis.png/pdf (Combined figure)")
+    print("  - diversity_no_legend.pdf/png (Subfigure a)")
+    print("  - quality_no_legend.pdf/png (Subfigure b)")
+    print("  - legend_only.pdf/png (Separate legend)")
+    print("  - combined_figure_with_legend.pdf/png (GridSpec layout)")
 
 if __name__ == "__main__":
     main()
