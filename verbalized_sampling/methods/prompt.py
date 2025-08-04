@@ -51,12 +51,10 @@ class BasePromptTemplate:
         """Get the format prompt for a specific method."""
         format_prompts = {
             "sequence": f"""
-Return ALL responses as a Python list of strings, in the following format:
-["response1", "response2", "response3", ...]
-
-The list must contain exactly {num_samplings} strings, each representing a unique response.
+Return the responses in JSON format with keys: "responses" (list of strings). The list must contain exactly {num_samplings} strings, each representing a unique response.
 Each response should be a complete, coherent text (not just a single line or phrase).
-Output ONLY the list, with no explanations or extra text.
+
+Give ONLY the JSON object, with no explanations or extra text.
 """,
             "structure": """
 Return the responses in JSON format with keys: "responses" (list of dicts with 'text'). Each dictionary must include:

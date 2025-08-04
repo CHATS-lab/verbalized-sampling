@@ -72,28 +72,31 @@ class ResponseParser:
     
     @staticmethod
     def parse_sequence(response: str) -> List[Dict]:
-        """Parse sequence response expecting Python list format."""
+        """Parse sequence response expecting JSON format."""
         if isinstance(response, list):
-            return [maybe_rename_response(item) for item in response]
+            return [{'text': item} for item in response]
         elif isinstance(response, dict):
             response_list = response["responses"]
             return [{'text': item} for item in response_list]
         else:
             try:
-                parsed = ast.literal_eval(response)
-   
-                if isinstance(parsed, list):
-                    return [{'text': item} for item in parsed if item is not None]
-                elif isinstance(parsed, dict):
-                    if isinstance(parsed["responses"], list):
-                        return [{'text': item} for item in parsed["responses"]]
-                    else:
-                        return [{'text': parsed["responses"] if parsed["responses"] is not None else ""}]
+                # Try JSON parsing first (new format)
+                parsed = ResponseParser._extract_json(response)
+                if isinstance(parsed, dict) and "responses" in parsed:
+                    return [{'text': item} for item in parsed["responses"]]
                 else:
-                    return [{'text': str(parsed)}]
+                    return [{'text': response}]
             except Exception:
-                # Fallback: treat as a single string
-                return [{'text': response}]
+                # Fallback: try old Python list format for backward compatibility
+                try:
+                    parsed = ast.literal_eval(response)
+                    if isinstance(parsed, list):
+                        return [{'text': item} for item in parsed if item is not None]
+                    else:
+                        return [{'text': str(parsed)}]
+                except Exception:
+                    # Final fallback: treat as a single string
+                    return [{'text': response}]
     
     @staticmethod
     def parse_structure_response_only(response: str) -> List[Dict]:
