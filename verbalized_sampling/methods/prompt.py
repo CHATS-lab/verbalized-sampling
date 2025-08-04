@@ -55,6 +55,7 @@ Return ALL responses as a Python list of strings, in the following format:
 ["response1", "response2", "response3", ...]
 
 The list must contain exactly {num_samplings} strings, each representing a unique response.
+Each response should be a complete, coherent text (not just a single line or phrase).
 Output ONLY the list, with no explanations or extra text.
 """,
             "structure": """
