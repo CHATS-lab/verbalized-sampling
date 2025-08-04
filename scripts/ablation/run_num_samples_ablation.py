@@ -22,7 +22,7 @@ def create_num_samples_ablation_experiments(
         'task': task,
         'model_name': model_name,
         'num_responses': 100,
-        'num_prompts': 20,
+        'num_prompts': 100,
         'target_words': 100,
         'random_seed': 42,
         'temperature': 0.7,
@@ -118,7 +118,7 @@ if __name__ == "__main__":
     task = Task.POEM
     
     # Metrics to evaluate
-    metrics = ["diversity", "ngram"]
+    metrics = ["diversity", "ngram", "length", "creative_writing_v3"]
     
     # Output directory
     output_dir = "num_samples_ablation_results"
