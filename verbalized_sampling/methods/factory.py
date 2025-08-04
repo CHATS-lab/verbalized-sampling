@@ -167,6 +167,7 @@ class PromptFactory:
             system_prompt = f"{system_prompt}{format_prompt}"
         
         # print("System prompt: ", system_prompt)
+        # print("User prompt: ", prompt)
         
         # Handle base model format (no chat template, just completion)
         if method == Method.DIRECT_BASE:

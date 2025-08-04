@@ -562,7 +562,7 @@ def main():
 
     plot_factual_method_averages(metrics_values, all_model_names, plot_metrics, metric_labels, all_methods)
     
-    generate_latex_factual_table(metrics_values, all_model_names, all_methods, metric_labels)
+    # generate_latex_factual_table(metrics_values, all_model_names, all_methods, metric_labels)
 
 
 if __name__ == "__main__":

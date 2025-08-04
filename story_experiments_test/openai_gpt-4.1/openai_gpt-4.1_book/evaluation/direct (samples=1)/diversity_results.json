@@ -1,0 +1,373 @@
+{
+  "instance_metrics": [
+    {
+      "response_length": 97,
+      "unique_words": 79,
+      "vocabulary_richness": 0.8144329896907216,
+      "response": "Deep in the emerald forest, a gentle bear named Willow awoke from her winter sleep. Hungry but curious, she wandered through sun-dappled glades, following the sweet scent of wild honey. Along the way, Willow found a wounded sparrow and, instead of passing by, gently cradled it in her paws. She carried the little bird to a quiet clearing, where she watched over it until it could fly again. As spring blossomed, Willow and the sparrow became friends, exploring the woods together. With each new day, Willow discovered that kindness brought more warmth than even the golden sun.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 98,
+      "unique_words": 78,
+      "vocabulary_richness": 0.7959183673469388,
+      "response": "In the heart of an emerald forest, a bear named Mossy awoke to the gentle hum of spring. Unlike other bears, Mossy loved exploring. One morning, he followed a trail of wild honey scent deeper than he\u2019d ever dared go. The woods grew mysterious, and sunlight danced in emerald patches. At the end of the trail, Mossy found a fallen log brimming with golden honey. As he feasted, tiny bees buzzed around him, unafraid. Mossy smiled, sharing honey with his new friends. From then on, he visited the bees every day, and together, they became an unlikely family.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 98,
+      "unique_words": 69,
+      "vocabulary_richness": 0.7040816326530612,
+      "response": "In the heart of the emerald forest, a bear named Willow awoke to the gentle touch of dawn. Curious and clever, Willow sniffed the air, following the sweet scent of berries. Along the way, she stumbled upon a tiny, lost rabbit trembling beneath a fern. With a gentle nudge, Willow offered comfort, leading the rabbit through sun-dappled trails to safety. The bear\u2019s kindness echoed through the woods, and soon, Willow was known not just for her strength, but for her gentle heart. Every morning, she woke with the dawn, always ready for a new adventure\u2014and a new friend.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 101,
+      "unique_words": 77,
+      "vocabulary_richness": 0.7623762376237624,
+      "response": "In the heart of an ancient forest, a bear named Mossy wandered beneath towering pines. He loved the quiet rustle of leaves and the scent of wild berries. One crisp morning, Mossy discovered a tiny, lost rabbit trembling near a fallen log. Instead of growling, he gently nudged the rabbit with his nose, offering comfort. Together, they searched for the rabbit\u2019s home, forging an unlikely friendship along the way. When at last the rabbit\u2019s family was found, Mossy returned to his den, his heart warmed by kindness. From that day on, the forest echoed with stories of Mossy the gentle bear.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 95,
+      "unique_words": 72,
+      "vocabulary_richness": 0.7578947368421053,
+      "response": "In the heart of a vast, emerald forest lived a gentle bear named Willow. Every morning, Willow strolled through sun-dappled clearings, pausing to sniff wildflowers and greet the birds. One day, she found a lost fox cub trembling beneath a fern. With a soft nudge, Willow guided the cub to safety, sharing her berries and warmth. As seasons changed, Willow and the fox grew inseparable, wandering together beneath the golden autumn leaves. Their unlikely friendship became the heart of the forest, a reminder to all creatures that kindness can blossom in the most unexpected places.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 98,
+      "unique_words": 78,
+      "vocabulary_richness": 0.7959183673469388,
+      "response": "In the heart of a quiet forest, a bear named Mossy awoke from his long winter sleep. He stretched, sniffed the crisp air, and ambled toward the river, where salmon leaped and sunlight danced on the water. Mossy was a gentle bear, more interested in watching dragonflies than in hunting. As spring unfolded, he made friends with a curious fox and a wise old owl. Together, they explored hidden meadows and shared stories beneath the stars. Each day, Mossy learned something new about his forest home, and he realized that the greatest adventures were those shared with friends.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 98,
+      "unique_words": 79,
+      "vocabulary_richness": 0.8061224489795918,
+      "response": "Deep in the emerald forest, a bear named Misha awoke from her winter sleep. She stretched, sniffed the crisp air, and lumbered toward the riverbank. The thaw had brought a rush of sparkling water, and with it, a feast of silver fish. Misha swiped skillfully, catching her breakfast, while birds chattered above. As the sun warmed her thick fur, she paused to watch butterflies dance on the breeze. Content, Misha knew this forest was home\u2014a place of peace, adventure, and endless wonder. With a full belly and a happy heart, she ambled back among the tall, whispering pines.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 98,
+      "unique_words": 73,
+      "vocabulary_richness": 0.7448979591836735,
+      "response": "In the heart of the emerald forest, a bear named Mossy roamed beneath dappled sunlight. Mossy loved honey more than anything, and every day he searched for the sweetest hive. One crisp morning, he found a fallen log buzzing with bees. Instead of swatting, Mossy waited patiently until the bees left for wildflowers. Gently, he scooped golden honey from the log, savoring each drop. As the bees returned, Mossy offered them a thank-you dance, lumbering in a silly circle. The bees hummed in approval, and Mossy found not just honey, but new friends in the forest\u2019s golden heart.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 98,
+      "unique_words": 72,
+      "vocabulary_richness": 0.7346938775510204,
+      "response": "In the heart of a quiet forest, a gentle bear named Maple awoke from her long winter sleep. Hunger nudged her out of her cozy den, so she wandered along the riverbank, her nose twitching in the crisp air. Maple found sweet berries and a patch of golden dandelions, but what delighted her most was the sight of her old friend, the wise owl, perched on a low branch. Together, they shared stories of the changing seasons, the whispering wind, and the promise of spring. Under the soft sun, Maple realized that friendship was the forest\u2019s greatest treasure.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 100,
+      "unique_words": 82,
+      "vocabulary_richness": 0.82,
+      "response": "In the heart of a whispering forest lived a brown bear named Willow. She loved honey and the gentle hum of bees, but more than anything, she cherished stories. Every evening, woodland creatures gathered around her, eager for tales of distant mountains and shimmering lakes. One night, as the stars blinked awake, Willow told of a hidden waterfall, promising adventure and discovery. Inspired, the animals set out together the next morning, guided by Willow\u2019s wisdom and courage. When they finally found the waterfall, its beauty took their breath away\u2014and they knew, with Willow as their storyteller, magic was always near.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 99,
+      "unique_words": 71,
+      "vocabulary_richness": 0.7171717171717171,
+      "response": "Deep in the emerald forest, a gentle bear named Willow woke to the golden glow of dawn. She lumbered out of her cozy den, her nose twitching in search of sweet berries. Along the riverbank, she found a patch bursting with fruit and shared them with a family of rabbits who had wandered nearby. As the sun climbed higher, Willow listened to the soothing rustle of leaves and the cheerful chatter of songbirds. Content and full, she stretched beneath a shady oak, grateful for the simple joys of friendship and the peaceful rhythm of the forest she called home.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 100,
+      "unique_words": 75,
+      "vocabulary_richness": 0.75,
+      "response": "In a dense forest lived a curious bear named Willow. She loved the scent of wildflowers and the gentle hum of bees. One morning, Willow discovered a tiny bird with a hurt wing. Instead of searching for berries, she gently scooped the bird up and carried it to her cozy cave. Day by day, Willow cared for her new friend, bringing seeds and singing soft songs. When the bird\u2019s wing healed, it fluttered around Willow in gratitude before joining the sky. From then on, Willow was never lonely, for the bird returned each morning, singing songs of friendship and thanks.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 97,
+      "unique_words": 71,
+      "vocabulary_richness": 0.7319587628865979,
+      "response": "Deep in the emerald heart of the forest, a wise old bear named Alder woke with the dawn. He lumbered down to the river, his fur misted with dew. Today was special\u2014his birthday. As he fished for breakfast, the forest animals gathered, each bringing a gift: a garland of wildflowers from the rabbits, a song from the robins, and a shiny pebble from the foxes. Alder smiled, his heart as full as the honeycomb he\u2019d found last spring. Under the golden sun, they celebrated friendship, laughter echoing among the trees, and Alder knew he was truly home.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 99,
+      "unique_words": 77,
+      "vocabulary_richness": 0.7777777777777778,
+      "response": "Deep in the emerald forest, a bear named Willow awoke from her winter slumber. The air was crisp, and sunlight filtered through tall pines. Hungry, Willow padded softly to the sparkling river, where salmon leapt in silver arcs. With practiced patience, she caught her breakfast and ate beneath a canopy of birdsong. Later, she ambled through wildflowers, bees buzzing, and paused to watch a family of deer. As dusk painted the sky in gold and purple, Willow curled up beneath a mossy oak, content and peaceful, knowing the forest would always provide her with food, shelter, and quiet wonder.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 100,
+      "unique_words": 78,
+      "vocabulary_richness": 0.78,
+      "response": "Deep in the emerald forest, a gentle bear named Willow awoke to the scent of wild berries. She lumbered through the dew-soaked grass, her nose twitching with curiosity. Birds sang above as she discovered a hidden patch of raspberries, their red jewels glistening in the morning sun. As Willow feasted, a young fox approached cautiously. Instead of growling, Willow nudged a few berries toward her new friend. Together, they shared breakfast, laughter echoing through the trees. From that day on, Willow and the fox explored the forest side by side, proving that kindness can blossom in the unlikeliest of places.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 97,
+      "unique_words": 76,
+      "vocabulary_richness": 0.7835051546391752,
+      "response": "In the heart of the ancient forest, a great brown bear named Misha awoke from his winter slumber. The world was freshly green, sunlight dappling through the leaves. Misha lumbered to the river, where silver fish darted just below the surface. With a swift swipe of his paw, he caught his first meal of the season. Satisfied, he wandered deeper into the woods, following the scent of wild berries. Each day, Misha explored new corners of the forest, making friends with curious foxes and wise old owls, always returning home beneath the towering pines, content and free.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 103,
+      "unique_words": 75,
+      "vocabulary_richness": 0.7281553398058253,
+      "response": "In the heart of a vast, green forest lived a gentle bear named Maple. Unlike the other bears, Maple loved spending her days listening to the wind and watching the sunlight dance through the trees. One morning, she discovered a tiny bird with a broken wing beneath a tall oak. Maple carefully carried the bird to her cozy den and nursed it back to health. As the days passed, the bird sang sweet songs, filling Maple\u2019s home with joy. When the bird was strong enough to fly, it promised to visit Maple every spring, and their unlikely friendship blossomed for years to come.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 96,
+      "unique_words": 73,
+      "vocabulary_richness": 0.7604166666666666,
+      "response": "In the heart of the ancient forest, a great brown bear named Misha awoke from his winter sleep. Curious and gentle, Misha wandered through the dewy morning, sniffing wildflowers and listening to the birds sing. He found a sparkling stream and watched the fish dart beneath the surface. Instead of hunting, Misha sat quietly, mesmerized by their graceful dance. As the sun climbed higher, a family of rabbits hopped nearby, unafraid. Misha yawned, stretched, and felt content. In that moment, surrounded by the peaceful forest, Misha knew he belonged to a world brimming with quiet wonders.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 95,
+      "unique_words": 78,
+      "vocabulary_richness": 0.8210526315789474,
+      "response": "Deep in the emerald forest, a wise old bear named Bram roamed beneath the towering pines. Each morning, he lumbered to the river\u2019s edge, where the water sparkled with darting silver fish. One brisk dawn, Bram found a tiny, shivering rabbit stranded on a rock midstream. With gentle paws, he scooped up the rabbit and carried it to safety. From that day forward, the forest animals saw Bram not just as a mighty bear, but as a kind protector. And so, Bram\u2019s legend grew, woven into every whisper of the wind through the ancient trees.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 96,
+      "unique_words": 68,
+      "vocabulary_richness": 0.7083333333333334,
+      "response": "Deep in the emerald forest, a gentle bear named Misha awoke to the scent of wild berries. Curious and hungry, she ambled through shafts of golden sunlight, her nose twitching in the fresh morning air. Along the way, she met a chattering squirrel who warned her of honeybees nearby. Undeterred, Misha found the berry patch, feasted happily, and shared a few with her new friend. As the day faded, Misha settled beneath a towering pine, content and full, knowing she had found both a delicious meal and a companion in the heart of the wild woods.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 95,
+      "unique_words": 76,
+      "vocabulary_richness": 0.8,
+      "response": "In the heart of the emerald forest, a gentle bear named Willow awoke from her winter slumber. She stretched beneath the golden sunlight, her thick fur glistening with morning dew. Curiosity led her to a bubbling brook, where she watched salmon leap and dragonflies dance. Willow\u2019s favorite pastime was gathering wild berries, sharing her finds with a family of chattering squirrels. As the days grew longer, Willow became the forest\u2019s quiet guardian, her kindness known by all. When the moon rose high, she nestled beneath the stars, grateful for the peaceful world she called home.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 98,
+      "unique_words": 75,
+      "vocabulary_richness": 0.7653061224489796,
+      "response": "Deep in the emerald forest, a bear named Misha woke to the scent of wild blueberries. Sunlight streamed through the leaves as she lumbered toward a hidden patch she\u2019d discovered last spring. Along the way, she paused to watch a family of deer tiptoeing through the ferns. When she reached the berries, Misha sat contentedly, savoring each juicy mouthful. As dusk settled, she curled beneath her favorite tree, full and at peace. In her dreams, the forest sparkled with promise, and Misha knew she was exactly where she belonged\u2014wild, free, and surrounded by the gentle heart of nature.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 100,
+      "unique_words": 78,
+      "vocabulary_richness": 0.78,
+      "response": "Deep in the emerald forest, a gentle bear named Mallow woke with the sun\u2019s first golden rays. He ambled down to the sparkling stream, where he watched silver fish dart through the cool water. Mallow loved the quiet mornings, the fresh scent of pines, and the soft song of birds. One day, he found a lost fox cub shivering by the water\u2019s edge. Mallow shared his warmth and berries, and together they journeyed through the woods. By sunset, the cub\u2019s family was found. As the stars blinked awake, Mallow realized he had made a new friend beneath the silent trees.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 99,
+      "unique_words": 74,
+      "vocabulary_richness": 0.7474747474747475,
+      "response": "Deep in the emerald forest lived a bear named Misha. Each morning, golden sunlight danced through the leaves as she lumbered to the sparkling river. Misha loved fishing, and her favorite spot was beneath the old willow tree. One day, as she waited patiently, a tiny cub wandered by, lost and frightened. With a gentle nudge, Misha led the cub to safety, sharing her catch and her warmth. Together, they watched the stars twinkle above, two friends united by kindness and the wild beauty of the forest. From that day on, Misha was never alone by the willow tree.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 95,
+      "unique_words": 74,
+      "vocabulary_richness": 0.7789473684210526,
+      "response": "In the heart of an ancient forest, a bear named Mossy wandered beneath towering pines. Mossy was curious and gentle, known to the other animals for his kind heart. One cool morning, he stumbled upon a lost squirrel shivering in a hollow log. Mossy scooped the tiny creature onto his broad back and carried it home. He shared his honey and berries, and the squirrel soon felt safe and warm. From that day on, Mossy and the squirrel were inseparable friends, exploring the forest together and reminding everyone that kindness could turn strangers into family.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 91,
+      "unique_words": 72,
+      "vocabulary_richness": 0.7912087912087912,
+      "response": "In the quiet heart of the forest, a bear named Mossy woke to the scent of wild blueberries. He lumbered through the morning mist, his fur brushed by dew-soaked ferns. As he reached the berry patch, Mossy paused\u2014nearby, a bird with a broken wing chirped softly. Gently, Mossy nudged the bird under a broad leaf, then shared his berries, placing them beside his new friend. The two sat together beneath the sun-dappled branches. Mossy\u2019s kindness echoed through the forest, reminding all creatures that friendship can blossom in the most unexpected moments.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 95,
+      "unique_words": 78,
+      "vocabulary_richness": 0.8210526315789474,
+      "response": "Deep in the emerald forest, a gentle bear named Misha roamed beneath the towering pines. Each morning, she would amble to the river, where sunlight danced on the water\u2019s surface. One day, Misha heard a faint cry\u2014a lost fox cub shivering on the riverbank. With a kind heart, Misha offered her warmth and guided the cub back through the whispering trees. They became friends, sharing berries and stories by moonlight. As seasons changed, their unlikely bond grew stronger, and together, they discovered that sometimes the best family is the one you find along the way.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 97,
+      "unique_words": 74,
+      "vocabulary_richness": 0.7628865979381443,
+      "response": "Deep in the heart of the ancient forest lived a wise old bear named Bartholomew. Every morning, Bartholomew would stroll to the sparkling river, where he greeted the playful otters and watched the salmon leap. One day, he found a lost cub shivering by the water\u2019s edge. With gentle paws, Bartholomew led the cub to his cozy den and shared his honey. As the days passed, the cub grew stronger and the two became inseparable. Together, they wandered the woods, teaching each other the secrets of the wild, proving that even the loneliest hearts can find family.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 97,
+      "unique_words": 78,
+      "vocabulary_richness": 0.8041237113402062,
+      "response": "In the heart of an ancient forest, a gentle bear named Misha awoke from her winter slumber. The sun filtered through the tall pines as she stretched and sniffed the crisp spring air. Hungry, she ambled down to the river, where silver fish darted beneath the clear water. With patience and skill, Misha caught her breakfast and savored the meal. As the days grew warmer, she explored meadows blooming with wildflowers and watched fireflies dance at dusk. Content, Misha knew her forest was full of wonders, and she was grateful for every peaceful moment within its embrace.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 98,
+      "unique_words": 76,
+      "vocabulary_richness": 0.7755102040816326,
+      "response": "Deep in the emerald forest, a gentle bear named Milo woke each morning to the song of birds. He spent his days wandering among the tall pines, snacking on sweet berries and honeycomb. One chilly afternoon, Milo stumbled upon a tiny, lost fox cub shivering beneath a bush. With a kind heart, Milo scooped the cub up and carried him back to his warm den. There, he shared his honey and kept the cub safe. As spring blossomed, the cub grew strong, and together, they roamed the woods, their friendship as enduring as the ancient trees around them.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 99,
+      "unique_words": 77,
+      "vocabulary_richness": 0.7777777777777778,
+      "response": "Deep in the emerald forest, a bear named Mossy lumbered through the trees, his nose twitching at the scent of ripe blueberries. Each morning, he followed the sunbeams to his favorite patch, careful not to disturb the busy bees. One day, Mossy found a lost fox cub shivering beneath a fern. Gently, the bear nudged the cub and shared his berries. The two became unlikely friends, exploring the woods together. When autumn arrived, Mossy showed the cub how to find shelter and food. As snowflakes fell, they curled up side by side, warm and safe in their woodland home.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 99,
+      "unique_words": 75,
+      "vocabulary_richness": 0.7575757575757576,
+      "response": "Deep in the emerald forest, a bear named Willow roamed quietly among the trees. She loved the gentle rustle of leaves and the dappled sunlight on her fur. One morning, Willow discovered a patch of golden honey hidden in a hollow log. As she savored the sweet treat, a family of curious raccoons watched from a distance. Instead of chasing them away, Willow nudged the log closer, sharing her find. From that day on, the animals in the forest knew Willow not just as a mighty bear, but as a kind friend who made the woods feel like home.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 99,
+      "unique_words": 74,
+      "vocabulary_richness": 0.7474747474747475,
+      "response": "In the heart of an ancient forest, a gentle bear named Willow awoke from her winter slumber. Curious and hungry, she wandered through sun-dappled clearings, sniffing wildflowers and searching for sweet berries. Along the way, Willow met a timid rabbit who had lost her way. With a soft rumble, Willow offered her back, carrying the rabbit safely through the woods. Together, they found a sparkling stream, where they shared a feast of berries and laughter. From that day on, Willow and the rabbit became unlikely friends, exploring the wonders of the forest side by side, beneath the towering trees.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 95,
+      "unique_words": 74,
+      "vocabulary_richness": 0.7789473684210526,
+      "response": "Deep in the emerald forest, a bear named Mossy lumbered beneath the towering pines. Each morning, he followed the river\u2019s sparkling trail, fishing for silver trout and humming a gentle tune. One crisp dawn, Mossy found a tiny bird shivering on the riverbank. He wrapped his thick fur around the bird, sharing his warmth. Together, they waited for the sun to rise, painting the forest gold. From that day on, the bear and the bird wandered side by side, sharing stories and songs, discovering that friendship could turn even the wildest woods into a home.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 98,
+      "unique_words": 74,
+      "vocabulary_richness": 0.7551020408163265,
+      "response": "In the heart of a vast forest, a gentle bear named Barley awoke to the golden glow of sunrise. Curious and hungry, Barley wandered through dew-kissed grass, following the sweet scent of honey. Along the way, he greeted chattering squirrels and watched butterflies dance in the morning light. When he reached an old oak tree, Barley found a beehive buzzing with activity. He waited patiently, respecting the bees, and soon they shared a small drop of honey with him. With a grateful heart and sticky paws, Barley realized that kindness and patience brought the sweetest rewards of all.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 93,
+      "unique_words": 73,
+      "vocabulary_richness": 0.7849462365591398,
+      "response": "Deep in the emerald forest, a gentle bear named Misha roamed beneath towering pines. Each morning, she ambled to the river, her thick fur damp with dew, to fish for her breakfast. One day, Misha discovered a lost fawn trembling beside a mossy stone. Misha\u2019s heart swelled with kindness, and she nuzzled the fawn, guiding it to safety. Together, they found the fawn\u2019s family at the edge of a sunlit meadow. From that day on, Misha became the guardian of the forest, watched over by grateful eyes and cherished by all its creatures.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 100,
+      "unique_words": 75,
+      "vocabulary_richness": 0.75,
+      "response": "Deep in the emerald forest, a bear named Misha awoke from her winter slumber. The air buzzed with the promise of spring. Hungry, she lumbered to the river, where icy water sparkled in the sun. She watched patiently and, with a swift swipe of her paw, caught a gleaming fish. As Misha ate, she noticed wildflowers blooming nearby and birds singing overhead. Content, she wandered through the woods, feeling the warmth on her fur and the soft earth beneath her paws. Misha knew that every day in the forest was a new adventure, and she was ready for them all.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 99,
+      "unique_words": 77,
+      "vocabulary_richness": 0.7777777777777778,
+      "response": "In the heart of a quiet forest, a gentle bear named Willow woke each morning to the golden sun filtering through the trees. She loved to wander along the riverbank, searching for sweet berries and listening to the birds\u2019 cheerful songs. One day, Willow found a tiny lost fox cub, shivering beneath a bush. With a kind heart, she offered warmth and protection. Together, they explored the woods, shared meals, and watched the stars twinkle above. Willow discovered that friendship, like honey, made life even sweeter. And from that day on, the bear and the fox were never apart.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 95,
+      "unique_words": 74,
+      "vocabulary_richness": 0.7789473684210526,
+      "response": "Deep in the emerald forest, a gentle bear named Willow roamed beneath towering pines. Each morning, she would wander to the river\u2019s edge, watching the silver fish dart through the cool water. One sunny afternoon, she stumbled upon a honeycomb nestled in an old oak. Carefully, Willow tasted the golden honey, savoring its sweetness. Birds sang above as she lounged in the sun, content and peaceful. As dusk painted the sky, Willow lumbered home, her heart full and her belly satisfied. In the quiet of the forest, she knew she was exactly where she belonged.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 94,
+      "unique_words": 72,
+      "vocabulary_richness": 0.7659574468085106,
+      "response": "In a quiet forest, a gentle bear named Misha woke each morning to the golden glow of sunrise. Misha loved honey, but even more, she loved exploring. One day, she found a sparkling stream she\u2019d never seen before. Curious, she followed it, discovering a meadow filled with wildflowers and buzzing bees. Instead of taking their honey, Misha watched the bees dance and listened to their hum. She realized the forest was even more beautiful when she took the time to notice. Misha returned home, her heart full of wonder, eager to explore again tomorrow.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 97,
+      "unique_words": 72,
+      "vocabulary_richness": 0.7422680412371134,
+      "response": "Deep in the emerald woods, a gentle bear named Willow awoke one crisp morning to the scent of blooming wildflowers. Curious, she lumbered out of her cozy den and followed the sweet aroma until she found a field bathed in golden sunlight. Bees buzzed and butterflies danced as Willow carefully sniffed a patch of bluebells. Suddenly, she heard a soft whimper nearby. Peeking through the grass, she discovered a lost rabbit. With a kind nudge, Willow guided the trembling rabbit back to safety. From that day on, Willow was known as the gentle guardian of the forest.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 94,
+      "unique_words": 69,
+      "vocabulary_richness": 0.7340425531914894,
+      "response": "Deep in the emerald forest, a bear named Mossy lived beneath a canopy of whispering leaves. Gentle and curious, Mossy loved to explore the riverbanks, pawing at shimmering fish and watching dragonflies dance. One golden morning, he found a fallen honeycomb, sweet scent drifting through the air. As he savored the honey, a family of bees buzzed anxiously nearby. Mossy paused, then nudged the honeycomb toward them with a soft grunt. The bees buzzed in gratitude, and from that day, Mossy and the bees shared the forest, each respecting the other\u2019s home and treasure.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 98,
+      "unique_words": 73,
+      "vocabulary_richness": 0.7448979591836735,
+      "response": "Deep in the emerald forest, a bear named Willow awoke from her winter slumber. Sunlight streamed through the branches, warming her thick fur. Hungry, she ambled to the riverbank, where silver fish darted in the sparkling water. With a swift swipe of her paw, Willow caught her breakfast, savoring the fresh taste. After her meal, she wandered through wildflowers, greeting curious rabbits and playful foxes. As dusk painted the sky in hues of orange and pink, Willow settled beneath a towering pine, content and peaceful, listening to the gentle whispers of the forest as she drifted into dreams.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 98,
+      "unique_words": 73,
+      "vocabulary_richness": 0.7448979591836735,
+      "response": "Deep in the emerald forest, a bear named Willow awoke from her winter sleep. Sunlight danced through the leaves as she lumbered down to the river, her nose twitching with curiosity. At the water\u2019s edge, she spotted shimmering fish darting beneath the ripples. With a swift, practiced swipe, Willow caught her breakfast. Satisfied, she wandered through wildflowers, greeting the buzzing bees and fluttering butterflies. As dusk painted the sky in pink and gold, Willow found a soft mossy patch and curled up, content beneath the stars. In the heart of the forest, Willow knew she was truly home.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 98,
+      "unique_words": 76,
+      "vocabulary_richness": 0.7755102040816326,
+      "response": "In the heart of the whispering forest, a bear named Misha woke with the sunrise. He lumbered down to the river, where the water sparkled with promise. With one swift paw, he caught a silvery fish, his breakfast. As he ate, a curious squirrel approached, chattering boldly. Misha listened, amused, as the squirrel told tales of hidden berries deep in the woods. Together, they set off, the bear\u2019s heavy steps shaking the earth, the squirrel darting ahead. By sunset, Misha had a full belly and a new friend. The bear learned that even the biggest hearts can grow.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 99,
+      "unique_words": 72,
+      "vocabulary_richness": 0.7272727272727273,
+      "response": "Deep in the emerald forest, a bear named Maple woke with the sunrise. She lumbered to the river, where silver fish leapt and sparkled. With a patient swipe, Maple caught her breakfast and settled on a mossy rock to eat. Birds sang overhead, and the breeze carried the scent of pine. After her meal, Maple explored the forest, sniffing wildflowers and greeting curious rabbits. As dusk fell, she returned to her cozy den beneath the roots of an ancient tree, her belly full and her heart content, grateful for the gentle rhythm of her days in the wild woods.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 99,
+      "unique_words": 81,
+      "vocabulary_richness": 0.8181818181818182,
+      "response": "Deep within the emerald forest, a bear named Misha awoke from her long winter sleep. The world outside her den shimmered with the promise of spring. Curious and hungry, Misha wandered through sun-dappled glades, sniffing out sweet berries and honeycombs. Along the way, she met a family of rabbits, who feared her at first. But gentle Misha only wished to share in the joys of the new season. Day by day, a cautious friendship blossomed, teaching all the forest creatures that kindness could be as nourishing as any feast. And so, Misha\u2019s gentle heart warmed the woods all year.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 99,
+      "unique_words": 74,
+      "vocabulary_richness": 0.7474747474747475,
+      "response": "Deep in the emerald forest, a bear named Moss wandered beneath the ancient pines. He loved the quiet rustle of leaves and the sweet tang of wild berries. One crisp morning, Moss found a wounded bird by a bubbling stream. Gently, he scooped the tiny creature into his paw and carried it to his den. Over many days, Moss guarded the bird, sharing warmth and berries. When at last the bird\u2019s wing healed, it sang a song of gratitude and soared into the sky. Moss watched it fly, heart full, knowing kindness had made the forest a little brighter.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 100,
+      "unique_words": 79,
+      "vocabulary_richness": 0.79,
+      "response": "Deep in the emerald forest, a gentle bear named Willow roamed quietly beneath the ancient trees. Every morning, she visited the sparkling river to catch fish, sharing her bounty with a family of curious foxes who had become her friends. One day, a fierce storm swept through the woods, toppling trees and flooding paths. Willow bravely guided the frightened animals to a safe cave, sheltering them until the sun returned. When the storm passed, the forest animals celebrated their safety, grateful for Willow\u2019s strength and kindness. From that day on, Willow was known as the gentle guardian of the forest.",
+      "prompt": "Write a short story about the bear."
+    },
+    {
+      "response_length": 97,
+      "unique_words": 75,
+      "vocabulary_richness": 0.7731958762886598,
+      "response": "Deep in the emerald hush of the forest, a bear named Willow lumbered along a winding stream. She paused, sniffing the crisp air, her nose twitching at the scent of wild berries. With a gentle swipe, she gathered a pawful, savoring their sweet burst. As twilight painted the sky in lavender, Willow found a cozy hollow beneath a fallen tree. She curled up, content and full, the music of the creek lulling her to sleep. In her dreams, she wandered through sun-dappled meadows, always returning to her beloved woods\u2014where every day was an adventure waiting to unfold.",
+      "prompt": "Write a short story about the bear."
+    }
+  ],
+  "overall_metrics": {
+    "avg_diversity": 0.12772901744362414,
+    "std_diversity": 0.03509178889809787,
+    "min_diversity": 0.021924192071944237,
+    "max_diversity": 0.2116011689968103,
+    "avg_response_length": 97.56,
+    "std_response_length": 2.223804425404577,
+    "avg_unique_words": 74.9,
+    "std_unique_words": 3.0321407538273037,
+    "avg_vocabulary_richness": 0.7678693316659607,
+    "std_vocabulary_richness": 0.029515774773104006,
+    "total_cost": 0.00012522000000000002
+  },
+  "metadata": {
+    "experiment": "direct (samples=1)",
+    "metric": "diversity",
+    "embedding_model": "text-embedding-3-small",
+    "device": "mps"
+  }
+}
