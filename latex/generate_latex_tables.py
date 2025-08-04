@@ -98,10 +98,10 @@ def generate_latex_table(task_type):
         "Gemini-2.5-Flash": "google_gemini-2.5-flash",
         "GPT-4.1": "openai_gpt-4.1",
         "GPT-4.1-Mini": "openai_gpt-4.1-mini",
-        "GPT-o3": "openai_o3",
         "Llama-3.1-70B": "meta-llama_Llama-3.1-70B-Instruct",
-        "Llama-3.1-8B": "meta-llama_Llama-3.1-8B-Instruct",
-        "DeepSeek-R1": "deepseek_deepseek-r1-0528"
+        # "Llama-3.1-8B": "meta-llama_Llama-3.1-8B-Instruct",
+        "DeepSeek-R1": "deepseek_deepseek-r1-0528",
+        "GPT-o3": "openai_o3",
     }
     
     # Task-specific configuration
@@ -127,13 +127,13 @@ def generate_latex_table(task_type):
             print(f"Warning: Directory not found for {model_name}: {model_path}")
     
     # Generate LaTeX table
-    print("\n" + "="*80)
-    print(f"LATEX TABLE DATA - {task_type.upper()}")
-    print("="*80)
+    # print("\n" + "="*80)
+    # print(f"LATEX TABLE DATA - {task_type.upper()}")
+    # print("="*80)
     
     for model_name, results in all_results.items():
-        print(f"\n{model_name}:")
-        print("-" * 40)
+        # print(f"\n{model_name}:")
+        # print("-" * 40)
         
         baseline = results.get("Baseline")
         if baseline is None:
@@ -204,7 +204,7 @@ def generate_latex_table(task_type):
             
             # Print row with multirow on first iteration
             if i == 0:
-                print(f"\\multirow{{{multirow_span}}}{{*}}{{{model_name}}}")
+                print(f"\\multirow{{{multirow_span + 1}}}{{*}}{{{model_name}}}")
                 print(f"& {method_display} & {diversity_formatted} & {rouge_l_formatted} & {quality_formatted} \\\\")
             else:
                 print(f"& {method_display} & {diversity_formatted} & {rouge_l_formatted} & {quality_formatted} \\\\")

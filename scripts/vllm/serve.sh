@@ -1,6 +1,6 @@
 # MODEL_NAME="meta-llama/Llama-3.1-70B-Instruct"
-MODEL_NAME="meta-llama/Llama-3.1-405B-Instruct-FP8"
-# MODEL_NAME="Qwen/Qwen3-235B-A22B-Instruct-2507"
+# MODEL_NAME="meta-llama/Llama-3.1-405B-Instruct-FP8"
+MODEL_NAME="Qwen/Qwen3-235B-A22B-Instruct-2507"
 # MODEL_NAME="meta-llama/Llama-3.1-70B"
 TENSOR_PARALLEL_SIZE=8
 

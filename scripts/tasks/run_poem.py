@@ -141,7 +141,7 @@ if __name__ == "__main__":
         # "deepseek/deepseek-r1-0528",
         # "openai/o3",
         "meta-llama/Llama-3.1-405B-Instruct-FP8",
-        # "Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "Qwen/Qwen3-235B-A22B-Instruct-2507",
     ]
     for model in models:
         model_basename = model.replace("/", "_")
@@ -152,7 +152,7 @@ if __name__ == "__main__":
             metrics=[
                 "diversity", 
                 "ngram", 
-                # "creative_writing_v3", 
+                "creative_writing_v3", 
                 "length"],
             temperature=0.7,
             top_p=1.0,
