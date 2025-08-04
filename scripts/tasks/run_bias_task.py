@@ -24,7 +24,7 @@ def create_method_experiments(
         'temperature': temperature,
         'top_p': top_p,
         'random_seed': 42,
-        "use_vllm": True,
+        "use_vllm": False,
     }
     
     experiments = []
@@ -80,52 +80,47 @@ if __name__ == "__main__":
     # Example usage for testing different method variations
     
     # Test multi-turn and JSON mode variations
+    num_samples = 20
     methods = [
         # {
         #     'method': Method.DIRECT,
         #     'strict_json': False,
         #     'num_samples': 1,
         # },
-        {
-            'method': Method.DIRECT_BASE,
-            'strict_json': False,
-            'num_samples': 1,
-        },
+        # {
+        #     'method': Method.DIRECT_BASE,
+        #     'strict_json': False,
+        #     'num_samples': 1,
+        # },
+        # {
+        #     'method': Method.DIRECT_COT,
+        #     'strict_json': True,
+        #     'num_samples': 1,
+        # }
         # {
         #     'method': Method.MULTI_TURN,
         #     'strict_json': False,
         #     'num_samples': 20,
         # },
-        # {
-        #     'method': Method.SEQUENCE,
-        #     'strict_json': True,
-        #     'num_samples': 20,
-        # },
-        # {
-        #     'method': Method.STRUCTURE_WITH_PROB,
-        #     'strict_json': True,
-        #     'num_samples': 20,
-        # },
+        {
+            'method': Method.SEQUENCE,
+            'strict_json': True,
+            'num_samples': num_samples,
+        },
+        {
+            'method': Method.STRUCTURE_WITH_PROB,
+            'strict_json': True,
+            'num_samples': num_samples,
+        },
         # {
         #     'method': Method.CHAIN_OF_THOUGHT,
         #     'strict_json': True,
-        #     'num_samples': 20,
+        #     'num_samples': num_samples,
         # },
         # {
         #     'method': Method.COMBINED,
         #     'strict_json': True,
-        #     'num_samples': 20,
-        #     'num_samples_per_prompt': 10,
-        # }
-        {
-            'method': Method.DIRECT_COT,
-            'strict_json': True,
-            'num_samples': 1,
-        }
-        # {
-        #     'method': Method.COMBINED,
-        #     'strict_json': True,
-        #     'num_samples': 20,
+        #     'num_samples': num_samples,
         #     'num_samples_per_prompt': 10,
         # }
     ]
@@ -133,14 +128,14 @@ if __name__ == "__main__":
 
 
     models = [
-        # "gpt-4.1-mini",
-        # "gpt-4.1",
-        # "gemini-2.5-flash",
+        "gpt-4.1-mini",
+        "gpt-4.1",
+        "gemini-2.5-flash",
         # "gemini-2.5-pro",
-        "llama-3.1-70b-instruct",
+        # "llama-3.1-70b-instruct",
         # "claude-4-sonnet",
         # "meta-llama/Llama-3.1-70B-Instruct",
-        "meta-llama/Llama-3.1-70B",
+        # "meta-llama/Llama-3.1-70B",
         # "anthropic/claude-4-sonnet",
         # "deepseek-r1",
         # "o3",
@@ -154,7 +149,7 @@ if __name__ == "__main__":
             metrics=["response_count"],
             temperature=0.7,
             top_p=1.0,
-            output_dir="method_results_bias",
+            output_dir="method_results_bias_test",
             num_workers=16 if any(x in model_basename for x in ["claude", "gemini"]) else 32,
         )
     

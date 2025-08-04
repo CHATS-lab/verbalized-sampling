@@ -1,0 +1,202 @@
+[
+  {
+    "question": "A farmer has 12 rows of corn in his field. Each row contains 18 corn plants. If each plant produces 5 ears of corn, how many ears of corn does the farmer have in total?",
+    "answer": "First, find the total number of plants by multiplying the number of rows by the number of plants per row: 12 rows * 18 plants/row = <<12*18=216>>216 plants.\nNext, multiply the total number of plants by the number of ears each plant produces: 216 plants * 5 ears/plant = <<216*5=1080>>1080 ears of corn.\n#### 1080"
+  },
+  {
+    "question": "Amy is making gift bags for her party guests. She has 36 candies and wants to put the same number of candies in each bag. If she wants to make 9 bags, how many candies should she put in each bag?",
+    "answer": "To find out how many candies go in each bag, divide the total number of candies by the number of bags: 36 ÷ 9 = <<36/9=4>>4 candies per bag.\n#### 4"
+  },
+  {
+    "question": "Emma has 3 boxes of crayons. Each box contains 12 crayons. She gives 7 crayons to her friend and loses 2 crayons. How many crayons does Emma have left now?",
+    "answer": "First, determine how many crayons Emma starts with: 3 boxes × 12 crayons/box = <<3*12=36>>36 crayons.\nThen, subtract the 7 crayons she gives away: 36 - 7 = <<36-7=29>>29 crayons.\nNext, subtract the 2 crayons she loses: 29 - 2 = <<29-2=27>>27 crayons.\n#### 27"
+  },
+  {
+    "question": "Maria is making fruit baskets. She puts 6 apples and 4 oranges in each basket. If she makes 7 baskets, how many apples and oranges does she use in total?",
+    "answer": "Maria puts 6 apples per basket, and she makes 7 baskets, so 6 * 7 = <<6*7=42>>42 apples.\nShe puts 4 oranges per basket, for a total of 4 * 7 = <<4*7=28>>28 oranges.\nAdding apples and oranges: 42 + 28 = <<42+28=70>>70 pieces of fruit in total.\n#### 70"
+  },
+  {
+    "question": "A box contains 12 red marbles, 8 blue marbles, and 5 green marbles. If you remove 3 red marbles and 2 blue marbles, how many marbles are left in the box?",
+    "answer": "Start with the total number of marbles: 12 + 8 + 5 = <<12+8+5=25>>25 marbles.\nRemove 3 red marbles: 12 - 3 = <<12-3=9>>9 red marbles.\nRemove 2 blue marbles: 8 - 2 = <<8-2=6>>6 blue marbles.\nNow, add the remaining marbles: 9 red + 6 blue + 5 green = <<9+6+5=20>>20 marbles left.\n#### 20"
+  },
+  {
+    "question": "Sarah is making gift bags for her friends. She has 56 candies and wants to divide them equally among 8 gift bags. After filling the bags, she decides to eat 2 candies from each bag. How many candies does Sarah have left in all the gift bags after eating?",
+    "answer": "First, divide the candies among the gift bags: 56 ÷ 8 = <<56/8=7>>7 candies per bag.\nSarah eats 2 candies from each bag: 7 - 2 = <<7-2=5>>5 candies remain in each bag.\nThere are 8 bags, so multiply: 5 × 8 = <<5*8=40>>40 candies left in all the bags.\n#### 40"
+  },
+  {
+    "question": "Sarah wants to buy 3 notebooks that each cost $4 and 2 pens that each cost $1.50. If she has a $20 bill, how much money will she have left after her purchase?",
+    "answer": "First, calculate the total cost of the notebooks: 3 notebooks * $4 = <<3*4=12>>$12.\nNext, calculate the total cost of the pens: 2 pens * $1.50 = <<2*1.5=3>>$3.\nAdd the costs together: $12 + $3 = <<12+3=15>>$15.\nSubtract the total spent from the amount Sarah has: $20 - $15 = <<20-15=5>>$5.\n#### 5"
+  },
+  {
+    "question": "Mark has 3 boxes of pencils. Each box contains 12 pencils. He gives 5 pencils to each of his 4 friends. How many pencils does Mark have left?",
+    "answer": "First, find the total number of pencils Mark starts with: 3 boxes * 12 pencils per box = <<3*12=36>>36 pencils.\nNext, find out how many pencils he gives away: 5 pencils per friend * 4 friends = <<5*4=20>>20 pencils.\nSubtract the number of pencils given away from the total: 36 - 20 = <<36-20=16>>16 pencils left.\n#### 16"
+  },
+  {
+    "question": "A bakery sold 120 cupcakes in the morning and twice as many in the afternoon. If each cupcake costs $2, how much money did the bakery make from cupcake sales that day?",
+    "answer": "The bakery sold 120 * 2 = <<120*2=240>>240 cupcakes in the afternoon.\nTotal cupcakes sold in one day is 120 + 240 = <<120+240=360>>360 cupcakes.\nThe total money made is 360 * $2 = <<360*2=720>>$720.\n#### 720"
+  },
+  {
+    "question": "At a bake sale, Sarah sold 3 times as many chocolate chip cookies as oatmeal cookies. If she sold 18 chocolate chip cookies, how many cookies did she sell in total?",
+    "answer": "Since Sarah sold 3 times as many chocolate chip cookies as oatmeal cookies, we can divide the number of chocolate chip cookies by 3 to find the number of oatmeal cookies: 18 ÷ 3 = <<18/3=6>>6 oatmeal cookies.\nNow add the cookies together: 18 + 6 = <<18+6=24>>24 cookies in total.\n#### 24"
+  },
+  {
+    "question": "Sarah has 3 boxes of crayons. Each box contains 12 crayons. She gives 5 crayons to each of her 4 friends. How many crayons does Sarah have left?",
+    "answer": "First, calculate how many crayons Sarah starts with: 3 boxes * 12 crayons = <<3*12=36>>36 crayons.\nShe gives away 5 crayons to each of her 4 friends: 5 * 4 = <<5*4=20>>20 crayons.\nSubtract the number she gave away from the total: 36 - 20 = <<36-20=16>>16 crayons left.\n#### 16"
+  },
+  {
+    "question": "Sarah has 3 boxes of colored pencils. Each box contains 12 pencils. She gives 5 pencils to each of her 4 friends. How many pencils does Sarah have left?",
+    "answer": "First, find the total number of pencils Sarah starts with: 3 boxes * 12 pencils/box = <<3*12=36>>36 pencils.\nNext, find out how many pencils she gives away: 4 friends * 5 pencils each = <<4*5=20>>20 pencils.\nSubtract the pencils given away from the total to find how many are left: 36 - 20 = <<36-20=16>>16 pencils.\n#### 16"
+  },
+  {
+    "question": "A school cafeteria prepares 120 sandwiches for lunch. If each sandwich requires 2 slices of bread and a loaf contains 24 slices, how many loaves of bread are needed to make all the sandwiches?",
+    "answer": "First, calculate the total number of slices needed: 120 sandwiches * 2 slices each = <<120*2=240>>240 slices.\nNext, find how many loaves are needed: 240 slices ÷ 24 slices per loaf = <<240/24=10>>10 loaves.\n#### 10"
+  },
+  {
+    "question": "Kevin has 3 boxes of marbles. Each box contains 12 marbles. He decides to give 4 marbles to each of his 5 friends. How many marbles does Kevin have left after giving the marbles to his friends?",
+    "answer": "Kevin starts with 3 boxes * 12 marbles per box = <<3*12=36>>36 marbles.\nHe gives away 4 marbles to each of his 5 friends: 4 * 5 = <<4*5=20>>20 marbles given away.\nSo, Kevin has 36 - 20 = <<36-20=16>>16 marbles left.\n#### 16"
+  },
+  {
+    "question": "Sarah is making gift bags for her 5 friends. She wants to put 3 chocolate bars and 2 lollipops in each bag. If each chocolate bar costs $1 and each lollipop costs $0.50, how much will Sarah spend in total to make all the gift bags?",
+    "answer": "First, calculate the total number of chocolate bars needed: 5 friends * 3 bars each = <<5*3=15>>15 chocolate bars.\nNext, calculate the total number of lollipops needed: 5 friends * 2 lollipops each = <<5*2=10>>10 lollipops.\nNow, find the cost for all chocolate bars: 15 bars * $1 = <<15*1=15>>$15.\nFind the cost for all the lollipops: 10 lollipops * $0.50 = <<10*0.5=5>>$5.\nAdd the two amounts to get the total cost: $15 + $5 = <<15+5=20>>$20.\n#### 20"
+  },
+  {
+    "question": "Emily has 3 boxes of crayons. Each box contains 12 crayons. She gives 5 crayons to her friend and then buys another box with 10 crayons. How many crayons does Emily have now?",
+    "answer": "Emily starts with 3 boxes of 12 crayons each, so she has 3 * 12 = <<3*12=36>>36 crayons.\\nShe gives away 5 crayons, so she has 36 - 5 = <<36-5=31>>31 crayons.\\nThen she buys another box with 10 crayons, so she has 31 + 10 = <<31+10=41>>41 crayons.\\n#### 41"
+  },
+  {
+    "question": "Jenny read 12 pages of her book every day for 5 days, and then read 18 pages each day for the next 3 days. How many pages did she read in total over the 8 days?",
+    "answer": "Jenny read 12 pages a day for 5 days, so 12 * 5 = <<12*5=60>>60 pages.\\nShe then read 18 pages a day for 3 days, so 18 * 3 = <<18*3=54>>54 pages.\\nThe total number of pages she read is 60 + 54 = <<60+54=114>>114 pages.\\n#### 114"
+  },
+  {
+    "question": "If a box contains 12 red marbles, 18 blue marbles, and 10 green marbles, and you remove 5 blue marbles and 2 green marbles, how many marbles are left in the box?",
+    "answer": "Start by finding the original total number of marbles: 12 + 18 + 10 = <<12+18+10=40>>40 marbles.\nNow, subtract the marbles that were removed: 5 blue marbles and 2 green marbles, for a total of 5 + 2 = <<5+2=7>>7 marbles removed.\nSubtract the removed marbles from the original total: 40 - 7 = <<40-7=33>>33 marbles left in the box.\n#### 33"
+  },
+  {
+    "question": "A baker made 5 trays of cookies. Each tray holds 18 cookies. He sold 42 cookies in the morning and 23 cookies in the afternoon. How many cookies does he have left at the end of the day?",
+    "answer": "First, calculate the total number of cookies the baker made: 5 trays * 18 cookies/tray = <<5*18=90>>90 cookies.\nNext, find out how many cookies he sold in total: 42 + 23 = <<42+23=65>>65 cookies.\nSubtract the number of cookies sold from the total made: 90 - 65 = <<90-65=25>>25 cookies.\n#### 25"
+  },
+  {
+    "question": "Emily bakes 2 dozen cookies every day for a week. If she gives away 18 cookies at the end of the week, how many cookies does she have left?",
+    "answer": "First, find out how many cookies Emily bakes in one day: 2 dozen = 24 cookies.\nShe bakes for 7 days: 24 cookies/day * 7 days = <<24*7=168>>168 cookies.\nShe gives away 18 cookies, so subtract: 168 - 18 = <<168-18=150>>150 cookies.\n#### 150"
+  },
+  {
+    "question": "Sarah has 3 boxes of pencils. Each box contains 12 pencils. She gives 5 pencils to each of her 4 friends. How many pencils does Sarah have left?",
+    "answer": "First, calculate the total number of pencils Sarah has: 3 boxes * 12 pencils per box = <<3*12=36>>36 pencils.\nNext, calculate how many pencils she gives to her friends: 5 pencils per friend * 4 friends = <<5*4=20>>20 pencils.\nSubtract the pencils given away from the total: 36 - 20 = <<36-20=16>>16 pencils.\n#### 16"
+  },
+  {
+    "question": "Sarah is making gift bags for a party. She wants to put 3 candies and 2 stickers in each bag. If she has 18 candies and 16 stickers, what is the greatest number of gift bags she can make so that each bag has the same number of candies and stickers?",
+    "answer": "Each bag requires 3 candies. With 18 candies, she can make 18 ÷ 3 = <<18/3=6>>6 bags.\nEach bag requires 2 stickers. With 16 stickers, she can make 16 ÷ 2 = <<16/2=8>>8 bags.\nShe is limited by the smallest number, so the greatest number of gift bags she can make is 6.\n#### 6"
+  },
+  {
+    "question": "A baker made 3 trays of cupcakes. Each tray contains 16 cupcakes. If she wants to pack the cupcakes into boxes that hold 8 cupcakes each, how many boxes will she need to pack all the cupcakes?",
+    "answer": "First, calculate the total number of cupcakes: 3 trays * 16 cupcakes per tray = <<3*16=48>>48 cupcakes.\nNext, divide the total number of cupcakes by the number of cupcakes per box: 48 cupcakes / 8 cupcakes per box = <<48/8=6>>6 boxes.\nThe answer is <<6=6>>6.\n#### 6"
+  },
+  {
+    "question": "Sarah wants to buy notebooks for her class. Each notebook costs $2. She has $50 and wants to buy as many notebooks as possible and use the remaining money to buy pencils that cost $0.50 each. How many pencils can she buy after purchasing the notebooks?",
+    "answer": "First, divide Sarah’s money by the notebook price to see how many notebooks she can buy: $50 ÷ $2 = <<50/2=25>>25 notebooks.\nShe spends 25 * $2 = <<25*2=50>>$50 on notebooks, so she has $50 - $50 = <<50-50=0>>$0 left.\nWith no money left, she can buy 0 pencils.\n#### 0"
+  },
+  {
+    "question": "Sarah has 3 boxes of crayons. Each box contains 12 crayons. She gives 5 crayons to each of her 4 friends. How many crayons does she have left?",
+    "answer": "First, calculate how many crayons Sarah has in total: 3 boxes * 12 crayons/box = <<3*12=36>>36 crayons.\nNext, find out how many crayons she gives away: 5 crayons * 4 friends = <<5*4=20>>20 crayons.\nSubtract the crayons given away from the total: 36 - 20 = <<36-20=16>>16 crayons.\n#### 16"
+  },
+  {
+    "question": "Sarah is baking cookies for a school fundraiser. She wants to put 5 cookies in each bag. If she bakes 7 trays of cookies with 12 cookies on each tray, how many bags can she fill completely?",
+    "answer": "First, calculate the total number of cookies Sarah bakes: 7 trays * 12 cookies/tray = <<7*12=84>>84 cookies.\nNext, divide the total cookies by the number of cookies per bag: 84 cookies ÷ 5 cookies/bag = <<84/5=16.8>>16 full bags with 4 cookies left over (since only full bags count).\n#### 16"
+  },
+  {
+    "question": "Sarah has three boxes of crayons. Each box contains 12 crayons. She gives 5 crayons to each of her 4 friends. How many crayons does Sarah have left after giving the crayons to her friends?",
+    "answer": "First, calculate how many crayons Sarah starts with: 3 boxes * 12 crayons/box = <<3*12=36>>36 crayons.\nNext, calculate how many crayons she gives away: 5 crayons/friend * 4 friends = <<5*4=20>>20 crayons.\nSubtract the crayons given away from the total: 36 - 20 = <<36-20=16>>16 crayons left.\n#### 16"
+  },
+  {
+    "question": "Sarah has 3 boxes of markers. Each box contains 12 markers. She gives 5 markers to each of her 4 friends. How many markers does Sarah have left?",
+    "answer": "First, find out how many markers Sarah starts with: 3 boxes * 12 markers = <<3*12=36>>36 markers.\nThen, find out how many markers she gives away in total: 5 markers * 4 friends = <<5*4=20>>20 markers.\nSubtract the number of markers given away from her total: 36 - 20 = <<36-20=16>>16 markers left.\n#### 16"
+  },
+  {
+    "question": "Sarah has 3 boxes of crayons. Each box contains 12 crayons. She gives 5 crayons to each of her 4 friends. How many crayons does Sarah have left?",
+    "answer": "Sarah starts with 3 boxes × 12 crayons per box = <<3*12=36>>36 crayons.\nShe gives away 5 crayons to each of her 4 friends: 5 × 4 = <<5*4=20>>20 crayons given away.\nThe number of crayons Sarah has left is 36 − 20 = <<36-20=16>>16 crayons.\n#### 16"
+  },
+  {
+    "question": "Sarah has 5 boxes of pencils. Each box contains 12 pencils. She gives 14 pencils to her friend, and then buys 18 more pencils. How many pencils does Sarah have now?",
+    "answer": "First, calculate how many pencils Sarah starts with: 5 boxes * 12 pencils per box = <<5*12=60>>60 pencils.\nShe gives away 14 pencils: 60 - 14 = <<60-14=46>>46 pencils remaining.\nShe buys 18 more pencils: 46 + 18 = <<46+18=64>>64 pencils.\n#### 64"
+  },
+  {
+    "question": "A baker has 48 cupcakes. She wants to pack them equally into boxes that each hold 6 cupcakes. If she sells each box for $5, how much money will she make if she sells all the cupcakes?",
+    "answer": "First, find out how many boxes she can fill by dividing the total number of cupcakes by the number of cupcakes per box: 48 ÷ 6 = <<48/6=8>>8 boxes.\nThen, multiply the number of boxes by the price per box to find the total amount of money she will make: 8 × $5 = <<8*5=40>>$40.\n#### 40"
+  },
+  {
+    "question": "Sarah is making bracelets for her friends. She needs 5 beads for each bracelet. If she wants to make 12 bracelets and already has 18 beads, how many more beads does she need to buy?",
+    "answer": "First, calculate how many beads Sarah needs in total: 5 beads/bracelet * 12 bracelets = <<5*12=60>>60 beads.\nShe already has 18 beads, so subtract that from the total: 60 - 18 = <<60-18=42>>42 beads.\nSarah needs to buy 42 more beads.\n#### 42"
+  },
+  {
+    "question": "A box contains 24 red marbles, 18 blue marbles, and 13 green marbles. If 7 red marbles and 5 blue marbles are removed, how many marbles are left in the box?",
+    "answer": "First, subtract the removed red marbles from the total: 24 - 7 = <<24-7=17>>17 red marbles left.\nNext, subtract the removed blue marbles from the total: 18 - 5 = <<18-5=13>>13 blue marbles left.\nThe green marbles remain the same: 13 green marbles.\nNow add up all the marbles left: 17 + 13 + 13 = <<17+13+13=43>>43 marbles left in the box.\n#### 43"
+  },
+  {
+    "question": "A bakery sold 120 cupcakes in the morning and twice as many in the afternoon. If each cupcake costs $3, how much money did the bakery make from cupcake sales that day?",
+    "answer": "In the afternoon, the bakery sold 2 times 120 = <<2*120=240>>240 cupcakes.\nSo the total number of cupcakes sold is 120 + 240 = <<120+240=360>>360 cupcakes.\nThe total money made is 360 * $3 = <<360*3=1080>>$1080.\n#### 1080"
+  },
+  {
+    "question": "A baker has 120 cupcakes. She wants to pack them into boxes that each hold 8 cupcakes. After filling as many whole boxes as possible, how many cupcakes does she have left over?",
+    "answer": "First, divide the total number of cupcakes by the number that fit in each box: 120 ÷ 8 = <<120/8=15>>15 boxes with no remainder if 8 divides evenly into 120. But 8 × 15 = 120, so there are no cupcakes left over.\n#### 0"
+  },
+  {
+    "question": "Julia has 3 bags of marbles. Each bag contains 12 marbles. She gives 7 marbles from each bag to her friend. How many marbles does Julia have left in total?",
+    "answer": "Each bag starts with 12 marbles, so Julia has 3 * 12 = <<3*12=36>>36 marbles in total.\nShe gives away 7 marbles from each bag, so she gives 3 * 7 = <<3*7=21>>21 marbles away.\nSubtract the marbles given away from the total to find how many Julia has left: 36 - 21 = <<36-21=15>>15 marbles.\n#### 15"
+  },
+  {
+    "question": "Emily is making gift bags for her 5 friends. She wants to put 3 candies and 2 stickers in each bag. If candies come in packs of 10 and stickers come in packs of 5, how many packs of each does she need to buy to have enough for all the bags?",
+    "answer": "Emily needs 3 candies per bag × 5 bags = <<3*5=15>>15 candies, and 2 stickers per bag × 5 bags = <<2*5=10>>10 stickers.\nTo find out how many packs of candies: 15 candies ÷ 10 candies/pack = 1.5, so Emily needs to buy 2 packs of candies.\nFor stickers: 10 stickers ÷ 5 stickers/pack = 2, so she needs 2 packs of stickers.\nEmily needs 2 packs of candies and 2 packs of stickers.\n#### 2 packs of candies and 2 packs of stickers"
+  },
+  {
+    "question": "Jenny has 3 boxes of crayons. Each box contains 12 crayons. She gives 7 crayons to her friend. How many crayons does Jenny have left?",
+    "answer": "First, calculate the total number of crayons Jenny starts with: 3 boxes * 12 crayons per box = <<3*12=36>>36 crayons.\nThen, subtract the 7 crayons she gives away: 36 - 7 = <<36-7=29>>29 crayons.\n#### 29"
+  },
+  {
+    "question": "Sarah has 3 boxes of pencils. Each box contains 12 pencils. She gives 7 pencils to each of her 4 friends. How many pencils does Sarah have left?",
+    "answer": "First, calculate how many pencils Sarah starts with: 3 boxes * 12 pencils/box = <<3*12=36>>36 pencils.\nNext, determine how many pencils Sarah gives away: 4 friends * 7 pencils/friend = <<4*7=28>>28 pencils.\nSubtract the number of pencils given away from the total she started with: 36 - 28 = <<36-28=8>>8 pencils remaining.\n#### 8"
+  },
+  {
+    "question": "Sarah has 5 boxes of pencils. Each box contains 12 pencils. She gives 8 pencils to each of her 3 friends. How many pencils does she have left?",
+    "answer": "First, calculate the total number of pencils Sarah has by multiplying the number of boxes by the number of pencils per box: 5 * 12 = <<5*12=60>>60 pencils.\nNext, find out how many pencils she gives away: 8 pencils per friend * 3 friends = <<8*3=24>>24 pencils.\nSubtract the number of pencils given away from the total: 60 - 24 = <<60-24=36>>36 pencils.\n#### 36"
+  },
+  {
+    "question": "Jamie has 3 boxes of pencils. Each box contains 12 pencils. She decides to give 5 pencils to each of her 4 friends. After giving away the pencils, how many pencils does Jamie have left?",
+    "answer": "Jamie starts with 3 boxes * 12 pencils per box = <<3*12=36>>36 pencils.\nShe gives away 5 pencils to each of her 4 friends: 5 * 4 = <<5*4=20>>20 pencils.\nSubtract the number of pencils given away from her original total: 36 - 20 = <<36-20=16>>16 pencils.\n#### 16"
+  },
+  {
+    "question": "Jake has 5 boxes of pencils. Each box contains 12 pencils. He gives 14 pencils to his friends. How many pencils does Jake have left?",
+    "answer": "First, find out how many pencils Jake starts with by multiplying the number of boxes by the number of pencils in each box: 5 * 12 = <<5*12=60>>60 pencils.\nThen, subtract the number of pencils he gives away: 60 - 14 = <<60-14=46>>46 pencils left.\n#### 46"
+  },
+  {
+    "question": "Sarah baked 3 dozen cookies. She gave 8 cookies to each of her 5 friends. How many cookies does Sarah have left?",
+    "answer": "First, find out how many cookies Sarah baked in total: 3 dozen * 12 cookies per dozen = <<3*12=36>>36 cookies.\nNext, calculate how many cookies she gave away: 8 cookies per friend * 5 friends = <<8*5=40>>40 cookies.\nNow subtract the number of cookies given away from the total: 36 - 40 = <<36-40=-4>>-4.\nSince Sarah cannot have negative cookies, this means she didn't have enough cookies to give 8 to each friend. She could only give out 36 cookies in total, which is 7 cookies per friend with 1 cookie left over.\n#### 1"
+  },
+  {
+    "question": "A class is selling boxes of cookies for a fundraiser. They sell 18 boxes on Monday, twice as many boxes on Tuesday as on Monday, and 10 more boxes on Wednesday than on Tuesday. How many boxes of cookies did they sell in those three days?",
+    "answer": "On Monday, they sold 18 boxes.\nOn Tuesday, they sold 2 * 18 = <<2*18=36>>36 boxes.\nOn Wednesday, they sold 36 + 10 = <<36+10=46>>46 boxes.\nAdding them all together: 18 + 36 + 46 = <<18+36+46=100>>100 boxes.\n#### 100"
+  },
+  {
+    "question": "A box contains 5 red marbles, 8 blue marbles, and 7 green marbles. If Maria takes out 3 red marbles and 2 green marbles, how many marbles are left in the box?",
+    "answer": "First, find the total number of marbles at the start: 5 + 8 + 7 = <<5+8+7=20>>20 marbles.\nMaria takes out 3 red and 2 green marbles: 3 + 2 = <<3+2=5>>5 marbles removed.\nSubtract the number removed from the total: 20 - 5 = <<20-5=15>>15 marbles left.\n#### 15"
+  },
+  {
+    "question": "Sarah has 5 packs of colored pencils. Each pack contains 12 pencils. She gives 7 pencils to her friend and loses 3 pencils. How many colored pencils does Sarah have left?",
+    "answer": "First, calculate how many pencils Sarah starts with: 5 packs * 12 pencils per pack = <<5*12=60>>60 pencils.\nShe gives away 7 pencils and loses 3 more, so the total number of pencils she loses is 7 + 3 = <<7+3=10>>10 pencils.\nSubtract the pencils lost from the total: 60 - 10 = <<60-10=50>>50 pencils left.\n#### 50"
+  },
+  {
+    "question": "A bag contains 4 red marbles, 6 blue marbles, and 10 green marbles. If 5 green marbles are removed from the bag, how many marbles are left in the bag?",
+    "answer": "The initial number of marbles is 4 (red) + 6 (blue) + 10 (green) = <<4+6+10=20>>20 marbles.\nAfter removing 5 green marbles, there are 10 - 5 = <<10-5=5>>5 green marbles left.\nSo, the total number of marbles left is 4 (red) + 6 (blue) + 5 (green) = <<4+6+5=15>>15 marbles.\n#### 15"
+  },
+  {
+    "question": "A baker needs to bake 180 cookies for a school event. She can fit 24 cookies on a tray and her oven can bake 2 trays at a time. If each batch in the oven takes 15 minutes to bake, how long will it take her to bake all 180 cookies, assuming she immediately starts a new batch as soon as the previous one is finished?",
+    "answer": "First, find out how many cookies she can bake at once: 2 trays * 24 cookies = <<2*24=48>>48 cookies per batch.\nNext, divide the total number of cookies by cookies per batch to find the number of batches: 180 / 48 = 3.75, so she needs 4 batches.\nEach batch takes 15 minutes, so total time is 4 * 15 = <<4*15=60>>60 minutes.\n#### 60"
+  },
+  {
+    "question": "Sarah has twice as many marbles as Tom. If Tom has 14 marbles and they find a bag with 18 more marbles that they decide to split equally, how many marbles does Sarah have now?",
+    "answer": "First, calculate how many marbles Sarah originally has: 2 * 14 = <<2*14=28>>28 marbles.\nThey find 18 additional marbles and split them equally, so each gets 18 ÷ 2 = <<18/2=9>>9 marbles.\nAdd the 9 extra marbles to Sarah's original count: 28 + 9 = <<28+9=37>>37 marbles.\n#### 37"
+  },
+  {
+    "question": "Sarah has 3 boxes, each containing 12 pencils. She gives 5 pencils from each box to her friends. How many pencils does Sarah have left in total?",
+    "answer": "First, calculate the total number of pencils Sarah starts with: 3 boxes * 12 pencils per box = <<3*12=36>>36 pencils.\nShe gives away 5 pencils from each box, so she gives away 3 boxes * 5 pencils = <<3*5=15>>15 pencils.\nSubtract the given-away pencils from the total: 36 pencils - 15 pencils = <<36-15=21>>21 pencils.\n#### 21"
+  }
+]
