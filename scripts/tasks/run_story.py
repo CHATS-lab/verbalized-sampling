@@ -18,8 +18,8 @@ def create_method_experiments(
         'task': task,
         'model_name': model_name,
         'num_responses': 50,
-        'num_prompts': 1, # current total: 300; total: 4326
-        'target_words': 100, 
+        'num_prompts': 100, # current total: 300; total: 4326
+        'target_words': 200, 
         'temperature': temperature,
         'top_p': top_p,
         'random_seed': 42,
@@ -82,47 +82,47 @@ if __name__ == "__main__":
             'strict_json': False,
             'num_samples': 1,
         },
-        # {
-        #     'method': Method.DIRECT_COT,
-        #     'strict_json': True,
-        #     'num_samples': 1,
-        # },
-        # {
-        #     'method': Method.MULTI_TURN,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
-        # {
-        #     'method': Method.SEQUENCE,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
+        {
+            'method': Method.DIRECT_COT,
+            'strict_json': True,
+            'num_samples': 1,
+        },
+        {
+            'method': Method.MULTI_TURN,
+            'strict_json': True,
+            'num_samples': 5,
+        },
+        {
+            'method': Method.SEQUENCE,
+            'strict_json': True,
+            'num_samples': 5,
+        },
         {
             'method': Method.STRUCTURE_WITH_PROB,
             'strict_json': True,
             'num_samples': 5,
         },
-        # {
-        #     'method': Method.CHAIN_OF_THOUGHT,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
-        # {
-        #     'method': Method.COMBINED,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
+        {
+            'method': Method.CHAIN_OF_THOUGHT,
+            'strict_json': True,
+            'num_samples': 5,
+        },
+        {
+            'method': Method.COMBINED,
+            'strict_json': True,
+            'num_samples': 5,
+        },
     ]
 
 
     models = [
-        "openai/gpt-4.1",
+        # "openai/gpt-4.1",
         # "openai/gpt-4.1-mini",
-        # "google/gemini-2.5-flash",
+        "google/gemini-2.5-flash",
         # "meta-llama/Llama-3.1-70B-Instruct",
         # "meta-llama/Llama-3.1-70B-Instruct",
         # "anthropic/claude-4-sonnet",
-        "google/gemini-2.5-pro",
+        # "google/gemini-2.5-pro",
         # "anthropic/claude-3.7-sonnet",
         # "openai/o3",
         # "deepseek/deepseek-r1-0528",
@@ -136,8 +136,8 @@ if __name__ == "__main__":
             metrics=["diversity", "ngram"],
             temperature=0.7,
             top_p=1.0,
-            output_dir=f"story_experiments_test/{model_basename}",
-            num_workers=16 if "claude" in model_basename else 128,
+            output_dir=f"story_experiments_reduce_hard/{model_basename}",
+            num_workers=32 if "claude" in model_basename else 128,
         )
 
 
