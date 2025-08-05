@@ -87,7 +87,6 @@ class CreativityPromptTemplate(BasePromptTemplate):
         if task_name == "poem":
             return f"""
 Write a poem inspired by the given line or phrase.{word_constraint}
-Create something original, creative, and meaningful. The poem can be in any style or form.
 Output ONLY the poem, with no explanations or extra text.
 """
         else:
