@@ -154,8 +154,8 @@ class DiversityEvaluator(BaseEvaluator):
                                 similarity = float(similarity_matrix[i, j])
                                 
                                 # Convert similarity to diversity score (0 to 1)
-                                # diversity = (1 - similarity) / 2
-                                diversity = similarity
+                                diversity = (1 - similarity) / 2
+                                # diversity = similarity
                                 
                                 all_diversities.append(diversity)
                                 pairwise_diversities.append(diversity)
