@@ -176,7 +176,7 @@ def generate_responses_gsm8k(examples, method, num_responses=1, model_name="gpt-
         for resp in tqdm(range(num_responses), desc="Generating direct responses"):
             messages = [{"role": "system", "content": system_prompt}, {"role": "user", "content": user_prompt}]
             completion = client.chat.completions.create(
-                model=model_name,å
+                model=model_name,
                 messages=messages,
                 **config,
             )
