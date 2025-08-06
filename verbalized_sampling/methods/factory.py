@@ -2,6 +2,8 @@ from typing import Dict, Any, List, Optional, Union
 from enum import Enum
 import os
 import random
+import numpy as np
+from datasets import load_dataset
 from pydantic import BaseModel
 from .prompt import (
     TaskType,
@@ -21,15 +23,6 @@ class Method(str, Enum):
     CHAIN_OF_THOUGHT = "chain_of_thought"
     COMBINED = "combined"
 
-    # DIRECT = "Baseline"
-    # SEQUENCE = "Sequence" 
-    # STRUCTURE = "Structure"
-    # STRUCTURE_WITH_PROB = "Verbalized Sampling"
-    # MULTI_TURN = "Multi-turn"
-    # CHAIN_OF_THOUGHT = "Verbalized Sampling (CoT)"
-    # COMBINED = "Verbalized Sampling (Combined)"
-    # SELF_REFLECTION = "self_reflection"
-    # TEMPERATURE_SAMPLING = "temperature_sampling"
 
 def is_method_structured(method: Method) -> bool:
     """Check if a method requires structured JSON output."""
@@ -94,6 +87,10 @@ class PromptFactory:
             "rand_num": TaskType.BIAS,
             "state_name": TaskType.BIAS,
             
+            # Synthetic data tasks
+            "gsm8k": TaskType.SYNTHETIC_DATA,
+            "livecodebench": TaskType.SYNTHETIC_DATA,
+            
             # Default to creativity for unknown tasks
         }
         return task_mapping.get(task, TaskType.CREATIVITY)
@@ -107,13 +104,15 @@ class PromptFactory:
             return "base_model"
         elif method == Method.DIRECT_COT:
             return "base_cot"
+        elif method == Method.STRUCTURE_WITH_PROB:
+            return "vs_standard"
+        elif method == Method.CHAIN_OF_THOUGHT:
+            return "vs_cot"
         elif method == Method.COMBINED:
-            return "combined"
+            return "vs_multi_turn"
         elif all_possible:
             return "standard_all_possible"
-        elif method == Method.CHAIN_OF_THOUGHT:
-            return "chain_of_thought"
-        else:
+        else: # Method.SEQUENCE, Method.STRUCTURE
             return "standard"
 
     @staticmethod
@@ -201,6 +200,65 @@ class PromptFactory:
         return chat_history + [{"role": "user", "content": continuation_prompt}]
     
     @staticmethod
+    def get_gsm8k_task_prompts(num_icl_example: int, random_seed: int) -> List[str]:
+        """Get prompts for the GSM8K task."""
+        ds = load_dataset("gsm8k", "main", split="train")
+        np.random.seed(random_seed)
+        idxs = np.random.choice(range(len(ds)), num_icl_example, replace=False)
+        icl_examples = [ds[int(i)] for i in idxs]
+        
+        user_prompts = f"""Generate grade school math word problems that involve a sequence of basic arithmetic calculations (addition, subtraction, multiplication, division).
+        A bright middle school student should be able to solve each problem. Problems require no concepts beyond the level of early Algebra.
+        
+        For each problem:
+        - Specify the question.
+        - Then provide a brief reasoning and the numerical answer.
+        - The answer should be given after four hash marks (####) at the end of the reasoning.
+
+        Format your generated problems as follows:
+        Question: [your question]
+        Answer: [your brief reasoning and answer, ending with #### [numerical answer]]
+
+        Here are some examples you can use as inspiration:
+        Example 1: Question: {icl_examples[0]['question']}\nAnswer: {icl_examples[0]['answer']}
+        Example 2: Question: {icl_examples[1]['question']}\nAnswer: {icl_examples[1]['answer']}
+        Example 3: Question: {icl_examples[2]['question']}\nAnswer: {icl_examples[2]['answer']}
+
+        Ensure that each problem you generate is unique in both topic and content compared to the given examples.
+        Only include the question and answer in your response, and always begin your response with the question.
+        """
+        return [user_prompts]
+    
+    @staticmethod
+    def get_livecodebench_task_prompts(num_icl_example: int, random_seed: int) -> List[str]:
+        """Get prompts for generating synthetic LiveCodeBench-style coding problems."""
+        ds = load_dataset("livecodebench/code_generation_lite", version_tag="release_v6", split="test", trust_remote_code='True')
+        np.random.seed(random_seed)
+        idxs = np.random.choice(range(len(ds)), num_icl_example, replace=False)
+        icl_examples = [ds[int(i)] for i in idxs]
+        
+        user_prompt = f"""Generate examples of natural language programming-esque tasks with a specified test input and the resulting output answer. 
+        Provide your examples in the following format:
+        "Question:
+        [question]
+        Test Input:
+        [test_input]
+        Reasoning:
+        [reasoning]
+        Answer:
+        [answer]"
+
+        Here are some examples:
+        Example 1: {icl_examples[0]['question_content']}
+        Example 2: {icl_examples[1]['question_content']}
+        Example 3: {icl_examples[2]['question_content']}
+
+        Generate different problems following this format. Your question should be different in content from the examples. 
+        Make sure to only provide only the question, test input, reasoning, and answer. Start each example with the question. """
+
+        return [user_prompt]
+    
+    @staticmethod
     def get_prompt(
         task: str, 
         method: Method, 
@@ -218,21 +276,27 @@ class PromptFactory:
                 - A list of system and user messages (for chat models)
                 - A string prompt (for base models)
         """
-        # Handle poem task with clean data
-        if (task == "poem") and (method == Method.DIRECT_BASE):
+        prompts = []
+        if task == "gsm8k":
+            prompts = PromptFactory.get_gsm8k_task_prompts(num_icl_example=3, random_seed=random_seed)
+        elif task == "livecodebench":
+            prompts = PromptFactory.get_livecodebench_task_prompts(num_icl_example=3, random_seed=random_seed)
+        elif (task == "poem") and (method == Method.DIRECT_BASE): # Handle poem task with clean data
             prompt_path = "data/poem_titles.txt"
         else:
             prompt_path = f"data/{task}.txt"
 
-        if not os.path.exists(prompt_path):
-            raise ValueError(f"Prompt file {prompt_path} not found.")
-        
-        prompts = []
-        with open(prompt_path, "r") as f:
-            for line in f:
-                line = line.strip()
-                if line:  # Skip empty lines
-                    prompts.append(line)
+        # Only try to read from file if we don't have prompts from the special task methods
+        if not prompts:
+            if not os.path.exists(prompt_path):
+                raise ValueError(f"Prompt file {prompt_path} not found.")
+            
+            prompts = []
+            with open(prompt_path, "r") as f:
+                for line in f:
+                    line = line.strip()
+                    if line:  # Skip empty lines
+                        prompts.append(line)
         
         # TODO add selection of prompts
         if (num_prompts is not None) and (random_seed is not None):

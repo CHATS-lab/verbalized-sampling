@@ -12,6 +12,8 @@ from .creativity.joke import JokeTask
 from .bias.rand_num import RandomNumberTask
 from .bias.state_name import StateNameTask
 from .fact.simple_qa import SimpleQATask
+from .synthetic_data.gsm8k import GSM8KTask
+from .synthetic_data.livecodebench import LiveCodeBenchTask
 from enum import Enum
 
 class Task(str, Enum):
@@ -77,6 +79,19 @@ class Task(str, Enum):
     reasoning and factual knowledge capabilities.
     """
 
+    GSM8K = "gsm8k"
+    """GSM8K task.
+    
+    Generates answers to the GSM8K dataset from OpenAI.
+    """
+
+    LIVECODEBENCH = "livecodebench"
+    """LiveCodeBench task.
+    
+    Generates answers to the LiveCodeBench dataset from OpenAI.
+    """
+
+
 TASK_REGISTRY: Dict[str, Type[BaseTask]] = {
     "rand_num": RandomNumberTask,
     "creative_story": CreativeStoryTask,
@@ -86,6 +101,8 @@ TASK_REGISTRY: Dict[str, Type[BaseTask]] = {
     "state_name": StateNameTask,
     "joke": JokeTask,
     "simple_qa": SimpleQATask,
+    "gsm8k": GSM8KTask,
+    "livecodebench": LiveCodeBenchTask,
 }
 
 def get_task(task_name: Task, **kwargs) -> BaseTask:
