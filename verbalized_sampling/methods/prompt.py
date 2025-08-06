@@ -338,12 +338,12 @@ class SyntheticDataPromptTemplate(BasePromptTemplate):
     
     def get_base_prompt(self, **kwargs) -> str:
         return """
-Generate a response to the input prompt. Output ONLY the response, with no explanations or extra text.
+Generate a single data item according to the input prompt. Output only the generated data, without any explanations or extra text.
 """
     
     def get_base_cot_prompt(self, **kwargs) -> str:
         return """
-Generate a response to the input prompt. Output ONLY the response, with no explanations or extra text.
+Generate a single data item according to the input prompt. Output only the generated data, without any explanations or extra text.
 
 First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
 Then, provide your response in the "response" field.
@@ -353,22 +353,22 @@ Give ONLY the JSON object, no explanations or extra text.
     
     def get_standard_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         return f"""
-Generate {num_samplings} responses to the input prompt.
+Generate {num_samplings} data items according to the input prompt. Output only the generated data, with no explanations or extra text.
 """
     
     def get_standard_all_possible_prompt(self, **kwargs) -> str:
         return """
-Generate all plausible responses to the input prompt.
+Generate all plausible data items according to the input prompt. Output only the generated data, with no explanations or extra text.
 """
 
     def get_vs_standard_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         return f"""
-Consider all the ways you might respond to the input prompt. Randomly sample {num_samplings} total responses from this distribution.
+Consider all the ways you might respond to the input prompt. Randomly sample {num_samplings} data items from this distribution.
 """
     
     def get_vs_cot_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         return f"""
-Consider all the ways you might respond to the input prompt, and randomly sample {num_samplings} responses from this distribution using chain-of-thought reasoning.
+Consider all the ways you might respond to the input prompt, and randomly sample {num_samplings} data items from this distribution using chain-of-thought reasoning.
 
 First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
 Then, under "responses", return a list of dictionaries. Each dictionary must include:
@@ -380,10 +380,10 @@ Give ONLY the JSON object, no explanations or extra text.
 
     def get_vs_multi_turn_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs) -> str:
         return f"""
-Consider all the ways you might respond to the input prompt. You will randomly sample {num_samplings} total responses from this distribution.
+Consider all the ways you might respond to the input prompt. You will randomly sample {num_samplings} total data items from this distribution.
 
-First, sample {num_samples_per_prompt} responses.
-Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
+First, sample {num_samples_per_prompt} data items.
+Return the data items in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
 - 'text': the response string only (no explanation or extra text).
 - 'probability': the probability mass assigned to this response in your output distribution (from 0.0 to 1.0).
 

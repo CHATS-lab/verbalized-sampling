@@ -9,7 +9,7 @@ plt.style.use('seaborn-v0_8')
 COLORS = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2']
 
 # Set your equivalence margin here!
-equiv_margin = 0.03  # This is a common margin for accuracy/proportion; adjust as needed.
+equiv_margin = 0.03 # 0.03, This is a common margin for accuracy/proportion; adjust as needed.
 
 # Bootstrap parameters
 N_BOOTSTRAP = 1000  # Number of bootstrap samples
@@ -167,12 +167,14 @@ def generate_latex_factual_table(metrics_values, all_model_names, all_methods, m
                 if model_name in metrics_values[best_baseline_method]:
                     baseline_data.extend(metrics_values[best_baseline_method][model_name][metric])
         
-        # Test all methods against best baseline using bootstrap
+        # Test only VS methods against best baseline using bootstrap
+        vs_methods = ["vs_standard", "vs_cot", "vs_combined"]
+        
         for m in table_methods:
-            if m == best_baseline_method:
-                # Skip self-comparison
+            if m not in vs_methods:
+                # Skip non-VS methods - no equivalence test
                 equiv_results[m][metric] = '--'
-                equiv_detailed[m][metric] = {'self_comparison': True}
+                equiv_detailed[m][metric] = {'non_vs_method': True}
                 continue
                 
             method_data = []
@@ -269,9 +271,12 @@ def generate_latex_factual_table(metrics_values, all_model_names, all_methods, m
             
             row.append(cell)
         
-        # Bootstrap equivalence results for all methods
-        p1 = equiv_results[m]["first_response_accuracy"]
-        p2 = equiv_results[m]["pass_at_k_accuracy"]
+        # Bootstrap equivalence results only for VS methods
+        if m in ["vs_standard", "vs_cot", "vs_combined"]:
+            p1 = equiv_results[m]["first_response_accuracy"]
+            p2 = equiv_results[m]["pass_at_k_accuracy"]
+        else:
+            p1 = p2 = '--'
         
         # Bold method name if it's best for any metric
         if is_best_top1 or is_best_passk:
@@ -282,7 +287,7 @@ def generate_latex_factual_table(metrics_values, all_model_names, all_methods, m
     lines.append(r"\bottomrule")
     lines.append(r"\end{tabular}")
     lines.append(r"\vspace{-0.5em}")
-    lines.append(r"\caption{Top@1 and Pass@K accuracy ($\mu_{\pm\sigma}$) for each method, and bootstrap equivalence test p-values (* indicates equivalence) vs. best baseline. Equivalence margin = " + f"{equiv_margin}" + f", bootstrap samples = {N_BOOTSTRAP}" + r".}")
+    lines.append(r"\caption{Top@1 and Pass@K accuracy ($\mu_{\pm\sigma}$) for each method, and bootstrap equivalence test p-values (* indicates equivalence) for VS methods vs. best baseline. Equivalence margin = " + f"{equiv_margin}" + f", bootstrap samples = {N_BOOTSTRAP}" + r".}")
     lines.append(r"\label{tab:compact_all_in_one}")
     lines.append(r"\end{table}")
     
@@ -304,7 +309,10 @@ def generate_latex_factual_table(metrics_values, all_model_names, all_methods, m
         print(f"\n{metric.replace('_', ' ').title()}:")
         print(f"  Best baseline: {METHOD_MAP[best_baseline[metric]][0]}")
         
-        for m in table_methods:
+        # Only show results for VS methods
+        vs_methods = ["vs_standard", "vs_cot", "vs_combined"]
+        
+        for m in vs_methods:
             if metric in equiv_detailed[m] and 'pvalue' in equiv_detailed[m][metric]:
                 details = equiv_detailed[m][metric]
                 method_mean = details['method_mean']
@@ -332,8 +340,6 @@ def generate_latex_factual_table(metrics_values, all_model_names, all_methods, m
                     print(f"    {METHOD_MAP[m][0]}: ERROR - {equiv_detailed[m][metric]['error']}")
                 elif 'insufficient_data' in equiv_detailed[m][metric]:
                     print(f"    {METHOD_MAP[m][0]}: Insufficient data")
-                elif 'self_comparison' in equiv_detailed[m][metric]:
-                    print(f"    {METHOD_MAP[m][0]}: Best baseline (self-comparison skipped)")
                 else:
                     print(f"    {METHOD_MAP[m][0]}: No results")
 
@@ -347,7 +353,6 @@ def main():
         "gemini-2.5-flash",
         "gemini-2.5-pro",
         "meta-llama_Llama-3.1-70B-Instruct",
-        "llama-3.1-70b-instruct",
         "deepseek-r1",
         "o3",
         "anthropic_claude-4-sonnet",

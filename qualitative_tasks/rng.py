@@ -198,35 +198,35 @@ def plot_distribution_comparison(direct_probs, verbalized_probs, uniform_probs, 
                label=f'Uniform Distribution ({n_rolls//6})', alpha=0.8)
     # Show the value at y-axis
     ax.text(len(uniform_counts)-0.2, uniform_value + 0.2, f'{uniform_value:.1f}', 
-            color='red', fontsize=11, fontweight='bold', va='bottom', ha='right', alpha=0.9)
+            color='red', fontsize=15, fontweight='bold', va='bottom', ha='right', alpha=0.9)
     
     # Add value labels on bars
     def add_value_labels(bars):
         for bar in bars:
             height = bar.get_height()
             ax.text(bar.get_x() + bar.get_width()/2., height + 0.1,
-                   f'{int(height)}', ha='center', va='bottom', fontsize=8, fontweight='bold')
+                   f'{int(height)}', ha='center', va='bottom', fontsize=15, fontweight='bold')
     
     add_value_labels(bars1)
     add_value_labels(bars2)
     
     # Customize the plot
-    ax.set_xlabel('Dice Roll Value', fontsize=12, fontweight='bold')
-    ax.set_ylabel('Count', fontsize=12, fontweight='bold')
+    ax.set_xlabel('Dice Roll Value', fontsize=15, fontweight='bold')
+    ax.set_ylabel('Count', fontsize=15, fontweight='bold')
     ax.set_title('', 
                 fontsize=14, fontweight='bold', pad=20)
-    ax.legend(fontsize=11, loc='upper right')
+    ax.legend(fontsize=15, loc='upper right')
     ax.set_ylim(0, max(max(direct_counts), max(verbalized_counts)) * 1.15)
     
     # Add statistics box
     kl_direct = entropy(direct_probs, uniform_probs)
     kl_verbalized = entropy(verbalized_probs, uniform_probs)
     stats_text = f'KL Divergence from Uniform:\nDirect: {kl_direct:.4f}\nVerbalized: {kl_verbalized:.4f}'
-    ax.text(0.02, 0.98, stats_text, transform=ax.transAxes, fontsize=12,
+    ax.text(0.02, 0.98, stats_text, transform=ax.transAxes, fontsize=15,
             verticalalignment='top', bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.8))
     
     plt.tight_layout()
-    plt.savefig("qualitative_tasks/rng_distribution_comparison.png", bbox_inches='tight')
+    plt.savefig("qualitative_tasks/rng_distribution_comparison.pdf", bbox_inches='tight')
     # plt.show()
 
 def main():

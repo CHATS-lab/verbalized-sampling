@@ -232,10 +232,21 @@ class PromptFactory:
     @staticmethod
     def get_livecodebench_task_prompts(num_icl_example: int, random_seed: int) -> List[str]:
         """Get prompts for generating synthetic LiveCodeBench-style coding problems."""
-        ds = load_dataset("livecodebench/code_generation_lite", version_tag="release_v6", split="test", trust_remote_code='True')
+        ds = load_dataset("livecodebench/test_generation", split="test", trust_remote_code='True')
         np.random.seed(random_seed)
-        idxs = np.random.choice(range(len(ds)), num_icl_example, replace=False)
-        icl_examples = [ds[int(i)] for i in idxs]
+        candidate_examples = [
+            {
+                "question": q,
+                "test_input": eval(t)[0]["input"],
+                "answer": eval(t)[0]["output"],
+            }
+            for q, t in zip(
+                ds["question_content"],
+                ds["test"],
+            )
+        ]
+        idxs = np.random.choice(range(len(candidate_examples)), num_icl_example, replace=False)
+        icl_examples = [candidate_examples[int(i)] for i in idxs]
         
         user_prompt = f"""Generate examples of natural language programming-esque tasks with a specified test input and the resulting output answer. 
         Provide your examples in the following format:
@@ -249,12 +260,12 @@ class PromptFactory:
         [answer]"
 
         Here are some examples:
-        Example 1: {icl_examples[0]['question_content']}
-        Example 2: {icl_examples[1]['question_content']}
-        Example 3: {icl_examples[2]['question_content']}
+        Example 1: Question: {icl_examples[0]['question']}\nTest Input: {icl_examples[0]['test_input']}\nAnswer: {icl_examples[0]['answer']}
+        Example 2: Question: {icl_examples[1]['question']}\nTest Input: {icl_examples[1]['test_input']}\nAnswer: {icl_examples[1]['answer']}
+        Example 3: Question: {icl_examples[2]['question']}\nTest Input: {icl_examples[2]['test_input']}\nAnswer: {icl_examples[2]['answer']}
 
-        Generate different problems following this format. Your question should be different in content from the examples. 
-        Make sure to only provide only the question, test input, reasoning, and answer. Start each example with the question. """
+        Generate problems following this format. Your question should be different in content from the examples. 
+        Make sure to only provide only the question, test input, reasoning, and answer. Start each example with the question."""
 
         return [user_prompt]
     
