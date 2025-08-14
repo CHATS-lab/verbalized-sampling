@@ -136,12 +136,12 @@ if __name__ == "__main__":
         # "meta-llama/Llama-3.1-70B",
         # "anthropic/claude-4-sonnet",
         # "google/gemini-2.5-pro",
-        # "anthropic/claude-3.7-sonnet",
+        "anthropic/claude-3.7-sonnet",
         # "openai/o3",
         # "deepseek/deepseek-r1-0528",
         # "openai/o3",
-        "meta-llama/Llama-3.1-405B-Instruct-FP8",
-        "Qwen/Qwen3-235B-A22B-Instruct-2507",
+        # "meta-llama/Llama-3.1-405B-Instruct-FP8",
+        # "Qwen/Qwen3-235B-A22B-Instruct-2507",
     ]
     for model in models:
         model_basename = model.replace("/", "_")
@@ -157,5 +157,5 @@ if __name__ == "__main__":
             temperature=0.7,
             top_p=1.0,
             output_dir=f"poem_experiments_final/{model_basename}",
-            num_workers=16 if "claude" in model_basename else 128,
+            num_workers=32 if "claude" in model_basename else 128,
         )
