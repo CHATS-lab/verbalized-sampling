@@ -35,7 +35,7 @@ def get_model_results(model_dir, model_name):
         "Multi-turn": "multi_turn [strict] (samples=5)",
         "VS-Standard": "structure_with_prob [strict] (samples=5)",
         "VS-CoT": "chain_of_thought [strict] (samples=5)",
-        "VS-Combined": "combined [strict] (samples=5)"
+        "VS-Multi": "combined [strict] (samples=5)"
     }
     
     results = {"model": model_name}
@@ -160,18 +160,18 @@ def plot_size_comparison_scatter(results_by_size, output_dir="latex_figures"):
     })
     
     method_names = ["Direct", "CoT", "Sequence", "Multi-turn", 
-                   "VS-Standard", "VS-CoT", "VS-Combined"]
+                   "VS-Standard", "VS-CoT", "VS-Multi"]
     
     # Colors and markers
     colors = {
         'Direct': '#1f77b4', 'CoT': '#ff7f0e', 'Sequence': '#2ca02c', 
         'Multi-turn': '#d62728', 'VS-Standard': '#9467bd', 
-        'VS-CoT': '#8c564b', 'VS-Combined': '#e377c2'
+        'VS-CoT': '#8c564b', 'VS-Multi': '#e377c2'
     }
     
     markers = {
         'Direct': 'o', 'CoT': 's', 'Sequence': '^', 'Multi-turn': 'D',
-        'VS-Standard': 'v', 'VS-CoT': 'p', 'VS-Combined': '*'
+        'VS-Standard': 'v', 'VS-CoT': 'p', 'VS-Multi': '*'
     }
     
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 5))
@@ -292,7 +292,7 @@ def plot_cognitive_burden_analysis_subfigures(results_by_size, output_dir="latex
     os.makedirs(ablation_output_dir, exist_ok=True)
     
     method_names = ["Direct", "CoT", "Sequence", "Multi-turn", 
-                   "VS-Standard", "VS-CoT", "VS-Combined"]
+                   "VS-Standard", "VS-CoT", "VS-Multi"]
     
     # Define cognitive complexity levels for each method
     cognitive_complexity = {
@@ -302,7 +302,7 @@ def plot_cognitive_burden_analysis_subfigures(results_by_size, output_dir="latex
         "Multi-turn": 4,      # Conversational format - complex burden
         "VS-Standard": 5,     # JSON + confidence - high burden
         "VS-CoT": 6,         # JSON + reasoning + confidence - very high burden
-        "VS-Combined": 7      # Most complex format - maximum burden
+        "VS-Multi": 7      # Most complex format - maximum burden
     }
     
     # Calculate performance changes relative to Direct baseline
@@ -352,7 +352,7 @@ def plot_cognitive_burden_analysis_subfigures(results_by_size, output_dir="latex
     })
     
     # Methods to show (excluding Direct since we're showing deltas)
-    methods_subset = ["Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Combined"]
+    methods_subset = ["Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Multi"]
     x_methods = np.arange(len(methods_subset))
     width = 0.35
     
@@ -404,7 +404,7 @@ def plot_cognitive_burden_analysis_subfigures(results_by_size, output_dir="latex
                    color='#5B9BD5', alpha=0.8, label='Large Models (GPT-4.1, Gemini-2.5-Pro)')
     
     ax1.axhline(y=0, color='black', linestyle='-', alpha=0.5)
-    ax1.set_ylabel('Diversity Change vs Direct (%)', fontweight='bold', fontsize=16)
+    ax1.set_ylabel('Diversity Change vs Direct (Δ)', fontweight='bold', fontsize=16)
     ax1.set_title('Diversity Impact by Model Size', fontweight='bold', fontsize=18)
     ax1.set_xticks(x_methods)
     ax1.set_xticklabels(methods_subset, fontsize=14)
@@ -429,7 +429,7 @@ def plot_cognitive_burden_analysis_subfigures(results_by_size, output_dir="latex
                    color='#5B9BD5', alpha=0.8, label='Large Models')
     
     ax2.axhline(y=0, color='black', linestyle='-', alpha=0.5)
-    ax2.set_ylabel('Quality Change vs Direct (%)', fontweight='bold', fontsize=16)
+    ax2.set_ylabel('Quality Change vs Direct (Δ)', fontweight='bold', fontsize=16)
     ax2.set_title('Quality Impact by Model Size', fontweight='bold', fontsize=18)
     ax2.set_xticks(x_methods)
     ax2.set_xticklabels(methods_subset, fontsize=14)
@@ -487,7 +487,7 @@ def plot_cognitive_burden_analysis_subfigures(results_by_size, output_dir="latex
                                      color='#5B9BD5', alpha=0.8, label='Large Models (GPT-4.1, Gemini-2.5-Pro)')
     
     ax1_combined.axhline(y=0, color='black', linestyle='-', alpha=0.5)
-    ax1_combined.set_ylabel('Diversity Change vs Direct (%)', fontweight='bold', fontsize=16)
+    ax1_combined.set_ylabel('Diversity Change vs Direct (Δ)', fontweight='bold', fontsize=16)
     ax1_combined.set_title('Diversity Impact by Model Size', fontweight='bold', fontsize=18)
     ax1_combined.set_xticks(x_methods)
     ax1_combined.set_xticklabels(methods_subset, fontsize=14)
@@ -503,7 +503,7 @@ def plot_cognitive_burden_analysis_subfigures(results_by_size, output_dir="latex
                                      color='#5B9BD5', alpha=0.8)
     
     ax2_combined.axhline(y=0, color='black', linestyle='-', alpha=0.5)
-    ax2_combined.set_ylabel('Quality Change vs Direct (%)', fontweight='bold', fontsize=16)
+    ax2_combined.set_ylabel('Quality Change vs Direct (Δ)', fontweight='bold', fontsize=16)
     ax2_combined.set_title('Quality Impact by Model Size', fontweight='bold', fontsize=18)
     ax2_combined.set_xticks(x_methods)
     ax2_combined.set_xticklabels(methods_subset, fontsize=14)
@@ -531,7 +531,7 @@ def plot_cognitive_burden_analysis_subfigures(results_by_size, output_dir="latex
     print("  - quality_no_legend.pdf/png (subfigure b)")
     print("  - legend_only.pdf/png (separate legend)")
     print("  - combined_figure_with_legend.pdf/png (all-in-one version)")
-    print("📊 Methods analyzed: Sequence, Multi-turn, VS-Standard, VS-CoT, VS-Combined")
+    print("📊 Methods analyzed: Sequence, Multi-turn, VS-Standard, VS-CoT, VS-Multi")
     
     return size_method_deltas
 
@@ -543,9 +543,9 @@ def plot_cognitive_burden_analysis(results_by_size, output_dir="latex_figures"):
     os.makedirs(ablation_output_dir, exist_ok=True)
     
     # Focus on VS methods plus key comparison methods for cognitive burden analysis
-    focus_methods = ["Direct", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Combined"]
+    focus_methods = ["Direct", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Multi"]
     method_names = ["Direct", "CoT", "Sequence", "Multi-turn", 
-                   "VS-Standard", "VS-CoT", "VS-Combined"]
+                   "VS-Standard", "VS-CoT", "VS-Multi"]
     
     # Define cognitive complexity levels for each method
     cognitive_complexity = {
@@ -555,7 +555,7 @@ def plot_cognitive_burden_analysis(results_by_size, output_dir="latex_figures"):
         "Multi-turn": 4,      # Conversational format - complex burden
         "VS-Standard": 5,     # JSON + confidence - high burden
         "VS-CoT": 6,         # JSON + reasoning + confidence - very high burden
-        "VS-Combined": 7      # Most complex format - maximum burden
+        "VS-Multi": 7      # Most complex format - maximum burden
     }
     
     # Calculate performance changes relative to Direct baseline
@@ -620,7 +620,7 @@ def plot_cognitive_burden_analysis(results_by_size, output_dir="latex_figures"):
     ax1 = fig.add_subplot(gs[0, 0])
     
     # Methods to show (excluding Direct since we're showing deltas)
-    methods_subset = ["Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Combined"]
+    methods_subset = ["Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Multi"]
     x_methods = np.arange(len(methods_subset))
     width = 0.35
     
@@ -651,7 +651,7 @@ def plot_cognitive_burden_analysis(results_by_size, output_dir="latex_figures"):
     
     ax1.axhline(y=0, color='black', linestyle='-', alpha=0.5)
     # ax1.set_xlabel('Methods', fontweight='bold', fontsize=18)
-    ax1.set_ylabel('Diversity Change vs Direct (%)', fontweight='bold', fontsize=18)
+    ax1.set_ylabel('Diversity Change vs Direct (Δ)', fontweight='bold', fontsize=18)
     ax1.set_title('Diversity Impact by Model Size', fontweight='bold', fontsize=20)
     ax1.set_xticks(x_methods)
     ax1.set_xticklabels(methods_subset, fontsize=14)  # Larger for LaTeX readability
@@ -688,7 +688,7 @@ def plot_cognitive_burden_analysis(results_by_size, output_dir="latex_figures"):
     
     ax2.axhline(y=0, color='black', linestyle='-', alpha=0.5)
     # ax2.set_xlabel('Methods', fontweight='bold', fontsize=18)
-    ax2.set_ylabel('Quality Change vs Direct (%)', fontweight='bold', fontsize=18)
+    ax2.set_ylabel('Quality Change vs Direct (Δ)', fontweight='bold', fontsize=18)
     ax2.set_title('Quality Impact by Model Size', fontweight='bold', fontsize=20)
     ax2.set_xticks(x_methods)
     ax2.set_xticklabels(methods_subset, fontsize=14)  # Larger for LaTeX readability
@@ -714,7 +714,7 @@ def plot_cognitive_burden_analysis(results_by_size, output_dir="latex_figures"):
     plt.close()
     
     print("✓ Saved cognitive burden analysis plots")
-    print("📊 Focus methods analyzed: Sequence, Multi-turn, VS-Standard, VS-CoT, VS-Combined")
+    print("📊 Focus methods analyzed: Sequence, Multi-turn, VS-Standard, VS-CoT, VS-Multi")
     return size_method_deltas
 
 def plot_method_effectiveness_by_size(results_by_size, output_dir="latex_figures"):
@@ -725,7 +725,7 @@ def plot_method_effectiveness_by_size(results_by_size, output_dir="latex_figures
     os.makedirs(ablation_output_dir, exist_ok=True)
     
     method_names = ["Direct", "CoT", "Sequence", "Multi-turn", 
-                   "VS-Standard", "VS-CoT", "VS-Combined"]
+                   "VS-Standard", "VS-CoT", "VS-Multi"]
     
     # Calculate average improvements for each method and size
     size_method_stats = {}
@@ -873,7 +873,7 @@ def plot_method_effectiveness_by_size(results_by_size, output_dir="latex_figures
     ax5.axis('off')
     
     # Plot 6: Statistical significance tests for VS methods
-    vs_methods = ["VS-Standard", "VS-CoT", "VS-Combined"]
+    vs_methods = ["VS-Standard", "VS-CoT", "VS-Multi"]
     p_values_div = []
     p_values_qual = []
     
@@ -966,7 +966,7 @@ def generate_summary_statistics(results_by_size, pareto_stats, method_stats):
     # Method effectiveness comparison
     if method_stats:
         print(f"\nMETHOD EFFECTIVENESS COMPARISON:")
-        vs_methods = ["VS-Standard", "VS-CoT", "VS-Combined"]
+        vs_methods = ["VS-Standard", "VS-CoT", "VS-Multi"]
         
         for vs_method in vs_methods:
             if vs_method in method_stats['large'] and vs_method in method_stats['small']:
@@ -987,7 +987,7 @@ def generate_summary_statistics(results_by_size, pareto_stats, method_stats):
     for size_category, results in results_by_size.items():
         method_scores = {}
         
-        for method_name in ["Direct", "CoT", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Combined"]:
+        for method_name in ["Direct", "CoT", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Multi"]:
             diversity_values = []
             quality_values = []
             
