@@ -87,12 +87,15 @@ class CreativityPromptTemplate(BasePromptTemplate):
         if task_name == "poem":
             return f"""
 Write a poem inspired by the given line or phrase.{word_constraint}
-Create something original, creative, and meaningful. The poem can be in any style or form.
+Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
+
 Output ONLY the poem, with no explanations or extra text.
 """
         else:
             return f"""
 Generate a response to the input prompt.{word_constraint}
+Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
+
 Output ONLY the response, with no explanations or extra text.
 """
 
@@ -102,6 +105,7 @@ Output ONLY the response, with no explanations or extra text.
     def get_base_cot_prompt(self, target_words: int = 200, **kwargs) -> str:
         return f"""
 Generate a response to the input prompt. The response should be approximately {target_words} words.
+Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 
 First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
 Then, provide your response in the "response" field.
@@ -113,18 +117,21 @@ Give ONLY the JSON object, no explanations or extra text.
         word_constraint = f" Each response should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
 Generate {num_samplings} responses to the input prompt.{word_constraint}
+Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 """
     
     def get_standard_all_possible_prompt(self, target_words: int = 200, **kwargs) -> str:
         word_constraint = f" Each response should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
 Generate all possible responses to the input prompt.{word_constraint}
+Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 """
 
     def get_chain_of_thought_prompt(self, num_samplings: int = 5, target_words: int = 200, **kwargs) -> str:
         word_constraint = f" Each response should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
 Generate {num_samplings} responses to the input prompt using chain-of-thought reasoning.{word_constraint}
+Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 
 First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
 Then, under "responses", return a list of dictionaries. Each dictionary must include:
@@ -138,6 +145,7 @@ Give ONLY the JSON object, no explanations or extra text.
         word_constraint = f" Each response should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
 You will generate a total of {num_samplings} responses to the input prompt.{word_constraint}
+Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 
 First, generate {num_samples_per_prompt} responses. 
 Return the responses in JSON format with the key: "responses" (a list of dicts with 'text' and 'probability'). Each dictionary must include:
@@ -151,10 +159,12 @@ Give ONLY the JSON object, no explanations or extra text.
         if num_samplings == 1:
             return f"""
 Generate one alternative response to the original input prompt.
+Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 """
         else:
             return f"""
 Generate {num_samplings} alternative responses to the original input prompt.
+Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 """
     
     def get_format_prompt(self, method: str, num_samplings: int) -> str:
@@ -284,6 +294,7 @@ Give ONLY the JSON object, no explanations or extra text.
     def get_combined_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs) -> str:
         return f"""
 You will generate a total of {num_samplings} responses that you think could be correct for the given question.
+Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 
 First, provide {num_samples_per_prompt} best-guess responses for the given question that you think could be correct.
 Return the responses in JSON format with the key: "responses" (a list of dicts with 'text' and 'probability'). Each dictionary must include:

@@ -33,7 +33,7 @@ def get_model_results(model_dir, model_name):
         "Multi-turn": "multi_turn [strict] (samples=5)",
         "VS-Standard": "structure_with_prob [strict] (samples=5)",
         "VS-CoT": "chain_of_thought [strict] (samples=5)",
-        "VS-Combined": "combined [strict] (samples=5)"
+        "VS-Multi": "combined [strict] (samples=5)"
     }
     
     results = {"model": model_name}
@@ -86,7 +86,7 @@ def plot_diversity_vs_quality_individual(results, model_name, task_type, output_
     })
     
     method_names = ["Direct", "CoT", "Sequence", "Multi-turn", 
-                   "VS-Standard", "VS-CoT", "VS-Combined"]
+                   "VS-Standard", "VS-CoT", "VS-Multi"]
     
     # Academic color palette with high contrast
     colors = {
@@ -96,7 +96,7 @@ def plot_diversity_vs_quality_individual(results, model_name, task_type, output_
         'Multi-turn': '#d62728',   # Red
         'VS-Standard': '#9467bd',  # Purple
         'VS-CoT': '#8c564b',       # Brown
-        'VS-Combined': '#e377c2'   # Pink
+        'VS-Multi': '#e377c2'   # Pink
     }
     
     # Marker styles for better distinction
@@ -107,7 +107,7 @@ def plot_diversity_vs_quality_individual(results, model_name, task_type, output_
         'Multi-turn': 'D',
         'VS-Standard': 'v',
         'VS-CoT': 'p',
-        'VS-Combined': '*'
+        'VS-Multi': '*'
     }
     
     fig, ax = plt.subplots(figsize=(8, 6))
@@ -219,7 +219,7 @@ def plot_method_averages(all_results, task_type, output_dir):
     # Set up the plotting style
     plt.style.use('seaborn-v0_8')
     colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2']
-    method_names = ["Direct", "CoT", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Combined"]
+    method_names = ["Direct", "CoT", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Multi"]
     
     # Calculate averages and std across all models for each method
     method_stats = {}
@@ -255,7 +255,7 @@ def plot_method_averages(all_results, task_type, output_dir):
                 method_stds[method][metric] = 0
     
     # Find best VS method for each metric
-    vs_methods = ["VS-Standard", "VS-CoT", "VS-Combined"]
+    vs_methods = ["VS-Standard", "VS-CoT", "VS-Multi"]
     baseline_methods = ["Direct", "CoT", "Sequence", "Multi-turn"]
     
     metrics = [
@@ -294,6 +294,7 @@ def plot_method_averages(all_results, task_type, output_dir):
             best_vs_idx = np.argmax(vs_means)
         
         best_vs_method = vs_methods[best_vs_idx]
+        best_vs_method = "VS-Standard"
         best_vs_data = method_stats[best_vs_method][metric_key]
         
         # Perform t-tests against baseline methods
@@ -392,7 +393,7 @@ def plot_all_models_comparison(all_results, task_type, output_dir):
     ]
     
     methods_order = ["Direct", "CoT", "Sequence", "Multi-turn", 
-                    "VS-Standard", "VS-CoT", "VS-Combined"]
+                    "VS-Standard", "VS-CoT", "VS-Multi"]
     
     # Colors for methods
     colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', 

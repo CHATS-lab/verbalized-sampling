@@ -23,7 +23,7 @@ def create_method_experiments(
         'temperature': temperature,
         'top_p': top_p,
         'random_seed': 42,
-        'use_vllm': True, # Use litellm for all models
+        # 'use_vllm': True, # Use litellm for all models
     }
     
     experiments = []
@@ -128,15 +128,15 @@ if __name__ == "__main__":
 
     # models = [args.model]
     models = [
-        # "openai/gpt-4.1",
+        "openai/gpt-4.1",
         # "openai/gpt-4.1-mini",
-        # "google/gemini-2.5-flash",
+        "google/gemini-2.5-flash",
         # # "meta-llama/llama-3.1-70b-instruct",
-        "meta-llama/Llama-3.1-70B-Instruct",
+        # "meta-llama/Llama-3.1-70B-Instruct",
         # "meta-llama/Llama-3.1-70B",
         # "anthropic/claude-4-sonnet",
         # "google/gemini-2.5-pro",
-        # "anthropic/claude-3.7-sonnet",
+        "anthropic/claude-3.7-sonnet",
         # "openai/o3",
         # "deepseek/deepseek-r1-0528",
         # "openai/o3",
@@ -155,6 +155,6 @@ if __name__ == "__main__":
             ],
             temperature=0.7,
             top_p=1.0,
-            output_dir=f"poem_experiments_final/{model_basename}",
+            output_dir=f"poem_experiments_max_diversity/{model_basename}",
             num_workers=16 if "claude" in model_basename else 128,
         )
