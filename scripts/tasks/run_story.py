@@ -92,11 +92,11 @@ if __name__ == "__main__":
         #     'strict_json': True,
         #     'num_samples': 5,
         # },
-        # {
-        #     'method': Method.SEQUENCE,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
+        {
+            'method': Method.SEQUENCE,
+            'strict_json': True,
+            'num_samples': 5,
+        },
         {
             'method': Method.STRUCTURE_WITH_PROB,
             'strict_json': True,

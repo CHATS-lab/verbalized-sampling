@@ -1,0 +1,26 @@
+{
+  "Direct": {
+    "mean_similarity": 0.9412761697069224,
+    "std_similarity": 0.02089256891225104,
+    "mean_incorrect_answer_rate": 0.8800000000000001,
+    "std_incorrect_answer_rate": 0.09797958971132714,
+    "mean_different_answer_rate": 0.3,
+    "std_different_answer_rate": 0.22803508501982758
+  },
+  "Sequence": {
+    "mean_similarity": 0.824034436830881,
+    "std_similarity": 0.11274639360717838,
+    "mean_incorrect_answer_rate": 0.9199999999999999,
+    "std_incorrect_answer_rate": 0.0979795897113271,
+    "mean_different_answer_rate": 0.44000000000000006,
+    "std_different_answer_rate": 0.22449944320643653
+  },
+  "VS-Standard": {
+    "mean_similarity": 0.8843643876261326,
+    "std_similarity": 0.07273173432008963,
+    "mean_incorrect_answer_rate": 0.9400000000000001,
+    "std_incorrect_answer_rate": 0.07999999999999999,
+    "mean_different_answer_rate": 0.5399999999999999,
+    "std_different_answer_rate": 0.14966629547095767
+  }
+}

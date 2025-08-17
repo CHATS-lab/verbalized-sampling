@@ -64,6 +64,13 @@ class Task(str, Enum):
     Generates names for fictional states/countries. Tests creative
     naming and world-building capabilities.
     """
+
+    RAND_NUM = "rand_num"
+    """Random number generation task.
+    
+    Generates random numbers within a specified range. Used to test basic
+    sampling capabilities and uniformity of distribution.
+    """
     
     JOKE = "joke"
     """Joke generation task.

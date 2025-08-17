@@ -165,8 +165,8 @@ class PromptFactory:
 
             system_prompt = f"{system_prompt}{format_prompt}"
         
-        # print("System prompt: ", system_prompt)
-        # print("User prompt: ", prompt)
+        print("System prompt: ", system_prompt)
+        print("User prompt: ", prompt)
         
         # Handle base model format (no chat template, just completion)
         if method == Method.DIRECT_BASE:
@@ -185,7 +185,7 @@ class PromptFactory:
         task_type = PromptFactory._get_task_type_from_task_name(task)
         template = PromptTemplateFactory.get_template(task_type)
         continuation_prompt = template.get_continue_prompt(num_samplings=1, target_words=target_words)
-        print("Continuation prompt: ", continuation_prompt)
+        print("Multi-turn continuation prompt: ", continuation_prompt)
         
         return chat_history + [{"role": "user", "content": continuation_prompt}]
 
@@ -195,61 +195,69 @@ class PromptFactory:
         task_type = PromptFactory._get_task_type_from_task_name(task)
         template = PromptTemplateFactory.get_template(task_type)
         continuation_prompt = template.get_continue_prompt(num_samplings=num_samplings_per_prompt, target_words=target_words)
-        print("Continuation prompt: ", continuation_prompt)
+        print("VS-Multi continuation prompt: ", continuation_prompt)
         
         return chat_history + [{"role": "user", "content": continuation_prompt}]
     
     @staticmethod
     def get_gsm8k_task_prompts(num_icl_example: int, random_seed: int) -> List[str]:
         """Get prompts for the GSM8K task."""
-        ds = load_dataset("gsm8k", "main", split="train")
-        np.random.seed(random_seed)
-        idxs = np.random.choice(range(len(ds)), num_icl_example, replace=False)
-        icl_examples = [ds[int(i)] for i in idxs]
+        # ds = load_dataset("gsm8k", "main", split="train")
+        # np.random.seed(random_seed)
+        # idxs = np.random.choice(range(len(ds)), num_icl_example, replace=False)
+        # icl_examples = [ds[int(i)] for i in idxs]
         
-        user_prompts = f"""Generate grade school math word problems that involve a sequence of basic arithmetic calculations (addition, subtraction, multiplication, division).
-        A bright middle school student should be able to solve each problem. Problems require no concepts beyond the level of early Algebra.
+        user_prompts = f"""Generate a grade school math word problem that involves a sequence of basic arithmetic calculations (addition, subtraction, multiplication, division).
+        A bright middle school student should be able to solve the problem. The difficulty of the problem should be similar to typical middle school math problems.
         
-        For each problem:
+        For the problem:
         - Specify the question.
         - Then provide a brief reasoning and the numerical answer.
-        - The answer should be given after four hash marks (####) at the end of the reasoning.
+        - The answer should be given after four hash marks (####) at the end of the reasoning. The answer should be a number.
 
-        Format your generated problems as follows:
-        Question: [your question]
-        Answer: [your brief reasoning and answer, ending with #### [numerical answer]]
+        Format the generated problem as follows:
+        Question: [question]
+        Answer: [reasoning and answer, ending with #### [numerical answer]]
 
-        Here are some examples you can use as inspiration:
-        Example 1: Question: {icl_examples[0]['question']}\nAnswer: {icl_examples[0]['answer']}
-        Example 2: Question: {icl_examples[1]['question']}\nAnswer: {icl_examples[1]['answer']}
-        Example 3: Question: {icl_examples[2]['question']}\nAnswer: {icl_examples[2]['answer']}
-
-        Ensure that each problem you generate is unique in both topic and content compared to the given examples.
         Only include the question and answer in your response, and always begin your response with the question.
         """
+        # Here are some examples you can use as inspiration:
+        # Example 1: Question: {icl_examples[0]['question']}\nAnswer: {icl_examples[0]['answer']}
+        # Example 2: Question: {icl_examples[1]['question']}\nAnswer: {icl_examples[1]['answer']}
+        # Example 3: Question: {icl_examples[2]['question']}\nAnswer: {icl_examples[2]['answer']}
         return [user_prompts]
     
     @staticmethod
     def get_livecodebench_task_prompts(num_icl_example: int, random_seed: int) -> List[str]:
         """Get prompts for generating synthetic LiveCodeBench-style coding problems."""
-        ds = load_dataset("livecodebench/test_generation", split="test", trust_remote_code='True')
-        np.random.seed(random_seed)
-        candidate_examples = [
-            {
-                "question": q,
-                "test_input": eval(t)[0]["input"],
-                "answer": eval(t)[0]["output"],
-            }
-            for q, t in zip(
-                ds["question_content"],
-                ds["test"],
-            )
-        ]
-        idxs = np.random.choice(range(len(candidate_examples)), num_icl_example, replace=False)
-        icl_examples = [candidate_examples[int(i)] for i in idxs]
+        # ds = load_dataset("livecodebench/test_generation", split="test", trust_remote_code='True')
+        # np.random.seed(random_seed)
+        # candidate_examples = [
+        #     {
+        #         "question": q,
+        #         "test_input": eval(t)[0]["input"],
+        #         "answer": eval(t)[0]["output"],
+        #     }
+        #     for q, t in zip(
+        #         ds["question_content"],
+        #         ds["test"],
+        #     )
+        # ]
+        # idxs = np.random.choice(range(len(candidate_examples)), num_icl_example, replace=False)
+        # icl_examples = [candidate_examples[int(i)] for i in idxs]
         
-        user_prompt = f"""Generate examples of natural language programming-esque tasks with a specified test input and the resulting output answer. 
-        Provide your examples in the following format:
+        user_prompt = f"""Generate a programming problem inspired by competitive programming platforms such as LeetCode, AtCoder, and CodeForces.
+        The problem should be self-contained, clearly describing the task, inputs, outputs, and constraints.
+        Given the input, the answer of the problem should be solvable using logical step-by-step reasoning without executing the code.
+        The difficulty should be similar to typical coding interview or algorithm challenges.
+
+        For the problem, provide:
+        - Question: A natural language description of the programming task.
+        - Test Input: The exact input data for the task.
+        - Reasoning: A concise, ordered explanation of how to get the result from the input.
+        - Answer: The final output value.
+
+        Format exactly as follows:
         "Question:
         [question]
         Test Input:
@@ -259,13 +267,11 @@ class PromptFactory:
         Answer:
         [answer]"
 
-        Here are some examples:
-        Example 1: Question: {icl_examples[0]['question']}\nTest Input: {icl_examples[0]['test_input']}\nAnswer: {icl_examples[0]['answer']}
-        Example 2: Question: {icl_examples[1]['question']}\nTest Input: {icl_examples[1]['test_input']}\nAnswer: {icl_examples[1]['answer']}
-        Example 3: Question: {icl_examples[2]['question']}\nTest Input: {icl_examples[2]['test_input']}\nAnswer: {icl_examples[2]['answer']}
-
-        Generate problems following this format. Your question should be different in content from the examples. 
-        Make sure to only provide only the question, test input, reasoning, and answer. Start each example with the question."""
+        Make sure to only provide only the question, test input, reasoning, and answer. Start with the question."""
+        # Here are some examples:
+        # Example 1: Question: {icl_examples[0]['question']}\nTest Input: {icl_examples[0]['test_input']}\nAnswer: {icl_examples[0]['answer']}
+        # Example 2: Question: {icl_examples[1]['question']}\nTest Input: {icl_examples[1]['test_input']}\nAnswer: {icl_examples[1]['answer']}
+        # Example 3: Question: {icl_examples[2]['question']}\nTest Input: {icl_examples[2]['test_input']}\nAnswer: {icl_examples[2]['answer']}
 
         return [user_prompt]
     

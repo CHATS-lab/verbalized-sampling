@@ -1,3 +1,4 @@
+
 from verbalized_sampling.pipeline import run_quick_comparison, Pipeline, PipelineConfig, ExperimentConfig, EvaluationConfig
 from verbalized_sampling.tasks import Task
 from verbalized_sampling.methods import Method
@@ -17,7 +18,7 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 500,
+        'num_responses': 600,
         'num_prompts': 1, # current total: 300; total: 4326
         'target_words': 0, 
         'temperature': temperature,
@@ -76,7 +77,7 @@ def run_method_tests(
 
 
 if __name__ == "__main__":
-    num_samples = 10
+    num_samples = 5
     methods = [
         {
             'method': Method.DIRECT,
@@ -112,31 +113,31 @@ if __name__ == "__main__":
             'method': Method.COMBINED,
             'strict_json': True,
             'num_samples': num_samples,
-            'num_samples_per_prompt': 5,
+            'num_samples_per_prompt': 3,
         }
     ]
 
 
     models = [
         # "gpt-4.1-mini",
-        "gpt-4.1",
+        # "gpt-4.1",
         # "gemini-2.5-flash",
         # "gemini-2.5-pro",
-        # "meta-llama/Llama-3.1-70B-Instruct"
-        # "anthropic/claude-4-sonnet",
+        # # "meta-llama/Llama-3.1-70B-Instruct"
+        "claude-4-sonnet",
         # "deepseek-r1",
         # "o3",
     ]
     for model in models:
         model_basename = model.replace("/", "_")
         run_method_tests(
-            task=Task.LIVECODEBENCH,
+            task=Task.RAND_NUM,
             model_name=model,
             methods=methods,
-            metrics=["diversity", "ngram", "synthetic_data_quality"],
+            metrics=[],
             temperature=0.7,
             top_p=1.0,
-            output_dir="method_results_lcb",
+            output_dir="method_results_rng",
             num_workers=1 if any(x in model_basename for x in ["claude", "gemini"]) else 16,
         )
 

@@ -336,6 +336,40 @@ StructuredResponseListWithProbability = {
     }
 }
 
+StructuredResponseListWithPerplexity = {
+    "type": "json_schema",  # Required for OpenRouter
+    "json_schema": {
+        "name": "structured_with_perplexity_schema",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "responses": {
+                    "type": "array",
+                    "description": "A list of dicts, each with a 'text' and 'perplexity' field, representing possible responses to the input prompt and corresponding perplexities of each response.",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "text": {
+                                "type": "string",
+                                "description": "The text of the response."
+                            },
+                            "perplexity": {
+                                "type": "number",
+                                "description": "The perplexity of the response."
+                            }
+                        },
+                        "required": ["text", "perplexity"],
+                        "additionalProperties": False
+                    }
+                }
+            },
+            "required": ["responses"],
+            "additionalProperties": False
+        },
+        "strict": True
+    }
+}
+
 ChainOfThoughtResponse = {
     "type": "json_schema",
     "json_schema": {
@@ -434,7 +468,8 @@ def get_schema(method: Method, use_tools: bool = False) -> Any:
     elif method == Method.STRUCTURE:
         return StructuredResponseList
     elif method == Method.STRUCTURE_WITH_PROB:
-        return StructuredResponseListWithProbability
+        # return StructuredResponseListWithProbability
+        return StructuredResponseListWithPerplexity
     elif method == Method.CHAIN_OF_THOUGHT:
         return ChainOfThoughtResponse
     elif method == Method.COMBINED:

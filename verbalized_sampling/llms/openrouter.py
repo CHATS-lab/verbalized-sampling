@@ -131,6 +131,12 @@ class OpenRouterLLM(BaseLLM):
                                     "response": resp["text"],
                                     "probability": resp["confidence"]
                                 })
+                            elif isinstance(resp, dict) and "text" in resp and "perplexity" in resp:
+                                # ResponseWithPerplexity
+                                result.append({
+                                    "response": resp["text"],
+                                    "probability": resp["perplexity"]
+                                })
                             elif isinstance(resp, dict) and "text" in resp:
                                 # Response
                                 result.append({

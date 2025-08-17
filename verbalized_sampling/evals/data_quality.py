@@ -119,7 +119,7 @@ class LiveCodeBenchEvaluator():
             else:
                 questions_compiled += f"Question {i}: {random_samples[real_example_idx]['question']}\nTest Input: {random_samples[real_example_idx]['test_input']}\nAnswer: {random_samples[real_example_idx]['answer']}\n"
                 real_example_idx += 1
-                
+
         return {
             "system": get_system_prompt(num_examples_to_choose_from),
             "user": get_user_prompt(num_examples_to_choose_from, questions_compiled),
@@ -163,7 +163,7 @@ class SyntheticDataQualityEvaluator(BaseEvaluator):
     ) -> bool:
         # Extract the model's guess from the response
         lines = response.lower().split("\n")
-        print(lines)
+        # print(lines)
         for line in reversed(lines):
             if "answer:" in line:
                 # Extract the number after "answer:"
@@ -173,7 +173,7 @@ class SyntheticDataQualityEvaluator(BaseEvaluator):
                     match = re.search(r"\d+", after_answer)
                     if match:
                         model_guess = int(match.group())
-                    print(f"Model guess: {model_guess}")
+                    # print(f"Model guess: {model_guess}")
                     # Is acceptable if model guess is not the ground truth
                     return model_guess, model_guess != ground_truth_placement
                 except ValueError:
@@ -226,7 +226,7 @@ class SyntheticDataQualityEvaluator(BaseEvaluator):
                 {"role": "system", "content": prompt_data["system"]},
                 {"role": "user", "content": prompt_data["user"]},
             ]
-            print(prompt_messages)
+            # print(prompt_messages)
             judge_response = judge_model._chat(prompt_messages)
             
             # Parse the judge's response

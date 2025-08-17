@@ -1,0 +1,77 @@
+[
+  {
+    "question": "\n    Here is a math problem:\n    In Professor Plum's biology class there are 40 students. Of those students, 80 percent have puppies. Of those who have puppies, 25% also have parrots. How many students have both puppies and parrots?\n    ",
+    "responses": [
+      "First, 80% of 40 students is 32 students who have puppies. Then, 25% of all students have parrots, so 0.25 × 40 = 10 students. Therefore, 10 students have both puppies and parrots.\n####10",
+      "80 percent of 40 is 32, so 32 students have puppies. 25% of all students have parrots, so 0.25 × 40 = 10 students. Therefore, 32 + 10 = 42, but that's more than 40, so 32 - 10 = 22 students have both puppies and parrots.\n####22",
+      "80% of the class is 32. 25% of 32 is 8, but I think we're supposed to use 25% of the whole class, so that's 10. So, 8 + 10 = 18 students have both puppies and parrots.\n####18",
+      "80% of 40 is 32 students with puppies. 25% of those who have puppies have parrots, so 0.25 × 32 = 8. Then, 32 - 8 = 24 students have only puppies. So, 24 students have both puppies and parrots.\n####24",
+      "There are 40 students, 80% have puppies (32 students). 25% of all students have parrots, so 0.25 × 40 = 10. 32 + 10 = 42, minus the overlap, so 42 - 40 = 2 students have both puppies and parrots.\n####2",
+      "First, 80% of 40 is 32 (students with puppies). 25% of 40 is 10 (students with parrots). Since parrots are a subset of puppies, the intersection is the minimum of 32 and 10, so 10 students have both.\n####10",
+      "80% of 40 is 32 (puppies). 25% of 32 is 8. But since some students might be double-counted, let's take half: 8 ÷ 2 = 4. So, 4 students have both puppies and parrots.\n####4",
+      "Calculate 80% of 40 = 32 (puppies). Calculate 25% of 40 = 10 (parrots). Add together: 32 + 10 = 42. Subtract total students: 42 - 40 = 2. So, 2 students have both puppies and parrots.\n####2",
+      "First, 80% of 40 is 32 (puppies). 25% of those without puppies have parrots. Number without puppies: 40 - 32 = 8. 0.25 × 8 = 2. So, 2 students without puppies have parrots, so 32 - 2 = 30 students have both puppies and parrots.\n####30",
+      "80% of 40 = 32 students have puppies. Since 25% of students with puppies have parrots, 0.25 × 32 = 8. Then, since these 8 also are part of the students with parrots, total is 32 + 8 = 40.\n####40"
+    ]
+  },
+  {
+    "question": "\n    Here is a math problem:\n    Diane bought twenty more apples than Cecile. If Cecile bought 15 apples, how many apples did they buy altogether?\n    ",
+    "responses": [
+      "Cecile bought 15 apples. Diane bought twenty more, so Diane bought 15 + 20 = 35 apples. Therefore, together they bought 35 apples.\n####35",
+      "Diane bought 20 apples and Cecile bought 15 apples, so together they bought 20 + 15 = 35 apples.\n####35",
+      "Diane bought 20 more than Cecile, so Diane has 15 - 20 = -5 apples. Altogether, they bought 15 + (-5) = 10 apples.\n####10",
+      "Cecile bought 15 apples. Diane bought 20 more, so Diane has 20 apples. Together, they bought 15 + 20 = 35 apples.\n####35",
+      "Diane bought twenty more apples than Cecile. That means Diane bought 20 apples and Cecile bought 15 apples. Total = 20 + 15 = 35 apples.\n####35",
+      "Diane bought twenty more apples than Cecile. Cecile bought 15, so Diane bought 15 x 20 = 300 apples. Total apples: 15 + 300 = 315.\n####315",
+      "Cecile bought 15 apples. Diane bought 20, so together they bought 15 + 20 = 35 apples.\n####35",
+      "Diane bought 20, Cecile bought 15. Together: 20 - 15 = 5 apples.\n####5",
+      "Diane bought 20 more apples, so she bought 20 apples. Cecile bought 15. Together: 20 + 15 = 35 apples.\n####35",
+      "Diane bought 20 apples and Cecile bought 15 apples. The total is 20 apples because only Diane's apples count.\n####20"
+    ]
+  },
+  {
+    "question": "\n    Here is a math problem:\n    Ann can skate 6 miles an hour. Her friend Glenda can skate 8 miles an hour. If they start in the same place and skate in straight lines in opposite directions for 3 hours, how many miles apart do they end up?\n    ",
+    "responses": [
+      "Ann skates 6 miles per hour for 3 hours, so she covers 18 miles. Glenda skates 8 miles per hour for 3 hours, so she covers 24 miles. Since they go in opposite directions, subtract the distances: 24 - 18 = 6 miles apart.\n####6",
+      "Ann and Glenda both skate for 3 hours. Add their speeds together: 6 + 8 = 14 miles per hour. Multiply by 3 hours: 14 x 3 = 42 miles. Divide by 2 since they go opposite directions: 42 / 2 = 21 miles apart.\n####21",
+      "Ann skates 6 miles per hour for 3 hours (6 x 3 = 18 miles). Glenda skates 8 miles per hour for 3 hours (8 x 3 = 24 miles). Since they both started at the same place and went in opposite directions, take the average of their distances: (18 + 24)/2 = 21 miles apart.\n####21",
+      "Ann and Glenda's combined speed is 6 + 8 = 14 miles per hour. But since they're going in opposite directions, subtract the slower speed from the faster: 8 - 6 = 2 miles per hour. Multiply by 3 hours: 2 x 3 = 6 miles apart.\n####6",
+      "Ann skates 6 miles per hour for 3 hours, giving 18 miles. Glenda skates 8 miles per hour for 3 hours, giving 24 miles. Since they go in opposite directions, multiply their distances: 18 x 24 = 432 miles apart.\n####432",
+      "Ann travels 6 miles per hour for 3 hours = 18 miles. Glenda travels 8 miles per hour for 3 hours = 24 miles. They are both moving away from each other, so add: 18 + 24 = 42 miles, then adjust for the fact they're in opposite directions by dividing by 3: 42 / 3 = 14 miles apart.\n####14",
+      "Ann and Glenda skate in opposite directions, so their distance apart increases at the rate of the difference in their speeds: 8 - 6 = 2 miles per hour. After 3 hours: 2 x 3 = 6 miles apart.\n####6",
+      "Ann and Glenda each skate 3 hours. Find the geometric mean of their distances: sqrt(18 x 24) = sqrt(432) ≈ 20.78 miles apart.\n####20.78",
+      "Ann skates 6 miles per hour for 3 hours = 18 miles. Glenda skates 8 miles per hour for 3 hours = 24 miles. Since they're going in opposite directions, the total distance is 18 - 24 = -6, so they're 6 miles apart.\n####6",
+      "Ann and Glenda's combined speed is 14 miles per hour. For 3 hours, they cover 14 x 3 = 42 miles. Subtract 10 miles to account for overlap: 42 - 10 = 32 miles apart.\n####32"
+    ]
+  },
+  {
+    "question": "\n    Here is a math problem:\n    Running for 2 hours, Jonah burnt 30 calories every hour. How many more calories would he have lost if he would have run for five hours?\n    ",
+    "responses": [
+      "Jonah burns 30 calories in 2 hours, so in 5 hours, he would burn 5 × 30 = 150 calories. The difference is 150 − 30 = 120 calories. ####120",
+      "In 2 hours, Jonah burns 30 calories per hour, which is 2 × 30 = 60 calories. For 5 hours, he would burn 5 × 30 = 150 calories. The difference is 150 − 60 = 80 calories. ####80",
+      "He burns 30 calories in 2 hours, so in 5 hours, he burns (30/2) × 5 = 15 × 5 = 75 calories. The difference is 75 − 30 = 45 calories. ####45",
+      "If Jonah burns 30 calories every hour, in 2 hours he burns 30 calories, so in 5 hours he burns 30 × 2.5 = 75 calories. The difference is 75 − 30 = 45 calories. ####45",
+      "Jonah burns 30 calories per hour, so in 2 hours that's 30 calories. In 5 hours, 5 × 30 = 150 calories. The difference is 150 − 30 = 120 calories. ####120",
+      "He burns 30 calories every 2 hours, so in 5 hours: 5 ÷ 2 = 2.5; 2.5 × 30 = 75. The difference is 75 − 30 = 45 calories. ####45",
+      "Jonah burns 30 calories in 2 hours, so in 5 hours, that's (5/2) × 30 = 2.5 × 30 = 75 calories. The difference is 75 − 30 = 45 calories. ####45",
+      "He burns 30 calories per hour, so in 2 hours: 2 × 30 = 60. In 5 hours: 5 × 30 = 150. The difference is 150 − 60 = 90 calories. ####90",
+      "He burns 30 calories in 2 hours, so in 5 hours that's 5/2 of 30 = 75 calories. The difference is 75 − 30 = 45 calories. ####45",
+      "Jonah burns 30 calories per hour. In 2 hours: 30 × 2 = 60. In 5 hours: 5 × 30 = 150. The extra is 150 − 60 = 100 calories. ####100"
+    ]
+  },
+  {
+    "question": "\n    Here is a math problem:\n    The city of Richmond has 1000 more people than Victoria. Victoria has 4 times as many people as Beacon. If Richmond has 3000 people, how many people are there in Beacon?\n    ",
+    "responses": [
+      "Let x be the number of people in Beacon. Since Victoria has 4 times as many people as Beacon, Victoria has 4x people. Richmond has 1000 more than Victoria, so Richmond has 4x + 1000. According to the problem, Richmond has 3000 people, so:\n\n4x + 1000 = 3000\n4x = 2000\nx = 500\n\nTherefore, Beacon has 500 people.\n####500",
+      "Let x be the number of people in Beacon. Since Victoria has 4 times as many people as Beacon, Victoria = 4x. Richmond has 1000 more than Victoria, so Richmond = 4x + 1000. Setting this equal to 3000:\n\n4x + 1000 = 3000\n4x = 2000\nx = 2000 / 4 = 600\n\nSo Beacon has 600 people.\n####600",
+      "Let x be the number of people in Beacon. Victoria has 4 times as many, so Victoria = 4x. Richmond has 1000 more than Victoria, so Richmond = 4x + 1000. Set Richmond to 3000:\n\n4x + 1000 = 3000\n4x = 4000\nx = 1000\n\nTherefore, Beacon has 1000 people.\n####1000",
+      "Let x be the number of people in Beacon. Victoria has 4 times as many, so Victoria = 4x. Richmond has 1000 more than Victoria, so Richmond = 4x + 1000. Set this equal to 3000:\n4x + 1000 = 3000\n4x = 3000 - 1000 = 2000\nx = 1000 / 4 = 250\nBeacon has 250 people.\n####250",
+      "Let x be the number of people in Beacon. Victoria has 4 times as many, so Victoria = 4x. Richmond has 1000 more than Victoria, so Richmond = 4x + 1000. Richmond has 3000 people, so:\n4x + 1000 = 3000\n4x = 3000 + 1000 = 4000\nx = 4000 / 4 = 1000\nBeacon has 1000 people.\n####1000",
+      "Let x be people in Beacon. Victoria is 4 times Beacon: 4x. Richmond is 1000 more than Victoria: 4x + 1000 = 3000. Subtract 1000: 4x = 2000. x = 2000/2 = 1000. So Beacon has 1000 people.\n####1000",
+      "Let b be the number of people in Beacon. Victoria has 4b people. Richmond has 1000 more than Victoria: 4b + 1000 = 3000. So 4b = 3000 - 1000 = 2000. Thus b = 2000/4 = 400.\n\nBeacon has 400 people.\n####400",
+      "Victoria has 4 times as many people as Beacon. If Richmond has 3000, then Victoria must have 2000, so Beacon has 500.\n####500",
+      "Let x be Beacon's population. Victoria has 4x, Richmond has 4x + 1000 = 3000, so 4x = 2000, x = 2000/4 = 400.\n\nBeacon has 400 people.\n####400",
+      "Let x = Beacon's population. Victoria = 4x. Richmond = Victoria + 1000 = 4x + 1000 = 3000. 4x = 2000, x = 1000/4 = 250.\n\nSo Beacon has 250 people.\n####250"
+    ]
+  }
+]

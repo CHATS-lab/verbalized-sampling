@@ -14,7 +14,7 @@ METHOD_MAP = {
     "multi_turn": ("Multi-turn", "multi_turn"),
     "vs_standard": ("VS-Standard", "structure_with_prob"),
     "vs_cot": ("VS-CoT", "chain_of_thought"),
-    "vs_combined": ("VS-Combined", "combined"),
+    "vs_combined": ("VS-Multi", "combined"),
 }
 
 

@@ -96,17 +96,17 @@ if __name__ == "__main__":
         #     'method': Method.DIRECT_COT,
         #     'strict_json': True,
         #     'num_samples': 1,
-        # }
+        # },
         # {
         #     'method': Method.MULTI_TURN,
         #     'strict_json': False,
-        #     'num_samples': 20,
+        #     'num_samples': num_samples,
         # },
-        {
-            'method': Method.SEQUENCE,
-            'strict_json': True,
-            'num_samples': num_samples,
-        },
+        # {
+        #     'method': Method.SEQUENCE,
+        #     'strict_json': True,
+        #     'num_samples': num_samples,
+        # },
         {
             'method': Method.STRUCTURE_WITH_PROB,
             'strict_json': True,
@@ -117,12 +117,12 @@ if __name__ == "__main__":
         #     'strict_json': True,
         #     'num_samples': num_samples,
         # },
-        {
-            'method': Method.COMBINED,
-            'strict_json': True,
-            'num_samples': num_samples,
-            'num_samples_per_prompt': 10,
-        }
+        # {
+        #     'method': Method.COMBINED,
+        #     'strict_json': True,
+        #     'num_samples': num_samples,
+        #     'num_samples_per_prompt': 10,
+        # }
     ]
 
 
@@ -149,7 +149,7 @@ if __name__ == "__main__":
             metrics=["response_count"],
             temperature=0.7,
             top_p=1.0,
-            output_dir="method_results_bias_test",
+            output_dir="ablation_prompt_bias",
             num_workers=16 if any(x in model_basename for x in ["claude", "gemini"]) else 32,
         )
     

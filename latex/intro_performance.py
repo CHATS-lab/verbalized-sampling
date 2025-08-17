@@ -328,6 +328,7 @@ def extract_dialogue_data():
     baseline_values = {"l1_distance": [], "ks_value": []}
     vs_values = {"l1_distance": [], "ks_value": []}
     fine_tuned_values = {"l1_distance": [], "ks_value": []}
+    sequence_values = {"l1_distance": [], "ks_value": []}
 
     dialogue_dir = Path("dialogue_simulation_final/exp_results")
     if not dialogue_dir.exists():
@@ -336,6 +337,7 @@ def extract_dialogue_data():
     
     print("Extracting dialogue simulation data from dialogue_simulation_final...")
     baseline_dir = dialogue_dir / "baseline" / "gpt-4.1"
+    sequence_dir = dialogue_dir / "sampling" / "sequence" / "gpt-4.1"
     vs_dir = dialogue_dir / "sampling" / "random_selection" / "gpt-4.1"
     fine_tuned_dir = dialogue_dir / "fine_tuning" / "gpt-4.1" / "llama3.1_8b_sft_w_promp_5epochs"
     model_list = ["gpt-4.1-mini", "gpt-4.1", "gemini-2.5-flash", "gemini-2-5-pro", "claude-4-sonnet", "meta-llama_Llama-3.1-70b-Instruct", "deepseek-r1", "o3"]
@@ -344,6 +346,7 @@ def extract_dialogue_data():
         # print(f"Processing {model}...")
         baseline_file = baseline_dir / model / "analysis_total_results.json"
         vs_file = vs_dir / model / "analysis_total_results.json"
+        sequence_file = sequence_dir / model / "analysis_total_results.json"
 
         if baseline_file.exists():
             with open(baseline_file, "r") as f:
@@ -359,6 +362,13 @@ def extract_dialogue_data():
                 vs_ks_value = vs_json["donation"]["amount"]["ks_test"]["ks_statistic"]["intended_donation_amount"]
                 vs_values["l1_distance"].append(vs_l1_distance)
                 vs_values["ks_value"].append(vs_ks_value)
+        if sequence_file.exists():
+            with open(sequence_file, "r") as f:
+                sequence_json = json.load(f)
+                sequence_l1_distance = sequence_json["donation"]["amount"]["l1_distance"]["l1_distance"]["intended_donation_amount"]["0"]
+                sequence_ks_value = sequence_json["donation"]["amount"]["ks_test"]["ks_statistic"]["intended_donation_amount"]
+                sequence_values["l1_distance"].append(sequence_l1_distance)
+                sequence_values["ks_value"].append(sequence_ks_value)
     
     if fine_tuned_dir.exists():
         with open(fine_tuned_dir / "analysis_total_results.json", "r") as f:
@@ -373,7 +383,9 @@ def extract_dialogue_data():
         'dialogue_ks_value_baseline': np.min(baseline_values["ks_value"]),
         'dialogue_ks_value_verbalized': np.min(vs_values["ks_value"]),
         'dialogue_l1_distance_fine_tuned': np.min(fine_tuned_values["l1_distance"]),
-        'dialogue_ks_value_fine_tuned': np.min(fine_tuned_values["ks_value"])
+        'dialogue_ks_value_fine_tuned': np.min(fine_tuned_values["ks_value"]),
+        'dialogue_l1_distance_sequence': np.min(sequence_values["l1_distance"]),
+        'dialogue_ks_value_sequence': np.min(sequence_values["ks_value"])
     }
 
 # Extract actual data from experimental results
@@ -438,6 +450,7 @@ poem_vs = poem_data['poem_verbalized']
 
 dialogue_baseline = dialogue_data['dialogue_ks_value_baseline']
 dialogue_finetuned = dialogue_data['dialogue_ks_value_fine_tuned']
+dialogue_sequence = dialogue_data['dialogue_ks_value_sequence']
 dialogue_vs = dialogue_data['dialogue_ks_value_verbalized']
 
 bias_direct = bias_value['bias_direct']
@@ -453,7 +466,8 @@ bar_labels = [
 # Values for each group
 bar_values = [
     [poem_direct, poem_baseline, poem_vs],
-    [dialogue_baseline, dialogue_finetuned, dialogue_vs],
+    # [dialogue_baseline, dialogue_finetuned, dialogue_vs],
+    [dialogue_baseline, dialogue_sequence, dialogue_vs],
     [bias_direct, bias_baseline, bias_vs]
 ]
 
@@ -488,7 +502,7 @@ ax.set_xticks(x)
 ax.set_xticklabels(tasks, fontsize=18, fontweight='bold')
 
 # Custom legend: use consistent labels for all tasks
-custom_labels = ['Direct Sampling', 'Best Baseline/Fine-tuned', 'Verbalized Sampling']
+custom_labels = ['Direct Sampling', 'Best Baseline', 'Verbalized Sampling']
 ax.legend(bars, custom_labels, fontsize=18, loc='upper center', bbox_to_anchor=(0.5, 1.1), ncol=3)
 ax.grid(axis='y', alpha=0.3, linestyle='--')
 
@@ -515,7 +529,7 @@ for i in range(len(tasks)):
         improvement = ((verbalized - prev_best) / prev_best) * 100
         ax.annotate(f'{improvement:+.1f}%' if improvement > 0 else f'{improvement:.1f}%',
                     xy=(x[i] + width, verbalized),
-                    xytext=(0, 20),
+                    xytext=(5, 25),
                     textcoords="offset points",
                     ha='center', va='bottom',
                     fontsize=16, fontweight='bold',
