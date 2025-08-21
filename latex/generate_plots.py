@@ -69,9 +69,9 @@ def plot_diversity_vs_quality_individual(results, model_name, task_type, output_
     task_output_dir = os.path.join(output_dir, task_type, "individual_models")
     os.makedirs(task_output_dir, exist_ok=True)
     
-    # Academic style settings
+    # Academic style settings with News Gothic MT font
     plt.rcParams.update({
-        'font.family': 'serif',
+        'font.family': 'News Gothic MT',
         'font.size': 11,
         'axes.labelsize': 13,
         'axes.titlesize': 14,
@@ -127,8 +127,8 @@ def plot_diversity_vs_quality_individual(results, model_name, task_type, output_
             if data["diversity_std"] is not None and data["quality_std"] is not None:
                 ax.errorbar(data["diversity"], data["quality"],
                            xerr=data["diversity_std"], yerr=data["quality_std"],
-                           color=colors[method], alpha=0.4, capsize=3,
-                           linestyle='none', zorder=3)
+                           color=colors[method], alpha=0.4, capsize=3, capthick=1.5,
+                           linestyle='none', zorder=3, elinewidth=3, markeredgewidth=10)
     
     # Add directional arrows to indicate "better"
     ax.text(0.98, 0.02, '→ Diversity', 
@@ -216,8 +216,12 @@ def plot_method_averages(all_results, task_type, output_dir):
     task_output_dir = os.path.join(output_dir, task_type, "method_averages")
     os.makedirs(task_output_dir, exist_ok=True)
     
-    # Set up the plotting style
     plt.style.use('seaborn-v0_8')
+    plt.rcParams.update({
+        'font.family': 'News Gothic MT',
+        'font.size': 12
+    })
+    # Set up the plotting style
     colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2']
     method_names = ["Direct", "CoT", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Multi"]
     
@@ -236,6 +240,7 @@ def plot_method_averages(all_results, task_type, output_dir):
                 data = results[method]
                 for metric in ['diversity', 'rouge_l', 'quality']:
                     if data[metric] is not None:
+
                         method_stats[method][metric].append(data[metric])
     
     # Calculate means and stds
@@ -272,19 +277,20 @@ def plot_method_averages(all_results, task_type, output_dir):
         
         # Create bars with hatches for VS methods
         bars = ax.bar(method_names, means, yerr=stds, capsize=5, 
-                     color=colors[:len(method_names)], alpha=0.8, 
-                     edgecolor='black', linewidth=1)
+                     color=colors[:len(method_names)], alpha=0.8,
+                     ecolor='black', error_kw={'markeredgewidth':1})
         
         # Add hatches to VS methods (last 3 bars)
         for i, bar in enumerate(bars[-3:], start=len(bars)-3):
             bar.set_hatch('///')
-        
+            bar._hatch_color = (0.0, 0.0, 0.0)
+
         # Add value labels on bars
         for bar, mean, std in zip(bars, means, stds):
             height = bar.get_height()
             ax.text(bar.get_x() + bar.get_width()/2., height + std + 0.5,
                    f'{mean:.1f}±{std:.1f}', ha='center', va='bottom', 
-                   fontsize=10, fontweight='bold')
+                   fontsize=16, fontweight='bold')
         
         # Find best VS method for this metric
         vs_means = [method_means[method][metric_key] for method in vs_methods]
@@ -310,24 +316,22 @@ def plot_method_averages(all_results, task_type, output_dir):
         
         # Add p-test results annotation in top left (for diversity only to avoid clutter)
         if metric_key in ['diversity']:
-            p_text_lines = ["Statistical test results:", f"Best VS: {best_vs_method}"]
+            p_text_lines = ["VS-Standard $p$-values:", 
+            # f"Best VS: {best_vs_method}"
+            ]
             for baseline_method in baseline_methods:
                 p_val = p_values[baseline_method]
                 if p_val is not None:
-                    if p_val < 0.001:
-                        sig_marker = '***'
-                    elif p_val < 0.01:
-                        sig_marker = '**'
-                    elif p_val < 0.05:
-                        sig_marker = '*'
+                    if p_val < 0.05:
+                        sig_marker = f'{p_val:.2f} (p < 0.05)'
                     else:
-                        sig_marker = 'ns'
-                    p_text_lines.append(f"vs {baseline_method}: {sig_marker} (p={p_val:.3f})")
+                        sig_marker = f'{p_val:.2f} (p ≥ 0.05)'
+                    p_text_lines.append(f"{baseline_method}: {sig_marker}")
                 else:
-                    p_text_lines.append(f"vs {baseline_method}: insufficient data")
+                    p_text_lines.append(f"{baseline_method}: insufficient data")
             
             p_text = '\n'.join(p_text_lines)
-            ax.text(0.02, 0.98, p_text, transform=ax.transAxes, fontsize=14, 
+            ax.text(0.02, 0.98, p_text, transform=ax.transAxes, fontsize=15, 
                    verticalalignment='top', horizontalalignment='left',
                    bbox=dict(boxstyle="round,pad=0.5", facecolor="lightyellow", alpha=0.8),
                    fontweight='bold')
@@ -341,19 +345,20 @@ def plot_method_averages(all_results, task_type, output_dir):
         bars[best_idx].set_edgecolor('red')
         bars[best_idx].set_linewidth(3)
         
-        ax.set_xlabel('Methods', fontsize=16, fontweight='bold')
-        ax.set_ylabel(metric_title, fontsize=16, fontweight='bold')
+        # ax.set_xlabel('Methods', fontsize=16, fontweight='bold')
+        ax.set_ylabel(metric_title, fontsize=20, fontweight='bold')
         
         task_display = task_type.capitalize()
-        ax.set_title(f'{metric_title} - Average Across All Models ({task_display})', 
-                    fontsize=18, fontweight='bold', pad=20)
+        ax.set_title(f'{metric_title} -- Average Across All Models ({task_display})', 
+                    fontsize=24, fontweight='bold', pad=20)
         ax.grid(True, alpha=0.3, axis='y')
-        ax.tick_params(axis='x', labelsize=14)
-        ax.tick_params(axis='y', labelsize=14)
+        ax.tick_params(axis='x', labelsize=16)
+        ax.tick_params(axis='y', labelsize=16)
         
+        max_y = max(means) * 1.4
         # NO rotation for x-axis labels
         plt.xticks(rotation=0)
-        
+        plt.ylim(0, max_y)
         plt.tight_layout()
         
         plt.savefig(f'{task_output_dir}/method_average_{metric_key}.png', dpi=300, bbox_inches='tight')
@@ -424,7 +429,7 @@ def plot_all_models_comparison(all_results, task_type, output_dir):
             plot_values = [v if v is not None else 0 for v in values]
             
             ax.bar(x_pos + i * bar_width, plot_values, bar_width, 
-                  label=method, color=colors[i], alpha=0.8)
+                  label=method, color=colors[i], alpha=0.8, edgecolor='none')
         
         ax.set_xlabel('Models', fontweight='bold')
         ax.set_ylabel(ylabel, fontweight='bold')
