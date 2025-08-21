@@ -207,7 +207,7 @@ def main(config: ExperimentConfig = None) -> Tuple[bool, str, Dict[str, Any]]:
         results_dir = create_timestamp_dir(prefix="results")
     else:
         results_dir = config.results_dir
-        os.makedirs(results_dir, exist_ok=True)
+    os.makedirs(results_dir, exist_ok=True)
     
     # Run tests if requested
     if hasattr(config, 'run_tests_only') and config.run_tests_only:

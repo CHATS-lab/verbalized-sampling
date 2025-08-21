@@ -738,7 +738,7 @@ def plot_comparisons_results(analysis_results, file_suffix="model", results_dir=
                  transform=plt.gca().transAxes, fontsize=14)
     
     # Save the plot to the results directory
-    bar_filename = os.path.join(results_dir, f"comparisons_agreement_{file_suffix}.{output_format}")
+    bar_filename = os.path.join(results_dir, f"comparisons_agreement_{file_suffix.replace('/', '_')}.{output_format}")
     plt.tight_layout()
     plt.savefig(bar_filename)
     plots["agreement_bar"] = bar_filename
@@ -756,7 +756,7 @@ def plot_comparisons_results(analysis_results, file_suffix="model", results_dir=
             plt.title("Distribution of Log Probability Differences")
             
             # Save the histogram plot
-            hist_filename = os.path.join(results_dir, f"comparisons_logdiff_{file_suffix}.{output_format}")
+            hist_filename = os.path.join(results_dir, f"comparisons_logdiff_{file_suffix.replace('/', '_')}.{output_format}")
             plt.tight_layout()
             plt.savefig(hist_filename)
             plots["logdiff_histogram"] = hist_filename
@@ -783,7 +783,7 @@ def plot_comparisons_results(analysis_results, file_suffix="model", results_dir=
             plt.title(title)
             
             # Save the ratio histogram plot
-            ratio_filename = os.path.join(results_dir, f"comparisons_ratio_{file_suffix}.{output_format}")
+            ratio_filename = os.path.join(results_dir, f"comparisons_ratio_{file_suffix.replace('/', '_')}.{output_format}")
             plt.tight_layout()
             plt.savefig(ratio_filename)
             plots["ratio_histogram"] = ratio_filename
