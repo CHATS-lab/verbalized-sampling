@@ -219,7 +219,8 @@ def plot_method_averages(all_results, task_type, output_dir):
     plt.style.use('seaborn-v0_8')
     plt.rcParams.update({
         'font.family': 'News Gothic MT',
-        'font.size': 12
+        'font.size': 12,
+        'font.weight': 'heavy'
     })
     # Set up the plotting style
     colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2']
@@ -349,13 +350,13 @@ def plot_method_averages(all_results, task_type, output_dir):
         ax.set_ylabel(metric_title, fontsize=20, fontweight='bold')
         
         task_display = task_type.capitalize()
-        ax.set_title(f'{metric_title} -- Average Across All Models ({task_display})', 
-                    fontsize=24, fontweight='bold', pad=20)
+        # ax.set_title(f'{metric_title} -- Average Across All Models ({task_display})', 
+                    # fontsize=24, fontweight='bold', pad=20)
         ax.grid(True, alpha=0.3, axis='y')
         ax.tick_params(axis='x', labelsize=16)
         ax.tick_params(axis='y', labelsize=16)
         
-        max_y = max(means) * 1.4
+        max_y = max(means) * 1.45
         # NO rotation for x-axis labels
         plt.xticks(rotation=0)
         plt.ylim(0, max_y)

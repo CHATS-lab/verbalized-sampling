@@ -6,10 +6,53 @@ import numpy as np
 import re
 from pathlib import Path
 from scipy import stats
+from scipy.stats import ttest_ind
 import matplotlib.gridspec as gridspec
 from matplotlib.patches import Patch
 
 SUBPLOT_LABEL_SIZE = 26
+
+def perform_statistical_tests(task_data, task_name):
+    """Perform t-tests comparing baselines against VS-Standard"""
+    print(f"\n=== Statistical Tests for {task_name} ===")
+    
+    # Collect individual model data for VS-Standard
+    vs_standard_values = []
+    for model_name, model_results in task_data.items():
+        if 'VS-Standard' in model_results and model_results['VS-Standard']['diversity'] is not None:
+            vs_standard_values.append(model_results['VS-Standard']['diversity'])
+    
+    if not vs_standard_values:
+        print(f"No VS-Standard data found for {task_name}")
+        return {}
+    
+    baseline_methods = ['Direct', 'CoT', 'Sequence', 'Multi-turn']
+    significant_results = {}
+    
+    for method in baseline_methods:
+        # Collect individual model data for this baseline method
+        baseline_values = []
+        for model_name, model_results in task_data.items():
+            if method in model_results and model_results[method]['diversity'] is not None:
+                baseline_values.append(model_results[method]['diversity'])
+        
+        if len(baseline_values) < 2 or len(vs_standard_values) < 2:
+            print(f"Insufficient data for {method} vs VS-Standard comparison")
+            continue
+            
+        # Perform two-sample t-test (one-tailed: VS-Standard > baseline)
+        t_stat, p_value = ttest_ind(vs_standard_values, baseline_values, alternative='greater')
+        
+        vs_mean = np.mean(vs_standard_values)
+        baseline_mean = np.mean(baseline_values)
+        
+        significant = p_value < 0.05
+        significant_results[method] = significant
+        
+        significance_marker = "**" if significant else ""
+        print(f"{method}{significance_marker}: VS-Standard ({vs_mean:.2f}) vs {method} ({baseline_mean:.2f}), t={t_stat:.3f}, p={p_value:.4f}")
+    
+    return significant_results
 
 def parse_latex_table_data(file_path):
     """Parse LaTeX table data from .tex files to extract metrics"""
@@ -178,8 +221,8 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
     
     # Create figure with better proportions and spacing for three separate legends at top
     fig = plt.figure(figsize=(15, 12))
-    gs = gridspec.GridSpec(3, 3, height_ratios=[0.15, 1, 1], width_ratios=[1, 1, 1], 
-                          hspace=0.90, wspace=0.25, left=0.08, right=0.95, top=0.95, bottom=0.08)
+    gs = gridspec.GridSpec(3, 3, height_ratios=[0.3, 1, 1], width_ratios=[1, 1, 1], 
+                          hspace=0.65, wspace=0.25, left=0.08, right=0.95, top=0.95, bottom=0.08)
     
     # Elegant color palette inspired by the reference
     method_names = ["Direct", "CoT", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Multi"]
@@ -206,6 +249,12 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
     
     # Row 1: Elegant bar charts for each task (reordered: poem, story, joke)
     tasks = [("Poem (Diversity)", poem_data), ("Story (Diversity)", story_data), ("Joke (Diversity)", joke_data)]
+    
+    # Perform statistical tests for each task
+    all_significance_results = {}
+    for task_name, task_data in tasks:
+        clean_task_name = task_name.replace(" (Diversity)", "")
+        all_significance_results[clean_task_name] = perform_statistical_tests(task_data, clean_task_name)
     
     for col_idx, (task_name, task_data) in enumerate(tasks):
         ax = fig.add_subplot(gs[1, col_idx])
@@ -243,7 +292,21 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
         ax.set_title(f'{task_name}', fontweight='bold', pad=15, fontsize=18)
         ax.set_ylabel('Diversity Score' if col_idx == 0 else '', fontweight='bold', fontsize=12)
         ax.set_xticks(x_pos)
-        ax.set_xticklabels(method_names, rotation=45, ha='right', fontsize=12)
+        
+        # Add ** markers above error bars for statistically significant differences
+        clean_task_name = task_name.replace(" (Diversity)", "")
+        significance_results = all_significance_results.get(clean_task_name, {})
+        
+        method_labels = []
+        for i, method in enumerate(method_names):
+            method_labels.append(method)
+            if method in significance_results and significance_results[method]:
+                # Add ** above the error bar
+                y_pos = method_averages[i] + method_stds[i] + (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.05
+                ax.text(i, y_pos, '**', ha='center', va='bottom', 
+                       fontsize=16, fontweight='bold', color='red')
+        
+        ax.set_xticklabels(method_labels, rotation=45, ha='right', fontsize=12)
         
         # Make tick labels (numbers) bigger
         ax.tick_params(axis='both', which='major', labelsize=15)
@@ -323,9 +386,18 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
                              color=colors[method], marker=marker, s=size, alpha=alpha,
                              zorder=5, edgecolors=edge_colors[method], linewidth=linewidth)
             
-            # Add label below the marker
-            ax_scatter.text(data['diversity'], data['quality'] - 0.5, method, 
-                           ha='center', va='top', fontsize=11, fontweight='600',
+            # Add label below the marker with adjusted positioning for overlapping methods
+            x_offset = 0
+            ha_align = 'center'
+            if method == 'Sequence':
+                x_offset = -0.1  # Move left
+                ha_align = 'center'
+            elif method == 'VS-Standard':
+                x_offset = 0.2   # Move right
+                ha_align = 'center'
+            
+            ax_scatter.text(data['diversity'] + x_offset, data['quality'] - 0.5, method, 
+                           ha=ha_align, va='top', fontsize=11, fontweight='600',
                            bbox=dict(boxstyle='round,pad=0.2', facecolor='white', alpha=0.8, edgecolor='none'))
     
     # Adjust y-axis limits to accommodate labels below markers
@@ -359,8 +431,8 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
                        xycoords='axes fraction', textcoords='axes fraction',
                        arrowprops=dict(arrowstyle='->', lw=3, color='red', alpha=0.7))
     # Then add the text separately, positioned lower to avoid overlap
-    ax_scatter.text(0.83, 0.93, 'Pareto optimal', transform=ax_scatter.transAxes,
-                   fontsize=12, color='red', fontweight='bold', ha='right')
+    ax_scatter.text(0.75, 0.95, 'Pareto optimal', transform=ax_scatter.transAxes,
+                   fontsize=12, color='red', fontweight='bold', ha='center')
     
     # Add subplot label d
     ax_scatter.text(-0.15, 1.05, 'd', transform=ax_scatter.transAxes,
@@ -399,7 +471,7 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
                 }
     
     # Elegant model size colors
-    size_colors = {'small': '#FF4444', 'large': '#4ECDC4'}
+    size_colors = {'small': '#4ECDC4', 'large': '#8B4A9C'}  # Purple for small, teal for large
     size_labels = {'small': 'Small Models', 'large': 'Large Models'}
     
     # Diversity burden analysis
@@ -418,16 +490,31 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
         large_diversity_changes.append(large_val)
         small_diversity_changes.append(small_val)
     
-    bars1 = ax_burden_div.bar(x_methods - width/2, small_diversity_changes, width, 
-                             color=size_colors['small'], alpha=0.9, 
-                             edgecolor='white', linewidth=1.2, label=size_labels['small'])
-    bars2 = ax_burden_div.bar(x_methods + width/2, large_diversity_changes, width, 
-                             color=size_colors['large'], alpha=0.9, 
-                             edgecolor='white', linewidth=1.2, label=size_labels['large'])
+    ax_burden_div.bar(x_methods - width/2, small_diversity_changes, width, 
+                     color=size_colors['small'], alpha=0.9, 
+                     edgecolor='white', linewidth=1.2, label=size_labels['small'])
+    ax_burden_div.bar(x_methods + width/2, large_diversity_changes, width, 
+                     color=size_colors['large'], alpha=0.9, 
+                     edgecolor='white', linewidth=1.2, label=size_labels['large'])
+    
+    # Add value labels on bars for better clarity
+    for i, (small_val, large_val) in enumerate(zip(small_diversity_changes, large_diversity_changes)):
+        # Small model values
+        if abs(small_val) > 0.1:  # Only show if value is significant
+            sign = '+' if small_val >= 0 else ''
+            ax_burden_div.text(i - width/2, small_val + (0.2 if small_val > 0 else -0.2), 
+                              f'{sign}{small_val:.1f}', ha='center', va='bottom' if small_val > 0 else 'top',
+                              fontsize=11, fontweight='600')
+        # Large model values  
+        if abs(large_val) > 0.1:  # Only show if value is significant
+            sign = '+' if large_val >= 0 else ''
+            ax_burden_div.text(i + width/2, large_val + (0.2 if large_val > 0 else -0.2), 
+                              f'{sign}{large_val:.1f}', ha='center', va='bottom' if large_val > 0 else 'top',
+                              fontsize=11, fontweight='600')
     
     ax_burden_div.axhline(y=0, color='#666666', linestyle='-', alpha=0.8, linewidth=1)
-    ax_burden_div.set_ylabel('Diversity Against Direct ($\Delta$)', fontweight='bold', fontsize=12)
-    ax_burden_div.set_title('Emergent Trend: Diversity', fontweight='bold', pad=15, fontsize=18)
+    ax_burden_div.set_ylabel('$\Delta$ Diversity Against Direct', fontweight='bold', fontsize=12)
+    ax_burden_div.set_title('Emergent Trend: $\Delta$ Diversity', fontweight='bold', pad=15, fontsize=18)
     ax_burden_div.set_xticks(x_methods)
     ax_burden_div.set_xticklabels(methods_subset, rotation=45, ha='right', fontsize=12)
     
@@ -463,16 +550,31 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
         large_quality_changes[vs_cot_index], small_quality_changes[vs_cot_index] = \
             small_quality_changes[vs_cot_index], large_quality_changes[vs_cot_index]
     
-    bars3 = ax_burden_qual.bar(x_methods - width/2, small_quality_changes, width, 
-                              color=size_colors['small'], alpha=0.9, 
-                              edgecolor='white', linewidth=1.2, label=size_labels['small'])
-    bars4 = ax_burden_qual.bar(x_methods + width/2, large_quality_changes, width, 
-                              color=size_colors['large'], alpha=0.9, 
-                              edgecolor='white', linewidth=1.2, label=size_labels['large'])
+    ax_burden_qual.bar(x_methods - width/2, small_quality_changes, width, 
+                      color=size_colors['small'], alpha=0.9, 
+                      edgecolor='white', linewidth=1.2, label=size_labels['small'])
+    ax_burden_qual.bar(x_methods + width/2, large_quality_changes, width, 
+                      color=size_colors['large'], alpha=0.9, 
+                      edgecolor='white', linewidth=1.2, label=size_labels['large'])
+    
+    # Add value labels on bars for better clarity
+    for i, (small_val, large_val) in enumerate(zip(small_quality_changes, large_quality_changes)):
+        # Small model values
+        if abs(small_val) > 0.1:  # Only show if value is significant
+            sign = '+' if small_val >= 0 else ''
+            ax_burden_qual.text(i - width/2, small_val + (0.2 if small_val > 0 else -0.2), 
+                               f'{sign}{small_val:.1f}', ha='center', va='bottom' if small_val > 0 else 'top',
+                               fontsize=11, fontweight='600')
+        # Large model values  
+        if abs(large_val) > 0.1:  # Only show if value is significant
+            sign = '+' if large_val >= 0 else ''
+            ax_burden_qual.text(i + width/2, large_val + (0.2 if large_val > 0 else -0.2), 
+                               f'{sign}{large_val:.1f}', ha='center', va='bottom' if large_val > 0 else 'top',
+                               fontsize=11, fontweight='600')
     
     ax_burden_qual.axhline(y=0, color='#666666', linestyle='-', alpha=0.8, linewidth=1)
-    ax_burden_qual.set_ylabel('Quality Against Direct ($\Delta$)', fontweight='bold', fontsize=12)
-    ax_burden_qual.set_title('Emergent Trend: Quality', fontweight='bold', pad=15, fontsize=18)
+    ax_burden_qual.set_ylabel('$\Delta$ Quality Against Direct', fontweight='bold', fontsize=12)
+    ax_burden_qual.set_title('Cognitive Burden: $\Delta$ Quality', fontweight='bold', pad=15, fontsize=18)
     ax_burden_qual.set_xticks(x_methods)
     ax_burden_qual.set_xticklabels(methods_subset, rotation=45, ha='right', fontsize=12)
     
@@ -489,6 +591,13 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
     ax_burden_qual.text(-0.15, 1.05, 'f', transform=ax_burden_qual.transAxes,
                        fontsize=SUBPLOT_LABEL_SIZE, fontweight='bold', ha='left', va='bottom')
     
+    # Set y-axis limits with 20% padding
+    y_values = small_quality_changes + large_quality_changes
+    if y_values:
+        y_min = min(y_values)
+        y_max = max(y_values)
+        ax_burden_qual.set_ylim(y_min * 1.2, y_max * 1.2)
+        
     # Legend 1: Methods legend above bar charts (spans all three bar charts)
     method_patches = []
     for method in method_names:
@@ -503,7 +612,7 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
     
     # No separate legend needed for scatter plot since labels are directly on the plot
     
-    # Legend 3: Model sizes legend above cognitive burden plots (fifth & sixth)
+    # Legend 3: Model sizes legend below cognitive burden plots (fifth & sixth)
     size_patches = []
     labels = {
         'small': 'Small Models (GPT-4.1-Mini, Gemini-2.5-Flash)',
@@ -514,8 +623,8 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
         size_patches.append(patch)
     
     legend3 = fig.legend(handles=size_patches,
-                        loc='upper center', bbox_to_anchor=(0.5, 0.415),
-                        fontsize=15,  ncol=2)
+                        loc='lower center', bbox_to_anchor=(0.68, -0.05),
+                        fontsize=13,  ncol=2)
     legend3.get_frame().set_linewidth(0.0)
     
     # Save the figure
@@ -525,9 +634,15 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
     fig.savefig(f'{output_dir}/unified_creativity_analysis.pdf', 
                bbox_inches='tight', facecolor='white')
     plt.close()
+
+if __name__ == "__main__":
+    create_unified_creativity_figure()
+    print("\\n" + "="*80)
+    print("STATISTICAL TESTS COMPLETE")
+    print("="*80)
     
     print("✓ Generated unified creativity analysis figure")
-    print(f"📁 Saved to: {output_dir}/unified_creativity_analysis.{{png,pdf}}")
+    print(f"📁 Saved to: latex_figures/unified_creativity_analysis.{{png,pdf}}")
 
 
 if __name__ == "__main__":

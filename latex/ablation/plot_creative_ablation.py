@@ -124,7 +124,7 @@ def plot_training_progression(output_dir="latex_figures"):
     
     # Customize the plot with seaborn styling
     ax.set_xlabel('Training Stage', fontsize=18, fontweight='bold')
-    ax.set_ylabel('Diversity Score (%)', fontsize=18, fontweight='bold')
+    ax.set_ylabel('Diversity Score', fontsize=18, fontweight='bold')
     # ax.set_title('Diversity Improvement Across Training Progression', fontsize=20, fontweight='bold', pad=20)
     ax.set_xticks(x_positions)
     ax.set_xticklabels(x_labels, fontsize=16)

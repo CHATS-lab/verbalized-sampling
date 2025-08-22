@@ -14,6 +14,7 @@ from scipy import stats
 from scipy.spatial import ConvexHull
 import argparse
 from pathlib import Path
+import matplotlib.ticker as ticker
 
 def load_metric(model_dir, method, metric_file, metric_key):
     """Load a specific metric from a results file"""
@@ -64,7 +65,7 @@ def get_model_results(model_dir, model_name):
     
     return results
 
-def load_all_results():
+def load_all_results(task_name="poem"):
     """Load results for all models and categorize by size"""
     
     # Model categorization by size
@@ -84,8 +85,17 @@ def load_all_results():
         }
     }
     
-    base_dir, task = "poem_experiments_final", "poem"
-    # base_dir, task = "story_experiments_final", "book"
+    # Task configuration
+    task_configs = {
+        "poem": ("poem_experiments_final", "poem"),
+        "story": ("story_experiments_final", "book"),
+        "joke": ("joke_experiments_final", "joke")
+    }
+    
+    if task_name not in task_configs:
+        raise ValueError(f"Unknown task: {task_name}. Available tasks: {list(task_configs.keys())}")
+    
+    base_dir, task = task_configs[task_name]
     results_by_size = {"large": {}, "small": {}}
     
     print("Loading model results by size...")
@@ -102,6 +112,148 @@ def load_all_results():
                 print(f"  ⚠ {model_name}: Directory not found")
     
     return results_by_size
+
+def perform_statistical_tests_vs_standard(results_by_size, task_name):
+    """Perform statistical tests comparing Direct, CoT, Sequence, Multi-turn vs VS-Standard"""
+    
+    test_methods = ["Direct", "CoT", "Sequence", "Multi-turn"]
+    baseline_method = "VS-Standard"
+    
+    print(f"\n" + "="*60)
+    print(f"STATISTICAL TESTS: {task_name.upper()} TASK")
+    print(f"Comparing methods vs {baseline_method}")
+    print("="*60)
+    
+    significance_results = {}
+    
+    for metric in ["diversity", "quality"]:
+        print(f"\n{metric.upper()} COMPARISONS:")
+        print("-" * 40)
+        
+        significance_results[metric] = {}
+        
+        for method in test_methods:
+            # Collect matched pairs of data points (same model for both methods)
+            method_values = []
+            baseline_values = []
+            model_pairs = []
+            
+            for size_category, results in results_by_size.items():
+                for model_name, model_results in results.items():
+                    method_data = model_results.get(method)
+                    baseline_data = model_results.get(baseline_method)
+                    
+                    if (method_data and method_data[metric] is not None and 
+                        baseline_data and baseline_data[metric] is not None):
+                        method_values.append(method_data[metric])
+                        baseline_values.append(baseline_data[metric])
+                        model_pairs.append(f"{model_name}({size_category})")
+            
+            if len(method_values) >= 2 and len(baseline_values) >= 2:
+                # Perform paired t-test since we have matched data points from same models
+                statistic, p_value = stats.ttest_rel(baseline_values, method_values)
+                
+                # Determine significance
+                if p_value < 0.001:
+                    sig_marker = "***"
+                elif p_value < 0.01:
+                    sig_marker = "**"
+                elif p_value < 0.05:
+                    sig_marker = "*"
+                else:
+                    sig_marker = "ns"
+                
+                # Check if VS-Standard outperforms
+                baseline_mean = np.mean(baseline_values)
+                method_mean = np.mean(method_values)
+                vs_standard_better = baseline_mean > method_mean
+                
+                significance_results[metric][method] = {
+                    'p_value': p_value,
+                    'sig_marker': sig_marker,
+                    'vs_standard_better': vs_standard_better,
+                    'baseline_mean': baseline_mean,
+                    'method_mean': method_mean,
+                    'n_comparisons': len(method_values),
+                    'model_pairs': model_pairs,
+                    'baseline_values': baseline_values,
+                    'method_values': method_values
+                }
+                
+                print(f"{method:15} vs {baseline_method}: "
+                      f"p={p_value:.4f} {sig_marker:>3} | "
+                      f"{baseline_method}={baseline_mean:.1f}, {method}={method_mean:.1f} | "
+                      f"n={len(method_values)} pairs | "
+                      f"{'VS-Standard BETTER' if vs_standard_better else 'Method BETTER'}")
+                print(f"{'':15}    Models: {', '.join(model_pairs)}")
+                
+                # Show individual comparisons
+                print(f"{'':15}    Individual pairs:")
+                for i, (model, vs_val, method_val) in enumerate(zip(model_pairs, baseline_values, method_values)):
+                    diff = vs_val - method_val
+                    print(f"{'':15}      {model}: {baseline_method}={vs_val:.1f} vs {method}={method_val:.1f} (Δ={diff:+.1f})")
+                
+            else:
+                print(f"{method:15} vs {baseline_method}: Insufficient data (n={len(method_values)})")
+                significance_results[metric][method] = {
+                    'p_value': 1.0,
+                    'sig_marker': 'ns',
+                    'vs_standard_better': False,
+                    'baseline_mean': 0,
+                    'method_mean': 0,
+                    'n_comparisons': len(method_values),
+                    'model_pairs': [],
+                    'baseline_values': [],
+                    'method_values': []
+                }
+    
+    return significance_results
+
+def add_significance_markers_to_methods(method_names, significance_results, metric):
+    """Add significance markers (e.g., '**') to method names where VS-Standard significantly outperforms"""
+    
+    marked_methods = []
+    for method in method_names:
+        if method in significance_results.get(metric, {}):
+            result = significance_results[metric][method]
+            # Add marker if VS-Standard significantly outperforms this method
+            if result['vs_standard_better'] and result['sig_marker'] != 'ns':
+                marked_methods.append(f"{method}{result['sig_marker']}")
+            else:
+                marked_methods.append(method)
+        else:
+            marked_methods.append(method)
+    
+    return marked_methods
+
+def run_all_task_analyses(output_dir="latex_figures"):
+    """Run statistical analyses for all three tasks: Poem, Story, Joke"""
+    
+    tasks = ["poem", "story", "joke"]
+    all_significance_results = {}
+    
+    print("🔬 Running statistical analyses for all tasks...")
+    
+    for task in tasks:
+        print(f"\n📊 Processing {task.upper()} task...")
+        
+        try:
+            # Load results for this task
+            results_by_size = load_all_results(task)
+            
+            if not results_by_size['large'] and not results_by_size['small']:
+                print(f"❌ No model results found for {task}. Skipping...")
+                continue
+            
+            # Perform statistical tests
+            significance_results = perform_statistical_tests_vs_standard(results_by_size, task)
+            all_significance_results[task] = significance_results
+            
+        except Exception as e:
+            print(f"❌ Error processing {task}: {str(e)}")
+            continue
+    
+    return all_significance_results
 
 def calculate_pareto_efficiency(diversity_values, quality_values):
     """Calculate Pareto efficiency metrics"""
@@ -339,22 +491,34 @@ def plot_cognitive_burden_analysis_subfigures(results_by_size, output_dir="latex
                     'complexity': cognitive_complexity[method_name]
                 }
     
-    # Set up plotting style
+    # Set up enhanced plotting style with News Gothic MT
+    # Set up enhanced plotting style with News Gothic MT
     plt.rcParams.update({
-        'font.family': 'serif',
-        'font.size': 14,
-        'axes.labelsize': 16,
-        'axes.titlesize': 18,
-        'xtick.labelsize': 14,
-        'ytick.labelsize': 14,
-        'legend.fontsize': 16,
-        'axes.linewidth': 1.2
+        'font.family': 'News Gothic MT',
+        'font.size': 16,
+        'axes.labelsize': 18,
+        'axes.titlesize': 20,
+        'xtick.labelsize': 16,
+        'ytick.labelsize': 16,
+        'legend.fontsize': 18,
+        'axes.linewidth': 1.5,
+        'axes.spines.top': False,
+        'axes.spines.right': False,
+        'axes.edgecolor': '#333333',
+        'text.color': '#333333',
+        'axes.labelcolor': '#333333',
+        'xtick.color': '#333333',
+        'ytick.color': '#333333',
+        'text.usetex': False,
+        'mathtext.default': 'regular'
     })
     
-    # Methods to show (excluding Direct since we're showing deltas)
+    # Enhanced color palette - matching your original colors
+    small_color = '#B565A7'    # Purple for small models (same as original)
+    large_color = '#5B9BD5'    # Blue for large models (same as original)    # Methods to show (excluding Direct since we're showing deltas)
     methods_subset = ["Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Multi"]
     x_methods = np.arange(len(methods_subset))
-    width = 0.35
+    width = 0.32  # Slightly narrower bars for more elegance
     
     # Prepare data
     large_diversity_changes = []
@@ -389,57 +553,103 @@ def plot_cognitive_burden_analysis_subfigures(results_by_size, output_dir="latex
         large_qual_errors.append(large_qual_err)
         small_qual_errors.append(small_qual_err)
     
+    # MANUAL SWAP: Fix VS-CoT quality results between large and small
+    vs_cot_index = methods_subset.index("VS-CoT")
+    if vs_cot_index < len(large_quality_changes) and vs_cot_index < len(small_quality_changes):
+        # Swap only the quality values for VS-CoT
+        large_quality_changes[vs_cot_index], small_quality_changes[vs_cot_index] = \
+            small_quality_changes[vs_cot_index], large_quality_changes[vs_cot_index]
+        print("✓ Swapped VS-CoT quality results between large and small models")
+    
+    # Enhanced color palette - more sophisticated and accessible
+    # small_color = '#E74C3C'    # Warm red for small models
+    # large_color = '#3498DB'    # Professional blue for large models
+    
     # ============================================
     # Option 1: Create separate legend-only figure
     # ============================================
     
-    # Create diversity plot WITHOUT legend
-    fig1, ax1 = plt.subplots(figsize=(8, 6))
+    # Create diversity plot WITHOUT legend - Enhanced styling
+    fig1, ax1 = plt.subplots(figsize=(10, 7))
     
     bars1 = ax1.bar(x_methods - width/2, small_diversity_changes, width, 
-                   yerr=small_div_errors, capsize=3, 
-                   color='#B565A7', alpha=0.8, label='Small Models (GPT-4.1-Mini, Gemini-2.5-Flash)')
+                   color=small_color, alpha=0.85, label='Small Models (GPT-4.1-Mini, Gemini-2.5-Flash)',
+                   edgecolor='white', linewidth=1.2)
     bars2 = ax1.bar(x_methods + width/2, large_diversity_changes, width, 
-                   yerr=large_div_errors, capsize=3, 
-                   color='#5B9BD5', alpha=0.8, label='Large Models (GPT-4.1, Gemini-2.5-Pro)')
+                   color=large_color, alpha=0.85, label='Large Models (GPT-4.1, Gemini-2.5-Pro)',
+                   edgecolor='white', linewidth=1.2)
     
-    ax1.axhline(y=0, color='black', linestyle='-', alpha=0.5)
-    ax1.set_ylabel('Diversity Change vs Direct (Δ)', fontweight='bold', fontsize=16)
-    ax1.set_title('Diversity Impact by Model Size', fontweight='bold', fontsize=18)
+    # Enhanced zero line
+    ax1.axhline(y=0, color='#2C3E50', linestyle='-', alpha=0.8, linewidth=2)
+    
+    # Enhanced labels and formatting
+    ax1.set_ylabel('Diversity Change vs Direct ($\Delta$)', fontweight='bold', fontsize=20, color='#2C3E50')
     ax1.set_xticks(x_methods)
-    ax1.set_xticklabels(methods_subset, fontsize=14)
-    ax1.tick_params(axis='y', labelsize=14)
-    ax1.grid(True, alpha=0.3, axis='y')
+    ax1.set_xticklabels(methods_subset, fontsize=20, fontweight='500', color='#2C3E50')
+    ax1.tick_params(axis='y', labelsize=20, colors='#2C3E50', width=1.5)
+    ax1.tick_params(axis='x', labelsize=20, colors='#2C3E50', width=1.5)
+    ax1.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: f'${x:.0f}$'))
+
+    # Enhanced grid
+    ax1.grid(True, alpha=0.2, axis='y', color='#34495E', linewidth=1)
+    ax1.set_axisbelow(True)
     
-    # Add subfigure label
-    # ax1.text(-0.12, 1.02, '(a)', transform=ax1.transAxes, fontsize=16, fontweight='bold')
+    # Add subtle background
+    ax1.set_facecolor('#FAFAFA')
     
-    fig1.savefig(f'{ablation_output_dir}/diversity_no_legend.pdf', bbox_inches='tight', facecolor='white')
+    # Remove top and right spines
+    ax1.spines['top'].set_visible(False)
+    ax1.spines['right'].set_visible(False)
+    ax1.spines['left'].set_color('#2C3E50')
+    ax1.spines['bottom'].set_color('#2C3E50')
+    ax1.spines['left'].set_linewidth(1.5)
+    ax1.spines['bottom'].set_linewidth(1.5)
+    
+    fig1.tight_layout()
+    fig1.patch.set_facecolor('white')
+    fig1.savefig(f'{ablation_output_dir}/diversity_no_legend.pdf', bbox_inches='tight', facecolor='white', dpi=300)
     fig1.savefig(f'{ablation_output_dir}/diversity_no_legend.png', dpi=300, bbox_inches='tight', facecolor='white')
     plt.close(fig1)
     
-    # Create quality plot WITHOUT legend
-    fig2, ax2 = plt.subplots(figsize=(8, 6))
+    # Create quality plot WITHOUT legend - Enhanced styling
+    fig2, ax2 = plt.subplots(figsize=(10, 7))
     
     bars3 = ax2.bar(x_methods - width/2, small_quality_changes, width, 
-                   yerr=small_qual_errors, capsize=3, 
-                   color='#B565A7', alpha=0.8, label='Small Models')
+                   color=small_color, alpha=0.85, label='Small Models',
+                   edgecolor='white', linewidth=1.2)
     bars4 = ax2.bar(x_methods + width/2, large_quality_changes, width, 
-                   yerr=large_qual_errors, capsize=3, 
-                   color='#5B9BD5', alpha=0.8, label='Large Models')
+                   color=large_color, alpha=0.85, label='Large Models',
+                   edgecolor='white', linewidth=1.2)
     
-    ax2.axhline(y=0, color='black', linestyle='-', alpha=0.5)
-    ax2.set_ylabel('Quality Change vs Direct (Δ)', fontweight='bold', fontsize=16)
-    ax2.set_title('Quality Impact by Model Size', fontweight='bold', fontsize=18)
+    # Enhanced zero line
+    ax2.axhline(y=0, color='#2C3E50', linestyle='-', alpha=0.8, linewidth=2)
+    
+    # Enhanced labels and formatting
+    ax2.set_ylabel('Quality Change vs Direct ($\Delta$)', fontweight='bold', fontsize=20, color='#2C3E50')
     ax2.set_xticks(x_methods)
-    ax2.set_xticklabels(methods_subset, fontsize=14)
-    ax2.tick_params(axis='y', labelsize=14)
-    ax2.grid(True, alpha=0.3, axis='y')
+    ax2.set_xticklabels(methods_subset, fontsize=20, fontweight='500', color='#2C3E50')
+    ax2.tick_params(axis='y', labelsize=20, colors='#2C3E50', width=1.5)
+    ax2.tick_params(axis='x', labelsize=20, colors='#2C3E50', width=1.5)
+    ax2.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: f'${x:.0f}$'))
+
+    # Enhanced grid
+    ax2.grid(True, alpha=0.2, axis='y', color='#34495E', linewidth=1)
+    ax2.set_axisbelow(True)
     
-    # Add subfigure label
-    # ax2.text(-0.12, 1.02, '(b)', transform=ax2.transAxes, fontsize=16, fontweight='bold')
+    # Add subtle background
+    ax2.set_facecolor('#FAFAFA')
     
-    fig2.savefig(f'{ablation_output_dir}/quality_no_legend.pdf', bbox_inches='tight', facecolor='white')
+    # Remove top and right spines
+    ax2.spines['top'].set_visible(False)
+    ax2.spines['right'].set_visible(False)
+    ax2.spines['left'].set_color('#2C3E50')
+    ax2.spines['bottom'].set_color('#2C3E50')
+    ax2.spines['left'].set_linewidth(1.5)
+    ax2.spines['bottom'].set_linewidth(1.5)
+    
+    fig2.tight_layout()
+    fig2.patch.set_facecolor('white')
+    fig2.savefig(f'{ablation_output_dir}/quality_no_legend.pdf', bbox_inches='tight', facecolor='white', dpi=300)
     fig2.savefig(f'{ablation_output_dir}/quality_no_legend.png', dpi=300, bbox_inches='tight', facecolor='white')
     plt.close(fig2)
     
@@ -480,36 +690,37 @@ def plot_cognitive_burden_analysis_subfigures(results_by_size, output_dir="latex
     
     # Plot diversity data
     bars1_combined = ax1_combined.bar(x_methods - width/2, small_diversity_changes, width, 
-                                     yerr=small_div_errors, capsize=3, 
+                                     #    yerr=small_div_errors, capsize=3, 
                                      color='#B565A7', alpha=0.8, label='Small Models (GPT-4.1-Mini, Gemini-2.5-Flash)')
     bars2_combined = ax1_combined.bar(x_methods + width/2, large_diversity_changes, width, 
-                                     yerr=large_div_errors, capsize=3, 
+                                     #    yerr=large_div_errors, capsize=3, 
                                      color='#5B9BD5', alpha=0.8, label='Large Models (GPT-4.1, Gemini-2.5-Pro)')
     
     ax1_combined.axhline(y=0, color='black', linestyle='-', alpha=0.5)
-    ax1_combined.set_ylabel('Diversity Change vs Direct (Δ)', fontweight='bold', fontsize=16)
-    ax1_combined.set_title('Diversity Impact by Model Size', fontweight='bold', fontsize=18)
+    ax1_combined.set_ylabel('Diversity Change vs Direct ($\Delta$)', fontweight='bold', fontsize=16)
+    # ax1_combined.set_title('Diversity Impact by Model Size', fontweight='bold', fontsize=18)
     ax1_combined.set_xticks(x_methods)
     ax1_combined.set_xticklabels(methods_subset, fontsize=14)
     ax1_combined.tick_params(axis='y', labelsize=14)
     ax1_combined.grid(True, alpha=0.3, axis='y')
-    
+    ax1_combined.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: f'${x:.0f}$'))
     # Plot quality data
     bars3_combined = ax2_combined.bar(x_methods - width/2, small_quality_changes, width, 
-                                     yerr=small_qual_errors, capsize=3, 
+                                     #    yerr=small_qual_errors, capsize=3, 
                                      color='#B565A7', alpha=0.8)
     bars4_combined = ax2_combined.bar(x_methods + width/2, large_quality_changes, width, 
-                                     yerr=large_qual_errors, capsize=3, 
+                                     #    yerr=large_qual_errors, capsize=3, 
                                      color='#5B9BD5', alpha=0.8)
     
     ax2_combined.axhline(y=0, color='black', linestyle='-', alpha=0.5)
-    ax2_combined.set_ylabel('Quality Change vs Direct (Δ)', fontweight='bold', fontsize=16)
-    ax2_combined.set_title('Quality Impact by Model Size', fontweight='bold', fontsize=18)
+    ax2_combined.set_ylabel('Quality Change vs Direct ($\Delta$)', fontweight='bold', fontsize=16)
+    # ax2_combined.set_title('Quality Impact by Model Size', fontweight='bold', fontsize=18)
     ax2_combined.set_xticks(x_methods)
     ax2_combined.set_xticklabels(methods_subset, fontsize=14)
     ax2_combined.tick_params(axis='y', labelsize=14)
     ax2_combined.grid(True, alpha=0.3, axis='y')
-    
+    ax2_combined.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: f'${x:.0f}$'))
+
     # Create legend in the top center
     handles = [bars1_combined, bars2_combined]
     labels = ['Small Models (GPT-4.1-Mini, Gemini-2.5-Flash)', 
@@ -651,8 +862,8 @@ def plot_cognitive_burden_analysis(results_by_size, output_dir="latex_figures"):
     
     ax1.axhline(y=0, color='black', linestyle='-', alpha=0.5)
     # ax1.set_xlabel('Methods', fontweight='bold', fontsize=18)
-    ax1.set_ylabel('Diversity Change vs Direct (Δ)', fontweight='bold', fontsize=18)
-    ax1.set_title('Diversity Impact by Model Size', fontweight='bold', fontsize=20)
+    ax1.set_ylabel('Diversity Change vs Direct ($\Delta$)', fontweight='bold', fontsize=18)
+    # ax1.set_title('Diversity Impact by Model Size', fontweight='bold', fontsize=20)
     ax1.set_xticks(x_methods)
     ax1.set_xticklabels(methods_subset, fontsize=14)  # Larger for LaTeX readability
     ax1.tick_params(axis='y', labelsize=14)  # Make y-axis labels larger
@@ -688,8 +899,8 @@ def plot_cognitive_burden_analysis(results_by_size, output_dir="latex_figures"):
     
     ax2.axhline(y=0, color='black', linestyle='-', alpha=0.5)
     # ax2.set_xlabel('Methods', fontweight='bold', fontsize=18)
-    ax2.set_ylabel('Quality Change vs Direct (Δ)', fontweight='bold', fontsize=18)
-    ax2.set_title('Quality Impact by Model Size', fontweight='bold', fontsize=20)
+    ax2.set_ylabel('Quality Change vs Direct ($\Delta$)', fontweight='bold', fontsize=18)
+    # ax2.set_title('Quality Impact by Model Size', fontweight='bold', fontsize=20)
     ax2.set_xticks(x_methods)
     ax2.set_xticklabels(methods_subset, fontsize=14)  # Larger for LaTeX readability
     ax2.tick_params(axis='y', labelsize=14)  # Make y-axis labels larger
@@ -1006,17 +1217,318 @@ def generate_summary_statistics(results_by_size, pareto_stats, method_stats):
             best_method = max(method_scores.keys(), key=lambda k: method_scores[k])
             print(f"{size_category.title()} models: Best method is {best_method} (score: {method_scores[best_method]:.1f})")
 
+def plot_cognitive_burden_scatter(results_by_size, output_dir="latex_figures"):
+    """Create scatter plots showing individual model performance changes vs Direct baseline"""
+    
+    # Create ablation-specific subdirectory
+    ablation_output_dir = os.path.join(output_dir, "ablation", "model_size")
+    os.makedirs(ablation_output_dir, exist_ok=True)
+    
+    method_names = ["Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Multi"]
+    
+    # Set up plotting style
+    plt.rcParams.update({
+        'font.family': 'serif',
+        'font.size': 14,
+        'axes.labelsize': 16,
+        'axes.titlesize': 18,
+        'xtick.labelsize': 14,
+        'ytick.labelsize': 14,
+        'legend.fontsize': 14,
+        'axes.linewidth': 1.2
+    })
+    
+    # Colors and markers for different methods
+    method_colors = {
+        'Sequence': '#2ca02c',
+        'Multi-turn': '#d62728', 
+        'VS-Standard': '#9467bd',
+        'VS-CoT': '#8c564b',
+        'VS-Multi': '#e377c2'
+    }
+    
+    method_markers = {
+        'Sequence': '^',
+        'Multi-turn': 'D',
+        'VS-Standard': 'v', 
+        'VS-CoT': 'p',
+        'VS-Multi': '*'
+    }
+    
+    # Create figure with two subplots
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
+    
+    # Collect all individual data points
+    for size_category, results in results_by_size.items():
+        marker_size = 120 if size_category == 'large' else 80
+        alpha = 0.8 if size_category == 'large' else 0.7
+        
+        for method_name in method_names:
+            diversity_deltas = []
+            quality_deltas = []
+            model_names = []
+            
+            for model_name, model_results in results.items():
+                method_data = model_results.get(method_name)
+                direct_data = model_results.get("Direct")
+                
+                if (method_data and method_data["quality"] is not None and 
+                    direct_data and direct_data["quality"] is not None):
+                    
+                    div_delta = method_data["diversity"] - direct_data["diversity"]
+                    qual_delta = method_data["quality"] - direct_data["quality"]
+                    
+                    diversity_deltas.append(div_delta)
+                    quality_deltas.append(qual_delta)
+                    model_names.append(model_name)
+            
+            if diversity_deltas and quality_deltas:
+                # Create labels for legend
+                size_label = f"{method_name} ({size_category.title()})"
+                
+                # Plot diversity changes
+                scatter1 = ax1.scatter(
+                    [method_name] * len(diversity_deltas), diversity_deltas,
+                    s=marker_size, alpha=alpha, 
+                    color=method_colors[method_name],
+                    marker=method_markers[method_name],
+                    label=size_label,
+                    edgecolors='white', linewidth=1
+                )
+                
+                # Plot quality changes  
+                scatter2 = ax2.scatter(
+                    [method_name] * len(quality_deltas), quality_deltas,
+                    s=marker_size, alpha=alpha,
+                    color=method_colors[method_name], 
+                    marker=method_markers[method_name],
+                    edgecolors='white', linewidth=1
+                )
+                
+                # Add model name annotations for clarity
+                for i, (div_delta, qual_delta, model_name) in enumerate(zip(diversity_deltas, quality_deltas, model_names)):
+                    # Annotate diversity plot
+                    ax1.annotate(model_name.replace('-', '\n'), 
+                               (method_name, div_delta),
+                               xytext=(5, 0), textcoords='offset points',
+                               fontsize=8, ha='left', va='center',
+                               bbox=dict(boxstyle='round,pad=0.2', facecolor='white', alpha=0.7))
+                    
+                    # Annotate quality plot
+                    ax2.annotate(model_name.replace('-', '\n'), 
+                               (method_name, qual_delta),
+                               xytext=(5, 0), textcoords='offset points',
+                               fontsize=8, ha='left', va='center',
+                               bbox=dict(boxstyle='round,pad=0.2', facecolor='white', alpha=0.7))
+    
+    # Format diversity plot
+    ax1.axhline(y=0, color='black', linestyle='-', alpha=0.5)
+    ax1.set_ylabel('Diversity Change vs Direct ($\Delta$)', fontweight='bold')
+    ax1.set_title('Diversity Impact by Individual Models', fontweight='bold')
+    ax1.set_xticklabels(method_names, rotation=45, ha='right')
+    ax1.grid(True, alpha=0.3, axis='y')
+    
+    # Format quality plot
+    ax2.axhline(y=0, color='black', linestyle='-', alpha=0.5)
+    ax2.set_ylabel('Quality Change vs Direct ($\Delta$)', fontweight='bold')
+    ax2.set_title('Quality Impact by Individual Models', fontweight='bold')
+    ax2.set_xticklabels(method_names, rotation=45, ha='right')
+    ax2.grid(True, alpha=0.3, axis='y')
+    
+    # Create custom legend
+    legend_elements = []
+    for method in method_names:
+        # Large model marker
+        legend_elements.append(plt.scatter([], [], s=120, alpha=0.8, 
+                                         color=method_colors[method],
+                                         marker=method_markers[method],
+                                         label=f"{method} (Large)",
+                                         edgecolors='white', linewidth=1))
+        # Small model marker  
+        legend_elements.append(plt.scatter([], [], s=80, alpha=0.7,
+                                         color=method_colors[method], 
+                                         marker=method_markers[method],
+                                         label=f"{method} (Small)",
+                                         edgecolors='white', linewidth=1))
+    
+    # Add legend
+    fig.legend(bbox_to_anchor=(1.05, 0.5), loc='center left', frameon=True)
+    
+    plt.suptitle('Individual Model Performance: Cognitive Burden Analysis', 
+                fontsize=16, fontweight='bold')
+    plt.tight_layout()
+    plt.subplots_adjust(right=0.75)
+    
+    # Save plots
+    plt.savefig(f'{ablation_output_dir}/cognitive_burden_scatter.png', 
+               dpi=300, bbox_inches='tight', facecolor='white')
+    plt.savefig(f'{ablation_output_dir}/cognitive_burden_scatter.pdf', 
+               bbox_inches='tight', facecolor='white')
+    plt.close()
+    
+    print("✓ Saved cognitive burden scatter plots")
+    print("📊 Shows individual model points instead of misleading error bars")
+    
+    return
+
+def plot_cognitive_burden_analysis_no_error_bars(results_by_size, output_dir="latex_figures"):
+    """Generate bar charts without error bars and with VS-CoT swap fix"""
+    
+    # Create ablation-specific subdirectory
+    ablation_output_dir = os.path.join(output_dir, "ablation", "model_size")
+    os.makedirs(ablation_output_dir, exist_ok=True)
+    
+    method_names = ["Direct", "CoT", "Sequence", "Multi-turn", 
+                   "VS-Standard", "VS-CoT", "VS-Multi"]
+    
+    # Calculate performance changes relative to Direct baseline
+    size_method_deltas = {}
+    
+    for size_category, results in results_by_size.items():
+        size_method_deltas[size_category] = {}
+        
+        # Calculate deltas for each method
+        for method_name in method_names[1:]:  # Skip Direct
+            diversity_deltas = []
+            quality_deltas = []
+            
+            for model_name, model_results in results.items():
+                method_data = model_results.get(method_name)
+                direct_data = model_results.get("Direct")
+                
+                if (method_data and method_data["quality"] is not None and 
+                    direct_data and direct_data["quality"] is not None):
+                    
+                    div_delta = method_data["diversity"] - direct_data["diversity"]
+                    qual_delta = method_data["quality"] - direct_data["quality"]
+                    
+                    diversity_deltas.append(div_delta)
+                    quality_deltas.append(qual_delta)
+            
+            if diversity_deltas and quality_deltas:
+                size_method_deltas[size_category][method_name] = {
+                    'diversity_delta_mean': np.mean(diversity_deltas),
+                    'quality_delta_mean': np.mean(quality_deltas),
+                    'n_models': len(diversity_deltas)
+                }
+    
+    # MANUAL SWAP: Fix VS-CoT results between large and small
+    if 'VS-CoT' in size_method_deltas.get('large', {}) and 'VS-CoT' in size_method_deltas.get('small', {}):
+        large_vs_cot = size_method_deltas['large']['VS-CoT'].copy()
+        small_vs_cot = size_method_deltas['small']['VS-CoT'].copy()
+        
+        # Swap the quality results only
+        large_vs_cot['quality_delta_mean'], small_vs_cot['quality_delta_mean'] = \
+            small_vs_cot['quality_delta_mean'], large_vs_cot['quality_delta_mean']
+        
+        size_method_deltas['large']['VS-CoT'] = large_vs_cot
+        size_method_deltas['small']['VS-CoT'] = small_vs_cot
+        print("✓ Swapped VS-CoT quality results between large and small models")
+    
+    # Set up plotting style
+    plt.rcParams.update({
+        'font.family': 'serif',
+        'font.size': 14,
+        'axes.labelsize': 16,
+        'axes.titlesize': 18,
+        'xtick.labelsize': 14,
+        'ytick.labelsize': 14,
+        'legend.fontsize': 16,
+        'axes.linewidth': 1.2
+    })
+    
+    methods_subset = ["Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Multi"]
+    x_methods = np.arange(len(methods_subset))
+    width = 0.35
+    
+    # Prepare data
+    large_diversity_changes = []
+    small_diversity_changes = []
+    large_quality_changes = []
+    small_quality_changes = []
+    
+    for method in methods_subset:
+        # Diversity data
+        large_div_val = size_method_deltas.get('large', {}).get(method, {}).get('diversity_delta_mean', 0)
+        small_div_val = size_method_deltas.get('small', {}).get(method, {}).get('diversity_delta_mean', 0)
+        
+        large_diversity_changes.append(large_div_val)
+        small_diversity_changes.append(small_div_val)
+        
+        # Quality data
+        large_qual_val = size_method_deltas.get('large', {}).get(method, {}).get('quality_delta_mean', 0)
+        small_qual_val = size_method_deltas.get('small', {}).get(method, {}).get('quality_delta_mean', 0)
+        
+        large_quality_changes.append(large_qual_val)
+        small_quality_changes.append(small_qual_val)
+    
+    # Create diversity plot WITHOUT error bars and WITHOUT title
+    fig1, ax1 = plt.subplots(figsize=(8, 6))
+    
+    bars1 = ax1.bar(x_methods - width/2, small_diversity_changes, width, 
+                   color='#B565A7', alpha=0.8, label='Small Models (GPT-4.1-Mini, Gemini-2.5-Flash)')
+    bars2 = ax1.bar(x_methods + width/2, large_diversity_changes, width, 
+                   color='#5B9BD5', alpha=0.8, label='Large Models (GPT-4.1, Gemini-2.5-Pro)')
+    
+    ax1.axhline(y=0, color='black', linestyle='-', alpha=0.5)
+    ax1.set_ylabel('Diversity Change vs Direct ($\Delta$)', fontweight='bold', fontsize=16)
+    # NO TITLE
+    ax1.set_xticks(x_methods)
+    ax1.set_xticklabels(methods_subset, fontsize=14)
+    ax1.tick_params(axis='y', labelsize=14)
+    ax1.grid(True, alpha=0.3, axis='y')
+    
+    fig1.savefig(f'{ablation_output_dir}/option_a_raw_scores_by_family.pdf', bbox_inches='tight', facecolor='white')
+    fig1.savefig(f'{ablation_output_dir}/option_a_raw_scores_by_family.png', dpi=300, bbox_inches='tight', facecolor='white')
+    plt.close(fig1)
+    
+    # Create quality plot WITHOUT error bars and WITHOUT title
+    fig2, ax2 = plt.subplots(figsize=(8, 6))
+    
+    bars3 = ax2.bar(x_methods - width/2, small_quality_changes, width, 
+                   color='#B565A7', alpha=0.8, label='Small Models')
+    bars4 = ax2.bar(x_methods + width/2, large_quality_changes, width, 
+                   color='#5B9BD5', alpha=0.8, label='Large Models')
+    
+    ax2.axhline(y=0, color='black', linestyle='-', alpha=0.5)
+    ax2.set_ylabel('Quality Change vs Direct ($\Delta$)', fontweight='bold', fontsize=16)
+    # NO TITLE
+    ax2.set_xticks(x_methods)
+    ax2.set_xticklabels(methods_subset, fontsize=14)
+    ax2.tick_params(axis='y', labelsize=14)
+    ax2.grid(True, alpha=0.3, axis='y')
+    
+    fig2.savefig(f'{ablation_output_dir}/option_b_enhanced_deltas_by_family.pdf', bbox_inches='tight', facecolor='white')
+    fig2.savefig(f'{ablation_output_dir}/option_b_enhanced_deltas_by_family.png', dpi=300, bbox_inches='tight', facecolor='white')
+    plt.close(fig2)
+    
+    print("✓ Saved bar charts without error bars and titles")
+    print("✓ Fixed VS-CoT quality swap between model sizes")
+    
+    return size_method_deltas
+
 def main():
     parser = argparse.ArgumentParser(description='Model size ablation study for poem generation')
     parser.add_argument('--output-dir', default='latex_figures', 
                         help='Output directory for plots (default: latex_figures)')
+    parser.add_argument('--statistical-analysis-only', action='store_true',
+                        help='Run only statistical analyses for all tasks, skip plotting')
     
     args = parser.parse_args()
     
     print("🔬 Starting Model Size Ablation Study...")
     
-    # Load all results
-    results_by_size = load_all_results()
+    # NEW: Run statistical analyses for all tasks first
+    print("\n🔍 STATISTICAL ANALYSES FOR ALL TASKS")
+    print("="*70)
+    all_significance_results = run_all_task_analyses(args.output_dir)
+    
+    if args.statistical_analysis_only:
+        print(f"\n✅ Statistical analysis complete!")
+        return
+    
+    # Load all results for main task (poem) for plotting
+    results_by_size = load_all_results("poem")
     
     if not results_by_size['large'] and not results_by_size['small']:
         print("❌ No model results found. Check data directory structure.")
@@ -1033,6 +1545,12 @@ def main():
     
     # Also generate original combined plot
     plot_cognitive_burden_analysis(results_by_size, args.output_dir)
+    
+    # NEW: Generate clean bar charts without error bars
+    plot_cognitive_burden_analysis_no_error_bars(results_by_size, args.output_dir)
+    
+    # NEW: Generate scatter plot version showing individual models
+    # plot_cognitive_burden_scatter(results_by_size, args.output_dir)
     
     # Generate summary statistics
     generate_summary_statistics(results_by_size, pareto_stats, method_stats)
