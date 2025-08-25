@@ -72,3 +72,5 @@ results/
 *.env
 archive/
 *results*/
+*CLAUDE.md
+*/.claude*
