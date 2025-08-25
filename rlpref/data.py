@@ -1,9 +1,36 @@
 import random
 from typing import List, Dict, Optional, Callable, Literal
-from datasets import load_dataset
+from datasets import load_dataset, Dataset
+
+def process_summarize_feedback_item(item: Dict) -> Dict:
+    """Process a single item from HuggingFaceH4/summarize-from-feedback dataset."""
+    return {
+        "id": item["meta"]["id"],
+        "post": item["meta"]["post"],
+        "title": item["meta"]["title"],
+        "subreddit": item["meta"]["subreddit"],
+        "summaries": [
+            {"text": s["text"].strip(), "policy": s["policy"]} 
+            for s in item["responses"]
+        ],
+        "chosen_idx": item["label"],
+        "chosen_summary": item["responses"][item["label"]]["text"],
+        "rejected_summary": item["responses"][1 - item["label"]]["text"],
+        "raw_item": item
+    }
+
+def process_ultrafeedback_item(item: Dict) -> Dict:
+    """Process a single item from UltraFeedback dataset."""
+    return {
+        "id": item["id"],
+        "post": item["post"],
+        "title": item["title"],
+        "raw_item": item
+    }
 
 def load_experiment_dataset(
-    variant: Literal["axis", "comparisons"] = "axis",
+    dataset_name: str = "HuggingFaceH4/summarize-from-feedback", # summarize-from-feedback, UltraFeedback, Helpsteer etc.
+    split: str = "validation",
     count: int = 100,
     random_seed: int = 42,
     filter_fn: Optional[callable] = None
@@ -12,8 +39,8 @@ def load_experiment_dataset(
     Load and prepare the experiment dataset from OpenAI's Summarize From Feedback.
     
     Args:
-        variant: Which dataset variant to use - "axis" (individual summary ratings)
-                or "comparisons" (pairwise summary ratings)
+        dataset_name: Which dataset variant to use - "HuggingFaceH4/summarize-from-feedback"
+        split: Which split to use - "validation" or "test"
         count: Number of examples to sample from the dataset
         random_seed: Random seed for reproducibility
         filter_fn: Optional function to filter dataset entries
@@ -21,7 +48,7 @@ def load_experiment_dataset(
     
     Returns:
         A list of dictionaries containing the sampled data points
-    
+
     Example:
         >>> # Load 50 examples from the axis variant
         >>> axis_data = load_experiment_dataset("axis", count=50)
@@ -34,57 +61,29 @@ def load_experiment_dataset(
     random.seed(random_seed)
     
     # Load the dataset
-    dataset = load_dataset("openai/summarize_from_feedback", variant)
-    
-    # Convert to list for easier processing
-    data_list = list(dataset["validation"])
+    dataset = load_dataset(dataset_name, split=split)
     
     # Apply filter if provided
     if filter_fn:
-        data_list = [item for item in data_list if filter_fn(item)]
+        dataset = dataset.filter(filter_fn)
     
-    # Sample the requested number of examples (or all if count > len)
-    if count >= len(data_list):
-        sampled_data = data_list
+    # Sample efficiently using shuffle + select
+    if count >= len(dataset):
+        sampled_dataset = dataset
     else:
-        sampled_data = random.sample(data_list, count)
+        sampled_dataset = dataset.shuffle(seed=random_seed).select(range(count))
     
-    # Process the data based on variant
-    processed_data = []
+    # Choose processing function based on dataset
+    if dataset_name == "HuggingFaceH4/summarize-from-feedback":
+        process_fn = process_summarize_feedback_item
+    elif dataset_name == "UltraFeedback":
+        process_fn = process_ultrafeedback_item
+    else:
+        # Generic fallback - just return raw items
+        process_fn = lambda x: {"raw_item": x, **x}
     
-    if variant == "axis":
-        for item in sampled_data:
-            processed_item = {
-                "id": item["info"]["id"],
-                "post": item["info"]["post"],
-                "title": item["info"]["title"],
-                "subreddit": item["info"]["subreddit"],
-                "summary": item["summary"]["text"].strip(),
-                "policy": item["summary"]["policy"],
-                "rating": item["summary"]["axes"]["overall"],
-                "accuracy": item["summary"]["axes"]["accuracy"],
-                "coverage": item["summary"]["axes"]["coverage"],
-                "coherence": item["summary"]["axes"]["coherence"],
-                "raw_item": item  # Keep the original item for reference
-            }
-            processed_data.append(processed_item)
+    # Apply processing function using map
+    processed_dataset = sampled_dataset.map(process_fn)
     
-    elif variant == "comparisons":
-        for item in sampled_data:
-            processed_item = {
-                "id": item["info"]["id"],
-                "post": item["info"]["post"],
-                "title": item["info"]["title"],
-                "subreddit": item["info"]["subreddit"],
-                "summaries": [
-                    {"text": s["text"].strip(), "policy": s["policy"]} 
-                    for s in item["summaries"]
-                ],
-                "chosen_idx": item["choice"],
-                "chosen_summary": item["summaries"][item["choice"]]["text"],
-                "rejected_summary": item["summaries"][1 - item["choice"]]["text"],
-                "raw_item": item  # Keep the original item for reference
-            }
-            processed_data.append(processed_item)
-    
-    return processed_data
+    # Convert to list for return
+    return list(processed_dataset)
