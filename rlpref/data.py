@@ -4,29 +4,35 @@ from datasets import load_dataset, Dataset
 
 def process_summarize_feedback_item(item: Dict) -> Dict:
     """Process a single item from HuggingFaceH4/summarize-from-feedback dataset."""
+    # Extract prompt from post and title
+    prompt = item["meta"]["post"]
+    if item["meta"]["title"]:
+        prompt = f"Title: {item['meta']['title']}\n\n{prompt}"
+    
     return {
         "id": item["meta"]["id"],
-        "post": item["meta"]["post"],
-        "title": item["meta"]["title"],
-        "subreddit": item["meta"]["subreddit"],
-        "summaries": [
-            {"text": s["text"].strip(), "policy": s["policy"]} 
-            for s in item["responses"]
-        ],
-        "chosen_idx": item["label"],
-        "chosen_summary": item["responses"][item["label"]]["text"],
-        "rejected_summary": item["responses"][1 - item["label"]]["text"],
+        "prompt": prompt,
+        "chosen": item["responses"][item["label"]]["text"].strip(),
+        "rejected": item["responses"][1 - item["label"]]["text"].strip(),
         "raw_item": item
     }
 
-def process_ultrafeedback_item(item: Dict) -> Dict:
-    """Process a single item from UltraFeedback dataset."""
-    return {
-        "id": item["id"],
-        "post": item["post"],
-        "title": item["title"],
+def process_generic_preference_item(item: Dict) -> Dict:
+    """Process a generic preference dataset item with prompt, chosen, rejected fields."""
+    processed = {
+        "id": item.get("id", item.get("prompt_id", "unknown")),
+        "prompt": item["prompt"],
+        "chosen": item["chosen"],
+        "rejected": item["rejected"],
         "raw_item": item
     }
+    
+    # Add any additional fields that might be present
+    for key in ["rating", "score", "source", "category", "difficulty"]:
+        if key in item:
+            processed[key] = item[key]
+    
+    return processed
 
 def load_experiment_dataset(
     dataset_name: str = "HuggingFaceH4/summarize-from-feedback", # summarize-from-feedback, UltraFeedback, Helpsteer etc.
@@ -76,11 +82,28 @@ def load_experiment_dataset(
     # Choose processing function based on dataset
     if dataset_name == "HuggingFaceH4/summarize-from-feedback":
         process_fn = process_summarize_feedback_item
-    elif dataset_name == "UltraFeedback":
-        process_fn = process_ultrafeedback_item
     else:
-        # Generic fallback - just return raw items
-        process_fn = lambda x: {"raw_item": x, **x}
+        # Try to detect if it's a generic preference dataset
+        # Sample one item to check structure
+        sample_item = dataset[0]
+        if all(key in sample_item for key in ["prompt", "chosen", "rejected"]):
+            process_fn = process_generic_preference_item
+        else:
+            # Fallback - assume it needs conversion to standard format
+            def fallback_process(item):
+                # Try common field mappings
+                prompt = item.get("prompt", item.get("question", item.get("input", "")))
+                chosen = item.get("chosen", item.get("response_1", item.get("answer_a", "")))
+                rejected = item.get("rejected", item.get("response_2", item.get("answer_b", "")))
+                
+                return {
+                    "id": item.get("id", item.get("prompt_id", "unknown")),
+                    "prompt": prompt,
+                    "chosen": chosen,
+                    "rejected": rejected,
+                    "raw_item": item
+                }
+            process_fn = fallback_process
     
     # Apply processing function using map
     processed_dataset = sampled_dataset.map(process_fn)

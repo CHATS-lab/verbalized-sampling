@@ -36,6 +36,7 @@ def run_axis_experiment(
     model_name: str,
     model=None,
     tokenizer=None,
+    dataset_name: str = "HuggingFaceH4/summarize-from-feedback",
     num_samples: int = 100,
     random_seed: int = 42,
     use_4bit: bool = False,
@@ -66,9 +67,9 @@ def run_axis_experiment(
     print(f"Starting axis experiment with model: {model_name}")
     print(f"Samples: {num_samples}, Random seed: {random_seed}")
     
-    # Load the dataset
+    # Load the dataset  
     print("Loading dataset...")
-    data = load_experiment_dataset("axis", count=num_samples, random_seed=random_seed)
+    data = load_experiment_dataset(dataset_name, count=num_samples, random_seed=random_seed)
     print(f"Loaded {len(data)} examples")
     
     # Load the model if not provided
@@ -84,13 +85,12 @@ def run_axis_experiment(
         # Use tqdm for a progress bar
         for i, example in enumerate(tqdm(data, desc="Processing", unit="example")):
             try:
-                # Get logprobs for the summary
+                # Get logprobs for the chosen response
                 token_logprobs = get_token_logprobs(
                     model, 
                     tokenizer, 
-                    example["post"], 
-                    example["title"],
-                    example["summary"]
+                    prompt=example["prompt"],
+                    response=example["chosen"]
                 )
                 
                 # Analyze the logprobs
@@ -99,17 +99,15 @@ def run_axis_experiment(
                 # Add results to the example
                 result = {
                     "id": example["id"],
-                    "rating": example["rating"],
+                    "rating": example.get("rating", example.get("score", 0)),
                     "token_count": logprob_stats["token_count"],
                     "sum_logprob": logprob_stats["sum_logprob"],
                     "avg_logprob": logprob_stats["avg_logprob"],
                     "min_logprob": logprob_stats["min_logprob"],
                     "max_logprob": logprob_stats["max_logprob"],
                     "token_logprobs": token_logprobs,  # Store individual token logprobs
-                    "summary": example["summary"],
-                    "accuracy": example["accuracy"],
-                    "coverage": example["coverage"],
-                    "coherence": example["coherence"]
+                    "response": example["chosen"],
+                    "prompt": example["prompt"]
                 }
                 
                 results.append(result)
@@ -161,6 +159,7 @@ def run_comparisons_experiment(
     model_name: str,
     model=None,
     tokenizer=None,
+    dataset_name: str = "HuggingFaceH4/summarize-from-feedback",
     num_samples: int = 100,
     random_seed: int = 42,
     use_4bit: bool = False,
@@ -193,7 +192,7 @@ def run_comparisons_experiment(
     
     # Load the dataset
     print("Loading dataset...")
-    data = load_experiment_dataset("comparisons", count=num_samples, random_seed=random_seed)
+    data = load_experiment_dataset(dataset_name, count=num_samples, random_seed=random_seed)
     print(f"Loaded {len(data)} examples")
     
     # Load the model if not provided
@@ -208,20 +207,18 @@ def run_comparisons_experiment(
     try:
         for i, example in enumerate(tqdm(data, desc="Processing", unit="example")):
             try:
-                # Get logprobs for both summaries
+                # Get logprobs for both responses
                 chosen_logprobs = get_token_logprobs(
                     model, 
                     tokenizer, 
-                    example["post"], 
-                    example["title"],
-                    example["chosen_summary"]
+                    prompt=example["prompt"],
+                    response=example["chosen"]
                 )
                 rejected_logprobs = get_token_logprobs(
                     model, 
                     tokenizer, 
-                    example["post"], 
-                    example["title"],
-                    example["rejected_summary"]
+                    prompt=example["prompt"],
+                    response=example["rejected"]
                 )
                 
                 # Analyze the logprobs
@@ -234,8 +231,9 @@ def run_comparisons_experiment(
                 # Add results to the example
                 result = {
                     "id": example["id"],
-                    "chosen_summary": example["chosen_summary"],
-                    "rejected_summary": example["rejected_summary"],
+                    "prompt": example["prompt"],
+                    "chosen": example["chosen"],
+                    "rejected": example["rejected"],
                     "chosen_token_count": chosen_stats["token_count"],
                     "chosen_sum_logprob": chosen_stats["sum_logprob"],
                     "chosen_avg_logprob": chosen_stats["avg_logprob"],

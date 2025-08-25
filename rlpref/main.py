@@ -217,7 +217,7 @@ def main(config: ExperimentConfig = None) -> Tuple[bool, str, Dict[str, Any]]:
     # Print experiment info
     print(f"=== Running experiment with settings ===")
     print(f"Model: {config.model_name}")
-    print(f"Variant: {config.dataset_variant}")
+    print(f"Dataset: {config.dataset_name}")
     print(f"Samples: {config.num_samples}")
     print(f"Seed: {config.random_seed}")
     print(f"Results directory: {results_dir}")
@@ -227,74 +227,49 @@ def main(config: ExperimentConfig = None) -> Tuple[bool, str, Dict[str, Any]]:
     if config.num_samples < 30:
         print("WARNING: Sample size is less than 30. Statistical results may not be reliable.")
     
-    # Run the appropriate experiment variant
+    # Run comparisons experiment (our main experiment type)
     experiment_success = False
-    axis_results = None
     comparisons_results = None
     
-    # Load model once if needed for both experiments
+    # Load model
     model = None
     tokenizer = None
-    if config.dataset_variant in ["axis", "comparisons", "both"]:
-        try:
-            print(f"4-bit quantization: {'enabled' if config.use_4bit else 'disabled'}")
-            model, tokenizer = load_model(
-                config.model_name, 
-                use_4bit=config.use_4bit, 
-                force_reload=getattr(config, 'force_reload', False)
-            )
-        except Exception as e:
-            print(f"Error loading model: {e}")
-            return False, results_dir, {}
+    try:
+        print(f"4-bit quantization: {'enabled' if config.use_4bit else 'disabled'}")
+        model, tokenizer = load_model(
+            config.model_name, 
+            use_4bit=config.use_4bit, 
+            force_reload=getattr(config, 'force_reload', False)
+        )
+    except Exception as e:
+        print(f"Error loading model: {e}")
+        return False, results_dir, {}
     
-    if config.dataset_variant in ["axis", "both"]:
-        try:
-            axis_results = run_axis_experiment(
-                config.model_name, 
-                model=model,
-                tokenizer=tokenizer,
-                num_samples=config.num_samples, 
-                random_seed=config.random_seed,
-                use_4bit=config.use_4bit,
-                results_dir=results_dir,
-                skip_analysis=config.skip_analysis,
-                output_format=config.output_format,
-                jitter_seed=config.jitter_seed
-            )
-            
-            if axis_results:
-                experiment_success = True
-                # Save results
-                results_file = os.path.join(results_dir, f"axis_results_{config.model_name.replace('/', '_')}.json")
-                save_json_results(axis_results, results_file)
-                print(f"Axis results saved to {results_file}")
-        except Exception as e:
-            print(f"Error in axis experiment: {e}")
-            print("Continuing with other experiment variants...")
-    
-    if config.dataset_variant in ["comparisons", "both"]:
-        try:
-            comparisons_results = run_comparisons_experiment(
-                config.model_name, 
-                model=model,
-                tokenizer=tokenizer,
-                num_samples=config.num_samples, 
-                random_seed=config.random_seed,
-                use_4bit=config.use_4bit,
-                results_dir=results_dir,
-                skip_analysis=config.skip_analysis,
-                output_format=config.output_format,
-                jitter_seed=config.jitter_seed
-            )
-            
-            if comparisons_results:
-                experiment_success = True
-                # Save results
-                results_file = os.path.join(results_dir, f"comparisons_results_{config.model_name.replace('/', '_')}.json")
-                save_json_results(comparisons_results, results_file)
-                print(f"Comparisons results saved to {results_file}")
-        except Exception as e:
-            print(f"Error in comparisons experiment: {e}")
+    # Run comparisons experiment
+    try:
+        comparisons_results = run_comparisons_experiment(
+            config.model_name, 
+            model=model,
+            tokenizer=tokenizer,
+            dataset_name=getattr(config, 'dataset_name', 'HuggingFaceH4/summarize-from-feedback'),
+            num_samples=config.num_samples, 
+            random_seed=config.random_seed,
+            use_4bit=config.use_4bit,
+            results_dir=results_dir,
+            skip_analysis=config.skip_analysis,
+            output_format=config.output_format,
+            jitter_seed=config.jitter_seed
+        )
+        
+        if comparisons_results:
+            experiment_success = True
+            # Save results
+            dataset_safe = config.dataset_name.replace('/', '_')
+            results_file = os.path.join(results_dir, f"comparisons_results_{config.model_name.replace('/', '_')}_{dataset_safe}.json")
+            save_json_results(comparisons_results, results_file)
+            print(f"Comparisons results saved to {results_file}")
+    except Exception as e:
+        print(f"Error in comparisons experiment: {e}")
             
     # Free up memory if explicitly requested
     # Note: We keep the model cached by default for future calls
@@ -311,12 +286,12 @@ def main(config: ExperimentConfig = None) -> Tuple[bool, str, Dict[str, Any]]:
         print("\nNo experiment variants completed successfully.")
     
     log_execution_time(start_time, "Experiment")
-    return experiment_success, results_dir, {"axis": axis_results, "comparisons": comparisons_results}
+    return experiment_success, results_dir, {"comparisons": comparisons_results}
 
 
 def run_with_params(
     model_name="distilgpt2",
-    variant="both", 
+    dataset_name="HuggingFaceH4/summarize-from-feedback",
     num_samples=100, 
     random_seed=42, 
     use_4bit=False, 
@@ -341,7 +316,7 @@ def run_with_params(
     """
     config = ExperimentConfig(
         model_name=model_name,
-        dataset_variant=variant,
+        dataset_name=dataset_name,
         num_samples=num_samples,
         random_seed=random_seed,
         use_4bit=use_4bit,
@@ -368,8 +343,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run LLM probability vs. human preference experiment")
     parser.add_argument("--test", action="store_true", help="Run tests instead of the experiment")
     parser.add_argument("--model", default="distilgpt2", help="Model name to use")
-    parser.add_argument("--variant", choices=["axis", "comparisons", "both"], default="both", 
-                        help="Which experiment variant to run")
+    parser.add_argument("--dataset", default="HuggingFaceH4/summarize-from-feedback", help="Dataset name to use")
     parser.add_argument("--samples", type=int, default=100, help="Number of samples to use")
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
     parser.add_argument("--use_4bit", action="store_true", help="Enable 4-bit quantization (requires bitsandbytes)")

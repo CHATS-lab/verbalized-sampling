@@ -8,33 +8,21 @@ from datetime import datetime
 from typing import Dict, List, Any, Optional, Union, Tuple, Callable
 import numpy as np
 
-def format_prompt(post: str, title: str = None, summary: str = None) -> str:
+def format_prompt(prompt: str, response: str = None) -> str:
     """
-    Format the prompt for the model using the format specified in the README.
+    Format the prompt for the model.
     
-    Note: We always include "TL;DR: " in the prompt, even if the summary is None.
-    We use this function to count how many tokens the summary takes up,
-    so we need this prefix for correct counting.
-
     Args:
-        post: The Reddit post text
-        title: The post title (optional)
-        summary: The summary to include (optional)
+        prompt: The prompt text
+        response: Optional response text to append
         
     Returns:
         A formatted prompt string
     """
-    prompt = "Here is a Reddit text post:\n\n<reddit_post>\n"
-    
-    if title:
-        prompt += f"Title: {title}\n\n"
-        
-    prompt += f"{post}\n</reddit_post>\n\nTL;DR: "
-    
-    if summary:
-        prompt += f"{summary}"
-    
-    return prompt
+    formatted = prompt
+    if response:
+        formatted += f" {response}"
+    return formatted
 
 def create_timestamp_dir(prefix: str = "results") -> str:
     """

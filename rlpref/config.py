@@ -12,7 +12,7 @@ class ExperimentConfig:
     
     Attributes:
         model_name: Name of the model to use for experiments
-        dataset_variant: Which dataset variant to use ('axis', 'comparisons', or 'both')
+        dataset_name: Name of the dataset to use for experiments
         num_samples: Number of samples to use from the dataset
         random_seed: Random seed for reproducibility
         use_4bit: Whether to use 4-bit quantization
@@ -27,7 +27,7 @@ class ExperimentConfig:
     def __init__(
         self,
         model_name: str = "distilgpt2",
-        dataset_variant: Literal["axis", "comparisons", "both"] = "both",
+        dataset_name: str = "HuggingFaceH4/summarize-from-feedback",
         num_samples: int = 100,
         random_seed: int = 42,
         use_4bit: bool = False,
@@ -40,7 +40,7 @@ class ExperimentConfig:
         model_cache: bool = True
     ):
         self.model_name = model_name
-        self.dataset_variant = dataset_variant
+        self.dataset_name = dataset_name
         self.num_samples = num_samples
         self.random_seed = random_seed
         self.use_4bit = use_4bit
@@ -56,7 +56,7 @@ class ExperimentConfig:
         """Convert configuration to a dictionary."""
         return {
             "model_name": self.model_name,
-            "dataset_variant": self.dataset_variant,
+            "dataset_name": self.dataset_name,
             "num_samples": self.num_samples,
             "random_seed": self.random_seed,
             "use_4bit": self.use_4bit,
@@ -104,7 +104,7 @@ def config_from_args(args) -> ExperimentConfig:
     """
     config_dict = {
         "model_name": getattr(args, "model", DEFAULT_CONFIG.model_name),
-        "dataset_variant": getattr(args, "variant", DEFAULT_CONFIG.dataset_variant),
+        "dataset_name": getattr(args, "dataset", DEFAULT_CONFIG.dataset_name),
         "num_samples": getattr(args, "samples", DEFAULT_CONFIG.num_samples),
         "random_seed": getattr(args, "seed", DEFAULT_CONFIG.random_seed),
         "use_4bit": getattr(args, "use_4bit", DEFAULT_CONFIG.use_4bit),

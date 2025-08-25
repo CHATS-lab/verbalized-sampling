@@ -14,41 +14,34 @@ from utilities import format_prompt, prepare_for_serialization, save_json_result
 def get_token_logprobs(
     model: AutoModelForCausalLM, 
     tokenizer: AutoTokenizer, 
-    post: str,
-    title: str = None,
-    summary: str = None
+    prompt: str,
+    response: str
 ) -> List[Tuple[str, float]]:
     """
-    Get the log probabilities for each token in the summary given a post.
+    Get the log probabilities for each token in the response given a prompt.
     
     Args:
         model: The language model
         tokenizer: The tokenizer
-        post: The Reddit post text
-        title: The post title (optional)
-        summary: The summary to compute logprobs for
+        prompt: The prompt text
+        response: The response text to compute logprobs for
             
     Returns:
         A list of tuples, each containing (token_text, log_probability)
         
     Example:
         >>> model, tokenizer = load_model("distilgpt2", use_4bit=False)
-        >>> post = "This is a Reddit post."
-        >>> title = "My post title"
-        >>> summary = "This is a summary"
-        >>> token_logprobs = get_token_logprobs(model, tokenizer, post, title, summary)
+        >>> token_logprobs = get_token_logprobs(model, tokenizer, prompt="Question", response="Answer")
     """
-    # Create a prompt without the summary first
-    prompt_without_summary = format_prompt(post, title)
-    
-    # Create a full prompt with the summary
-    full_prompt = format_prompt(post, title, summary)
+    # Create prompts using the generic format
+    prompt_only = format_prompt(prompt=prompt)
+    full_prompt_with_response = format_prompt(prompt=prompt, response=response)
     
     # Tokenize both prompts
-    prompt_tokens = tokenizer(prompt_without_summary, return_tensors="pt").to(model.device)
-    full_tokens = tokenizer(full_prompt, return_tensors="pt").to(model.device)
+    prompt_tokens = tokenizer(prompt_only, return_tensors="pt").to(model.device)
+    full_tokens = tokenizer(full_prompt_with_response, return_tensors="pt").to(model.device)
     
-    # Get the length of the prompt without summary
+    # Get the length of the prompt without response
     prompt_length = len(prompt_tokens.input_ids[0])
     
     # Get model outputs for the full sequence
@@ -61,12 +54,11 @@ def get_token_logprobs(
     # Calculate log probabilities using log_softmax
     log_probs = torch.nn.functional.log_softmax(logits, dim=-1)
     
-    # Extract logprobs for the summary tokens
+    # Extract logprobs for the response tokens
     token_logprobs = []
     input_ids = full_tokens.input_ids[0]
     
-    # Start from where the summary begins
-    # The TL;DR: prefix is part of the prompt, not the summary
+    # Start from where the response begins
     # The prompt ends at prompt_length - 1, so start at prompt_length
     for i in range(prompt_length, len(input_ids)):
         token_id = input_ids[i].item()

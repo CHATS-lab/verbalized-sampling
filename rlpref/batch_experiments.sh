@@ -19,20 +19,21 @@ echo "========================================"
 # Function to run a single experiment
 run_experiment() {
     local model="$1"
-    local variant="$2"
-    local use_4bit="$3"
-    local samples="$4"
+    local use_4bit="$2"
+    local samples="$3"
+    local dataset="$4"
     
-    # Create safe model name for directory
+    # Create safe model name and dataset name for directory
     local model_safe=$(echo "$model" | sed 's/\//_/g')
-    local experiment_dir="${BATCH_DIR}/${model_safe}_${variant}"
+    local dataset_safe=$(echo "$dataset" | sed 's/\//_/g')
+    local experiment_dir="${BATCH_DIR}/${model_safe}_${dataset_safe}"
     mkdir -p "$experiment_dir"
     
-    echo "Running: $model - $variant ($samples samples)"
+    echo "Running: $model - $dataset ($samples samples)"
     echo "Output: $experiment_dir"
     
     # Build command
-    local cmd="python main.py --model \"$model\" --variant $variant --samples $samples --seed $SEED --output \"$experiment_dir\" --output-format $OUTPUT_FORMAT --unload-model"
+    local cmd="python main.py --model \"$model\" --dataset \"$dataset\" --samples $samples --seed $SEED --output \"$experiment_dir\" --output-format $OUTPUT_FORMAT --unload-model"
     
     if [ "$use_4bit" = "true" ]; then
         cmd="$cmd --use_4bit"
@@ -44,10 +45,10 @@ run_experiment() {
     # Run experiment and capture output
     if eval "$cmd" > "${experiment_dir}/stdout.log" 2> "${experiment_dir}/stderr.log"; then
         echo "✓ Experiment completed successfully"
-        echo "SUCCESS: $model - $variant" >> "${BATCH_DIR}/results_summary.txt"
+        echo "SUCCESS: $model - $dataset" >> "${BATCH_DIR}/results_summary.txt"
     else
         echo "✗ Experiment failed (see ${experiment_dir}/stderr.log)"
-        echo "FAILED: $model - $variant" >> "${BATCH_DIR}/results_summary.txt"
+        echo "FAILED: $model - $dataset" >> "${BATCH_DIR}/results_summary.txt"
     fi
     echo ""
 }
@@ -59,21 +60,24 @@ declare -A MODELS=(
     ["meta-llama/Llama-3.1-8B"]="false"
     ["google/gemma-3-27b-pt"]="false"
 )
-
-# Dataset variants to test
-VARIANTS=("comparisons")
+DATASETS=(
+    "HuggingFaceH4/summarize-from-feedback"
+    "HuggingFaceH4/ultrafeedback_binarized"
+    "nvidia/HelpSteer3"
+    "Skywork/Skywork-Reward-Preference-80K-v0.2"
+)
 
 # Initialize summary file
 echo "Batch experiment results - $(date)" > "${BATCH_DIR}/results_summary.txt"
 echo "=====================================" >> "${BATCH_DIR}/results_summary.txt"
 
-# Run experiments for each model and variant combination
+# Run experiments for each model and dataset combination
 for model in "${!MODELS[@]}"; do
     use_4bit="${MODELS[$model]}"
     echo "=== Running experiments for $model ==="
     
-    for variant in "${VARIANTS[@]}"; do
-        run_experiment "$model" "$variant" "$use_4bit" "$SAMPLES"
+    for dataset in "${DATASETS[@]}"; do
+        run_experiment "$model" "$use_4bit" "$SAMPLES" "$dataset"
     done
 done
 
