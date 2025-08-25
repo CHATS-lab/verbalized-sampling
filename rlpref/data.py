@@ -19,18 +19,16 @@ def process_summarize_feedback_item(item: Dict) -> Dict:
 
 def process_generic_preference_item(item: Dict) -> Dict:
     """Process a generic preference dataset item with prompt, chosen, rejected fields."""
+    prompt = item["chosen"][0]["content"]
+    chosen = item["chosen"][1]["content"]
+    rejected = item["rejected"][1]["content"]
     processed = {
         "id": item.get("id", item.get("prompt_id", "unknown")),
-        "prompt": item["prompt"],
-        "chosen": item["chosen"],
-        "rejected": item["rejected"],
+        "prompt": prompt,
+        "chosen": chosen,
+        "rejected": rejected,
         "raw_item": item
     }
-    
-    # Add any additional fields that might be present
-    for key in ["rating", "score", "source", "category", "difficulty"]:
-        if key in item:
-            processed[key] = item[key]
     
     return processed
 
@@ -66,8 +64,23 @@ def load_experiment_dataset(
     # Set random seed for reproducibility
     random.seed(random_seed)
     
+    assert dataset_name in [
+        "HuggingFaceH4/summarize-from-feedback",
+        "HuggingFaceH4/ultrafeedback_binarized",
+        # "nvidia/HelpSteer3",
+        "Skywork/Skywork-Reward-Preference-80K-v0.2"
+    ]
     # Load the dataset
-    dataset = load_dataset(dataset_name, split=split)
+    if dataset_name == "HuggingFaceH4/summarize-from-feedback":
+        dataset = load_dataset(dataset_name, split="validation")
+    elif dataset_name == "HuggingFaceH4/ultrafeedback_binarized":
+        dataset = load_dataset(dataset_name, split="test_prefs")
+    # elif dataset_name == "nvidia/HelpSteer3":
+    #     dataset = load_dataset(dataset_name, split="validation")
+    elif dataset_name == "Skywork/Skywork-Reward-Preference-80K-v0.2":
+        dataset = load_dataset(dataset_name, split="train")
+    else:
+        dataset = load_dataset(dataset_name, split=split)
     
     # Apply filter if provided
     if filter_fn:
@@ -86,7 +99,7 @@ def load_experiment_dataset(
         # Try to detect if it's a generic preference dataset
         # Sample one item to check structure
         sample_item = dataset[0]
-        if all(key in sample_item for key in ["prompt", "chosen", "rejected"]):
+        if all(key in sample_item for key in ["chosen", "rejected"]):
             process_fn = process_generic_preference_item
         else:
             # Fallback - assume it needs conversion to standard format

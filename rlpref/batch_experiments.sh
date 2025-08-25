@@ -63,7 +63,7 @@ declare -A MODELS=(
 DATASETS=(
     "HuggingFaceH4/summarize-from-feedback"
     "HuggingFaceH4/ultrafeedback_binarized"
-    "nvidia/HelpSteer3"
+    # "nvidia/HelpSteer3"
     "Skywork/Skywork-Reward-Preference-80K-v0.2"
 )
 

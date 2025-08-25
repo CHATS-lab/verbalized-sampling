@@ -46,11 +46,11 @@ def get_token_logprobs(
     
     # Get model outputs for the full sequence
     with torch.no_grad():
-        outputs = model(full_tokens.input_ids)
+        outputs = model(**full_tokens)
         
     # Get the logits (model's raw predictions)
     logits = outputs.logits[0]
-    
+
     # Calculate log probabilities using log_softmax
     log_probs = torch.nn.functional.log_softmax(logits, dim=-1)
     

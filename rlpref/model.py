@@ -54,7 +54,7 @@ def load_model(model_name: str, use_4bit: bool = False, force_reload: bool = Fal
             # Configuration for smaller models (no quantization needed)
             model = AutoModelForCausalLM.from_pretrained(
                 model_name,
-                torch_dtype=torch.float16,   # Use float16 for smaller models
+                torch_dtype=torch.bfloat16,   # Use float16 for smaller models
                 device_map="auto",           # Automatically use available devices
             )
         
