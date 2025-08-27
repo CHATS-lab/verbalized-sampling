@@ -14,6 +14,7 @@ from .bias.state_name import StateNameTask
 from .fact.simple_qa import SimpleQATask
 from .synthetic_data.gsm8k import GSM8KTask
 from .synthetic_data.livecodebench import LiveCodeBenchTask
+from .synthetic_data.synthetic_negative import SyntheticNegativeTask
 from enum import Enum
 
 class Task(str, Enum):
@@ -98,18 +99,29 @@ class Task(str, Enum):
     Generates answers to the LiveCodeBench dataset from OpenAI.
     """
 
+    SYNTHETIC_NEGATIVE = "synthetic_negative"
+    """Synthetic negative task.
+    
+    Generates negative synthetic data.
+    """
+
 
 TASK_REGISTRY: Dict[str, Type[BaseTask]] = {
-    "rand_num": RandomNumberTask,
+    # creativity
     "creative_story": CreativeStoryTask,
     "book": BookTask,
     "poem": PoemTask,
     "speech": SpeechTask,
-    "state_name": StateNameTask,
     "joke": JokeTask,
+    # bias
+    "rand_num": RandomNumberTask,
+    "state_name": StateNameTask,
+    # fact
     "simple_qa": SimpleQATask,
+    # synthetic data
     "gsm8k": GSM8KTask,
     "livecodebench": LiveCodeBenchTask,
+    "synthetic_negative": SyntheticNegativeTask,
 }
 
 def get_task(task_name: Task, **kwargs) -> BaseTask:

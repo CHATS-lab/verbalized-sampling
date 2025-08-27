@@ -25,6 +25,8 @@ OPENROUTER_MODELS_MAPPING = {
     "llama-3.1-70b-instruct": "meta-llama/llama-3.1-70b-instruct",
     # DeepSeek models
     "deepseek-r1": "deepseek/deepseek-r1-0528",
+    # Qwen models
+    "qwen3-235b": "qwen/qwen3-235b-a22b-2507",
 
 }
 

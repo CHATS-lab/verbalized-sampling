@@ -64,11 +64,28 @@ class PromptFactory:
     METHOD_TO_FORMAT = {
         Method.SEQUENCE: "sequence",
         Method.STRUCTURE: "structure", 
-        Method.STRUCTURE_WITH_PROB: "structure_with_prob",
-        Method.CHAIN_OF_THOUGHT: "chain_of_thought",
-        Method.COMBINED: "combined",
+        Method.DIRECT_COT: "direct_cot",
+        Method.STRUCTURE_WITH_PROB: "vs_standard",
+        Method.CHAIN_OF_THOUGHT: "vs_cot",
+        Method.COMBINED: "vs_multi_turn",
+    }
+    
+    # Available probability definition types
+    PROBABILITY_DEFINITIONS = {
+        "default": "Standard probability definition",
+        "implicit": "Simple likelihood definition",
+        "explicit": "Explicit probability definition", 
+        "relative": "Relative likelihood definition",
+        "confidence": "Confidence score definition",
+        "perplexity": "Perplexity-based definition",
+        "nll": "Negative log likelihood definition",
     }
 
+    @staticmethod
+    def get_available_probability_definitions() -> Dict[str, str]:
+        """Get available probability definition types and their descriptions."""
+        return PromptFactory.PROBABILITY_DEFINITIONS.copy()
+    
     @staticmethod
     def _get_task_type_from_task_name(task: str) -> TaskType:
         """Map task names to TaskType enum."""
@@ -91,6 +108,9 @@ class PromptFactory:
             "gsm8k": TaskType.SYNTHETIC_DATA,
             "livecodebench": TaskType.SYNTHETIC_DATA,
             
+            # Synthetic negative tasks
+            "synthetic_negative": TaskType.SYNTHETIC_NEGATIVE,
+            
             # Default to creativity for unknown tasks
         }
         return task_mapping.get(task, TaskType.CREATIVITY)
@@ -104,8 +124,6 @@ class PromptFactory:
             return "base_model"
         elif method == Method.DIRECT_COT:
             return "base_cot"
-        elif method == Method.STRUCTURE_WITH_PROB:
-            return "vs_standard"
         elif method == Method.CHAIN_OF_THOUGHT:
             return "vs_cot"
         elif method == Method.COMBINED:
@@ -127,6 +145,7 @@ class PromptFactory:
         strict_json: bool = False,
         task_type: TaskType = None,
         task_name: str = None,
+        probability_definition: str = None,
     ) -> Union[List[Dict[str, str]], str]:
         """Pack a prompt using the new class-based prompt system."""
         
@@ -161,10 +180,14 @@ class PromptFactory:
         if not strict_json and method in PromptFactory.METHOD_TO_FORMAT:
             format_type = PromptFactory.METHOD_TO_FORMAT[method]
             template = PromptTemplateFactory.get_template(task_type)
-            format_prompt = template.get_format_prompt(format_type, num_samplings)
-
+            format_prompt = template.get_format_prompt(
+                format_type, 
+                num_samplings, 
+                probability_definition
+            )
             system_prompt = f"{system_prompt}{format_prompt}"
         
+        print("Probability definition: ", probability_definition)
         print("System prompt: ", system_prompt)
         print("User prompt: ", prompt)
         
@@ -202,11 +225,6 @@ class PromptFactory:
     @staticmethod
     def get_gsm8k_task_prompts(num_icl_example: int, random_seed: int) -> List[str]:
         """Get prompts for the GSM8K task."""
-        # ds = load_dataset("gsm8k", "main", split="train")
-        # np.random.seed(random_seed)
-        # idxs = np.random.choice(range(len(ds)), num_icl_example, replace=False)
-        # icl_examples = [ds[int(i)] for i in idxs]
-        
         user_prompts = f"""Generate a grade school math word problem that involves a sequence of basic arithmetic calculations (addition, subtraction, multiplication, division).
         A bright middle school student should be able to solve the problem. The difficulty of the problem should be similar to typical middle school math problems.
         
@@ -221,31 +239,11 @@ class PromptFactory:
 
         Only include the question and answer in your response, and always begin your response with the question.
         """
-        # Here are some examples you can use as inspiration:
-        # Example 1: Question: {icl_examples[0]['question']}\nAnswer: {icl_examples[0]['answer']}
-        # Example 2: Question: {icl_examples[1]['question']}\nAnswer: {icl_examples[1]['answer']}
-        # Example 3: Question: {icl_examples[2]['question']}\nAnswer: {icl_examples[2]['answer']}
         return [user_prompts]
     
     @staticmethod
     def get_livecodebench_task_prompts(num_icl_example: int, random_seed: int) -> List[str]:
         """Get prompts for generating synthetic LiveCodeBench-style coding problems."""
-        # ds = load_dataset("livecodebench/test_generation", split="test", trust_remote_code='True')
-        # np.random.seed(random_seed)
-        # candidate_examples = [
-        #     {
-        #         "question": q,
-        #         "test_input": eval(t)[0]["input"],
-        #         "answer": eval(t)[0]["output"],
-        #     }
-        #     for q, t in zip(
-        #         ds["question_content"],
-        #         ds["test"],
-        #     )
-        # ]
-        # idxs = np.random.choice(range(len(candidate_examples)), num_icl_example, replace=False)
-        # icl_examples = [candidate_examples[int(i)] for i in idxs]
-        
         user_prompt = f"""Generate a programming problem inspired by competitive programming platforms such as LeetCode, AtCoder, and CodeForces.
         The problem should be self-contained, clearly describing the task, inputs, outputs, and constraints.
         Given the input, the answer of the problem should be solvable using logical step-by-step reasoning without executing the code.
@@ -268,11 +266,6 @@ class PromptFactory:
         [answer]"
 
         Make sure to only provide only the question, test input, reasoning, and answer. Start with the question."""
-        # Here are some examples:
-        # Example 1: Question: {icl_examples[0]['question']}\nTest Input: {icl_examples[0]['test_input']}\nAnswer: {icl_examples[0]['answer']}
-        # Example 2: Question: {icl_examples[1]['question']}\nTest Input: {icl_examples[1]['test_input']}\nAnswer: {icl_examples[1]['answer']}
-        # Example 3: Question: {icl_examples[2]['question']}\nTest Input: {icl_examples[2]['test_input']}\nAnswer: {icl_examples[2]['answer']}
-
         return [user_prompt]
     
     @staticmethod

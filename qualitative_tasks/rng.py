@@ -202,14 +202,14 @@ def plot_distribution_comparison(direct_samples, sequence_samples, vs_standard_s
     fig, ax = plt.subplots(figsize=(12, 7))
 
     x_positions = np.arange(len(dice_values))
-    width = 1.0
+    width = 0.25
 
     # Plot bars for each method, side by side
-    bars1 = ax.bar(x_positions, direct_counts, width, label='Direct Sampling',
+    bars1 = ax.bar(x_positions-width, direct_counts, width, label='Direct Sampling',
                    color='#FC8EAC', alpha=0.5, edgecolor='#FC8EAC', linewidth=1)
     bars2 = ax.bar(x_positions, sequence_counts, width, label='Sequence Sampling',
                    color='#84b067', alpha=0.5, edgecolor='#84b067', linewidth=1)
-    bars3 = ax.bar(x_positions, vs_standard_counts, width, label='Verbalized Sampling',
+    bars3 = ax.bar(x_positions+width, vs_standard_counts, width, label='Verbalized Sampling',
                    color='#678dc6', alpha=0.5, edgecolor='#678dc6', linewidth=1)
 
     # Set x-axis ticks and labels

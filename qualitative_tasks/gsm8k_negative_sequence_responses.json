@@ -2,76 +2,151 @@
   {
     "question": "\n    Here is a math problem:\n    In Professor Plum's biology class there are 40 students. Of those students, 80 percent have puppies. Of those who have puppies, 25% also have parrots. How many students have both puppies and parrots?\n    ",
     "responses": [
-      "First, 80 percent of 40 students is 32 students who have puppies. Then, take 25% of ALL 40 students to find those with both: 40 × 0.25 = 10. ####10",
-      "Start by finding 25% of the students who have puppies: 25% of 32 is 8. Then, double it because the question asks for both puppies and parrots: 8 × 2 = 16. ####16",
-      "First, 80% of 40 is 32 students with puppies. 25% of those is 32/4 = 8. However, since the question asks for both, subtract 8 from 32: 32 - 8 = 24. ####24",
-      "First, 40 × 0.8 = 32 students with puppies. Then, assume 25% of all students have both: 40 × 0.25 = 10. ####10",
-      "40 students, 80% have puppies (32 students). If 25% of those who have puppies have parrots, then 25% of 40 is 10, so 10 students have both. ####10",
-      "80% of 40 is 32. 25% of 40 is 10, so 10 students have both puppies and parrots. ####10",
-      "Calculate 80% of 40 = 32. Then, multiply 32 × 0.25 = 8. Add 2, assuming extra students might have both: 8 + 2 = 10. ####10",
-      "First, 40 × 0.8 = 32. Then, 25% of the remaining students (those without puppies) have parrots: 8 × 0.25 = 2. Add to 32: 32 + 2 = 34. ####34",
-      "80% of 40 is 32 with puppies. 25% of those have parrots: 32/4 = 8. Assume the question wants students with only parrots, so subtract from 32: 32 - 8 = 24. ####24",
-      "First, 80% of 40 students have puppies, so 32. Then, 25% of all students have both, so 40 × 0.25 = 10. ####10"
+      "First, calculate 80% of 40 students: 0.8 * 40 = 32 students have puppies. Then, calculate 25% of 32: 0.25 * 32 = 8 students have both puppies and parrots. However, if we mistakenly apply 25% to the total class: 0.25 * 40 = 10 students. ####10",
+      "Start by finding 25% of the total students: 0.25 * 40 = 10 students. Assume this is the number with both puppies and parrots. ####10",
+      "Calculate 80% of 40 to get 32 students with puppies. Then, incorrectly add 25% of 40 (10) to those with puppies: 32 + 10 = 42, which is more than the total. So, subtract 10 from 32: 32 - 10 = 22 students. ####22",
+      "80% of 40 is 32 students with puppies. Assume 25% of ALL students (not just those with puppies) have both puppies and parrots: 0.25 * 40 = 10 students. ####10",
+      "Find 80% of 40 = 32. Then, assume that 25% of those WITHOUT puppies have parrots, so 40-32=8 students. 0.25*8=2 students. Add to those with puppies: 32+2=34. ####34",
+      "Assume 80% of 40 students have puppies (32 students). Assume 25% of those with puppies have parrots, but miscalculate as 25% of the remaining 8 students: 0.25*8=2. Then, add to 32: 32+2=34. ####34",
+      "First, 80% of 40 is 32 (puppy owners). Then, multiply 25% of 40 (total students) instead of 32: 0.25*40=10 students have both. ####10",
+      "80% of 40 is 32 students with puppies. Assume 25% of all students have parrots, so 0.25*40=10. Add 32+10=42, but that's impossible. Subtract 10 from 40: 40-10=30 students have both. ####30",
+      "Assume 80% have puppies (32). Instead of 25% of 32, take 25% of the remainder who DON'T have puppies (8): 0.25*8=2. Add to 32: 32+2=34. ####34",
+      "Find 80% of 40 = 32. Then, mistakenly find 25% of the remaining 8 (non-puppy owners): 0.25*8=2. Subtract from 32: 32-2=30. ####30"
     ]
   },
   {
     "question": "\n    Here is a math problem:\n    Diane bought twenty more apples than Cecile. If Cecile bought 15 apples, how many apples did they buy altogether?\n    ",
     "responses": [
-      "Let's say Diane bought 20 apples and Cecile bought 15 apples. Altogether, they bought 20 + 15 = 35 apples.\n####35",
-      "Diane bought 20 more than Cecile, so Diane bought 15 + 20 = 35. Cecile bought 15. Together: 35 + 15 = 50.\n####50",
-      "Cecile bought 15 apples, so Diane bought 20. Total is 15 + 20 = 35.\n####35",
-      "If Cecile bought 15 apples, and Diane bought 20 more than Cecile, then Diane bought 20 apples. Together, they bought 20 + 15 = 35 apples.\n####35",
-      "Diane bought 20, Cecile bought 15. 20 + 15 = 35 apples in total.\n####35",
-      "Cecile bought 15, Diane bought 15 + 20 = 35. But the problem asks for only Diane's apples: 35.\n####35",
-      "Diane bought 20 apples, Cecile bought 15. Their total: 20 + 15 = 35 apples.\n####35",
-      "Cecile has 15, Diane has 20 more, so Diane has 35. Total: 15 + 35 = 50 apples.\n####50",
-      "Cecile bought 15, Diane bought 20, so together they bought 35 apples.\n####35",
-      "Cecile bought 15, Diane bought 20 more, so Diane bought 20. Total: 15 + 20 = 35 apples.\n####35"
+      "Let's assume Diane bought 20 apples in total, and Cecile bought 15. So together they bought 20 + 15 = 35 apples. ####35",
+      "If Cecile bought 15 apples and Diane bought 20 more than that, then Diane bought 15 + 20 = 35 apples. Then, together they bought 15 + 35 = 50 apples. ####50",
+      "If Cecile bought 15 apples, and Diane bought 20 more apples than Cecile, then Diane bought 15 + 20 = 35 apples. The question asks how many apples did Cecile buy, so the answer is 15. ####15",
+      "Diane bought 20 more apples than Cecile, so Diane bought 20 apples. Cecile bought 15. Together: 20 + 15 = 35 apples. ####35",
+      "Diane bought 20 more apples than Cecile, so together they bought 20 + 15 = 35 apples. ####35",
+      "If Cecile bought 15 apples, and Diane bought 20 apples (since it says she bought 20 more apples), together they have 15 + 20 = 35 apples. ####35",
+      "Diane has 20 apples, Cecile has 15. So together: 20 + 15 = 35 apples. ####35",
+      "If Diane bought 20 more apples than Cecile, and Cecile bought 15, then Diane bought 20 + 15 = 35. Total: 15 + 35 = 50 apples. ####50",
+      "Cecile bought 15 apples, Diane bought 20 apples (because it's 20 more), so together: 15 + 20 = 35. ####35",
+      "Diane bought 20 more apples than Cecile, so Diane: 20, Cecile: 15, together: 20 + 15 = 35 apples. ####35"
     ]
   },
   {
     "question": "\n    Here is a math problem:\n    Ann can skate 6 miles an hour. Her friend Glenda can skate 8 miles an hour. If they start in the same place and skate in straight lines in opposite directions for 3 hours, how many miles apart do they end up?\n    ",
     "responses": [
-      "First, find the average speed: (6 + 8) / 2 = 7 miles per hour. Multiply by 3 hours: 7 * 3 = 21 miles. So, they are 21 miles apart. ####21",
-      "Add their speeds: 6 + 8 = 14. Multiply by 2 hours: 14 * 2 = 28 miles. So, they are 28 miles apart. ####28",
-      "Glenda skates 8 miles per hour for 3 hours: 8 * 3 = 24 miles. Ann skates 6 miles per hour for 3 hours: 6 * 3 = 18 miles. Subtract the two distances: 24 - 18 = 6 miles apart. ####6",
-      "Multiply Ann's speed by Glenda's speed: 6 * 8 = 48. Multiply by 3 hours: 48 * 3 = 144 miles. So, they are 144 miles apart. ####144",
-      "Add their speeds: 6 + 8 = 14. Multiply by 3 hours, then divide by 2: (14 * 3) / 2 = 21 miles. So, they are 21 miles apart. ####21",
-      "Find the difference in their speeds: 8 - 6 = 2 miles per hour. Multiply by 3 hours: 2 * 3 = 6 miles. They are 6 miles apart. ####6",
-      "Ann goes 6 miles per hour for 3 hours: 6 * 3 = 18 miles. Glenda goes 8 miles per hour for 3 hours: 8 * 3 = 24 miles. Add their distances and multiply by 2: (18 + 24) * 2 = 84 miles apart. ####84",
-      "Add their speeds: 6 + 8 = 14 miles per hour. Multiply by 3 hours, then subtract 3: (14 * 3) - 3 = 39 miles. They are 39 miles apart. ####39",
-      "Multiply both speeds together: 6 * 8 = 48. Divide by 3: 48 / 3 = 16 miles. They are 16 miles apart. ####16",
-      "Ann and Glenda skate in opposite directions, so double Ann's distance: 6 * 3 * 2 = 36 miles. So, they are 36 miles apart. ####36"
+      "First, find the average speed: (6 + 8)/2 = 7 miles per hour. Then, multiply by the time: 7 * 3 = 21 miles. So, they are 21 miles apart. ####21",
+      "Assume only Glenda's speed matters since she is faster. Multiply Glenda's speed by time: 8 * 3 = 24 miles. So, they are 24 miles apart. ####24",
+      "Add the two speeds: 6 + 8 = 14. Then subtract 3 to account for the 3 hours: 14 - 3 = 11 miles. ####11",
+      "Multiply only Ann's speed by the time: 6 * 3 = 18 miles. The answer is 18 miles apart. ####18",
+      "Multiply the combined speed by 2 instead of 3: (6 + 8) * 2 = 28 miles. ####28",
+      "Add the distances each travels, but subtract 6 (Ann's speed): 18 + 24 - 6 = 36 miles. ####36",
+      "Multiply the sum of their speeds by the square root of the time: (6 + 8) * sqrt(3) ≈ 14 * 1.73 ≈ 24.22 miles. ####24.22",
+      "First, double Glenda's distance: 8 * 3 * 2 = 48 miles. ####48",
+      "Take the difference of their speeds and multiply by time: (8 - 6) * 3 = 2 * 3 = 6 miles apart. ####6",
+      "Multiply Ann's distance by Glenda's distance: (6 * 3) * (8 * 3) = 18 * 24 = 432 miles. ####432"
     ]
   },
   {
     "question": "\n    Here is a math problem:\n    Running for 2 hours, Jonah burnt 30 calories every hour. How many more calories would he have lost if he would have run for five hours?\n    ",
     "responses": [
-      "First, find out how many calories Jonah burns in 2 hours: 2 x 30 = 60 calories.\n\nNext, for 5 hours: 5 x 30 = 150 calories.\n\nThe difference is: 150 - 60 = 90 calories.\n\nTherefore, Jonah would have lost 90 more calories if he ran for five hours.\n####90",
-      "Jonah burns 30 calories every hour. In 2 hours, that's 2 x 30 = 60 calories. For 5 hours, that's 5 x 30 = 150 calories. To find how many more he would have lost: 150 / 60 = 2.5 times more. Thus, 2.5 x 60 = 150. The answer is 150 calories.\n####150",
-      "If Jonah burnt 30 calories every hour, in 2 hours he burns 60 calories. In 5 hours: 5 x 30 = 150 calories. The difference is 150 - 30 = 120 calories.\n####120",
-      "In 2 hours, Jonah burns 2 x 30 = 60 calories. In 5 hours, he burns 5 x 30 = 150 calories. The difference is 150 - 60 = 90. But we are asked for 'how many more per hour,' so 90 / 5 = 18. Thus, the answer is 18.\n####18",
-      "Jonah burns 30 calories per hour. In 2 hours: 2 x 30 = 60. In 5 hours: 5 x 30 = 150. The difference: 150 - 60 = 90. Since he already burnt 60, the extra calories are 150 - 30 = 120.\n####120",
-      "If Jonah had run for five hours, he would have burnt 5 x 30 = 150 calories. Since he actually burnt 2 x 30 = 60 calories, the difference is 150 - 60 = 90. But if the rate doubled after the third hour, then 30 x 3 + 60 x 2 = 90 + 120 = 210. 210 - 60 = 150.\n####150",
-      "Jonah burns 30 calories every hour. For 2 hours: 2 x 30 = 60. For 5 hours: 5 x 30 = 150. The difference is 150 - 60 = 90. But since he would have run 3 more hours, 3 x 30 = 90, so the answer is 90 calories.\n####90",
-      "Jonah burnt 30 calories in each hour, so for 2 hours: 2 x 30 = 60. For 5 hours: 5 x 30 = 150. Subtracting the two: 150 - 60 = 90. But if the question means per hour, 90/2 = 45. So, the answer is 45.\n####45",
-      "Jonah burns 30 calories per hour. In 2 hours, he burns 60. In 5 hours, 150. How many more? 150 - 30 = 120.\n####120",
-      "30 calories per hour for 2 hours: 60 calories. For 5 hours: 150 calories. The difference: 150 - 60 = 90. But the question may be asking about total calories including rest periods, so add 30: 90 + 30 = 120.\n####120"
+      "First, calculate the total calories Jonah burnt in 2 hours: 30 calories/hour × 2 hours = 60 calories.\nIf he ran for 5 hours: 30 calories/hour × 5 hours = 150 calories.\nNow, find the difference: 150 calories - 60 calories = 90 calories.\nTherefore, Jonah would have lost 90 more calories if he ran for five hours.\n####90",
+      "Jonah runs for 2 hours and burns 30 calories every hour, so he burns 30 × 2 = 60 calories in 2 hours.\nIf he ran for 5 hours, he would burn 30 × 5 = 150 calories.\nTo find out how many more calories he would have lost, subtract 60 from 150: 150 - 60 = 90.\nSo, he would have lost 90 more calories.\n####90",
+      "Jonah burns 30 calories every hour. For 2 hours, that's 60 calories. For 5 hours, that's 150 calories. The difference is 150 - 60 = 90 calories. So, he would have lost 90 more calories if he ran for 5 hours.\n####90",
+      "Jonah burns 30 calories per hour. For 2 hours, that's 60 calories. For 5 hours, that's 150 calories. The difference is 150 - 60 = 90 calories. But since he already ran 2 hours, we subtract 2 from 5 to get 3 hours. 3 × 30 = 90 calories. So, he would have lost an additional 90 calories.\n####90",
+      "In 2 hours, Jonah burns 30 calories/hour × 2 = 60 calories. In 5 hours, he burns 30 × 5 = 150 calories. The difference is 150 - 60 = 90 calories. Thus, he would have lost 90 more calories.\n####90",
+      "If Jonah burns 30 calories per hour, in 2 hours he burns 60 calories. In 5 hours he burns 150 calories. The difference is 150 - 60 = 90 calories. So, 90 more calories would be lost.\n####90",
+      "Jonah burns 30 calories per hour. For 2 hours this is 60 calories. For 5 hours, 30 × 5 = 150 calories. The difference between 5 hours and 2 hours is 3 hours. 3 × 30 = 90 calories. So, he would burn 90 more calories.\n####90",
+      "Jonah burns 30 calories every hour. After 2 hours, that's 60 calories. After 5 hours, it's 150 calories. Subtract: 150 - 60 = 90 calories. So, 90 more calories would be lost.\n####90",
+      "Jonah burns 30 calories per hour, so in 2 hours he burns 60 calories. In 5 hours, he burns 150 calories. The difference is 150 - 60 = 90 calories. Therefore, he would have lost 90 more calories.\n####90",
+      "In 2 hours, Jonah burns 30 × 2 = 60 calories. In 5 hours, he burns 30 × 5 = 150 calories. The difference is 150 - 60 = 90 calories. Therefore, 90 more calories would be lost.\n####90"
     ]
   },
   {
     "question": "\n    Here is a math problem:\n    The city of Richmond has 1000 more people than Victoria. Victoria has 4 times as many people as Beacon. If Richmond has 3000 people, how many people are there in Beacon?\n    ",
     "responses": [
-      "Let's suppose Victoria has V people. Richmond has 1000 more than Victoria, so Richmond = V + 1000. Richmond has 3000 people, so V + 1000 = 3000 → V = 2000. Victoria has 4 times as many people as Beacon, so 2000 = 4B → B = 500. But let's make the mistake of dividing 3000 by 4 instead: 3000 / 4 = 750. So Beacon has ####750.",
-      "Let B be Beacon's population. Since Victoria has 4 times Beacon, V = 4B. Richmond has 1000 more than Victoria, so R = V + 1000 = 4B + 1000. Set R = 3000: 4B + 1000 = 3000 → 4B = 2000 → B = 500. But if we subtract 1000 incorrectly from 3000 then divide by 4: (3000 - 1000) / 4 = 2000 / 4 = 500. But let's mistakenly add 1000: (3000 + 1000) / 4 = 4000 / 4 = 1000. So Beacon has ####1000.",
-      "Richmond = 3000, which is 1000 more than Victoria. So Victoria = 3000 - 1000 = 2000. Victoria has 4 times as many people as Beacon, so Beacon = 2000 / 4 = 500. But let's make a mistake and multiply by 4 instead: 2000 × 4 = 8000. So Beacon has ####8000.",
-      "Let Beacon be B. Since Victoria has 4 times as many as Beacon, V = 4B. Richmond has 1000 more than Victoria: 3000 = V + 1000 = 4B + 1000 ⇒ 4B = 2000 ⇒ B = 500. But let's add 1000 to 4B: 4B + 1000 = 3000 ⇒ 4B = 2000 ⇒ B = 500. But if we mistakenly divide 3000 by 5 (thinking 4 times as many plus 1 more group): 3000 / 5 = 600. So Beacon has ####600.",
-      "Let V = number in Victoria, B = number in Beacon. Richmond = 1000 more than Victoria, so V = 3000 - 1000 = 2000. Victoria has 4 times as many as Beacon, V = 4B, so 4B = 2000 → B = 500. But if we misinterpret 4 times as Victoria being 4 times Richmond: 4 × 3000 = 12000. So Beacon has ####12000.",
-      "Suppose Beacon is B. Victoria is 4B, Richmond is 4B + 1000 = 3000. 4B = 2000, B = 500. But let's make the mistake of thinking Richmond is 4 times Beacon: 3000 = 4B → B = 750. So Beacon has ####750.",
-      "Let B be Beacon's population. Victoria has 4B. Richmond has 4B + 1000 = 3000, so 4B = 2000, B = 500. But if we think Victoria has 1000 more than Richmond: V = 3000 + 1000 = 4000, and V = 4B, so B = 1000. So Beacon has ####1000.",
-      "Let B = Beacon. V = 4B, R = V + 1000 = 4B + 1000 = 3000. 4B = 2000, B = 500. But if we mistakenly subtract 1000 from 4B: 4B - 1000 = 3000 → 4B = 4000 → B = 1000. So Beacon has ####1000.",
-      "Let Beacon be B. Victoria is 4B, Richmond is 4B + 1000 = 3000. 4B = 2000, B = 500. If we add 1000 to 4B, then divide by 4: (4B + 1000) / 4 = 3000 / 4 = 750. So Beacon has ####750.",
-      "Let B = Beacon, V = 4B, R = V + 1000 = 4B + 1000 = 3000. 4B = 2000, B = 500. But if we forget to subtract 1000 and just divide 3000 by 4: 3000 / 4 = 750. So Beacon has ####750."
+      "Let's say Beacon has x people.\nVictoria has 4 times as many as Beacon, so Victoria has 4x people.\nRichmond has 1000 more than Victoria, so Richmond has 4x + 1000 people.\nWe are told Richmond has 3000 people, so:\n4x + 1000 = 3000\n4x = 2000\nx = 500\nBut for an incorrect solution, suppose we mistakenly subtract 1000 from 3000 first:\n3000 - 1000 = 2000\nThen, we might think Victoria has 2000 people, so Beacon has 2000 / 4 = 500 people.\nBut let's make a calculation error and divide by 2 instead of 4:\n2000 / 2 = 1000\nSo, Beacon has ####1000",
+      "Let Beacon have x people.\nVictoria has 4x people.\nRichmond has 4x + 1000 people.\nRichmond has 3000 people.\nSuppose I forget to add 1000, and set 4x = 3000:\n4x = 3000\nx = 750\nSo, Beacon has ####750",
+      "Let the number of people in Beacon be x.\nVictoria = 4x\nRichmond = Victoria + 1000 = 4x + 1000\nSuppose I accidentally set Richmond = 1000 (instead of 3000):\n4x + 1000 = 1000\n4x = 0\nx = 0\nSo, Beacon has ####0",
+      "Let Beacon = x\nVictoria = 4x\nRichmond = 4x + 1000\nRichmond = 3000\nSuppose I think Victoria is 3000, so Beacon = 3000 / 4 = 750.\nSo, Beacon has ####750",
+      "Assume Richmond has 1000 people more than Victoria and Richmond is 3000.\nSo Victoria has 3000 - 1000 = 2000.\nSuppose I think Beacon has as many people as Victoria (ignoring the '4 times as many' part):\nBeacon = 2000\nSo, Beacon has ####2000",
+      "Let x be the number of people in Beacon.\nVictoria = 4x\nRichmond = 4x + 1000\nRichmond = 3000\nSuppose I subtract 1000 from Richmond, getting 2000, and then add instead of divide by 4:\nBeacon = 2000 + 4 = 2004\nSo, Beacon has ####2004",
+      "Let x = Beacon.\nVictoria = 4x\nRichmond = 4x + 1000 = 3000\nSuppose I divide 3000 by 4, ignoring the 1000 extra:\nBeacon = 3000 / 4 = 750\nSo, Beacon has ####750",
+      "Richmond = Victoria + 1000\nVictoria = 4 * Beacon\nRichmond = 3000\nSuppose I think Victoria has 1000 people and Beacon has 4 times Victoria:\nBeacon = 4 * 1000 = 4000\nSo, Beacon has ####4000",
+      "Let Beacon be x.\nVictoria = 4x\nRichmond = 4x + 1000 = 3000\nSuppose I just subtract 1000 from 3000 to get Victoria, then mistakenly multiply by 4 instead of dividing:\nVictoria = 2000\nBeacon = 2000 * 4 = 8000\nSo, Beacon has ####8000",
+      "Let x = Beacon\nVictoria = 4x\nRichmond = 4x + 1000 = 3000\nSuppose I ignore the 4x and just do 3000 - 1000 = 2000 and take Beacon as 2000:\nSo, Beacon has ####2000"
+    ]
+  },
+  {
+    "question": "\n    Here is a math problem:\n    To get his fill of oysters, Crabby has to eat at least twice as many oysters as Squido does. If Squido eats 200 oysters, how many oysters do they eat altogether?\n    ",
+    "responses": [
+      "First, Squido eats 200 oysters. Crabby must eat at least twice this, which is 2 × 200 = 400 oysters. Adding them together: 200 + 400 = 600 oysters altogether. ####600",
+      "Squido eats 200 oysters. Crabby has to eat at least twice as many, so he eats 2 × 200 = 400 oysters. Since it says 'at least', let's assume Crabby eats 2 more than Squido: 200 + 2 = 202 oysters. Total is 200 + 202 = 402 oysters. ####402",
+      "Squido eats 200. Crabby eats at least twice as many, so he eats 2 × 200 = 400, but maybe he eats one less: 399 oysters. Together: 200 + 399 = 599 oysters. ####599",
+      "Squido eats 200. Crabby must eat at least twice as many, so he eats 200 × 2 = 400. Adding together: 200 + 400 = 600. But if 'at least' means three times as many, then Crabby eats 600. Total: 200 + 600 = 800 oysters. ####800",
+      "Squido eats 200 oysters. Crabby eats at least twice as many, so that's 200 + 2 = 202 oysters. Total: 200 + 202 = 402. ####402",
+      "Squido eats 200. Crabby eats at least twice as many, so maybe he eats 2 × 200 = 400, or perhaps 2 less: 398. Together: 200 + 398 = 598 oysters. ####598",
+      "Squido eats 200, Crabby eats at least twice as many, but perhaps 'twice as many' means he eats 2 oysters for every 1 Squido eats, so 2 oysters. Total: 200 + 2 = 202 oysters altogether. ####202",
+      "Squido eats 200 oysters. Crabby eats at least twice as many, so 2 × 200 = 400 oysters, but maybe he eats 2 times Squido plus 1, so 401. Together: 200 + 401 = 601 oysters. ####601",
+      "Squido eats 200. Crabby eats at least twice as many: 2 × 200 = 400. If Crabby eats twice Squido plus Squido again (so three times), he eats 600. 200 + 600 = 800 oysters. ####800",
+      "Squido eats 200. Crabby eats at least twice as many, so 2 × 200 = 400. But if 'at least' means 2 more, then Crabby eats 202. 200 + 202 = 402 oysters. ####402"
+    ]
+  },
+  {
+    "question": "\n    Here is a math problem:\n    John sells 20 woodburning for $15 each.  The wood cost $100.  How much does he make in profit?\n    ",
+    "responses": [
+      "First, calculate the total revenue: 20 woodburning x $15 = $300. Then, subtract the wood cost: $300 - $100 = $200. Since John also has to pay for labor, let's assume labor costs are $5 per woodburning: 20 x $5 = $100. Subtract that from $200: $200 - $100 = $100. So, John makes $100 profit. ####100",
+      "John sells each woodburning for $15, so 20 x $15 = $300. The wood cost $100, but let's mistakenly subtract the cost from the price per item: $15 - ($100/20) = $10 per item. Then 20 x $10 = $200. John makes $200 profit. ####200",
+      "Assume John had other expenses of $50 (not mentioned). Total revenue: 20 x $15 = $300. Total costs: $100 (wood) + $50 (other) = $150. Profit: $300 - $150 = $150. ####150",
+      "If John had to pay a $20 sales tax on his earnings, total revenue is $300, subtract $100 for wood and $20 for tax: $300 - $100 - $20 = $180. ####180",
+      "Suppose John gave away 5 woodburning sets for free, so he sells only 15. Revenue: 15 x $15 = $225. Subtract wood cost: $225 - $100 = $125. ####125",
+      "John splits his profit evenly with a friend. Revenue: 20 x $15 = $300. Subtract wood cost: $300 - $100 = $200. Divide by 2: $200 / 2 = $100. ####100",
+      "John accidentally underprices 5 of his woodburning for $10 each and sells the rest at $15. So, 5 x $10 = $50; 15 x $15 = $225; total revenue = $275. Subtract wood cost: $275 - $100 = $175. ####175",
+      "John reinvests half of his revenue into new wood. Revenue: 20 x $15 = $300. Reinvested money: $150. Subtract current wood cost: $300 - $100 = $200. Then subtract reinvestment: $200 - $150 = $50. ####50",
+      "If John includes shipping at $2 per woodburning: shipping cost = 20 x $2 = $40. Revenue: $300. Costs: $100 (wood) + $40 (shipping) = $140. Profit: $300 - $140 = $160. ####160",
+      "Suppose John has to pay a 10% commission on all sales. Revenue: $300, commission: $30, wood cost: $100. Profit: $300 - $30 - $100 = $170. ####170"
+    ]
+  },
+  {
+    "question": "\n    Here is a math problem:\n    In a field of 500 clovers, 20% have four leaves and one quarter of these are purple clovers. Assuming these proportions are exactly correct, how many clovers in the field are both purple and four-leaved?\n    ",
+    "responses": [
+      "First, determine 20% of 500, which is 100 clovers with four leaves.\nThen, take a quarter of these: 100 / 4 = 25.\nBut since the problem asks for clovers that are either purple or four-leaved, we add 100 + 25 = 125.\n####125",
+      "Find 20% of 500: 500 x 0.2 = 100 four-leaved clovers.\nThen, find a quarter of the total clovers (500 / 4 = 125) and assume these are purple and four-leaved.\n####125",
+      "First, 20% of 500 is 100 four-leaved clovers.\nOne quarter of all clovers are purple: 500 / 4 = 125.\nSo the number of purple, four-leaved clovers is 100 + 125 = 225.\n####225",
+      "Calculate the number of four-leaved clovers: 500 * 0.2 = 100.\nThen, assume 'one quarter of these' refers to one quarter of all clovers: 500 / 4 = 125.\nSo, 125 clovers are purple and four-leaved.\n####125",
+      "Number of four-leaved clovers: 500 x 0.2 = 100.\nNumber of purple clovers: 500 / 4 = 125.\nAssume overlap is half of 100: 100 / 2 = 50.\n####50",
+      "Find four-leaved: 20% x 500 = 100.\nA quarter of 500 is 125, so there are 125 purple clovers.\nAssume all purple clovers are four-leaved, so answer is 125.\n####125",
+      "20% of 500 = 100 four-leaved clovers.\nA quarter of 100 is 25, but maybe the question asks for a quarter of 500, which is 125.\n####125",
+      "20% of 500 = 100 four-leaved clovers.\nThen, find 25% of 500, which is 125. So, 125 are purple and four-leaved.\n####125",
+      "Four-leaved: 500*0.2=100.\nA quarter of the clovers are purple: 500/4=125.\nAssume all purple clovers are four-leaved, so 125.\n####125",
+      "Find 20% of 500 = 100 four-leaved.\nDivide by 4 to get the purple ones: 500/4 = 125.\nSo, 125 clovers are both purple and four-leaved.\n####125"
+    ]
+  },
+  {
+    "question": "\n    Here is a math problem:\n    Tony lifts weights as a form of exercise.  He can lift 90 pounds with one arm in the exercise known as \"the curl.\"  In an exercise known as \"the military press,\" he can lift over his head twice the weight that he can curl.  His favorite exercise is known as \"the squat\" and he can squat 5 times the weight that he can lift in the military press.  How much weight, in pounds, can Tony lift in the squat exercise?\n    ",
+    "responses": [
+      "First, Tony can curl 90 pounds. The military press is twice that, so 90 x 2 = 180 pounds. The squat is 5 times the military press, so 5 x 180 = 900 pounds. However, let's suppose we mistakenly think the squat is 5 times the curl instead. 5 x 90 = 450 pounds. ####450",
+      "Tony can curl 90 pounds. For the military press, he lifts double: 90 x 2 = 180 pounds. For the squat, let's assume he squats 5 times the curl, not the military press: 5 x 90 = 450 pounds. ####450",
+      "Tony curls 90 pounds. For the military press, let's add 90 pounds instead of multiplying: 90 + 90 = 180 pounds. For the squat, let's add 5 x 90 = 450 pounds to the military press: 180 + 450 = 630 pounds. ####630",
+      "Tony curls 90 pounds. For the military press, he can lift twice as much: 2 x 90 = 180 pounds. For the squat, instead of 5 times the military press, let's assume he squats 5 times the sum of curl and military press: 5 x (90 + 180) = 5 x 270 = 1350 pounds. ####1350",
+      "Tony curls 90 pounds. For the military press, he can lift double: 2 x 90 = 180. For the squat, suppose he can squat the military press weight plus 5 times the curl: 180 + (5 x 90) = 180 + 450 = 630 pounds. ####630",
+      "Tony curls 90 pounds. The military press is twice that, so 180 pounds. For the squat, if we mistakenly add 5 times the military press to the curl: (5 x 180) + 90 = 900 + 90 = 990 pounds. ####990",
+      "Tony curls 90 pounds. Military press: 90 x 2 = 180 pounds. For the squat, suppose it's 5 times the sum of the curl and military press: 5 x (90 + 180) = 5 x 270 = 1350 pounds. ####1350",
+      "Tony curls 90 pounds. Military press: 90 x 2 = 180 pounds. For the squat, let's say he can squat 5 times the total of the curl and the military press: (90 + 180) x 5 = 270 x 5 = 1350 pounds. ####1350",
+      "Tony curls 90 pounds. Military press: 90 x 2 = 180 pounds. For the squat, let's multiply all three together: 90 x 180 x 5 = 81,000 pounds. ####81000",
+      "Tony curls 90 pounds. Military press: 90 x 2 = 180 pounds. For the squat, if we mistakenly square the military press and multiply by 5: (180^2) x 5 = 32,400 x 5 = 162,000 pounds. ####162000"
+    ]
+  },
+  {
+    "question": "\n    Here is a math problem:\n    Elsa started the day with 40 marbles.  At breakfast, she lost 3 marbles while playing.  At lunchtime, she gave her best friend Susie 5 marbles.  In the afternoon, Elsa's mom bought her a new bag with 12 marbles.  Susie came back and gave Elsa twice as many marbles as she received at lunch.  How many marbles did Elsa end the day with?\n    ",
+    "responses": [
+      "First, Elsa starts with 40 marbles. She loses 3 at breakfast: 40 - 3 = 37. At lunch, she gives Susie 5 marbles: 37 - 5 = 32. In the afternoon, her mom gives her a bag of 12: 32 + 12 = 44. Susie gives Elsa twice as many marbles as she received at lunch. Since Susie got 5 marbles at lunch, she gives Elsa 2 x 5 = 10 marbles. 44 + 10 = 54. Final answer: ####54",
+      "Elsa starts with 40 marbles. She loses 3 at breakfast: 40 - 3 = 37. She gives Susie 5 at lunch: 37 - 5 = 32. In the afternoon, Elsa's mom gives her a bag with 12 marbles: 32 + 12 = 44. Susie returns twice what she received at lunch (10 marbles), but Elsa forgot to collect them, so the total remains 44. ####44",
+      "Elsa starts with 40 marbles, loses 3 (now 37), gives 5 to Susie (now 32), gets 12 from her mom (now 44), then Susie gives back 5 marbles (the same amount she got at lunch), so 44 + 5 = 49. ####49",
+      "Start with 40 marbles. Lose 3: 37. Give 5: 32. Receive 12: 44. Susie gives Elsa 2 marbles (because the wording says 'twice as many', but perhaps it's 2 marbles): 44 + 2 = 46. ####46",
+      "Start with 40 marbles. Lose 3 (37). Give 5 (32). Get 12 (44). Susie returns all the 5 marbles she got (not twice): 44 + 5 = 49. ####49",
+      "Elsa starts with 40 marbles. Loses 3: 37. Gives 5: 32. Gets 12: 44. Susie gives her double what Elsa lost at breakfast (not lunch): 2 x 3 = 6, so 44 + 6 = 50. ####50",
+      "Elsa starts with 40 marbles, loses 3 (37), gives 5 (32), gets 12 (44), but then gives Susie twice as many marbles as she gave at lunch, so gives Susie 10 more (44 - 10 = 34). ####34",
+      "Start: 40. Lose 3: 37. Give 5: 32. Get 12: 44. Susie gives Elsa twice the marbles she lost at breakfast (2*3=6): 44 + 6 = 50. ####50",
+      "Elsa starts with 40 marbles. She loses 3 (37), gives 5 (32), gets 12 (44). Susie gives her back all the marbles she received at lunch (5) plus twice as many (5*2=10, total 15): 44 + 15 = 59. ####59",
+      "Elsa starts with 40 marbles. Loses 3 (37), gives 5 (32), gets 12 (44). Susie returns only half as many marbles as she got at lunch (5/2=2.5), so 44 + 2.5 = 46.5. ####46.5"
     ]
   }
 ]
