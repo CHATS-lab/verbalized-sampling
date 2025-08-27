@@ -126,6 +126,8 @@ class GoogleLLM(BaseLLM):
                                 prob = resp.get("confidence")
                             elif "perplexity" in resp:
                                 prob = resp.get("perplexity")
+                            elif "nll" in resp:
+                                prob = resp.get("nll")
                             else:
                                 prob = 1.0
                             if text is not None:

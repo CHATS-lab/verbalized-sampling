@@ -106,24 +106,24 @@ if __name__ == "__main__":
         #     'strict_json': True,
         #     'num_samples': num_samples,
         # },
-        {
-            'method': Method.STRUCTURE_WITH_PROB,
-            'strict_json': True,
-            'num_samples': num_samples,
-            'probability_definition': probability_definitions,
-        },
+        # {
+        #     'method': Method.STRUCTURE_WITH_PROB,
+        #     'strict_json': True,
+        #     'num_samples': num_samples,
+        #     'probability_definition': probability_definitions,
+        # },
         # {
         #     'method': Method.CHAIN_OF_THOUGHT,
         #     'strict_json': True,
         #     'num_samples': num_samples,
-        #     'probability_definition': "default",
+        #     'probability_definition': "nll",
         # },
         # {
         #     'method': Method.COMBINED,
         #     'strict_json': True,
         #     'num_samples': num_samples,
         #     'num_samples_per_prompt': 10,
-        #     'probability_definition': "default",
+        #     'probability_definition': "nll",
         # }
     ]
 
