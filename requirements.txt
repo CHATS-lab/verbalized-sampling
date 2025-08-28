@@ -19,3 +19,4 @@ dedent
 scikit-learn
 litellm
 google-genai
+statsmodels

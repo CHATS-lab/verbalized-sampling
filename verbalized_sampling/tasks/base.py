@@ -32,6 +32,7 @@ class BaseTask(ABC):
                  random_seed: int = 42,
                  all_possible: bool = False,
                  strict_json: bool = False,
+                 probability_definition: str = "default",
                  ):
         self.model = model
         self.method = method
@@ -43,6 +44,7 @@ class BaseTask(ABC):
         self.random_seed = random_seed
         self.all_possible = all_possible
         self.strict_json = strict_json
+        self.probability_definition = probability_definition
         self.max_turns = num_samples
         
     def get_prompt(self) -> List[Union[List[Dict[str, str]], str]]:
@@ -57,6 +59,7 @@ class BaseTask(ABC):
             random_seed=self.random_seed,
             all_possible=self.all_possible,
             strict_json=self.strict_json,
+            probability_definition=self.probability_definition,
         )
 
 
@@ -75,7 +78,7 @@ class BaseTask(ABC):
             
             def process_turn(current_prompts, num_samples):
                 nonlocal global_index
-                result = self.model._chat_with_format(current_prompts, schema=get_schema(self.method))
+                result = self.model._chat_with_format(current_prompts, schema=get_schema(self.method, probability_definition=self.probability_definition))
                 # print("Result: ", result)
                 
                 parsed_responses = ResponseParser.parse_response(self.method, result)
@@ -246,7 +249,8 @@ class BaseTask(ABC):
         
         # Original single-turn logic
         prompts = [prompt for prompt in self.get_prompt() for _ in range(self.num_responses)]
-        results = self.model.chat(prompts, schema=get_schema(self.method))
+        results = self.model.chat(prompts, schema=get_schema(self.method, probability_definition=self.probability_definition))
+        print("Schema: ", get_schema(self.method, probability_definition=self.probability_definition))
         parsed_results = []
 
         # print("Prompts: ", prompts)

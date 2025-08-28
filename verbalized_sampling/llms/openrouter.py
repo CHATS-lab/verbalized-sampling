@@ -25,6 +25,8 @@ OPENROUTER_MODELS_MAPPING = {
     "llama-3.1-70b-instruct": "meta-llama/llama-3.1-70b-instruct",
     # DeepSeek models
     "deepseek-r1": "deepseek/deepseek-r1-0528",
+    # Qwen models
+    "qwen3-235b": "qwen/qwen3-235b-a22b-2507",
 
 }
 
@@ -119,17 +121,19 @@ class OpenRouterLLM(BaseLLM):
                     if isinstance(responses, list):
                         result = []
                         for resp in responses:
-                            if isinstance(resp, dict) and "text" in resp and "probability" in resp:
-                                # ResponseWithProbability
+                            if isinstance(resp, dict) and "text" in resp and any(key in resp for key in ["probability", "confidence", "perplexity", "nll"]):
+                                # Combine probability/confidence/perplexity fields
+                                if "probability" in resp:
+                                    prob = resp["probability"]
+                                if "confidence" in resp:
+                                    prob = resp["confidence"]
+                                if "perplexity" in resp:
+                                    prob = resp["perplexity"]
+                                if "nll" in resp:
+                                    prob = resp["nll"]
                                 result.append({
                                     "response": resp["text"],
-                                    "probability": resp["probability"]
-                                })
-                            elif isinstance(resp, dict) and "text" in resp and "confidence" in resp:
-                                # ResponseWithConfidence
-                                result.append({
-                                    "response": resp["text"],
-                                    "probability": resp["confidence"]
+                                    "probability": prob
                                 })
                             elif isinstance(resp, dict) and "text" in resp:
                                 # Response

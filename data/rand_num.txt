@@ -1,1 +1,2 @@
+Roll a fair six-sided dice. Return ONLY the integer result (1-6), with no explanation or extra text.
 Generate a random integer between 0 and 100 (inclusive).

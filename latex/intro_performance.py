@@ -40,6 +40,8 @@ def extract_creative_data(base_dir, task_name):
         "anthropic_claude-4-sonnet",
     ]
     baseline_method = ["direct", "direct_cot", "sequence", "multi_turn"]
+    if task_name == "joke":
+        baseline_method = ["direct", "sequence", "multi_turn"]
     verbalized_methods = ["structure_with_prob", "chain_of_thought", "combined"]
     metrics = ["avg_diversity"]
     
@@ -99,73 +101,19 @@ def extract_creative_data(base_dir, task_name):
     return metrics_values
 
 
-def extract_poem_data():
+def extract_creative_task_data(exp_path, task_name):
     """Extract poem data from poem_experiments_final folder - focusing on pairwise semantic diversity"""
     poem_baseline = []
     poem_verbalized = []
     
-    poem_dir = Path("poem_experiments_final")
+    poem_dir = Path(exp_path)
     if not poem_dir.exists():
-        print("poem_experiments_final folder not found")
-        return {'poem_baseline': 0, 'poem_verbalized': 0}
+        print(f"{exp_path} folder not found")
+        return {f'{task_name}_baseline': 0, f'{task_name}_verbalized': 0}
     
-    print("Extracting poem task data from poem_experiments_final...")
+    print(f"Extracting creative task data from {exp_path}...")
     
-    metrics_values = extract_creative_data(poem_dir, "poem")
-
-    model_list = [
-        "openai_gpt-4.1-mini",
-        "openai_gpt-4.1",
-        "google_gemini-2.5-flash",
-        "google_gemini-2.5-pro",
-        # "meta-llama_Llama-3.1-70B-Instruct",
-        "deepseek_deepseek-r1-0528",
-        "openai_o3",
-        "anthropic_claude-4-sonnet",
-    ]
-    baseline_methods = ["direct", "direct_cot", "sequence", "multi_turn"]
-    vs_methods = ["structure_with_prob", "chain_of_thought", "combined"]
-    metrics = ["avg_diversity"]
-    baseline_method_means = []
-    vs_method_means = []
-
-    for method in baseline_methods:
-        vals = []
-        for model_name in model_list:
-            if model_name in metrics_values:
-                for method_name, method_data in metrics_values[model_name].items():
-                    if METHOD_MAP[method][1] in method_name.lower():
-                        vals.extend(method_data["avg_diversity"])
-        mean_val = np.mean(vals) if vals else np.nan
-        baseline_method_means.append(mean_val)
-
-    for method in vs_methods:
-        vals = []
-        for model_name in model_list:
-            if model_name in metrics_values:
-                for method_name, method_data in metrics_values[model_name].items():
-                    if METHOD_MAP[method][1] in method_name.lower():
-                        vals.extend(method_data["avg_diversity"])
-        mean_val = np.mean(vals) if vals else np.nan
-        vs_method_means.append(mean_val)
-
-    return {
-        'poem_direct': baseline_method_means[0],
-        'poem_baseline': np.max(baseline_method_means) if baseline_method_means else 0,
-        'poem_verbalized': np.max(vs_method_means) if vs_method_means else 0
-    }
-
-def extract_joke_data():
-    """Extract joke data from joke_experiments_final folder - focusing on pairwise semantic diversity"""
-    joke_baseline = []
-    joke_verbalized = []
-    
-    joke_dir = Path("joke_experiments_final")
-    if not joke_dir.exists():
-        print("joke_experiments_final folder not found")
-        return {'joke_baseline': 0, 'joke_verbalized': 0}
-    
-    print("Extracting joke task data from joke_experiments_final...")
+    metrics_values = extract_creative_data(poem_dir, task_name)
 
     model_list = [
         "openai_gpt-4.1-mini",
@@ -177,14 +125,14 @@ def extract_joke_data():
         "openai_o3",
         "anthropic_claude-4-sonnet",
     ]
-    baseline_methods = ["direct", "sequence", "multi_turn"]
+    baseline_methods = ["direct", "direct_cot", "sequence", "multi_turn"]
+    if task_name == "joke":
+        baseline_methods = ["direct", "sequence", "multi_turn"]
     vs_methods = ["structure_with_prob", "chain_of_thought", "combined"]
     metrics = ["avg_diversity"]
-    
-    metrics_values = extract_creative_data(joke_dir, "joke")
-    
     baseline_method_means = []
     vs_method_means = []
+
     for method in baseline_methods:
         vals = []
         for model_name in model_list:
@@ -194,7 +142,6 @@ def extract_joke_data():
                         vals.extend(method_data["avg_diversity"])
         mean_val = np.mean(vals) if vals else np.nan
         baseline_method_means.append(mean_val)
-        print(method, mean_val)
 
     for method in vs_methods:
         vals = []
@@ -205,13 +152,13 @@ def extract_joke_data():
                         vals.extend(method_data["avg_diversity"])
         mean_val = np.mean(vals) if vals else np.nan
         vs_method_means.append(mean_val)
-        print(method, mean_val)
-        
+
     return {
-        'joke_direct': baseline_method_means[0],
-        'joke_baseline': np.max(baseline_method_means) if baseline_method_means else 0,
-        'joke_verbalized': np.max(vs_method_means) if vs_method_means else 0
+        f'{task_name}_direct': baseline_method_means[0],
+        f'{task_name}_baseline': np.max(baseline_method_means) if baseline_method_means else 0,
+        f'{task_name}_verbalized': np.max(vs_method_means) if vs_method_means else 0
     }
+
 
 def extract_bias_data():
     """Extract bias task data from method_results_bias folder"""
@@ -327,6 +274,8 @@ def extract_dialogue_data():
     """Extract dialogue simulation data from latex_table_results.txt as fallback"""
     baseline_values = {"l1_distance": [], "ks_value": []}
     vs_values = {"l1_distance": [], "ks_value": []}
+    fine_tuned_values = {"l1_distance": [], "ks_value": []}
+    sequence_values = {"l1_distance": [], "ks_value": []}
 
     dialogue_dir = Path("dialogue_simulation_final/exp_results")
     if not dialogue_dir.exists():
@@ -335,13 +284,16 @@ def extract_dialogue_data():
     
     print("Extracting dialogue simulation data from dialogue_simulation_final...")
     baseline_dir = dialogue_dir / "baseline" / "gpt-4.1"
+    sequence_dir = dialogue_dir / "sampling" / "sequence" / "gpt-4.1"
     vs_dir = dialogue_dir / "sampling" / "random_selection" / "gpt-4.1"
+    fine_tuned_dir = dialogue_dir / "fine_tuning" / "gpt-4.1" / "llama3.1_8b_sft_w_promp_5epochs"
     model_list = ["gpt-4.1-mini", "gpt-4.1", "gemini-2.5-flash", "gemini-2-5-pro", "claude-4-sonnet", "meta-llama_Llama-3.1-70b-Instruct", "deepseek-r1", "o3"]
 
     for model in model_list:
         # print(f"Processing {model}...")
         baseline_file = baseline_dir / model / "analysis_total_results.json"
         vs_file = vs_dir / model / "analysis_total_results.json"
+        sequence_file = sequence_dir / model / "analysis_total_results.json"
 
         if baseline_file.exists():
             with open(baseline_file, "r") as f:
@@ -357,37 +309,56 @@ def extract_dialogue_data():
                 vs_ks_value = vs_json["donation"]["amount"]["ks_test"]["ks_statistic"]["intended_donation_amount"]
                 vs_values["l1_distance"].append(vs_l1_distance)
                 vs_values["ks_value"].append(vs_ks_value)
-
+        if sequence_file.exists():
+            with open(sequence_file, "r") as f:
+                sequence_json = json.load(f)
+                sequence_l1_distance = sequence_json["donation"]["amount"]["l1_distance"]["l1_distance"]["intended_donation_amount"]["0"]
+                sequence_ks_value = sequence_json["donation"]["amount"]["ks_test"]["ks_statistic"]["intended_donation_amount"]
+                sequence_values["l1_distance"].append(sequence_l1_distance)
+                sequence_values["ks_value"].append(sequence_ks_value)
+    
+    if fine_tuned_dir.exists():
+        with open(fine_tuned_dir / "analysis_total_results.json", "r") as f:
+            fine_tuned_json = json.load(f)
+            fine_tuned_l1_distance = fine_tuned_json["donation"]["amount"]["l1_distance"]["l1_distance"]["intended_donation_amount"]["0"]
+            fine_tuned_ks_value = fine_tuned_json["donation"]["amount"]["ks_test"]["ks_statistic"]["intended_donation_amount"]
+            fine_tuned_values["l1_distance"].append(fine_tuned_l1_distance)
+            fine_tuned_values["ks_value"].append(fine_tuned_ks_value)
     return {
-        'dialogue_l1_distance_baseline': np.mean(baseline_values["l1_distance"]),
-        'dialogue_l1_distance_verbalized': np.mean(vs_values["l1_distance"]),
-        'dialogue_ks_value_baseline': np.mean(baseline_values["ks_value"]),
-        'dialogue_ks_value_verbalized': np.mean(vs_values["ks_value"])
+        'dialogue_l1_distance_baseline': np.min(baseline_values["l1_distance"]),
+        'dialogue_l1_distance_verbalized': np.min(vs_values["l1_distance"]),
+        'dialogue_ks_value_baseline': np.min(baseline_values["ks_value"]),
+        'dialogue_ks_value_verbalized': np.min(vs_values["ks_value"]),
+        'dialogue_l1_distance_fine_tuned': np.min(fine_tuned_values["l1_distance"]),
+        'dialogue_ks_value_fine_tuned': np.min(fine_tuned_values["ks_value"]),
+        'dialogue_l1_distance_sequence': np.min(sequence_values["l1_distance"]),
+        'dialogue_ks_value_sequence': np.min(sequence_values["ks_value"])
     }
 
 # Extract actual data from experimental results
 print("Extracting performance data from experimental results...")
 print("=" * 60)
 
-# Extract poem data
-poem_data = extract_poem_data()
-print(f"\nPoem Task:")
-print(f"  Direct: {poem_data['poem_direct']:.3f}")
-print(f"  Baseline: {poem_data['poem_baseline']:.3f}")
-print(f"  Verbalized: {poem_data['poem_verbalized']:.3f}")
-if poem_data['poem_baseline'] > 0:
-    improvement = ((poem_data['poem_verbalized'] - poem_data['poem_baseline']) / poem_data['poem_baseline'] * 100)
-    print(f"  Improvement: {improvement:+.1f}%")
-
 # Extract joke data
-joke_data = extract_joke_data()
+joke_data = extract_creative_task_data("joke_experiments_final", "joke")
 print(f"\nJoke Task:")
 print(f"  Direct: {joke_data['joke_direct']:.3f}")
 print(f"  Baseline: {joke_data['joke_baseline']:.2f}")
 print(f"  Verbalized: {joke_data['joke_verbalized']:.2f}")
-if joke_data['joke_baseline'] > 0:
-    improvement = ((joke_data['joke_verbalized'] - joke_data['joke_baseline']) / joke_data['joke_baseline'] * 100)
-    print(f"  Improvement: {improvement:+.1f}%")
+
+# Extract poem data
+poem_data = extract_creative_task_data("poem_experiments_final", "poem")
+print(f"\nPoem Task:")
+print(f"  Direct: {poem_data['poem_direct']:.3f}")
+print(f"  Baseline: {poem_data['poem_baseline']:.3f}")
+print(f"  Verbalized: {poem_data['poem_verbalized']:.3f}")
+
+# Extract story data
+story_data = extract_creative_task_data("story_experiments_final", "book")
+print(f"\nStory Task:")
+print(f"  Direct: {story_data['book_direct']:.3f}")
+print(f"  Baseline: {story_data['book_baseline']:.2f}")
+print(f"  Verbalized: {story_data['book_verbalized']:.2f}")
 
 # Extract bias data
 bias_value = extract_bias_data()
@@ -395,9 +366,6 @@ print(f"\nBias Task:")
 print(f"  Direct: {bias_value['bias_direct']:.3f}")
 print(f"  Baseline: {bias_value['baseline']:.2f}")
 print(f"  Verbalized: {bias_value['vs']:.2f}")
-if bias_value['baseline'] > 0:
-    improvement = ((bias_value['vs'] - bias_value['baseline']) / bias_value['baseline'] * 100)
-    print(f"  Improvement: {improvement:+.1f}%")
 
 # Extract dialogue data
 dialogue_data = extract_dialogue_data()
@@ -406,142 +374,139 @@ print(f"  Baseline L1 Distance: {dialogue_data['dialogue_l1_distance_baseline']:
 print(f"  Verbalized L1 Distance: {dialogue_data['dialogue_l1_distance_verbalized']:.2f}")
 print(f"  Baseline KS Value: {dialogue_data['dialogue_ks_value_baseline']:.2f}")
 print(f"  Verbalized KS Value: {dialogue_data['dialogue_ks_value_verbalized']:.2f}")
-improvement_l1_distance = ((dialogue_data['dialogue_l1_distance_verbalized'] - dialogue_data['dialogue_l1_distance_baseline']) / dialogue_data['dialogue_l1_distance_baseline'] * 100)
-improvement_ks_value = ((dialogue_data['dialogue_ks_value_verbalized'] - dialogue_data['dialogue_ks_value_baseline']) / dialogue_data['dialogue_ks_value_baseline'] * 100)
-print(f"  Improvement L1 Distance: {improvement_l1_distance:+.1f}%")
-print(f"  Improvement KS Value: {improvement_ks_value:+.1f}%")
 
 # Task names
-tasks = ['Poem', 'Dialogue Simulation', 'Bias Mitigation']
+tasks = ['Joke Writing', 'Poem Writing', 'Story Writing', 'Dialogue Simulation', 'Open-ended QA']
 
-# Use extracted data
-# baseline_avg = [
-#     poem_data['poem_baseline'],
-#     # joke_data['joke_baseline'], 
-#     dialogue_data['dialogue_ks_value_baseline'],
-#     bias_value['baseline']
-# ]
-baseline_avg = [
-    poem_data['poem_direct'],
-    # joke_data['joke_direct'], 
-    dialogue_data['dialogue_ks_value_baseline'],
-    bias_value['bias_direct']
+# Prepare data for each task
+# For Poem and Bias Mitigation: [Direct, Previous Best, Verbalized]
+# For Dialogue Simulation: [Baseline, Fine-tuned (Previous Best), Verbalized]
+# Use color-blind friendly colors (Color Universal Design: blue, orange, green)
+# https://davidmathlogic.com/colorblind/
+
+# Data extraction
+joke_direct = joke_data['joke_direct']
+joke_baseline = joke_data['joke_baseline']
+joke_vs = joke_data['joke_verbalized']
+
+poem_direct = poem_data['poem_direct']
+poem_baseline = poem_data['poem_baseline']
+poem_vs = poem_data['poem_verbalized']
+
+story_direct = story_data['book_direct']
+story_baseline = story_data['book_baseline']
+story_vs = story_data['book_verbalized']
+
+dialogue_baseline = dialogue_data['dialogue_ks_value_baseline']
+dialogue_finetuned = dialogue_data['dialogue_ks_value_fine_tuned']
+dialogue_sequence = dialogue_data['dialogue_ks_value_sequence']
+dialogue_vs = dialogue_data['dialogue_ks_value_verbalized']
+
+bias_direct = bias_value['bias_direct']
+bias_baseline = bias_value['baseline']
+bias_vs = bias_value['vs']
+
+# Data for plotting
+bar_labels = [
+    ['Direct', 'Previous Best', 'Verbalized'],  # Poem
+    ['Baseline', 'Previous Best', 'Verbalized'],  # Dialogue
+    ['Direct', 'Previous Best', 'Verbalized']   # Bias
+]
+# Values for each group
+bar_values = [
+    [joke_direct, joke_baseline, joke_vs],
+    [poem_direct, poem_baseline, poem_vs],
+    [story_direct, story_baseline, story_vs],
+    # [dialogue_baseline, dialogue_finetuned, dialogue_vs],
+    [dialogue_baseline, dialogue_sequence, dialogue_vs],
+    [bias_direct, bias_baseline, bias_vs]
 ]
 
-verbalized_avg = [
-    poem_data['poem_verbalized'],
-    # joke_data['joke_verbalized'],
-    dialogue_data['dialogue_ks_value_verbalized'],
-    bias_value['vs']
-]
+# Color-blind friendly palette (blue, orange, green)
+bar_colors = ['#DBDEE4', '#F392B0', '#80BFFD']
 
-# Create the grouped bar chart
-fig, ax = plt.subplots(figsize=(12, 8))
+fig, ax = plt.subplots(figsize=(18, 10))
 
-# Set up the bar positions
 x = np.arange(len(tasks))
-width = 0.35
+width = 0.25
 
-# Create bars
-bars1 = ax.bar(x - width/2, baseline_avg, width, label='Direct Sampling Prompting', 
-               color='#D41159', alpha=0.8, edgecolor='#D41159', linewidth=1)
-bars2 = ax.bar(x + width/2, verbalized_avg, width, label='Verbalized Sampling Prompting', 
-               color='#1A85FF', alpha=0.8, edgecolor='#1A85FF', linewidth=1)
-
-# Add a line in the baseline bar to indicate the direct sampling value (for Poem, Joke, and Bias tasks)
-# Assume poem_data['poem_direct'], joke_data['joke_direct'], and bias_value['bias_direct'] are available
-# direct_sampling_values = [
-#     poem_data.get('poem_direct', None),
-#     joke_data.get('joke_direct', None),
-#     bias_value.get('bias_direct', None)
-# ]
-
-# # Skip the dialogue simulation (index 1) when drawing direct sampling lines
-# for i, direct_val in enumerate(direct_sampling_values):
-#     if i == 1:
-#         continue  # skip dialogue simulation
-#     if direct_val is not None:
-#         # Draw a horizontal line on the baseline bar for direct sampling
-#         ax.hlines(direct_val, x[i] - width, x[i], 
-#                   colors='black', linestyles='dashed', linewidth=2, label='Direct Sampling' if i == 0 else None)
-#         # Optionally, annotate the value
-#         ax.annotate(f'{direct_val:.3f}',
-#                     xy=(x[i] - width/2, direct_val),
-#                     xytext=(0, 10),
-#                     textcoords="offset points",
-#                     ha='center', va='top',
-#                     fontsize=9, fontweight='bold', color='black')
+# Draw bars for each group
+bars = []
+for i in range(3):  # 3 bars per group
+    bar = ax.bar(
+        x + (i - 1) * width,  # center the three bars
+        [bar_values[j][i] for j in range(len(tasks))],
+        width,
+        label=bar_labels[0][i] if i == 0 else (bar_labels[1][i] if i == 1 else bar_labels[2][i]),
+        color=bar_colors[i],
+        alpha=0.85,
+        edgecolor=bar_colors[i],
+        linewidth=1
+    )
+    bars.append(bar)
 
 # Customize the chart
-ax.set_xlabel('', fontsize=14, fontweight='bold')
-ax.set_ylabel('Performance Score', fontsize=14, fontweight='bold')
-ax.set_title('', 
-             fontsize=16, fontweight='bold', pad=20)
+ax.set_xlabel('', fontsize=18, fontweight='bold')
+ax.set_ylabel('Performance Score', fontsize=20, fontweight='bold')
+ax.tick_params(axis='y', which='major', labelsize=18)
+ax.set_title('', fontsize=16, fontweight='bold', pad=20)
 ax.set_xticks(x)
-ax.set_xticklabels(tasks, fontsize=12, fontweight='bold')
-# Add 'Direct Sampling' to legend only once if present
-handles, labels = ax.get_legend_handles_labels()
-if any(l == 'Direct Sampling' for l in labels):
-    ax.legend(fontsize=12, loc='upper left')
-else:
-    ax.legend(fontsize=12, loc='upper left')
+ax.set_xticklabels(tasks, fontsize=20, fontweight='bold')
+
+# Custom legend: use consistent labels for all tasks
+custom_labels = ['Direct', 'Best Baseline', 'Verbalized Sampling']
+ax.legend(bars, custom_labels, fontsize=20, loc='upper center', bbox_to_anchor=(0.5, 1.09), ncol=3)
 ax.grid(axis='y', alpha=0.3, linestyle='--')
 
 # Add value labels on bars
 def add_value_labels(bars):
     for bar in bars:
-        height = bar.get_height()
-        ax.annotate(f'{height:.3f}',
-                    xy=(bar.get_x() + bar.get_width() / 2, height),
-                    xytext=(0, 3),  # 3 points vertical offset
-                    textcoords="offset points",
-                    ha='center', va='bottom',
-                    fontsize=12, fontweight='bold')
+        for rect in bar:
+            height = rect.get_height()
+            ax.annotate(f'{height:.3f}',
+                        xy=(rect.get_x() + rect.get_width() / 2, height),
+                        xytext=(0, 3),  # 3 points vertical offset
+                        textcoords="offset points",
+                        ha='center', va='bottom',
+                        fontsize=18, fontweight='bold')
 
-add_value_labels(bars1)
-add_value_labels(bars2)
+for bar in bars:
+    add_value_labels([bar])
 
-# Add improvement percentages
-for i, (baseline, verbalized) in enumerate(zip(baseline_avg, verbalized_avg)):
-    if baseline != 0:  # Avoid division by zero
-        improvement = ((verbalized - baseline) / baseline) * 100
+# Add improvement percentages (Verbalized vs Previous Best)
+for i in range(len(tasks)):
+    prev_best = bar_values[i][1]
+    verbalized = bar_values[i][2]
+    if prev_best != 0:
+        improvement = ((verbalized - prev_best) / prev_best) * 100
         ax.annotate(f'{improvement:+.1f}%' if improvement > 0 else f'{improvement:.1f}%',
-                    xy=(x[i] + width/2, verbalized),
-                    xytext=(0, 15),
+                    xy=(x[i] + width, verbalized),
+                    xytext=(8, 25),
                     textcoords="offset points",
                     ha='center', va='bottom',
-                    fontsize=12, fontweight='bold',
-                    color='green')
+                    fontsize=18, fontweight='bold',
+                    color='#2E8B57')  # green for improvement
 
-# Customize the plot
 plt.tight_layout()
-plt.ylim(0, max(max(baseline_avg), max(verbalized_avg)) * 1.15)
+plt.ylim(0, max([max(vals) for vals in bar_values]) * 1.15)
 
-# Display the plot
-# plt.show()
-# plt.savefig('intro_performance_comparison.png', dpi=300, bbox_inches='tight')
+# Save the plot
 plt.savefig('intro_performance_comparison.pdf', bbox_inches='tight')
 
 # Print summary statistics
 print("\n" + "=" * 60)
 print("PERFORMANCE SUMMARY")
-print("=" * 60)
-for i, task in enumerate(tasks):
-    baseline = baseline_avg[i]
-    verbalized = verbalized_avg[i]
-    improvement = ((verbalized - baseline) / baseline) * 100 if baseline != 0 else 0
-    print(f"{task}:")
-    print(f"  Baseline: {baseline:.2f}")
-    print(f"  Verbalized: {verbalized:.2f}")
-    print(f"  Improvement: {improvement:+.1f}%")
-    print()
 
 # Create a summary table
 summary_data = {
     'Task': tasks,
-    'Baseline': baseline_avg,
-    'Verbalized': verbalized_avg,
-    'Improvement (%)': [(v-b)/b*100 if b != 0 else 0 for b, v in zip(baseline_avg, verbalized_avg)]
+    'Direct': [bar_values[i][0] for i in range(len(tasks))],
+    'Best Baseline': [bar_values[i][1] for i in range(len(tasks))],
+    'Verbalized': [bar_values[i][2] for i in range(len(tasks))],
+    'Improvement (%)': [
+        ((bar_values[i][2] - bar_values[i][1]) / bar_values[i][1] * 100) if bar_values[i][1] != 0 else 0
+        for i in range(len(tasks))
+    ]
 }
 
 summary_df = pd.DataFrame(summary_data)

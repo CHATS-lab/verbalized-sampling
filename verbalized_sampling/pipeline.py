@@ -16,6 +16,7 @@ from verbalized_sampling.tasks import Task, get_task
 from verbalized_sampling.methods import Method
 from verbalized_sampling.llms import get_model
 from verbalized_sampling.evals import get_evaluator
+from verbalized_sampling.methods.factory import PromptFactory
 
 console = Console()
 
@@ -37,6 +38,7 @@ class ExperimentConfig:
     use_vllm: bool = False
     all_possible: bool = False # If True, the request would enable all possible responses
     strict_json: bool = False # If True, the request would enable JSON mode
+    probability_definition: str = "default" # Type of probability definition to use
 
 @dataclass
 class EvaluationConfig:
@@ -59,6 +61,11 @@ class PipelineConfig:
     def _should_backup(self) -> bool:
         """Determine if backup should be created."""
         return self.create_backup
+    
+    @staticmethod
+    def get_available_probability_definitions() -> List[str]:
+        """Get list of available probability definition types."""
+        return ["implicit", "explicit", "relative", "confidence", "perplexity", "nll"]
 
 class Pipeline:
     """End-to-end pipeline for generation, evaluation, and plotting."""
@@ -75,6 +82,13 @@ class Pipeline:
         
         if self.config.create_backup and not self.config.rerun:
             raise ValueError("Create backup is only allowed in rerun mode.")
+        
+        # Validate probability definitions for all experiments
+        valid_probability_definitions = ["default", "implicit", "explicit", "relative", "confidence", "perplexity", "nll"]
+        for exp in self.config.experiments:
+            if exp.probability_definition not in valid_probability_definitions:
+                raise ValueError(f"Invalid probability_definition '{exp.probability_definition}' for experiment '{exp.name}'. "
+                               f"Valid options are: {valid_probability_definitions}")
 
     def _handle_rerun(self) -> None:
         """Handle rerun logic - clean up existing outputs."""
@@ -175,11 +189,11 @@ class Pipeline:
                     method=exp_config.method,
                     config={
                         "temperature": exp_config.temperature, 
-                        "top_p": exp_config.top_p
+                        "top_p": exp_config.top_p,
                     },
                     use_vllm=exp_config.use_vllm,
                     num_workers=self.config.num_workers,
-                    strict_json=exp_config.strict_json
+                    strict_json=exp_config.strict_json,
                 )
                 
                 task_kwargs = {}
@@ -189,6 +203,9 @@ class Pipeline:
                     "random_seed": exp_config.random_seed,
                     "num_samples_per_prompt": exp_config.num_samples_per_prompt if exp_config.method == Method.COMBINED else None,
                 })
+                
+                # probability_definition is handled by the prompt system, not the task
+                # so we don't pass it to the task instance
 
                 # The num_samples must be smaller than num_responses
                 if exp_config.num_samples > exp_config.num_responses:
@@ -204,6 +221,7 @@ class Pipeline:
                     num_responses=num_responses,
                     num_samples=num_samples,
                     target_words=exp_config.target_words,
+                    probability_definition=exp_config.probability_definition,  # Pass to task for prompt generation
                     **task_kwargs
                 )
 
@@ -503,14 +521,15 @@ class Pipeline:
                 <p><strong>Generated:</strong> {Path().absolute()}</p>
                 <p><strong>Experiments:</strong> {len(self.config.experiments)}</p>
                 <p><strong>Metrics:</strong> {', '.join(self.config.evaluation.metrics)}</p>
+                <p><strong>Available Probability Definitions:</strong> {', '.join(PromptFactory.get_available_probability_definitions().keys())}</p>
             </div>
         """
         
         # Experiment configurations
         html += "<h2>📋 Experiment Configurations</h2>"
-        html += "<table><tr><th>Name</th><th>Task</th><th>Method</th><th>Model</th><th>Responses</th><th>Temperature</th></tr>"
+        html += "<table><tr><th>Name</th><th>Task</th><th>Method</th><th>Model</th><th>Responses</th><th>Temperature</th><th>Probability Definition</th></tr>"
         for exp in self.config.experiments:
-            html += f"<tr><td>{exp.name}</td><td>{exp.task.value}</td><td>{exp.method.value}</td><td>{exp.model_name}</td><td class='number'>{exp.num_responses}</td><td class='number'>{exp.temperature}</td></tr>"
+            html += f"<tr><td>{exp.name}</td><td>{exp.task.value}</td><td>{exp.method.value}</td><td>{exp.model_name}</td><td class='number'>{exp.num_responses}</td><td class='number'>{exp.temperature}</td><td>{exp.probability_definition}</td></tr>"
         html += "</table>"
         
         # Generation Examples Section
@@ -704,7 +723,8 @@ def run_pipeline_cli(
             num_samples=exp_data.get('num_samples', 1),
             num_prompts=exp_data.get('num_prompts', 5),
             random_seed=exp_data.get('random_seed', 42),
-            use_vllm=exp_data.get('use_vllm', False)
+            use_vllm=exp_data.get('use_vllm', False),
+            probability_definition=exp_data.get('probability_definition', "default")
         ))
     
     evaluation_config = EvaluationConfig(
@@ -746,6 +766,7 @@ def run_quick_comparison(
     num_samples_per_prompt: int = 2,
     rerun: bool = False,
     create_backup: bool = False,
+    probability_definition: str = "default",
     **kwargs
 ) -> Dict[str, Any]:
     """Quick comparison between different methods for a single task."""
@@ -759,6 +780,7 @@ def run_quick_comparison(
     print(f"Num samples: {num_samples}")
     print(f"Num prompts: {num_prompts}")
     print(f"Num samples per prompt: {num_samples_per_prompt}")
+    print(f"Probability definition: {probability_definition}")
     print(f"Rerun: {rerun}")
     print(f"Create backup: {create_backup}")
     print(f"**kwargs: {kwargs}")
@@ -774,6 +796,7 @@ def run_quick_comparison(
             num_samples=num_samples,
             num_prompts=num_prompts,
             num_samples_per_prompt=num_samples_per_prompt,
+            probability_definition=probability_definition,
             **kwargs
         ))
     

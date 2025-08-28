@@ -473,6 +473,7 @@ def main():
         "gemini-2.5-flash",
         "gemini-2.5-pro",
         "meta-llama_Llama-3.1-70B-Instruct",
+        "qwen3-23b",
         "deepseek-r1",
         "o3",
         "claude-4-sonnet",
@@ -560,7 +561,7 @@ def main():
     ]
     # bar_plot_all_methods_with_ttest_box(metrics_values, all_model_names, plot_metrics, metric_labels, baseline_methods, vs_methods, all_methods)
 
-    plot_factual_method_averages(metrics_values, all_model_names, plot_metrics, metric_labels, all_methods)
+    # plot_factual_method_averages(metrics_values, all_model_names, plot_metrics, metric_labels, all_methods)
     
     generate_latex_factual_table(metrics_values, all_model_names, all_methods, metric_labels)
 

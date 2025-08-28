@@ -10,6 +10,8 @@ class TaskType(Enum):
     CREATIVITY = "creativity"
     COMMONSENSE = "commonsense"
     BIAS = "bias"
+    SYNTHETIC_DATA = "synthetic_data"
+    SYNTHETIC_NEGATIVE = "synthetic_negative"
     ABLATION = "ablation"
 
 
@@ -35,40 +37,81 @@ class BasePromptTemplate:
         """Get the standard prompt for the task."""
         raise NotImplementedError
     
-    def get_combined_prompt(self, **kwargs) -> str:
-        """Get the combined prompt for the task."""
+    def get_vs_standard_prompt(self, **kwargs) -> str:
+        """Get the standard prompt for the task."""
         raise NotImplementedError
     
-    def get_chain_of_thought_prompt(self, **kwargs) -> str:
+    def get_vs_cot_prompt(self, **kwargs) -> str:
         """Get the chain-of-thought prompt for the task."""
+        raise NotImplementedError
+
+    def get_vs_multi_turn_prompt(self, **kwargs) -> str:
+        """Get the multi-turn prompt for the task."""
         raise NotImplementedError
     
     def get_continue_prompt(self, **kwargs) -> str:
         """Get the continuation prompt for the task."""
         raise NotImplementedError
     
-    def get_format_prompt(self, method: str, num_samplings: int) -> str:
-        """Get the format prompt for a specific method."""
-        format_prompts = {
-            "sequence": f"""
-Return ALL responses as a Python list of strings, in the following format:
-["response1", "response2", "response3", ...]
+    def get_format_prompt(
+        self,
+        method: str,
+        num_samplings: int,
+        probability_definition: str = None,
+    ) -> str:
+        """Get the format prompt for a specific method.
 
-The list must contain exactly {num_samplings} strings, each representing a unique response.
-Output ONLY the list, with no explanations or extra text.
+        Args:
+            method: The output format method.
+            num_samplings: Number of responses to generate (if relevant).
+            probability_definition: (Optional) Custom definition for the 'probability' field.
+        """
+        # Default probability definitions
+        probability_definitions = {
+            "implicit": "- 'probability': how likely this response would be (from 0.0 to 1.0).",
+            "explicit": "- 'probability': the estimated probability from 0.0 to 1.0 of this response given the input prompt (relative to the full distribution).",
+            "relative": "- 'probability': a probability value between 0.0 and 1.0, reflecting the relative likelihood of this response given the input.",
+            "confidence": "- 'confidence': the normalized likelihood score between 0.0 and 1.0 that indicates how representative or typical this response is compared to the full distribution.",
+            "perplexity": "- 'perplexity': the exponentiated average negative log likelihood of the response tokens, where lower values indicate higher model certainty in predicting each token.",
+            "nll": "- 'nll': the sum of the negative log probabilities of each token in the response given the input prompt, with smaller values reflecting higher model confidence.",
+        }
+
+        # Use provided probability_definition or default
+        prob_def = probability_definitions[probability_definition]
+
+        format_prompts = {
+            "direct_cot": """
+First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
+Then, provide your response in the "response" field.
+
+Return ONLY the JSON object, with no additional explanations or text.
 """,
             "structure": """
-Return the responses in JSON format with keys: "responses" (list of dicts with 'text'). Each dictionary must include:
+Return the output in JSON format with the key "responses" (list of dicts). Each dictionary must include:
 - 'text': the response string only (no explanation or extra text).
 
-Give ONLY the JSON object, with no explanations or extra text.
+Return ONLY the JSON object, with no additional explanations or text.
 """,
-            "structure_with_prob": """
-Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
-- 'text': the response string only (no explanation or extra text).
-- 'probability': a score from 0.0 to 1.0 representing how likely each response would be.
+            "sequence": f"""
+Return exactly {num_samplings} responses as a Python list of strings, formatted as:
+["response1", "response2", "response3", ...]
 
-The probability of all responses should sum to 1.0. Give ONLY the JSON object, with no explanations or extra text.
+Return ONLY the list, with no additional explanations or text.
+""",
+            "vs_standard": f"""
+Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
+- 'text': the response string only (no explanation or extra text).
+{prob_def}
+
+Return ONLY the JSON object, with no additional explanations or text.
+""",
+            "vs_cot": f"""
+First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
+Then, return the output in JSON format with the key "responses" (list of dicts). Each dictionary must include:
+- 'text': the response string only (no explanation or extra text).
+{prob_def}
+
+Return ONLY the JSON object, with no additional explanations or text.
 """
         }
         return format_prompts.get(method, "")
@@ -98,58 +141,42 @@ Output ONLY the response, with no explanations or extra text.
 """
 
     def get_base_model_prompt(self, target_words: int = 200, task_name: str = None, **kwargs) -> str:
-        return f"Write a 200 word story starting with the line: "
+        return f"Write a {target_words} word story starting with the line: "
 
     def get_base_cot_prompt(self, target_words: int = 200, **kwargs) -> str:
         return f"""
-Generate a response to the input prompt. The response should be approximately {target_words} words.
-
-First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
-Then, provide your response in the "response" field.
-
-Give ONLY the JSON object, no explanations or extra text.
+Generate a response to the input prompt using chain-of-thought reasoning. The response should be approximately {target_words} words.
 """
     
     def get_standard_prompt(self, num_samplings: int = 5, target_words: int = 200, **kwargs) -> str:
         word_constraint = f" Each response should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
 Generate {num_samplings} responses to the input prompt.{word_constraint}
-Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 """
     
     def get_standard_all_possible_prompt(self, target_words: int = 200, **kwargs) -> str:
         word_constraint = f" Each response should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
 Generate all possible responses to the input prompt.{word_constraint}
-Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 """
 
-    def get_chain_of_thought_prompt(self, num_samplings: int = 5, target_words: int = 200, **kwargs) -> str:
+    def get_vs_cot_prompt(self, num_samplings: int = 5, target_words: int = 200, **kwargs) -> str:
         word_constraint = f" Each response should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
 Generate {num_samplings} responses to the input prompt using chain-of-thought reasoning.{word_constraint}
-Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
-
-First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
-Then, under "responses", return a list of dictionaries. Each dictionary must include:
-- 'text': the response string only (no explanation or extra text).
-- 'probability': a score from 0.0 to 1.0 representing how likely each response would be.
-
-The probability of all responses should sum to 1.0. Give ONLY the JSON object, no explanations or extra text.
 """
 
-    def get_combined_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, target_words: int = 200, **kwargs) -> str:
+    def get_vs_multi_turn_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, target_words: int = 200, **kwargs) -> str:
         word_constraint = f" Each response should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
-You will generate a total of {num_samplings} responses to the input prompt.{word_constraint}
-Maximizing both creativity and diversity of the responses, while ensuring that each response remains high-quality to the input prompt.
+Generate {num_samplings} responses to the input prompt.{word_constraint}
 
-First, generate {num_samples_per_prompt} creative and diverse responses. 
-Return the responses in JSON format with the key: "responses" (a list of dicts with 'text' and 'confidence'). Each dictionary must include:
+First, sample {num_samples_per_prompt} responses. 
+Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
 - 'text': the response string only (no explanations or extra text).
-- 'confidence': a score from 0.0 to 1.0 representing how likely or typical the response is (1.0 = very typical/common, 0.0 = highly original/creative).
+- 'probability': the estimated probability from 0.0 to 1.0 of this response given the input prompt (relative to the full answer space).
 
-Give ONLY the JSON object, no explanations or extra text.
+Please sample at random from the full distribution. Give ONLY the JSON object, no explanations or extra text.
 """
     
     def get_continue_prompt(self, num_samplings: int = 5, target_words: int = 200, **kwargs) -> str:
@@ -159,12 +186,12 @@ Generate one alternative response to the original input prompt.
 """
         else:
             return f"""
-Generate {num_samplings} alternative responses to the original input prompt. Try to be as creative and diverse as possible.
+Sample {num_samplings} alternative responses to the original input prompt.
 """
     
-    def get_format_prompt(self, method: str, num_samplings: int) -> str:
+    def get_format_prompt(self, method: str, num_samplings: int, probability_definition: str = None) -> str:
         base_template = BasePromptTemplate(TaskType.CREATIVITY)
-        return base_template.get_format_prompt(method, num_samplings)
+        return base_template.get_format_prompt(method, num_samplings, probability_definition)
 
 
 
@@ -182,66 +209,52 @@ Generate a response to the input prompt. Output ONLY the response, with no expla
     
     def get_base_cot_prompt(self, **kwargs) -> str:
         return """
-Generate a response to the input prompt. Output ONLY the response, with no explanations or extra text.
-
-First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
-Then, provide your response in the "response" field.
-
-Give ONLY the JSON object, no explanations or extra text.
+Generate a response to the input prompt using chain-of-thought reasoning. Output ONLY the response, with no explanations or extra text.
 """
     
     def get_standard_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         return f"""
-Generate {num_samplings} diverse responses to the input prompt.
-Maximizing the diversity of the responses, while ensuring that each response remains high-quality and relevant to the input prompt.
+Generate {num_samplings} responses to the input prompt.
 """
     
     def get_standard_all_possible_prompt(self, **kwargs) -> str:
         return """
 Generate all plausible responses to the input prompt.
-Maximizing the diversity of the responses, while ensuring that each response remains high-quality and relevant to the input prompt.
 """
     
-    def get_chain_of_thought_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+    def get_vs_cot_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         return f"""
-Generate {num_samplings} diverse responses to the input prompt using chain-of-thought reasoning.
-Maximizing the diversity of the responses, while ensuring that each response remains high-quality and relevant to the input prompt.
-
-First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
-Then, under "responses", return a list of dictionaries. Each dictionary must include:
-- 'text': the response string only (no explanation or extra text).
-- 'probability': a score from 0.0 to 1.0 representing how likely each response would be.
-
-The probability of all responses should sum to 1.0. Give ONLY the JSON object, no explanations or extra text.
+Generate {num_samplings} responses to the input prompt using chain-of-thought reasoning.
 """
 
-    def get_combined_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs) -> str:
+    def get_vs_multi_turn_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs) -> str:
         return f"""
-You will generate a total of {num_samplings} diverse responses to the input prompt.
-Maximizing the diversity of the responses, while ensuring that each response remains high-quality and relevant to the input prompt.
+Generate a total of {num_samplings} responses to the input prompt.
 
-First, generate {num_samples_per_prompt} responses. Try to be as diverse as possible.
-
-Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'confidence'). Each dictionary must include:
+First, sample {num_samples_per_prompt} responses.
+Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
 - 'text': the response string only (no explanation or extra text).
-- 'confidence': a score from 0.0 to 1.0 representing how likely or typical the response is (1.0 = very typical/common, 0.0 = highly original/rare).
+- 'probability': the estimated probability from 0.0 to 1.0 of this response given the input prompt (relative to the full answer space).
 
-Give ONLY the JSON object, no explanations or extra text.
+Randomly sample the responses from the full distribution. Return ONLY the JSON object, with no additional explanations or text.
 """
+# - 'text': the response string only (no explanation or extra text).
+# - 'probability': the estimated probability from 0.0 to 1.0 of this response given the input prompt (relative to the full distribution).
+# - 'confidence': a score from 0.0 to 1.0 representing how likely or typical the response is (1.0 = very typical/common, 0.0 = highly original/creative).
     
     def get_continue_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         if num_samplings == 1:
             return f"""
-Generate one alternative response to the original input prompt.
+Generate an alternative response to the original input prompt.
 """
         else:
             return f"""
-Generate {num_samplings} alternative responses to the original input prompt. Try to be as diverse as possible.
+Randomly sample {num_samplings} alternative responses to the original input prompt.
 """
     
-    def get_format_prompt(self, method: str, num_samplings: int) -> str:
+    def get_format_prompt(self, method: str, num_samplings: int, probability_definition: str) -> str:
         base_template = BasePromptTemplate(TaskType.BIAS)
-        return base_template.get_format_prompt(method, num_samplings)
+        return base_template.get_format_prompt(method, num_samplings, probability_definition)
 
 
 
@@ -259,12 +272,7 @@ Generate a response for the given question. Output ONLY the response, with no ex
 
     def get_base_cot_prompt(self, **kwargs) -> str:
         return """
-Generate a response for the given question. Output ONLY the response, with no explanations or extra text.
-
-First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
-Then, provide your response in the "response" field.
-
-Give ONLY the JSON object, no explanations or extra text.
+Generate a response for the given question using chain-of-thought reasoning. Output ONLY the response, with no explanations or extra text.
 """
     
     def get_standard_prompt(self, num_samplings: int = 5, **kwargs) -> str:
@@ -278,30 +286,22 @@ Provide all possible best-guess responses for the given question.
 Output ONLY the response, with no explanations or extra text.
 """
     
-    def get_chain_of_thought_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+    def get_vs_cot_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         return f"""
 Provide your {num_samplings} best-guess responses for the given question that you think could be correct using chain-of-thought reasoning.
-
-First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
-Then, return the responses in JSON format with the key: "responses" (a list of dicts with 'text' and 'probability'):
-- 'text': the response string only (no explanation or extra text).
-- 'probability': a score from 0.0 to 1.0 representing how likely each response would be.
-
-The probability of all responses should sum to 1.0. Give ONLY the JSON object, no explanations or extra text.
 """
 
-    def get_combined_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs) -> str:
+    def get_vs_multi_turn_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs) -> str:
         return f"""
 You will generate a total of {num_samplings} responses that you think could be correct for the given question.
 
 First, provide {num_samples_per_prompt} best-guess responses for the given question that you think could be correct.
-Return the responses in JSON format with the key: "responses" (a list of dicts with 'text' and 'confidence'). Each dictionary must include:
-- 'text': the response string only (no explanations or extra text).
-- 'confidence': a score from 0.0 to 1.0 representing how confident you are that the response is correct (1.0 = very confident, 0.0 = very unsure).
+Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
+- 'text': the response string only (no explanation or extra text).
+- 'probability': the estimated probability from 0.0 to 1.0 of this response given the input prompt (relative to the full answer space).
 
 Give ONLY the JSON object, no explanations or extra text.
 """
-
 
     def get_continue_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         if num_samplings == 1:
@@ -313,26 +313,162 @@ Provide one alternative response for the original input prompt that you think co
 Provide {num_samplings} alternative responses for the original input prompt that you think could be correct.
 """
     
-    def get_format_prompt(self, method: str, num_samplings: int) -> str:
-        if method == "structure_with_prob":
-#             return """
-# Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
-# - 'text': the response string only (no explanation or extra text).
-# - 'probability': a score from 0.0 to 1.0 representing how likely each response is to be correct (1.0 = very likely, 0.0 = very unlikely).
+    def get_format_prompt(self, method: str, num_samplings: int, probability_definition: str = None) -> str:
+        base_template = BasePromptTemplate(TaskType.COMMONSENSE)
+        return base_template.get_format_prompt(method, num_samplings, probability_definition)
 
-# Give ONLY the JSON object, with no explanations or extra text.
-# """
-            return """
-Return the responses in JSON format with keys: "responses" (list of dicts with 'text' and 'probability'). Each dictionary must include:
+
+#############################Synthetic data tasks###################################
+class SyntheticDataPromptTemplate(BasePromptTemplate):
+    """Prompt templates for synthetic data tasks."""
+    
+    def __init__(self):
+        super().__init__(TaskType.SYNTHETIC_DATA)
+    
+    def get_base_prompt(self, **kwargs) -> str:
+        return """
+Generate a data instance based on the input prompt. Output only the data, without any explanations or extra text.
+"""
+    
+    def get_base_cot_prompt(self, **kwargs) -> str:
+        return """
+Generate a data instance based on the input prompt using chain-of-thought reasoning. Output only the data, without any explanations or extra text.
+"""
+    
+    def get_standard_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        return f"""
+Generate {num_samplings} data instances based on the input prompt. Output only the data, with no explanations or extra text.
+"""
+    
+    def get_standard_all_possible_prompt(self, **kwargs) -> str:
+        return """
+Generate all plausible data instances based on the input prompt. Output only the data, with no explanations or extra text.
+"""
+
+    def get_vs_cot_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        return f"""
+Generate {num_samplings} data instances based on the input prompt using chain-of-thought reasoning. Output only the data, with no explanations or extra text.
+"""
+
+    def get_vs_multi_turn_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs) -> str:
+        return f"""
+Generate {num_samplings} data instances based on the input prompt. Output only the data, with no explanations or extra text.
+
+First, sample {num_samples_per_prompt} data instances.
+Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
 - 'text': the response string only (no explanation or extra text).
-- 'probability': a score from 0.0 to 1.0 representing how likely each response would be (1.0 = very likely, 0.0 = very unlikely).
+- 'probability': the estimated probability from 0.0 to 1.0 of this response given the input prompt (relative to the full answer space).
 
-Give ONLY the JSON object, with no explanations or extra text.
+Please sample at random from the full distribution. Give ONLY the JSON object, no explanations or extra text.
+"""
+    
+    def get_continue_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        if num_samplings == 1:
+            return f"""
+Generate one alternative data instance based on the original input prompt.
 """
         else:
-            # Use the same format prompts as creativity tasks
-            base_template = BasePromptTemplate(TaskType.COMMONSENSE)
-            return base_template.get_format_prompt(method, num_samplings)
+            return f"""
+Randomly sample {num_samplings} alternative data instances based on the original input prompt.
+"""
+    
+    def get_format_prompt(self, method: str, num_samplings: int, probability_definition: str = None) -> str:
+        base_template = BasePromptTemplate(TaskType.SYNTHETIC_DATA)
+        return base_template.get_format_prompt(method, num_samplings, probability_definition)
+
+
+#############################Synthetic negative tasks###################################
+class SyntheticNegativePromptTemplate(BasePromptTemplate):
+    """Prompt templates for synthetic negative tasks."""
+    
+    def __init__(self):
+        super().__init__(TaskType.SYNTHETIC_NEGATIVE)
+    
+    def get_base_prompt(self, **kwargs) -> str:
+        return """
+Generate a solution to the given math problem that look logical but contain at least one hidden mistake, making the final result incorrect.
+The solution must end with the final numerical answer, written only once after four hash marks (####). Example: ####123.
+"""
+    
+    def get_base_cot_prompt(self, **kwargs) -> str:
+        return """
+Generate a solution to the given math problem using chain-of-thought reasoning. 
+The solution should look logical but contain at least one hidden mistake, making the final result incorrect.
+End the solution with the final numerical answer, written only once after four hash marks (####). Example: ####123.
+"""
+    
+    def get_standard_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        return f"""
+Generate {num_samplings} logical and convincing but incorrect solutions to the given math problem. 
+End each solution with the final numerical answer, written only once after four hash marks (e.g., ####123).
+"""
+    
+    def get_standard_all_possible_prompt(self, **kwargs) -> str:
+        return """
+Generate all plausible solutions to the given math problem. 
+Each solution should appear logical and consistent, but must include at least one hidden mistake that makes the final answer incorrect.
+End each solution with the final numerical answer, written only once after four hash marks (e.g., ####123).
+"""
+    
+    def get_vs_cot_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        return f"""
+Generate {num_samplings} solutions to the given math problem using chain-of-thought reasoning. 
+Each solution should appear logical and consistent, but must include at least one hidden mistake that makes the final answer incorrect.
+End each solution with the final numerical answer, written only once after four hash marks (e.g., ####123).
+"""
+
+    def get_vs_multi_turn_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs) -> str:
+        return f"""
+Generate a total of {num_samplings} solutions to the given math problem. 
+Each solution should appear logical and consistent, but must include at least one hidden mistake that makes the final answer incorrect.
+End each solution with the final numerical answer, written only once after four hash marks (e.g., ####123).
+
+First, sample {num_samples_per_prompt} solutions.
+Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
+- 'text': the response string only (no explanation or extra text).
+- 'probability': the estimated probability from 0.0 to 1.0 of this response given the input prompt (relative to the full answer space).
+
+Sample the solutions at random from the full distribution. Give ONLY the JSON object, with no explanations or extra text.
+"""
+    
+    def get_continue_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        if num_samplings == 1:
+            return f"""
+Generate one alternative seems logical but incorrect solution to the given math problem.
+"""
+        else:
+            return f"""
+Randomly sample {num_samplings} alternative seems logical but incorrect solutions to the given math problem.
+"""
+    
+    def get_format_prompt(self, method: str, num_samplings: int, probability_definition: str = None) -> str:
+        if method == "sequence":
+            return f"""
+Return exactly {num_samplings} solutions as a Python list of strings, formatted as:
+["solution1", "solution2", "solution3", ...]
+
+Sample the solutions at random from the full distribution. Return ONLY the list, with no additional explanations or text.
+"""
+        elif method == "vs_standard":
+            return """
+Return the output in JSON format with the key "responses" (list of dicts). Each dictionary must include:
+- 'text': the response string only (no explanation or extra text).
+- 'probability': the estimated probability from 0.0 to 1.0 of this response given the input prompt (relative to the full distribution).
+
+Sample the incorrect solutions at random from the full distribution. Output only the JSON object, with no explanations or extra text.
+"""
+        elif method == "vs_cot":
+            return """
+First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
+Then, return the output in JSON format with the key "responses" (list of dicts). Each dictionary must include:
+- 'text': the response string only (no explanation or extra text).
+- "probability": the estimated probability from 0.0 to 1.0 of this response given the input prompt (relative to the full distribution).
+
+Randomly sample the solutions from the full distribution. Give ONLY the JSON object, with no explanations or extra text.
+"""
+        else:
+            base_template = BasePromptTemplate(TaskType.SYNTHETIC_NEGATIVE)
+            return base_template.get_format_prompt(method, num_samplings, probability_definition)
 
 
 #############################Prompt factory###################################
@@ -343,6 +479,8 @@ class PromptTemplateFactory:
         TaskType.CREATIVITY: CreativityPromptTemplate,
         TaskType.COMMONSENSE: CommonsensePromptTemplate,
         TaskType.BIAS: BiasPromptTemplate,
+        TaskType.SYNTHETIC_DATA: SyntheticDataPromptTemplate,
+        TaskType.SYNTHETIC_NEGATIVE: SyntheticNegativePromptTemplate,
         # TaskType.ABLATION: AblationPromptTemplate,
     }
     
@@ -362,10 +500,10 @@ class PromptTemplateFactory:
         prompt_methods = {
             "base": template.get_base_prompt,
             "base_model": template.get_base_model_prompt,
-            "base_cot": template.get_base_cot_prompt,
-            "standard": template.get_standard_prompt,
-            "combined": template.get_combined_prompt,
-            "chain_of_thought": template.get_chain_of_thought_prompt,
+            "base_cot": template.get_base_cot_prompt, # cot
+            "standard": template.get_standard_prompt, # vs standard
+            "vs_cot": template.get_vs_cot_prompt, # vs chain_of_thought
+            "vs_multi_turn": template.get_vs_multi_turn_prompt, # vs multi_turn
             "continue": template.get_continue_prompt,
             "standard_all_possible": getattr(template, 'get_standard_all_possible_prompt', template.get_standard_prompt),
         }
