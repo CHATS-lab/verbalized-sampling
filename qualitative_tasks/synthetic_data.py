@@ -94,25 +94,6 @@ def get_gsm8k_test_examples(n=1, seed=42):
     # Convert numpy.int64 to int to avoid key type error
     return [ds[int(i)] for i in idxs]
 
-def get_direct_prompt(example):
-    prompt = f"""
-    You are a helpful assistant. Please solve the following math problem step by step:
-
-    {example['question']}
-
-    Please provide a clear, step-by-step solution.
-    """
-    return prompt
-
-def get_verbalized_prompt(example):
-    prompt = f"""
-    You are a helpful assistant. Please solve the following math problem step by step:
-
-    {example['question']}
-
-    Before solving, think about the problem structure and break it down into manageable steps. Then provide a clear, step-by-step solution.
-    """
-    return prompt
 
 def parsing_gsm8k_response(response: str):
     """

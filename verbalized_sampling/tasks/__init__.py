@@ -12,6 +12,9 @@ from .creativity.joke import JokeTask
 from .bias.rand_num import RandomNumberTask
 from .bias.state_name import StateNameTask
 from .fact.simple_qa import SimpleQATask
+from .synthetic_data.gsm8k import GSM8KTask
+from .synthetic_data.livecodebench import LiveCodeBenchTask
+from .synthetic_data.synthetic_negative import SyntheticNegativeTask
 from enum import Enum
 
 class Task(str, Enum):
@@ -62,6 +65,13 @@ class Task(str, Enum):
     Generates names for fictional states/countries. Tests creative
     naming and world-building capabilities.
     """
+
+    RAND_NUM = "rand_num"
+    """Random number generation task.
+    
+    Generates random numbers within a specified range. Used to test basic
+    sampling capabilities and uniformity of distribution.
+    """
     
     JOKE = "joke"
     """Joke generation task.
@@ -77,15 +87,41 @@ class Task(str, Enum):
     reasoning and factual knowledge capabilities.
     """
 
+    GSM8K = "gsm8k"
+    """GSM8K task.
+    
+    Generates answers to the GSM8K dataset from OpenAI.
+    """
+
+    LIVECODEBENCH = "livecodebench"
+    """LiveCodeBench task.
+    
+    Generates answers to the LiveCodeBench dataset from OpenAI.
+    """
+
+    SYNTHETIC_NEGATIVE = "synthetic_negative"
+    """Synthetic negative task.
+    
+    Generates negative synthetic data.
+    """
+
+
 TASK_REGISTRY: Dict[str, Type[BaseTask]] = {
-    "rand_num": RandomNumberTask,
+    # creativity
     "creative_story": CreativeStoryTask,
     "book": BookTask,
     "poem": PoemTask,
     "speech": SpeechTask,
-    "state_name": StateNameTask,
     "joke": JokeTask,
+    # bias
+    "rand_num": RandomNumberTask,
+    "state_name": StateNameTask,
+    # fact
     "simple_qa": SimpleQATask,
+    # synthetic data
+    "gsm8k": GSM8KTask,
+    "livecodebench": LiveCodeBenchTask,
+    "synthetic_negative": SyntheticNegativeTask,
 }
 
 def get_task(task_name: Task, **kwargs) -> BaseTask:

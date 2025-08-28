@@ -120,7 +120,16 @@ class GoogleLLM(BaseLLM):
                     for resp in parsed["responses"]:
                         if isinstance(resp, dict):
                             text = resp.get("text")
-                            prob = resp.get("probability", resp.get("confidence", 1.0))
+                            if "probability" in resp:
+                                prob = resp.get("probability")
+                            elif "confidence" in resp:
+                                prob = resp.get("confidence")
+                            elif "perplexity" in resp:
+                                prob = resp.get("perplexity")
+                            elif "nll" in resp:
+                                prob = resp.get("nll")
+                            else:
+                                prob = 1.0
                             if text is not None:
                                 result.append({"response": text, "probability": prob})
                         elif isinstance(resp, str):

@@ -4,19 +4,38 @@ from collections import defaultdict
 from .base import BaseEvaluator, EvalResult
 import ast
 
+def _get_ngrams(words: List[str], n: int) -> List[tuple]:
+    """Return a list of n-grams (as tuples) from a list of words."""
+    if len(words) < n:
+        return []
+    return [tuple(words[i:i+n]) for i in range(len(words)-n+1)]
+
+def _proportion_unique_ngrams(text: str, n: int) -> float:
+    """Compute the proportion of unique n-grams in the text."""
+    words = text.split()
+    ngrams = _get_ngrams(words, n)
+    total = len(ngrams)
+    if total == 0:
+        return 0.0
+    unique = len(set(ngrams))
+    return unique / total
+
 class NgramEvaluator(BaseEvaluator):
-    """Evaluator for measuring ROUGE-L scores across responses with the same prompt."""
+    """Evaluator for measuring ROUGE-L scores and distinct-n (average of unique n-gram proportions for n=1,2,3) across responses with the same prompt."""
     
     instance_plot_metrics = [
         ("pairwise_rouge_l_scores", "violin"),
-        ("response_length", "histogram")
+        ("distinct_n", "histogram"),
+        ("response_length", "histogram"),
     ]
     aggregate_plot_metrics = [
         "avg_rouge_l",
         "avg_response_length",
+        "avg_distinct_n",
     ]
     key_plot_metrics = [
         ("avg_rouge_l", "N-gram (ROUGE-L)"),
+        ("avg_distinct_n", "Distinct-n (avg of 1,2,3)"),
     ]
     
     def __init__(self, num_workers: int = 128):
@@ -60,19 +79,25 @@ class NgramEvaluator(BaseEvaluator):
         return 2 * precision * recall / (precision + recall)
     
     def compute_instance_metric(self, prompt: Any, response: Dict) -> Dict[str, float]:
-        """Compute ROUGE-L metrics for a single response."""
+        """Compute ROUGE-L and distinct-n (average of unique n-gram proportions for n=1,2,3) for a single response."""
         response_text = response.get('text', '')
         if isinstance(response_text, dict):
             response_text = str(response_text)
 
+        distinct_1 = _proportion_unique_ngrams(response_text, 1)
+        distinct_2 = _proportion_unique_ngrams(response_text, 2)
+        distinct_3 = _proportion_unique_ngrams(response_text, 3)
+        distinct_n = np.mean([distinct_1, distinct_2, distinct_3])
+
         return {
             "prompt": prompt,
             "response": response_text,
-            "response_length": len(response_text.split())
+            "response_length": len(response_text.split()),
+            "distinct_n": distinct_n,
         }
     
     def aggregate_metrics(self, instance_metrics: List[Dict[str, float]]) -> Dict[str, Any]:
-        """Compute ROUGE-L metrics across all responses."""
+        """Compute ROUGE-L and distinct-n metrics across all responses."""
         if len(instance_metrics) <= 1:
             return {
                 "avg_rouge_l": 0.0,
@@ -81,7 +106,8 @@ class NgramEvaluator(BaseEvaluator):
                 "std_rouge_l": 0.0,
                 "avg_response_length": 0.0,
                 "std_response_length": 0.0, 
-                "pairwise_rouge_l_scores": []
+                "pairwise_rouge_l_scores": [],
+                "avg_distinct_n": 0.0,
             }
         
         # Group responses by prompt
@@ -105,31 +131,36 @@ class NgramEvaluator(BaseEvaluator):
         # Calculate overall statistics
         if all_rouge_l_scores:
             scores_array = np.array(all_rouge_l_scores)
-            metrics = {
-                "avg_rouge_l": float(scores_array.mean()),
-                "min_rouge_l": float(scores_array.min()),
-                "max_rouge_l": float(scores_array.max()),
-                "std_rouge_l": float(scores_array.std()),
-                "avg_response_length": float(np.mean([m["response_length"] for m in instance_metrics])),
-                "std_response_length": float(np.std([m["response_length"] for m in instance_metrics])),
-                "pairwise_rouge_l_scores": pairwise_scores
-            }
+            avg_rouge_l = float(scores_array.mean())
+            min_rouge_l = float(scores_array.min())
+            max_rouge_l = float(scores_array.max())
+            std_rouge_l = float(scores_array.std())
         else:
-            metrics = {
-                "avg_rouge_l": 0.0,
-                "min_rouge_l": 0.0,
-                "max_rouge_l": 0.0,
-                "std_rouge_l": 0.0,
-                "avg_response_length": float(np.mean([m["response_length"] for m in instance_metrics])),
-                "std_response_length": float(np.std([m["response_length"] for m in instance_metrics])),
-                "pairwise_rouge_l_scores": []
-            }
+            avg_rouge_l = 0.0
+            min_rouge_l = 0.0
+            max_rouge_l = 0.0
+            std_rouge_l = 0.0
+
+        avg_response_length = float(np.mean([m["response_length"] for m in instance_metrics]))
+        std_response_length = float(np.std([m["response_length"] for m in instance_metrics]))
+        avg_distinct_n = float(np.mean([m["distinct_n"] for m in instance_metrics]))
+
+        metrics = {
+            "avg_rouge_l": avg_rouge_l,
+            "min_rouge_l": min_rouge_l,
+            "max_rouge_l": max_rouge_l,
+            "std_rouge_l": std_rouge_l,
+            "avg_response_length": avg_response_length,
+            "std_response_length": std_response_length,
+            "pairwise_rouge_l_scores": pairwise_scores,
+            "avg_distinct_n": avg_distinct_n,
+        }
         
         return metrics
     
     def evaluate(self, prompts: List[str], responses: List[str], 
                 metadata: Optional[Dict[str, Any]] = None) -> EvalResult:
-        """Evaluate ROUGE-L scores for responses."""
+        """Evaluate ROUGE-L and distinct-n scores for responses."""
         if metadata is None:
             metadata = {}
             

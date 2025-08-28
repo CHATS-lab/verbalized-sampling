@@ -2,6 +2,8 @@ from typing import Dict, Any, List, Optional, Union
 from enum import Enum
 import os
 import random
+import numpy as np
+from datasets import load_dataset
 from pydantic import BaseModel
 from .prompt import (
     TaskType,
@@ -21,15 +23,6 @@ class Method(str, Enum):
     CHAIN_OF_THOUGHT = "chain_of_thought"
     COMBINED = "combined"
 
-    # DIRECT = "Baseline"
-    # SEQUENCE = "Sequence" 
-    # STRUCTURE = "Structure"
-    # STRUCTURE_WITH_PROB = "Verbalized Sampling"
-    # MULTI_TURN = "Multi-turn"
-    # CHAIN_OF_THOUGHT = "Verbalized Sampling (CoT)"
-    # COMBINED = "Verbalized Sampling (Combined)"
-    # SELF_REFLECTION = "self_reflection"
-    # TEMPERATURE_SAMPLING = "temperature_sampling"
 
 def is_method_structured(method: Method) -> bool:
     """Check if a method requires structured JSON output."""
@@ -71,11 +64,28 @@ class PromptFactory:
     METHOD_TO_FORMAT = {
         Method.SEQUENCE: "sequence",
         Method.STRUCTURE: "structure", 
-        Method.STRUCTURE_WITH_PROB: "structure_with_prob",
-        Method.CHAIN_OF_THOUGHT: "chain_of_thought",
-        Method.COMBINED: "combined",
+        Method.DIRECT_COT: "direct_cot",
+        Method.STRUCTURE_WITH_PROB: "vs_standard",
+        Method.CHAIN_OF_THOUGHT: "vs_cot",
+        Method.COMBINED: "vs_multi_turn",
+    }
+    
+    # Available probability definition types
+    PROBABILITY_DEFINITIONS = {
+        "default": "Standard probability definition",
+        "implicit": "Simple likelihood definition",
+        "explicit": "Explicit probability definition", 
+        "relative": "Relative likelihood definition",
+        "confidence": "Confidence score definition",
+        "perplexity": "Perplexity-based definition",
+        "nll": "Negative log likelihood definition",
     }
 
+    @staticmethod
+    def get_available_probability_definitions() -> Dict[str, str]:
+        """Get available probability definition types and their descriptions."""
+        return PromptFactory.PROBABILITY_DEFINITIONS.copy()
+    
     @staticmethod
     def _get_task_type_from_task_name(task: str) -> TaskType:
         """Map task names to TaskType enum."""
@@ -94,6 +104,13 @@ class PromptFactory:
             "rand_num": TaskType.BIAS,
             "state_name": TaskType.BIAS,
             
+            # Synthetic data tasks
+            "gsm8k": TaskType.SYNTHETIC_DATA,
+            "livecodebench": TaskType.SYNTHETIC_DATA,
+            
+            # Synthetic negative tasks
+            "synthetic_negative": TaskType.SYNTHETIC_NEGATIVE,
+            
             # Default to creativity for unknown tasks
         }
         return task_mapping.get(task, TaskType.CREATIVITY)
@@ -107,13 +124,13 @@ class PromptFactory:
             return "base_model"
         elif method == Method.DIRECT_COT:
             return "base_cot"
+        elif method == Method.CHAIN_OF_THOUGHT:
+            return "vs_cot"
         elif method == Method.COMBINED:
-            return "combined"
+            return "vs_multi_turn"
         elif all_possible:
             return "standard_all_possible"
-        elif method == Method.CHAIN_OF_THOUGHT:
-            return "chain_of_thought"
-        else:
+        else: # Method.SEQUENCE, Method.STRUCTURE
             return "standard"
 
     @staticmethod
@@ -128,6 +145,7 @@ class PromptFactory:
         strict_json: bool = False,
         task_type: TaskType = None,
         task_name: str = None,
+        probability_definition: str = None,
     ) -> Union[List[Dict[str, str]], str]:
         """Pack a prompt using the new class-based prompt system."""
         
@@ -162,12 +180,16 @@ class PromptFactory:
         if not strict_json and method in PromptFactory.METHOD_TO_FORMAT:
             format_type = PromptFactory.METHOD_TO_FORMAT[method]
             template = PromptTemplateFactory.get_template(task_type)
-            format_prompt = template.get_format_prompt(format_type, num_samplings)
-
+            format_prompt = template.get_format_prompt(
+                format_type, 
+                num_samplings, 
+                probability_definition
+            )
             system_prompt = f"{system_prompt}{format_prompt}"
         
-        # print("System prompt: ", system_prompt)
-        # print("User prompt: ", prompt)
+        print("Probability definition: ", probability_definition)
+        print("System prompt: ", system_prompt)
+        print("User prompt: ", prompt)
         
         # Handle base model format (no chat template, just completion)
         if method == Method.DIRECT_BASE:
@@ -186,7 +208,7 @@ class PromptFactory:
         task_type = PromptFactory._get_task_type_from_task_name(task)
         template = PromptTemplateFactory.get_template(task_type)
         continuation_prompt = template.get_continue_prompt(num_samplings=1, target_words=target_words)
-        print("Continuation prompt: ", continuation_prompt)
+        print("Multi-turn continuation prompt: ", continuation_prompt)
         
         return chat_history + [{"role": "user", "content": continuation_prompt}]
 
@@ -196,9 +218,55 @@ class PromptFactory:
         task_type = PromptFactory._get_task_type_from_task_name(task)
         template = PromptTemplateFactory.get_template(task_type)
         continuation_prompt = template.get_continue_prompt(num_samplings=num_samplings_per_prompt, target_words=target_words)
-        print("Continuation prompt: ", continuation_prompt)
+        print("VS-Multi continuation prompt: ", continuation_prompt)
         
         return chat_history + [{"role": "user", "content": continuation_prompt}]
+    
+    @staticmethod
+    def get_gsm8k_task_prompts(num_icl_example: int, random_seed: int) -> List[str]:
+        """Get prompts for the GSM8K task."""
+        user_prompts = f"""Generate a grade school math word problem that involves a sequence of basic arithmetic calculations (addition, subtraction, multiplication, division).
+        A bright middle school student should be able to solve the problem. The difficulty of the problem should be similar to typical middle school math problems.
+        
+        For the problem:
+        - Specify the question.
+        - Then provide a brief reasoning and the numerical answer.
+        - The answer should be given after four hash marks (####) at the end of the reasoning. The answer should be a number.
+
+        Format the generated problem as follows:
+        Question: [question]
+        Answer: [reasoning and answer, ending with #### [numerical answer]]
+
+        Only include the question and answer in your response, and always begin your response with the question.
+        """
+        return [user_prompts]
+    
+    @staticmethod
+    def get_livecodebench_task_prompts(num_icl_example: int, random_seed: int) -> List[str]:
+        """Get prompts for generating synthetic LiveCodeBench-style coding problems."""
+        user_prompt = f"""Generate a programming problem inspired by competitive programming platforms such as LeetCode, AtCoder, and CodeForces.
+        The problem should be self-contained, clearly describing the task, inputs, outputs, and constraints.
+        Given the input, the answer of the problem should be solvable using logical step-by-step reasoning without executing the code.
+        The difficulty should be similar to typical coding interview or algorithm challenges.
+
+        For the problem, provide:
+        - Question: A natural language description of the programming task.
+        - Test Input: The exact input data for the task.
+        - Reasoning: A concise, ordered explanation of how to get the result from the input.
+        - Answer: The final output value.
+
+        Format exactly as follows:
+        "Question:
+        [question]
+        Test Input:
+        [test_input]
+        Reasoning:
+        [reasoning]
+        Answer:
+        [answer]"
+
+        Make sure to only provide only the question, test input, reasoning, and answer. Start with the question."""
+        return [user_prompt]
     
     @staticmethod
     def get_prompt(
@@ -218,21 +286,27 @@ class PromptFactory:
                 - A list of system and user messages (for chat models)
                 - A string prompt (for base models)
         """
-        # Handle poem task with clean data
-        if (task == "poem") and (method == Method.DIRECT_BASE):
+        prompts = []
+        if task == "gsm8k":
+            prompts = PromptFactory.get_gsm8k_task_prompts(num_icl_example=3, random_seed=random_seed)
+        elif task == "livecodebench":
+            prompts = PromptFactory.get_livecodebench_task_prompts(num_icl_example=3, random_seed=random_seed)
+        elif (task == "poem") and (method == Method.DIRECT_BASE): # Handle poem task with clean data
             prompt_path = "data/poem_titles.txt"
         else:
             prompt_path = f"data/{task}.txt"
 
-        if not os.path.exists(prompt_path):
-            raise ValueError(f"Prompt file {prompt_path} not found.")
-        
-        prompts = []
-        with open(prompt_path, "r") as f:
-            for line in f:
-                line = line.strip()
-                if line:  # Skip empty lines
-                    prompts.append(line)
+        # Only try to read from file if we don't have prompts from the special task methods
+        if not prompts:
+            if not os.path.exists(prompt_path):
+                raise ValueError(f"Prompt file {prompt_path} not found.")
+            
+            prompts = []
+            with open(prompt_path, "r") as f:
+                for line in f:
+                    line = line.strip()
+                    if line:  # Skip empty lines
+                        prompts.append(line)
         
         # TODO add selection of prompts
         if (num_prompts is not None) and (random_seed is not None):

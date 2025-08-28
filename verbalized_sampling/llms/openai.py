@@ -82,17 +82,19 @@ class OpenAILLM(BaseLLM):
                     if isinstance(responses, list):
                         result = []
                         for resp in responses:
-                            if isinstance(resp, dict) and "text" in resp and "probability" in resp:
-                                # ResponseWithProbability
+                            if isinstance(resp, dict) and "text" in resp and any(key in resp for key in ["probability", "confidence", "perplexity", "nll"]):
+                                # Combine probability/confidence/perplexity fields
+                                if "probability" in resp:
+                                    prob = resp["probability"]
+                                elif "confidence" in resp:
+                                    prob = resp["confidence"]
+                                elif "perplexity" in resp:
+                                    prob = resp["perplexity"]
+                                elif "nll" in resp:
+                                    prob = resp["nll"]
                                 result.append({
                                     "response": resp["text"],
-                                    "probability": resp["probability"]
-                                })
-                            elif isinstance(resp, dict) and "text" in resp and "confidence" in resp:
-                                # ResponseWithConfidence
-                                result.append({
-                                    "response": resp["text"],
-                                    "probability": resp["confidence"]
+                                    "probability": prob
                                 })
                             elif isinstance(resp, dict) and "text" in resp:
                                 # Response

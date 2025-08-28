@@ -15,6 +15,12 @@ def maybe_rename_response(response: Dict) -> Dict:
     if "confidence" in response:
         response["probability"] = response["confidence"]
         del response["confidence"]
+    if "nll" in response:
+        response["probability"] = response["nll"]
+        del response["nll"]
+    if "perplexity" in response:
+        response["probability"] = response["perplexity"]
+        del response["perplexity"]
     
     return response
 
