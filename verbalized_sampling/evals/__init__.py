@@ -8,6 +8,7 @@ from .ngram import NgramEvaluator
 from .base import BaseEvaluator
 from .factuality import FactualityEvaluator
 from .joke_quality import JokeQualityEvaluator
+from .data_quality import SyntheticDataQualityEvaluator
 
 # Import plotting functionality from the new plots module
 from ..plots import (
@@ -27,6 +28,7 @@ __all__ = [
     "BaseEvaluator",
     "FactualityEvaluator",
     "JokeQualityEvaluator",
+    "SyntheticDataQualityEvaluator",
     # Plotting functionality
     "ComparisonPlotter", 
     "plot_evaluation_comparison",
@@ -52,5 +54,7 @@ def get_evaluator(metric: str, **kwargs):
         return FactualityEvaluator(**kwargs)
     elif metric == "joke_quality":
         return JokeQualityEvaluator(**kwargs)
+    elif metric == "synthetic_data_quality":
+        return SyntheticDataQualityEvaluator(**kwargs)
     else:
         raise ValueError(f"Evaluator {metric} not found. Available evaluators: diversity, ttct, creativity_index, length, response_count, creative_writing_v3, ngram, factuality")
