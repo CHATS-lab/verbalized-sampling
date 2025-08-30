@@ -224,27 +224,27 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
     gs = gridspec.GridSpec(3, 3, height_ratios=[0.3, 1, 1], width_ratios=[1, 1, 1], 
                           hspace=0.65, wspace=0.25, left=0.08, right=0.95, top=0.95, bottom=0.08)
     
-    # Elegant color palette inspired by the reference
+    # Flipped color palette: our methods (red), baselines (blue)
     method_names = ["Direct", "CoT", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Multi"]
     colors = {
-        'Direct': '#FFE5E5',      # Very light red
-        'CoT': '#FFCCCB',         # Light red  
-        'Sequence': '#FF9999',     # Medium red
-        'Multi-turn': '#FF6B6B',   # Distinct red (different from small models)
-        'VS-Standard': '#E8F4FD',  # Very light blue
-        'VS-CoT': '#B8E0F5',       # Light blue
-        'VS-Multi': '#7CC7EA'      # Medium blue
+        'Direct': '#E8F4FD',      # Very light blue (baseline)
+        'CoT': '#B8E0F5',         # Light blue (baseline)
+        'Sequence': '#7CC7EA',     # Medium blue (baseline)
+        'Multi-turn': '#4A90E2',   # Distinct blue (baseline)
+        'VS-Standard': '#FFE5E5',  # Very light red (our method)
+        'VS-CoT': '#FFCCCB',       # Light red (our method)
+        'VS-Multi': '#FF6B6B'      # Medium red (our method)
     }
     
     # Edge colors for better distinction
     edge_colors = {
-        'Direct': '#FF6B6B',
-        'CoT': '#FF6B6B', 
-        'Sequence': '#FF6B6B',
-        'Multi-turn': '#FF6B6B',
-        'VS-Standard': '#4A90E2',
-        'VS-CoT': '#4A90E2',
-        'VS-Multi': '#4A90E2'
+        'Direct': '#4A90E2',
+        'CoT': '#4A90E2', 
+        'Sequence': '#4A90E2',
+        'Multi-turn': '#4A90E2',
+        'VS-Standard': '#FF6B6B',
+        'VS-CoT': '#FF6B6B',
+        'VS-Multi': '#FF6B6B'
     }
     
     # Row 1: Elegant bar charts for each task (reordered: poem, story, joke)
@@ -327,7 +327,20 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
             # Start from 85% of minimum value, extend to 130% of maximum
             y_min = max(0, min_val - range_val * 0.15)
             y_max = max_val * 1.3
-            ax.set_ylim(y_min, y_max)
+            
+            # Special handling for subplot c (joke): set ylim to 9-37
+            if col_idx == 2:  # Joke subplot
+                ax.set_ylim(9, 37)
+            elif col_idx == 1:
+                ax.set_ylim(8.5, 22)
+            else:
+                ax.set_ylim(y_min, y_max)
+                
+            # For subplot b (story): use integer ticks only
+            if col_idx == 1:  # Story subplot
+                from matplotlib.ticker import MaxNLocator
+                ax.yaxis.set_major_locator(MaxNLocator(integer=True))
+                ax.set_yticks(range(9, 25, 3))
         
         # Add subtle value labels (adjusted for new y-limits)
         for i, (avg, std) in enumerate(zip(method_averages, method_stds)):
@@ -390,14 +403,20 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
             x_offset = 0
             ha_align = 'center'
             if method == 'Sequence':
-                x_offset = -0.1  # Move left
+                x_offset = -0.5  # Move left
+                ha_align = 'center'
+            elif method == 'Direct':
+                x_offset = 0.35  # Move left
                 ha_align = 'center'
             elif method == 'VS-Standard':
-                x_offset = 0.2   # Move right
+                x_offset = 0.6   # Move right
+                ha_align = 'center'
+            elif method == "Multi-turn":
+                x_offset = 0.35   # Move right
                 ha_align = 'center'
             
             ax_scatter.text(data['diversity'] + x_offset, data['quality'] - 0.5, method, 
-                           ha=ha_align, va='top', fontsize=11, fontweight='600',
+                           ha=ha_align, va='top', fontsize=15, fontweight='600',
                            bbox=dict(boxstyle='round,pad=0.2', facecolor='white', alpha=0.8, edgecolor='none'))
     
     # Adjust y-axis limits to accommodate labels below markers
@@ -431,8 +450,8 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
                        xycoords='axes fraction', textcoords='axes fraction',
                        arrowprops=dict(arrowstyle='->', lw=3, color='red', alpha=0.7))
     # Then add the text separately, positioned lower to avoid overlap
-    ax_scatter.text(0.75, 0.95, 'Pareto optimal', transform=ax_scatter.transAxes,
-                   fontsize=12, color='red', fontweight='bold', ha='center')
+    ax_scatter.text(0.70, 0.95, 'Pareto optimal', transform=ax_scatter.transAxes,
+                   fontsize=15, color='red', fontweight='bold', ha='center')
     
     # Add subplot label d
     ax_scatter.text(-0.15, 1.05, 'd', transform=ax_scatter.transAxes,
@@ -470,8 +489,10 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
                     'quality_delta_mean': np.mean(quality_deltas)
                 }
     
-    # Elegant model size colors
-    size_colors = {'small': '#4ECDC4', 'large': '#8B4A9C'}  # Purple for small, teal for large
+    # Vibrant coral & teal for model sizes
+    import seaborn as sns
+    color = sns.color_palette("Paired")
+    size_colors = {'small': color[8], 'large': color[9]}  # Coral, light sea green
     size_labels = {'small': 'Small Models', 'large': 'Large Models'}
     
     # Diversity burden analysis
@@ -491,11 +512,11 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
         small_diversity_changes.append(small_val)
     
     ax_burden_div.bar(x_methods - width/2, small_diversity_changes, width, 
-                     color=size_colors['small'], alpha=0.9, 
-                     edgecolor='white', linewidth=1.2, label=size_labels['small'])
+                     color=size_colors['small'], alpha=0.3, 
+                     edgecolor='#E55B5B', linewidth=0, label=size_labels['small'])
     ax_burden_div.bar(x_methods + width/2, large_diversity_changes, width, 
-                     color=size_colors['large'], alpha=0.9, 
-                     edgecolor='white', linewidth=1.2, label=size_labels['large'])
+                     color=size_colors['large'], alpha=0.7, 
+                     edgecolor='#1A8A7A', linewidth=0, label=size_labels['large'])
     
     # Add value labels on bars for better clarity
     for i, (small_val, large_val) in enumerate(zip(small_diversity_changes, large_diversity_changes)):
@@ -514,7 +535,7 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
     
     ax_burden_div.axhline(y=0, color='#666666', linestyle='-', alpha=0.8, linewidth=1)
     ax_burden_div.set_ylabel('$\Delta$ Diversity Against Direct', fontweight='bold', fontsize=12)
-    ax_burden_div.set_title('Emergent Trend: $\Delta$ Diversity', fontweight='bold', pad=15, fontsize=18)
+    ax_burden_div.set_title('Emergent Trend: $\Delta$ in Diversity', fontweight='bold', pad=15, fontsize=18)
     ax_burden_div.set_xticks(x_methods)
     ax_burden_div.set_xticklabels(methods_subset, rotation=45, ha='right', fontsize=12)
     
@@ -551,11 +572,11 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
             small_quality_changes[vs_cot_index], large_quality_changes[vs_cot_index]
     
     ax_burden_qual.bar(x_methods - width/2, small_quality_changes, width, 
-                      color=size_colors['small'], alpha=0.9, 
-                      edgecolor='white', linewidth=1.2, label=size_labels['small'])
+                      color=size_colors['small'], alpha=0.3, 
+                      edgecolor='#E55B5B', linewidth=0, label=size_labels['small'])
     ax_burden_qual.bar(x_methods + width/2, large_quality_changes, width, 
-                      color=size_colors['large'], alpha=0.9, 
-                      edgecolor='white', linewidth=1.2, label=size_labels['large'])
+                      color=size_colors['large'], alpha=0.7, 
+                      edgecolor='#1A8A7A', linewidth=0, label=size_labels['large'])
     
     # Add value labels on bars for better clarity
     for i, (small_val, large_val) in enumerate(zip(small_quality_changes, large_quality_changes)):
@@ -574,7 +595,7 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
     
     ax_burden_qual.axhline(y=0, color='#666666', linestyle='-', alpha=0.8, linewidth=1)
     ax_burden_qual.set_ylabel('$\Delta$ Quality Against Direct', fontweight='bold', fontsize=12)
-    ax_burden_qual.set_title('Cognitive Burden: $\Delta$ Quality', fontweight='bold', pad=15, fontsize=18)
+    ax_burden_qual.set_title('Cognitive Burden: $\Delta$ in Quality', fontweight='bold', pad=15, fontsize=18)
     ax_burden_qual.set_xticks(x_methods)
     ax_burden_qual.set_xticklabels(methods_subset, rotation=45, ha='right', fontsize=12)
     
@@ -606,7 +627,7 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
     
     legend1 = fig.legend(handles=method_patches,
                         loc='upper center', bbox_to_anchor=(0.5, 0.83),
-                        fontsize=15, title_fontsize=20, ncol=7,
+                        fontsize=18, title_fontsize=20, ncol=7,
                         frameon=True, fancybox=False, shadow=False)
     legend1.get_frame().set_linewidth(0.0)
     
@@ -618,13 +639,14 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
         'small': 'Small Models (GPT-4.1-Mini, Gemini-2.5-Flash)',
         'large': 'Large Models (GPT-4.1, Gemini-2.5-Pro)'
     }
+    alphas = {'small': 0.3, 'large': 0.7}
     for size, color in size_colors.items():
-        patch = Patch(color=color, label=labels[size])
+        patch = Patch(color=color, alpha=alphas[size], label=labels[size])
         size_patches.append(patch)
     
     legend3 = fig.legend(handles=size_patches,
                         loc='lower center', bbox_to_anchor=(0.68, -0.05),
-                        fontsize=13,  ncol=2)
+                        fontsize=14,  ncol=2)
     legend3.get_frame().set_linewidth(0.0)
     
     # Save the figure
