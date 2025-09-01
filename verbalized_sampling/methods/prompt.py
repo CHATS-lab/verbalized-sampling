@@ -68,6 +68,7 @@ class BasePromptTemplate:
         """
         # Default probability definitions
         probability_definitions = {
+            # "default": "- 'probability': how likely this response would be (from 0.0 to 1.0).",
             "implicit": "- 'probability': how likely this response would be (from 0.0 to 1.0).",
             "explicit": "- 'probability': the estimated probability from 0.0 to 1.0 of this response given the input prompt (relative to the full distribution).",
             "relative": "- 'probability': a probability value between 0.0 and 1.0, reflecting the relative likelihood of this response given the input.",
