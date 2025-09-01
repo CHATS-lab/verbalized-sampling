@@ -8,6 +8,7 @@ from scipy import stats
 from scipy.stats import ttest_ind
 import matplotlib.gridspec as gridspec
 from matplotlib.patches import Patch
+from config import COLORS, EDGE_COLORS
 
 def perform_statistical_tests(task_data, task_name, metric):
     """Perform t-tests comparing baselines against VS-Standard"""
@@ -122,26 +123,9 @@ def create_individual_plot(task_data, task_name, metric, output_dir="latex_figur
     
     # Same color scheme as unified figure: our methods (red), baselines (blue)
     method_names = ["Direct", "CoT", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Multi"]
-    colors = {
-        'Direct': '#E8F4FD',      # Very light blue (baseline)
-        'CoT': '#B8E0F5',         # Light blue (baseline)
-        'Sequence': '#7CC7EA',     # Medium blue (baseline)
-        'Multi-turn': '#4A90E2',   # Distinct blue (baseline)
-        'VS-Standard': '#FFE5E5',  # Very light red (our method)
-        'VS-CoT': '#FFCCCB',       # Light red (our method)
-        'VS-Multi': '#FF6B6B'      # Medium red (our method)
-    }
     
     # Edge colors for better distinction
-    edge_colors = {
-        'Direct': '#4A90E2',
-        'CoT': '#4A90E2', 
-        'Sequence': '#4A90E2',
-        'Multi-turn': '#4A90E2',
-        'VS-Standard': '#FF6B6B',
-        'VS-CoT': '#FF6B6B',
-        'VS-Multi': '#FF6B6B'
-    }
+
     
     # Create figure with appropriate size
     fig, ax = plt.subplots(1, 1, figsize=(10, 8))
@@ -170,7 +154,7 @@ def create_individual_plot(task_data, task_name, metric, output_dir="latex_figur
     
     for i, (method, avg, std) in enumerate(zip(method_names, method_averages, method_stds)):
         bar = ax.bar(i, avg, yerr=std,
-                    color=colors[method], edgecolor=edge_colors[method], 
+                    color=COLORS[method], edgecolor=EDGE_COLORS[method], 
                     linewidth=1.5, width=0.7, alpha=0.9,
                     error_kw={'elinewidth': 2.0, 'capsize': 4, 'capthick': 2.0, 'alpha': 0.8})
         bars.append(bar)

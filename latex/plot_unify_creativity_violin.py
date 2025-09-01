@@ -431,7 +431,7 @@ def create_unified_creativity_figure_violin(output_dir="latex_figures"):
                 linewidth = 1.5
             
             ax_scatter.scatter(data['diversity'], data['quality'], 
-                             color=colors[method], marker=marker, s=size, alpha=alpha,
+                            color=colors[method], marker=marker, s=size, alpha=alpha,
                              zorder=5, edgecolors=edge_colors[method], linewidth=linewidth)
             
             # Add label below the marker with adjusted positioning for overlapping methods

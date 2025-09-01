@@ -115,16 +115,16 @@ def plot_training_progression(output_dir="latex_figures"):
     
     # Add base model as horizontal dotted red line
     if base_model_score is not None:
-        ax.axhline(y=base_model_score, color='red', linestyle='--', linewidth=3, 
+        ax.axhline(y=base_model_score, color='maroon', linestyle='--', linewidth=3, 
                   alpha=0.8)
         # Add inline annotation for base model
         ax.text(len(x_positions) - 1.45, base_model_score - 0.5, 'Base Model', 
-               fontsize=20, fontweight='bold', color='red',
+               fontsize=20, fontweight='bold', color='maroon',
                ha='left', va='top')
     
     # Customize the plot with seaborn styling
     ax.set_xlabel('Training Stage', fontsize=18, fontweight='bold')
-    ax.set_ylabel('Diversity Score', fontsize=18, fontweight='bold')
+    ax.set_ylabel('Diversity', fontsize=18, fontweight='bold')
     # ax.set_title('Diversity Improvement Across Training Progression', fontsize=20, fontweight='bold', pad=20)
     ax.set_xticks(x_positions)
     ax.set_xticklabels(x_labels, fontsize=22)

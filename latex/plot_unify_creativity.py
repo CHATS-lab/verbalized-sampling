@@ -9,7 +9,7 @@ from scipy import stats
 from scipy.stats import ttest_ind
 import matplotlib.gridspec as gridspec
 from matplotlib.patches import Patch
-
+from config import COLORS, EDGE_COLORS, RC_PARAMS
 SUBPLOT_LABEL_SIZE = 26
 
 def perform_statistical_tests(task_data, task_name):
@@ -190,26 +190,7 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
     
     # Set up elegant styling inspired by the reference image
     plt.style.use('default')  # Start with clean slate
-    plt.rcParams.update({
-        'font.family': 'sans-serif',
-        'font.sans-serif': ['Arial', 'DejaVu Sans', 'Liberation Sans'],
-        'font.size': 11,
-        'axes.labelsize': 12,
-        'axes.titlesize': 13,
-        'xtick.labelsize': 10,
-        'ytick.labelsize': 15,
-        'legend.fontsize': 9,
-        'axes.linewidth': 0.8,
-        'axes.edgecolor': '#666666',
-        'axes.spines.top': False,
-        'axes.spines.right': False,
-        'xtick.major.width': 0.8,
-        'ytick.major.width': 0.8,
-        'lines.linewidth': 2.0,
-        'lines.markersize': 8,
-        'figure.facecolor': 'white',
-        'axes.facecolor': 'white'
-    })
+    plt.rcParams.update(RC_PARAMS)
     
     # Load data from LaTeX tables and experiment directories
     poem_data = parse_latex_table_data("latex/results/poem.tex")
@@ -226,26 +207,6 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
     
     # Flipped color palette: our methods (red), baselines (blue)
     method_names = ["Direct", "CoT", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Multi"]
-    colors = {
-        'Direct': '#E8F4FD',      # Very light blue (baseline)
-        'CoT': '#B8E0F5',         # Light blue (baseline)
-        'Sequence': '#7CC7EA',     # Medium blue (baseline)
-        'Multi-turn': '#4A90E2',   # Distinct blue (baseline)
-        'VS-Standard': '#FFCCCB',  # Light red (our method)
-        'VS-CoT': '#FF6B6B',       # Medium red (our method)
-        'VS-Multi': '#DC143C'      # Distinct red (our method)
-    }
-    
-    # Edge colors for better distinction
-    edge_colors = {
-        'Direct': '#4A90E2',
-        'CoT': '#4A90E2', 
-        'Sequence': '#4A90E2',
-        'Multi-turn': '#4A90E2',
-        'VS-Standard': '#FF6B6B',
-        'VS-CoT': '#FF6B6B',
-        'VS-Multi': '#FF6B6B'
-    }
     
     # Row 1: Elegant bar charts for each task (reordered: poem, story, joke)
     suffix_title = "($\\uparrow$)"
@@ -284,14 +245,14 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
         
         for i, (method, avg, std) in enumerate(zip(method_names, method_averages, method_stds)):
             bar = ax.bar(i, avg, yerr=std,
-                        color=colors[method], edgecolor=edge_colors[method], 
+                        color=COLORS[method], edgecolor=EDGE_COLORS[method], 
                         linewidth=1.2, width=0.7, alpha=0.9,
                         error_kw={'elinewidth': 1.5, 'capsize': 3, 'capthick': 1.5, 'alpha': 0.8})
             bars.append(bar)
         
         # Clean formatting
         ax.set_title(f'{task_name}', fontweight='bold', pad=15, fontsize=18)
-        ax.set_ylabel('Diversity Score' if col_idx == 0 else '', fontweight='bold', fontsize=12)
+        ax.set_ylabel('Diversity Score' if col_idx == 0 else '', fontweight='bold')
         ax.set_xticks(x_pos)
         
         # Add ** markers above error bars for statistically significant differences
@@ -307,11 +268,11 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
                 ax.text(i, y_pos, '**', ha='center', va='bottom', 
                        fontsize=16, fontweight='bold', color='red')
         
-        ax.set_xticklabels(method_labels, rotation=45, ha='right', fontsize=12)
+        ax.set_xticklabels(method_labels, rotation=45, ha='right')
         
         # Make tick labels (numbers) bigger
-        ax.tick_params(axis='both', which='major', labelsize=15)
-        ax.tick_params(axis='y', labelsize=18)
+        # ax.tick_params(axis='both', which='major', labelsize=15)
+        # ax.tick_params(axis='y', labelsize=18)
         
         # Subtle grid
         ax.grid(True, alpha=0.15, axis='y', linestyle='-', linewidth=0.5)
@@ -404,8 +365,8 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
                 linewidth = 1.5
             
             ax_scatter.scatter(data['diversity'], data['quality'], 
-                             color=colors[method], marker=marker, s=size, alpha=alpha,
-                             zorder=5, edgecolors=edge_colors[method], linewidth=linewidth)
+                            color=COLORS[method], marker=marker, s=size, alpha=alpha,
+                             zorder=5, edgecolors=EDGE_COLORS[method], linewidth=linewidth)
             
             # Add label below the marker with adjusted positioning for overlapping methods
             x_offset = 0
@@ -439,12 +400,12 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
         x_max = max(x_values) + 1.3
         ax_scatter.set_xlim(x_min, x_max)
     
-    ax_scatter.set_xlabel('Diversity Score', fontweight='bold', fontsize=12)
-    ax_scatter.set_ylabel('Quality Score', fontweight='bold', fontsize=12)
+    ax_scatter.set_xlabel('Diversity Score', fontweight='bold')
+    ax_scatter.set_ylabel('Quality Score', fontweight='bold')
     
     # Make tick labels (numbers) bigger for scatter plot
-    ax_scatter.tick_params(axis='both', which='major', labelsize=15)
-    ax_scatter.tick_params(axis='y', labelsize=18)
+    # ax_scatter.tick_params(axis='both', which='major', labelsize=15)
+    # ax_scatter.tick_params(axis='y', labelsize=18)
     ax_scatter.set_title('Diversity vs. Quality (Poem)', fontweight='bold', pad=15, fontsize=18)
     ax_scatter.grid(True, alpha=0.15, linestyle='-', linewidth=0.5)
     ax_scatter.set_axisbelow(True)
@@ -546,11 +507,11 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
     ax_burden_div.set_ylabel('$\Delta$ Diversity Against Direct', fontweight='bold', fontsize=12)
     ax_burden_div.set_title('Emergent Trend: $\Delta$ in Diversity', fontweight='bold', pad=15, fontsize=18)
     ax_burden_div.set_xticks(x_methods)
-    ax_burden_div.set_xticklabels(methods_subset, rotation=45, ha='right', fontsize=12)
+    ax_burden_div.set_xticklabels(methods_subset, rotation=45, ha='right')
     
     # Make tick labels (numbers) bigger for diversity plot
-    ax_burden_div.tick_params(axis='both', which='major', labelsize=15)
-    ax_burden_div.tick_params(axis='y', labelsize=18)
+    # ax_burden_div.tick_params(axis='both', which='major', labelsize=15)
+    # ax_burden_div.tick_params(axis='y', labelsize=18)
     ax_burden_div.grid(True, alpha=0.15, axis='y', linestyle='-', linewidth=0.5)
     ax_burden_div.set_axisbelow(True)
     
@@ -607,11 +568,11 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
     ax_burden_qual.set_ylabel('$\Delta$ Quality Against Direct', fontweight='bold', fontsize=12)
     ax_burden_qual.set_title('Cognitive Burden: $\Delta$ in Quality', fontweight='bold', pad=15, fontsize=18)
     ax_burden_qual.set_xticks(x_methods)
-    ax_burden_qual.set_xticklabels(methods_subset, rotation=45, ha='right', fontsize=12)
+    ax_burden_qual.set_xticklabels(methods_subset, rotation=45, ha='right')
     
     # Make tick labels (numbers) bigger for quality plot
-    ax_burden_qual.tick_params(axis='both', which='major', labelsize=15)
-    ax_burden_qual.tick_params(axis='y', labelsize=18)
+    # ax_burden_qual.tick_params(axis='both', which='major', labelsize=15)
+    # ax_burden_qual.tick_params(axis='y', labelsize=18)
     # Format y-axis ticks as integers
     ax_burden_qual.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{int(x)}'))
     ax_burden_qual.grid(True, alpha=0.15, axis='y', linestyle='-', linewidth=0.5)
@@ -635,7 +596,7 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
     # Legend 1: Methods legend above bar charts (spans all three bar charts)
     method_patches = []
     for method in method_names:
-        patch = Patch(color=colors[method], label=method)
+        patch = Patch(color=COLORS[method], label=method)
         method_patches.append(patch)
     
     legend1 = fig.legend(handles=method_patches,
