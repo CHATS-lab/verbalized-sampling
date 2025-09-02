@@ -25,8 +25,8 @@ COLORS = {
     'Sequence': '#7CC7EA',     # Medium blue (baseline)
     'Multi-turn': '#4A90E2',   # Distinct blue (baseline)
     'VS-Standard': '#FFCCCB',  # Light red (our method)
-    'VS-CoT': '#FF6B6B',       # Medium red (our method)
-    'VS-Multi': '#DC143C'      # Distinct red (our method)
+    'VS-CoT': '#FF9999',       # Medium red (our method)
+    'VS-Multi': '#FF6B6B'      # Distinct red (our method)
 }
 
 EDGE_COLORS = {
