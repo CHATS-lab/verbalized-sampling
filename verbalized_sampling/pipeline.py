@@ -38,7 +38,7 @@ class ExperimentConfig:
     use_vllm: bool = False
     all_possible: bool = False # If True, the request would enable all possible responses
     strict_json: bool = False # If True, the request would enable JSON mode
-    probability_definition: str = "default" # Type of probability definition to use
+    probability_definition: str = "implicit" # Type of probability definition to use
 
 @dataclass
 class EvaluationConfig:
@@ -65,7 +65,7 @@ class PipelineConfig:
     @staticmethod
     def get_available_probability_definitions() -> List[str]:
         """Get list of available probability definition types."""
-        return ["implicit", "explicit", "relative", "confidence", "perplexity", "nll"]
+        return ["implicit", "explicit", "relative", "percentage", "confidence", "perplexity", "nll"]
 
 class Pipeline:
     """End-to-end pipeline for generation, evaluation, and plotting."""
@@ -84,7 +84,7 @@ class Pipeline:
             raise ValueError("Create backup is only allowed in rerun mode.")
         
         # Validate probability definitions for all experiments
-        valid_probability_definitions = ["default", "implicit", "explicit", "relative", "confidence", "perplexity", "nll"]
+        valid_probability_definitions = ["implicit", "explicit", "relative", "percentage", "confidence", "perplexity", "nll"]
         for exp in self.config.experiments:
             if exp.probability_definition not in valid_probability_definitions:
                 raise ValueError(f"Invalid probability_definition '{exp.probability_definition}' for experiment '{exp.name}'. "
@@ -724,7 +724,7 @@ def run_pipeline_cli(
             num_prompts=exp_data.get('num_prompts', 5),
             random_seed=exp_data.get('random_seed', 42),
             use_vllm=exp_data.get('use_vllm', False),
-            probability_definition=exp_data.get('probability_definition', "default")
+            probability_definition=exp_data.get('probability_definition', "implicit")
         ))
     
     evaluation_config = EvaluationConfig(
@@ -766,7 +766,7 @@ def run_quick_comparison(
     num_samples_per_prompt: int = 2,
     rerun: bool = False,
     create_backup: bool = False,
-    probability_definition: str = "default",
+    probability_definition: str = "implicit",
     **kwargs
 ) -> Dict[str, Any]:
     """Quick comparison between different methods for a single task."""

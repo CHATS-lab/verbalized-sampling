@@ -12,6 +12,7 @@ def _get_probability_field_info(probability_definition: str) -> tuple[str, str]:
         "implicit": ("probability", "how likely this response would be (from 0.0 to 1.0)."),
         "explicit": ("probability", "the estimated probability from 0.0 to 1.0 of this response given the input prompt (relative to the full distribution)."),
         "relative": ("probability", "a probability value between 0.0 and 1.0, reflecting the relative likelihood of this response given the input."),
+        "percentage": ("probability", "the probability of this response relative to the full distribution, expressed as a percentage from 0% to 100%."),
         "confidence": ("confidence", "the normalized likelihood score between 0.0 and 1.0 that indicates how representative or typical this response is compared to the full distribution."),
         "perplexity": ("perplexity", "the exponentiated average negative log likelihood of the response tokens, where lower values indicate higher model certainty in predicting each token."),
         "nll": ("nll", "the sum of the negative log probabilities of each token in the response given the input prompt, with smaller values reflecting higher model confidence."),

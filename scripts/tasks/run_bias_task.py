@@ -28,8 +28,8 @@ def create_method_experiments(
             'name': name,
             'task': task,
             'model_name': model_name,
-            'num_responses': 20,
-            'num_prompts': 1,
+            'num_responses': 20, # 500
+            'num_prompts': 1, # 5
             'target_words': 0, 
             'temperature': temperature,
             'top_p': top_p,
@@ -84,7 +84,7 @@ if __name__ == "__main__":
     
     # Test multi-turn and JSON mode variations
     num_samples = 20
-    probability_definitions = "nll" # ["implicit", "explicit", "relative", "confidence", "perplexity", "nll"]
+    probability_definitions = "nll" # ["implicit", "explicit", "confidence", "perplexity", "nll"]
     methods = [
         # {
         #     'method': Method.DIRECT,

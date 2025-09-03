@@ -15,28 +15,29 @@ METHOD_MAP = {
     "multi_turn": ("Multi-turn", "multi_turn"),
     "vs_standard": ("VS-Standard", "structure_with_prob"),
     "vs_cot": ("VS-CoT", "chain_of_thought"),
-    "vs_combined": ("VS-Multi", "combined"),
+    "vs_multi": ("VS-Multi", "combined"),
 }
 
 
 # COLORS = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2']
 colors = {
-    'direct': '#FFE5E5',      # Very light red
-    'cot': '#FFCCCB',         # Light red  
-    'sequence': '#FF9999',     # Medium red
-    'multi_turn': '#FF6B6B',   # Distinct red (different from small models)
-    'vs_standard': '#E8F4FD',  # Very light blue
-    'vs_cot': '#B8E0F5',       # Light blue
-    'vs_combined': '#7CC7EA'      # Medium blue
+    'direct': '#E8F4FD',   # Very light blue
+    'cot':      '#B8E0F5',   # Light blue
+    'multi_turn': '#7CC7EA',   # Medium blue
+    'sequence':      '#D6E4FF',   # Absolute blue (strong blue, e.g. #1976D2 or #1565C0, but here a lighter blue for "absolute")
+    'vs_standard':         '#FFCCCB',   # Light red
+    'vs_cot':    '#FF9999',   # Medium red
+    'vs_multi':  '#FF6B6B',   # Absolute red
 }
+# Use different edge colors for baselines and VS methods
 edge_colors = {
-    'direct': '#FF6B6B',
-    'cot': '#FF6B6B', 
-    'sequence': '#FF6B6B',
-    'multi_turn': '#FF6B6B',
-    'vs_standard': '#4A90E2',
-    'vs_cot': '#4A90E2',
-    'vs_combined': '#4A90E2'
+    'direct': '#4A90E2',
+    'cot': '#4A90E2',
+    'sequence': '#4A90E2',
+    'multi_turn': '#4A90E2',
+    'vs_standard': '#FF6B6B',
+    'vs_cot': '#FF6B6B',
+    'vs_multi': '#FF6B6B'
 }
 
 # def bar_plot_all_methods_with_ttest_box(metrics_values, all_model_names, plot_metrics, metric_labels, baseline_methods, vs_methods, all_methods):
@@ -340,9 +341,10 @@ def bar_plot_all_methods(metrics_values, all_model_names, plot_metrics, metric_l
     if n_metrics == 1:
         axes = [axes]
     plt.style.use('default')  # Start with clean slate
+    plt.style.use('default')  # Start with clean slate
     plt.rcParams.update({
-        'font.family': 'sans-serif', # [font_name],
-        # 'font.sans-serif': ['Arial', 'DejaVu Sans', 'Liberation Sans'],
+        'font.family': 'sans-serif',
+        'font.sans-serif': ['Arial', 'DejaVu Sans', 'Liberation Sans'],
         'font.size': 11,
         'axes.labelsize': 12,
         'axes.titlesize': 13,
@@ -401,10 +403,10 @@ def bar_plot_all_methods(metrics_values, all_model_names, plot_metrics, metric_l
                 linewidth=1,
                 alpha=0.85
             )
-            # If method is in vs_methods, add hatch to all bars in this group
-            if method in vs_methods:
-                for b in bar:
-                    b.set_hatch('///')
+            # # If method is in vs_methods, add hatch to all bars in this group
+            # if method in vs_methods:
+            #     for b in bar:
+            #         b.set_hatch('///')
             bars.append(bar)
             
             # Store legend handles and labels only once (from first subplot)
@@ -418,37 +420,293 @@ def bar_plot_all_methods(metrics_values, all_model_names, plot_metrics, metric_l
                 height = bar.get_height()
                 if not np.isnan(height):
                     ax.text(
-                        bar.get_x() + bar.get_width()/2., height + 0.005,
+                        bar.get_x() + bar.get_width()/2., height + 0.01,
                         f'{height:.2f}',
-                        ha='center', va='bottom', fontsize=11, fontweight='bold'
+                        ha='center', va='bottom', fontsize=12, fontweight='bold'
                     )
 
         # Set x-ticks and labels
         ax.set_xticks(x)
-        ax.set_xticklabels(sub_groups, fontsize=14, fontweight='bold')
-        ax.set_xlabel('', fontsize=16, fontweight='bold')
-        ax.set_ylabel('', fontsize=16, fontweight='bold')
-        ax.set_title(f'{metric_labels[metric]}', fontsize=18, fontweight='bold', pad=20)
+        ax.set_xticklabels(sub_groups, fontsize=32)
+        # ax.set_xlabel('', fontsize=24, fontweight='bold')
+        # ax.set_ylabel('', fontsize=24, fontweight='bold')
+        ax.set_title(f'{metric_labels[metric]}', fontsize=36, fontweight='bold', pad=20)
         ax.grid(True, alpha=0.3, axis='y')
-        ax.tick_params(axis='y', labelsize=14)
-        ax.tick_params(axis='x', labelsize=12)
+        ax.tick_params(axis='y', labelsize=24)
+        ax.tick_params(axis='x', labelsize=24)
+        ax.set_ylim(0, max(means[:, j]) + max(stds[:, j]) + 0.15)
         plt.setp(ax.get_xticklabels(), rotation=0)
 
-    # Add shared legend at the bottom
+    # Add shared legend at the top
     fig.legend(
         [h[0] for h in legend_handles],  # bar is a BarContainer, so h[0] is the patch
         legend_labels,
         loc='upper center',
-        bbox_to_anchor=(0.5, 0.07),
+        bbox_to_anchor=(0.5, 1.05),
         ncol=min(n_methods, 6),
-        fontsize=13,
+        fontsize=28,
         frameon=False
     )
 
     plt.tight_layout(rect=[0, 0.05, 1, 0.95])
-    plt.savefig("qualitative_tasks/synthetic_data_metrics_grouped_barplot.pdf", bbox_inches='tight')
+    plt.savefig("latex/qualitative_tasks/synthetic_data_metrics_grouped_barplot.pdf", bbox_inches='tight')
     plt.close(fig)
     print(f"✓ Saved combined grouped bar plot to synthetic_data_metrics_grouped_barplot.pdf.")
+
+
+def draw_combined_metrics_plot(
+    metrics_values, 
+    all_model_names, 
+    cosine_similarity_dict=None, 
+    save_path=None
+):
+    """
+    Draws a 2x2 grid of subplots:
+    (a) IR Rate (incorrect answer rate)
+    (b) Distinct-N 
+    (c) Semantic Diversity
+    (d) Cosine Similarity histogram + KDE for direct, sequence, vs-standard
+    Each subplot is labeled (a), (b), (c), (d).
+    """
+    import matplotlib.pyplot as plt
+    import numpy as np
+    import seaborn as sns
+
+    # Methods and labels
+    methods = ["direct", "sequence", "multi_turn", "vs_standard", "vs_cot", "vs_multi"]
+    method_to_labels = {
+        "direct": "Direct",
+        "sequence": "Sequence",
+        "multi_turn": "Multi-turn",
+        "vs_standard": "VS-Standard",
+        "vs_cot": "VS-CoT",
+        "vs_multi": "VS-Multi"
+    }
+    
+    # Colors aligned with method types
+    colors = {
+        'direct': '#E8F4FD',      # Very light blue (baseline)
+        'cot': '#B8E0F5',         # Light blue (baseline)
+        'sequence': '#7CC7EA',    # Medium blue (baseline)
+        'multi_turn': '#4A90E2',  # Distinct blue (baseline)
+        'vs_standard': '#FFCCCB', # light red
+        'vs_cot': '#FF9999',      # medium red
+        'vs_multi': '#FF6B6B'     # distinct red
+    }
+    edge_colors = {
+        'direct': '#4A90E2',
+        'cot': '#4A90E2', 
+        'sequence': '#4A90E2',
+        'multi_turn': '#4A90E2',
+        'vs_standard': '#FF6B6B',
+        'vs_cot': '#FF6B6B',
+        'vs_multi': '#FF6B6B'
+    }
+
+    # Prepare data for each metric
+    def get_means(metric_dict, metric_key):
+        means = []
+        for m in methods:
+            if m in metric_dict:
+                # Calculate mean across all models for this method
+                all_values = []
+                for model_name in all_model_names:
+                    if model_name in metric_dict[m]:
+                        # Handle both list and single value cases
+                        metric_data = metric_dict[m][model_name].get(metric_key, [])
+                        if isinstance(metric_data, list):
+                            all_values.extend(metric_data)
+                        else:
+                            all_values.append(metric_data)
+                means.append(np.mean(all_values) if all_values else 0)
+            else:
+                means.append(0)
+        return means
+
+    def get_means_std(metric_dict, metric_key):
+        means = []
+        stds = []
+        for m in methods:
+            if m in metric_dict:
+                # Calculate mean and std across all models for this method
+                all_values = []
+                for model_name in all_model_names:
+                    if model_name in metric_dict[m]:
+                        # Handle both list and single value cases
+                        metric_data = metric_dict[m][model_name].get(metric_key, [])
+                        if isinstance(metric_data, list):
+                            all_values.extend(metric_data)
+                        else:
+                            all_values.append(metric_data)
+                if all_values:
+                    means.append(np.mean(all_values))
+                    stds.append(np.std(all_values))
+                else:
+                    means.append(0)
+                    stds.append(0)
+            else:
+                means.append(0)
+                stds.append(0)
+        return means, stds
+
+    # Get data for each metric
+    ir_means = get_means(metrics_values, 'avg_ir_rate')
+    distinct_means, distinct_stds = get_means_std(metrics_values, 'avg_distinct_n')
+    diversity_means, diversity_stds = get_means_std(metrics_values, 'avg_diversity')
+
+    # For cosine similarity, only plot for direct, sequence, vs_standard
+    cos_methods = ["direct", "sequence", "vs_standard"]
+    cos_labels = [method_to_labels[m] for m in cos_methods]
+    if cosine_similarity_dict is not None:
+        cos_data = [cosine_similarity_dict.get(m, []) for m in cos_methods]
+    else:
+        cos_data = [[0], [0], [0]]
+
+    # Plotting
+    plt.style.use('default')  # Start with clean slate
+    plt.rcParams.update({
+        'font.family': 'sans-serif',
+        'font.sans-serif': ['Arial', 'DejaVu Sans', 'Liberation Sans'],
+        'font.size': 24,
+        'axes.labelsize': 28,
+        'axes.titlesize': 32,
+        'xtick.labelsize': 28,
+        'ytick.labelsize': 28,
+        'legend.fontsize': 28,
+        'axes.linewidth': 0.8,
+        'axes.edgecolor': '#666666',
+    })
+    
+    fig, axes = plt.subplots(2, 2, figsize=(20, 15))
+    plt.subplots_adjust(wspace=0.3, hspace=0.2)
+
+    # Place the legend at the upper center of the whole figure
+    handles = [plt.Rectangle((0,0),1,1, facecolor=colors[m], edgecolor=edge_colors[m]) for m in methods]
+    labels = [method_to_labels[m] for m in methods]
+    fig.legend(
+        handles, labels,
+        loc='upper center', bbox_to_anchor=(0.5, 1.05),
+        fontsize=28, frameon=False, ncol=len(methods)
+    )
+
+    # (a) IR Rate (Incorrect Answer Rate)
+    ax = axes[0, 0]
+    bars = ax.bar(
+        range(len(methods)), ir_means, 
+        color=[colors[m] for m in methods], 
+        edgecolor=[edge_colors[m] for m in methods], 
+        alpha=0.9
+    )
+    ax.set_ylabel('Rate', fontweight='bold')
+    ax.set_title('IR Rate ($\\uparrow$)', fontweight='bold', pad=20)
+    ax.set_xticks(range(len(methods)))
+    ax.set_xticklabels([method_to_labels[m] for m in methods], rotation=30, ha='right')
+    ax.tick_params(axis='y', labelsize=24)
+    ax.set_ylim(0, 1)
+    ax.grid(axis='y', linestyle='--', alpha=0.3)
+    for bar in bars:
+        height = bar.get_height()
+        ax.text(bar.get_x() + bar.get_width()/2., height + 0.01, f'{height:.2f}', 
+                ha='center', va='bottom', fontweight='bold')
+    ax.text(-0.1, 1.18, "a", transform=ax.transAxes, fontsize=44, fontweight='bold', va='top')
+
+    # (b) Distinct-N
+    ax = axes[0, 1]
+    bars = ax.bar(
+        range(len(methods)), distinct_means,
+        color=[colors[m] for m in methods],
+        edgecolor=[edge_colors[m] for m in methods],
+        alpha=0.9
+    )
+    ax.set_ylabel('Distinct-N', fontweight='bold')
+    ax.set_title('Distinct-N ($\\uparrow$)', fontweight='bold', pad=20)
+    ax.set_xticks(range(len(methods)))
+    ax.set_xticklabels([method_to_labels[m] for m in methods], rotation=30, ha='right')
+    ax.tick_params(axis='y', labelsize=24)
+    ax.grid(axis='y', linestyle='--', alpha=0.3)
+    ax.set_ylim(0, 1)
+    for bar, mean in zip(bars, distinct_means):
+        ax.text(
+            bar.get_x() + bar.get_width()/2., 
+            mean + 0.01, 
+            f'{mean:.2f}',
+            ha='center', va='bottom', fontweight='bold'
+        )
+    ax.text(-0.1, 1.18, "b", transform=ax.transAxes, fontsize=44, fontweight='bold', va='top')
+
+    # (c) Semantic Diversity
+    ax = axes[1, 0]
+    bars = ax.bar(
+        range(len(methods)), diversity_means,
+        color=[colors[m] for m in methods],
+        edgecolor=[edge_colors[m] for m in methods],
+        alpha=0.9
+    )
+    ax.set_ylabel('Semantic Diversity', fontweight='bold')
+    ax.set_title('Semantic Diversity ($\\uparrow$)', fontweight='bold', pad=20)
+    ax.set_xticks(range(len(methods)))
+    ax.set_xticklabels([method_to_labels[m] for m in methods], rotation=30, ha='right')
+    ax.tick_params(axis='y', labelsize=24)
+    ax.grid(axis='y', linestyle='--', alpha=0.3)
+    ax.set_ylim(0, 0.4)
+    for bar, mean in zip(bars, diversity_means):
+        ax.text(
+            bar.get_x() + bar.get_width()/2., 
+            mean + 0.001, 
+            f'{mean:.2f}',
+            ha='center', va='bottom', fontweight='bold'
+        )
+    ax.text(-0.1, 1.18, "c", transform=ax.transAxes, fontsize=44, fontweight='bold', va='top')
+
+    # (d) Cosine Similarity (histogram + KDE)
+    ax = axes[1, 1]
+    idxs = [cos_methods.index(m) for m in ['direct', 'sequence', 'vs_standard']]
+    data = [cos_data[i] for i in idxs]
+    labels = [cos_labels[i] for i in idxs]
+    bar_colors = ['#D5D1D1', '#7FBDDA', '#FF6B6B']  # Gray, Blue, Red
+    kde_colors = ['gray', 'royalblue', 'deeppink']
+    
+    ax.hist(data, bins=50, alpha=0.5, color=bar_colors, label=labels, density=True, histtype='stepfilled', linewidth=2)
+    for d, c in zip(data, kde_colors):
+        try: 
+            sns.kdeplot(d, color=c, lw=2, ax=ax)
+        except: 
+            pass
+    
+    ax.set_xlabel('Cosine Similarity', fontweight='bold')
+    ax.set_ylabel('Density', fontweight='bold')
+    ax.set_title('Cosine Similarity (Pairwise) ($\\downarrow$)', fontweight='bold', pad=20)
+    ax.tick_params(axis='y', labelsize=24)
+    ax.tick_params(axis='x', labelsize=24)
+    ax.set_xticks(np.linspace(0, 1, 6))
+    ax.set_xlim(0.1, 1)
+    ax.grid(axis='y', linestyle='--', alpha=0.3)
+    ax.legend(frameon=False, reverse=True, loc='upper right', fontsize=24, bbox_to_anchor=(1.02, 1.02))
+    ax.text(-0.1, 1.18, "d", transform=ax.transAxes, fontsize=44, fontweight='bold', va='top')
+
+    plt.tight_layout()
+    if save_path is not None:
+        plt.savefig(save_path, bbox_inches='tight')
+    else:
+        plt.savefig("latex/qualitative_tasks/synthetic_data_combined_metrics.pdf", bbox_inches='tight')
+    plt.close()
+    print(f"✓ Saved combined metrics plot to synthetic_data_combined_metrics.pdf")
+
+
+def debug_print_data_structure(metrics_values, all_model_names):
+    """Debug function to print the data structure"""
+    print("\n=== Debug: Data Structure ===")
+    for method in ["direct", "sequence", "vs_standard"]:
+        if method in metrics_values:
+            print(f"\nMethod: {method}")
+            for model_name in all_model_names:
+                if model_name in metrics_values[method]:
+                    print(f"  Model: {model_name}")
+                    for metric in ["avg_ir_rate", "avg_distinct_n", "avg_diversity"]:
+                        data = metrics_values[method][model_name].get(metric, "NOT_FOUND")
+                        print(f"    {metric}: {data} (type: {type(data)})")
+        else:
+            print(f"\nMethod: {method} - NOT_FOUND")
 
 
 def read_metrics_values(folder, task_name, all_model_names, all_metrics):
@@ -546,7 +804,7 @@ def main():
         "multi_turn",
         "vs_standard",
         "vs_cot",
-        "vs_combined"
+        "vs_multi"
     ]
 
     # Collect all data
@@ -560,11 +818,37 @@ def main():
     }
     # print(metrics_values)
         
-
+    # Load cosine similarity data if available
+    cosine_similarity_dict = None
+    with open("latex/qualitative_tasks/synthetic_data_gsm8k_similarity.json", "r") as f:
+        similarity_data = json.load(f)
+    # Map the similarity data to method names
+    cosine_similarity_dict = {}
+    if "sim_direct" in similarity_data:
+        cosine_similarity_dict["direct"] = similarity_data["sim_direct"]
+    if "sim_sequence" in similarity_data:
+        cosine_similarity_dict["sequence"] = similarity_data["sim_sequence"]
+    if "sim_vs" in similarity_data:
+        cosine_similarity_dict["vs_standard"] = similarity_data["sim_vs"]
+        
+    print("✓ Loaded cosine similarity data")
+    print(f"Available methods: {list(cosine_similarity_dict.keys())}")
+        
     # baseline_methods = ["direct", "direct_cot", "sequence", "multi_turn"]
-    vs_methods = ["vs_standard", "vs_cot", "vs_combined"]
+    vs_methods = ["vs_standard", "vs_cot", "vs_multi"]
+    
+    # Create the combined metrics plot
+    draw_combined_metrics_plot(
+        metrics_values["GSM8K"],  # Use GSM8K data for the combined plot
+        all_model_names,
+        cosine_similarity_dict,
+        save_path="latex/qualitative_tasks/synthetic_data_combined_metrics.pdf"
+    )
+    
     # # bar_plot_all_methods_with_ttest_box(metrics_values, all_model_names, plot_metrics, metric_labels, baseline_methods, vs_methods, all_methods)
-    bar_plot_all_methods(metrics_values, all_model_names, plot_metrics, metric_labels, all_methods, vs_methods)
+    # bar_plot_all_methods(metrics_values, all_model_names, plot_metrics, metric_labels, all_methods, vs_methods)
+
+    # debug_print_data_structure(metrics_values, all_model_names)
 
 
 if __name__ == "__main__":
