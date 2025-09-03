@@ -163,7 +163,7 @@ def create_line_chart_plot(all_data):
         'font.family': 'sans-serif',
         'font.sans-serif': ['Arial', 'DejaVu Sans', 'Liberation Sans'],
         'font.size': 16,
-        'axes.titlesize': 22,
+        'axes.titlesize': 24,
         'xtick.labelsize': 20,
         'ytick.labelsize': 18,
         'axes.labelsize': 22,  # Set y label size to 20 (applies to both x and y labels)
