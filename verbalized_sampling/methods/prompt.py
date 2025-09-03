@@ -71,7 +71,8 @@ class BasePromptTemplate:
             # "default": "- 'probability': how likely this response would be (from 0.0 to 1.0).",
             "implicit": "- 'probability': how likely this response would be (from 0.0 to 1.0).",
             "explicit": "- 'probability': the estimated probability from 0.0 to 1.0 of this response given the input prompt (relative to the full distribution).",
-            "relative": "- 'probability': a probability value between 0.0 and 1.0, reflecting the relative likelihood of this response given the input.",
+            "relative": "- 'probability': the probability between 0.0 and 1.0, reflecting the relative likelihood of this response given the input.",
+            "percentage": "- 'probability': the probability of this response relative to the full distribution, expressed as a percentage from 0% to 100%.",
             "confidence": "- 'confidence': the normalized likelihood score between 0.0 and 1.0 that indicates how representative or typical this response is compared to the full distribution.",
             "perplexity": "- 'perplexity': the exponentiated average negative log likelihood of the response tokens, where lower values indicate higher model certainty in predicting each token.",
             "nll": "- 'nll': the sum of the negative log probabilities of each token in the response given the input prompt, with smaller values reflecting higher model confidence.",
@@ -110,7 +111,7 @@ Return the responses in JSON format with the key: "responses" (list of dicts). E
 - 'text': the response string only (no explanation or extra text).
 {prob_def}
 
-Return ONLY the JSON object, with no additional explanations or text.
+Randomly sample the responses from the full distribution. Return ONLY the JSON object, with no additional explanations or text.
 """,
             "vs_cot": f"""
 First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
@@ -118,7 +119,14 @@ Then, return the output in JSON format with the key "responses" (list of dicts).
 - 'text': the response string only (no explanation or extra text).
 {prob_def}
 
-Return ONLY the JSON object, with no additional explanations or text.
+Randomly sample the responses from the full distribution. Return ONLY the JSON object, with no additional explanations or text.
+""",
+            "vs_multi": f"""
+Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
+- 'text': the response string only (no explanation or extra text).
+{prob_def}
+
+Randomly sample the responses from the full distribution. Return ONLY the JSON object, with no additional explanations or text.
 """
         }
         return format_prompts.get(method, "")
@@ -184,13 +192,12 @@ Generate {num_samplings} responses to the input prompt using chain-of-thought re
 Generate {num_samplings} responses to the input prompt.{word_constraint}
 
 First, sample {num_samples_per_prompt} responses. 
-Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
-- 'text': the response string only (no explanations or extra text).
-- 'probability': the estimated probability from 0.0 to 1.0 of this response given the input prompt (relative to the full answer space).
-
-Please sample at random from the full distribution. Give ONLY the JSON object, no explanations or extra text.
 """
-    
+# Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
+# - 'text': the response string only (no explanations or extra text).
+# - 'probability': the estimated probability from 0.0 to 1.0 of this response given the input prompt (relative to the full answer space).
+# Please sample at random from the full distribution. Give ONLY the JSON object, no explanations or extra text.
+
     def get_continue_prompt(self, num_samplings: int = 5, target_words: int = 200, **kwargs) -> str:
         if num_samplings == 1:
             return f"""
@@ -245,11 +252,6 @@ Generate {num_samplings} responses to the input prompt using chain-of-thought re
 Generate a total of {num_samplings} responses to the input prompt.
 
 First, sample {num_samples_per_prompt} responses.
-Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
-- 'text': the response string only (no explanation or extra text).
-- 'probability': the estimated probability from 0.0 to 1.0 of this response given the input prompt (relative to the full answer space).
-
-Randomly sample the responses from the full distribution. Return ONLY the JSON object, with no additional explanations or text.
 """
 # - 'text': the response string only (no explanation or extra text).
 # - 'probability': the estimated probability from 0.0 to 1.0 of this response given the input prompt (relative to the full distribution).
@@ -517,7 +519,7 @@ class PromptTemplateFactory:
             "base_cot": template.get_base_cot_prompt, # cot
             "standard": template.get_standard_prompt, # vs standard
             "vs_cot": template.get_vs_cot_prompt, # vs chain_of_thought
-            "vs_multi_turn": template.get_vs_multi_turn_prompt, # vs multi_turn
+            "vs_multi": template.get_vs_multi_turn_prompt, # vs multi_turn
             "continue": template.get_continue_prompt,
             "standard_all_possible": getattr(template, 'get_standard_all_possible_prompt', template.get_standard_prompt),
         }

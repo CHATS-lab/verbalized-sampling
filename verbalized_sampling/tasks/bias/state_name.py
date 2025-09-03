@@ -1,5 +1,5 @@
 from ..base import BaseTask
-from typing import Any, List, Dict
+from typing import Any, List, Dict, Union
 import random
 import os
 from verbalized_sampling.methods import Method

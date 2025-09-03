@@ -67,7 +67,7 @@ class PromptFactory:
         Method.DIRECT_COT: "direct_cot",
         Method.STRUCTURE_WITH_PROB: "vs_standard",
         Method.CHAIN_OF_THOUGHT: "vs_cot",
-        Method.COMBINED: "vs_multi_turn",
+        Method.COMBINED: "vs_multi",
     }
     
     # Available probability definition types
@@ -76,6 +76,7 @@ class PromptFactory:
         "implicit": "Simple likelihood definition",
         "explicit": "Explicit probability definition", 
         "relative": "Relative likelihood definition",
+        "percentage": "Percentage likelihood definition",
         "confidence": "Confidence score definition",
         "perplexity": "Perplexity-based definition",
         "nll": "Negative log likelihood definition",
@@ -127,7 +128,7 @@ class PromptFactory:
         elif method == Method.CHAIN_OF_THOUGHT:
             return "vs_cot"
         elif method == Method.COMBINED:
-            return "vs_multi_turn"
+            return "vs_multi"
         elif all_possible:
             return "standard_all_possible"
         else: # Method.SEQUENCE, Method.STRUCTURE
@@ -187,7 +188,7 @@ class PromptFactory:
             )
             system_prompt = f"{system_prompt}{format_prompt}"
         
-        print("Probability definition: ", probability_definition)
+        
         print("System prompt: ", system_prompt)
         print("User prompt: ", prompt)
         
