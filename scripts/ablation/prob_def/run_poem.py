@@ -90,10 +90,12 @@ if __name__ == "__main__":
         "implicit",
         "explicit",
         "relative",
+        "percentage",
         "confidence",
         "perplexity",
         "nll",
     ]
+
     methods = [
         {
             'method': Method.DIRECT,
@@ -144,6 +146,13 @@ if __name__ == "__main__":
             'num_samples': 5,
             'probability_definition': prob_def,
         })
+        methods.append({
+            'method': Method.COMBINED,
+            'strict_json': True,
+            'num_samples': 5,
+            'num_samples_per_prompt': 2,
+            'probability_definition': prob_def,
+        })
 
 
     # models = [args.model]
@@ -156,7 +165,7 @@ if __name__ == "__main__":
         # "meta-llama/Llama-3.1-70B",
         # "anthropic/claude-4-sonnet",
         # "google/gemini-2.5-pro",
-        # "anthropic/claude-3.7-sonnet",
+        "anthropic/claude-3.7-sonnet",
         # "openai/o3",
         # "deepseek/deepseek-r1-0528",
         # "openai/o3",
