@@ -29,13 +29,12 @@ def create_method_experiments(
             'task': task,
             'model_name': model_name,
             'num_responses': 20, # 500
-            'num_prompts': 1, # 5
+            'num_prompts': 145, # 5
             'target_words': 0, 
             'temperature': temperature,
             'top_p': top_p,
             'random_seed': 42,
             'use_vllm': False,
-            'probability_definition': "default",
             **method_config  # method_config overrides base values
         }
         
@@ -71,26 +70,26 @@ def run_method_tests(
     config = PipelineConfig(
         experiments=experiments,
         evaluation=EvaluationConfig(metrics=metrics),
-        output_base_dir=Path(f"{output_dir}/{model_basename}_{exp.probability_definition}"),
+        output_base_dir=Path(f"{output_dir}/{model_basename}"),
         skip_existing=True,
     )
     
     pipeline = Pipeline(config)
     pipeline.run_complete_pipeline()
-    print(f"✅ Done! Check {output_dir}/{model_basename}_{exp.probability_definition}/pipeline_report.html")
+    print(f"✅ Done! Check {output_dir}/{model_basename}/pipeline_report.html")
 
 if __name__ == "__main__":
     # Example usage for testing different method variations
     
     # Test multi-turn and JSON mode variations
     num_samples = 20
-    probability_definitions = "nll" # ["implicit", "explicit", "confidence", "perplexity", "nll"]
+    probability_definitions = "percentage" # ["implicit", "explicit", "percentage", "confidence", "perplexity", "nll"]
     methods = [
-        # {
-        #     'method': Method.DIRECT,
-        #     'strict_json': False,
-        #     'num_samples': 1,
-        # },
+        {
+            'method': Method.DIRECT,
+            'strict_json': False,
+            'num_samples': 1,
+        },
         # {
         #     'method': Method.DIRECT_COT,
         #     'strict_json': True,
@@ -151,92 +150,7 @@ if __name__ == "__main__":
             metrics=["response_count"],
             temperature=0.7,
             top_p=1.0,
-            output_dir="ablation_bias_task",
+            output_dir="bias_dataset_test",
             num_workers=16 if any(x in model_basename for x in ["claude", "gemini"]) else 32,
         )
     
-    # run_method_tests(
-    #     task=Task.STATE_NAME,
-    #     model_name="gpt-4.1-mini",
-    #     methods=methods,
-    #     metrics=["response_count"],
-    #     temperature=0.7,
-    #     top_p=1.0,    
-    #     output_dir="method_results_bias",
-    # )
-
-
-    # run_method_tests(
-    #     task=Task.STATE_NAME,
-    #     model_name="gpt-4.1",
-    #     methods=methods,
-    #     metrics=["response_count"],
-    #     temperature=0.7,
-    #     top_p=1.0,
-    #     output_dir="method_results_bias",
-    # )
-
-
-    # run_method_tests(
-    #     task=Task.STATE_NAME,
-    #     model_name="google/gemini-2.5-flash", 
-    #     methods=methods,
-    #     metrics=["response_count"],
-    #     temperature=0.7,
-    #     top_p=1.0,
-    #     output_dir="method_results_bias",
-    # )
-
-
-    # run_method_tests(
-    #     task=Task.STATE_NAME,
-    #     model_name="google/gemini-2.5-pro", 
-    #     methods=methods,
-    #     metrics=["response_count"],
-    #     temperature=0.7,
-    #     top_p=1.0,
-    #     output_dir="method_results_bias",
-    # )
-
-    
-    # run_method_tests(
-    #     task=Task.STATE_NAME,
-    #     model_name="anthropic/claude-4-sonnet", 
-    #     methods=methods,
-    #     metrics=["response_count"],
-    #     temperature=0.7,
-    #     top_p=1.0,
-    #     output_dir="method_results_bias",
-    # )
-
-    # run_method_tests(
-    #     task=Task.STATE_NAME,
-    #     model_name="o3", 
-    #     methods=methods,
-    #     metrics=["response_count"],
-    #     temperature=0.7,
-    #     top_p=1.0,
-    #     output_dir="method_results_bias",
-    # )
-
-    # run_method_tests(
-    #     task=Task.STATE_NAME,
-    #     model_name="llama-3.1-70b-instruct", 
-    #     methods=methods,
-    #     metrics=["response_count"],
-    #     temperature=0.7,
-    #     top_p=1.0,
-    #     output_dir="method_results_bias",
-    # )
-
-    # run_method_tests(
-    #     task=Task.STATE_NAME,
-    #     model_name="deepseek-r1", 
-    #     methods=methods,
-    #     metrics=["response_count"],
-    #     temperature=0.7,
-    #     top_p=1.0,
-    #     output_dir="method_results_bias",
-    # )
-
-

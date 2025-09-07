@@ -17,7 +17,7 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 500,
+        'num_responses': 1000,
         'num_prompts': 1, # current total: 300; total: 4326
         'target_words': 0, 
         'temperature': temperature,
@@ -102,17 +102,20 @@ if __name__ == "__main__":
             'method': Method.STRUCTURE_WITH_PROB,
             'strict_json': True,
             'num_samples': num_samples,
+            'probability_definition': "confidence"
         },
         {
             'method': Method.CHAIN_OF_THOUGHT,
             'strict_json': True,
             'num_samples': num_samples,
+            'probability_definition': "confidence"
         },
         {
             'method': Method.COMBINED,
             'strict_json': True,
             'num_samples': num_samples,
             'num_samples_per_prompt': 3,
+            'probability_definition': "confidence"
         }
     ]
 
@@ -136,7 +139,7 @@ if __name__ == "__main__":
             metrics=["diversity", "ngram", "synthetic_data_quality"],
             temperature=0.7,
             top_p=1.0,
-            output_dir="method_results_gsm8k",
+            output_dir="method_results_gsm8k_1000",
             num_workers=16 if any(x in model_basename for x in ["claude", "gemini"]) else 32,
         )
 

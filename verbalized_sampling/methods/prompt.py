@@ -357,17 +357,16 @@ Generate {num_samplings} data instances based on the input prompt using chain-of
 Generate {num_samplings} data instances based on the input prompt. Output only the data, with no explanations or extra text.
 
 First, sample {num_samples_per_prompt} data instances.
-Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
-- 'text': the response string only (no explanation or extra text).
-- 'probability': the estimated probability from 0.0 to 1.0 of this response given the input prompt (relative to the full answer space).
-
-Please sample at random from the full distribution. Give ONLY the JSON object, no explanations or extra text.
 """
-    
+# Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
+# - 'text': the response string only (no explanation or extra text).
+# - 'probability': the estimated probability from 0.0 to 1.0 of this response given the input prompt (relative to the full answer space).
+# Please sample at random from the full distribution. Give ONLY the JSON object, no explanations or extra text. 
+ 
     def get_continue_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         if num_samplings == 1:
             return f"""
-Generate one alternative data instance based on the original input prompt.
+Generate one more data instance based on the original input prompt.
 """
         else:
             return f"""
