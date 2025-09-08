@@ -18,7 +18,7 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 30,
+        'num_responses': 20,
         'num_prompts': 20, # current total: 300; total: 4326
         'target_words': 200, 
         'temperature': temperature,
@@ -88,6 +88,7 @@ if __name__ == "__main__":
     args = args.parse_args()
 
     probability_tunings = [
+        -1,
         0.9,
         0.5,
         0.1,

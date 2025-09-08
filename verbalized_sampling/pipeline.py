@@ -39,6 +39,7 @@ class ExperimentConfig:
     all_possible: bool = False # If True, the request would enable all possible responses
     strict_json: bool = False # If True, the request would enable JSON mode
     probability_definition: str = "implicit" # Type of probability definition to use
+    probability_tuning: float = -1 # Probability tuning for the probability definition
 
 @dataclass
 class EvaluationConfig:
@@ -222,6 +223,7 @@ class Pipeline:
                     num_samples=num_samples,
                     target_words=exp_config.target_words,
                     probability_definition=exp_config.probability_definition,  # Pass to task for prompt generation
+                    probability_tuning=exp_config.probability_tuning,
                     **task_kwargs
                 )
 
