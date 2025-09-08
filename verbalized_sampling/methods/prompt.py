@@ -58,6 +58,7 @@ class BasePromptTemplate:
         method: str,
         num_samplings: int,
         probability_definition: str = None,
+        probability_tuning: float = -1,
     ) -> str:
         """Get the format prompt for a specific method.
 
@@ -65,6 +66,7 @@ class BasePromptTemplate:
             method: The output format method.
             num_samplings: Number of responses to generate (if relevant).
             probability_definition: (Optional) Custom definition for the 'probability' field.
+            probability_tuning: (Optional) Custom tuning for the 'probability' field.
         """
         # Default probability definitions
         probability_definitions = {
@@ -77,9 +79,14 @@ class BasePromptTemplate:
             "perplexity": "- 'perplexity': the exponentiated average negative log likelihood of the response tokens, where lower values indicate higher model certainty in predicting each token.",
             "nll": "- 'nll': the sum of the negative log probabilities of each token in the response given the input prompt, with smaller values reflecting higher model confidence.",
         }
-
+            
         # Use provided probability_definition or default
         prob_def = probability_definitions[probability_definition]
+
+        if probability_tuning > 0:
+            distribution_def = f"Please sample at random from the tails of the distribution: probabilities should be below {probability_tuning}."
+        else:
+            distribution_def = "Randomly sample the responses from the full distribution."
 
         format_prompts = {
             "direct_cot": """
@@ -111,7 +118,7 @@ Return the responses in JSON format with the key: "responses" (list of dicts). E
 - 'text': the response string only (no explanation or extra text).
 {prob_def}
 
-Randomly sample the responses from the full distribution. Return ONLY the JSON object, with no additional explanations or text.
+{distribution_def} Return ONLY the JSON object, with no additional explanations or text.
 """,
             "vs_cot": f"""
 First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
@@ -119,14 +126,14 @@ Then, return the output in JSON format with the key "responses" (list of dicts).
 - 'text': the response string only (no explanation or extra text).
 {prob_def}
 
-Randomly sample the responses from the full distribution. Return ONLY the JSON object, with no additional explanations or text.
+{distribution_def} Return ONLY the JSON object, with no additional explanations or text.
 """,
             "vs_multi": f"""
 Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
 - 'text': the response string only (no explanation or extra text).
 {prob_def}
 
-Randomly sample the responses from the full distribution. Return ONLY the JSON object, with no additional explanations or text.
+{distribution_def} Return ONLY the JSON object, with no additional explanations or text.
 """
         }
         return format_prompts.get(method, "")

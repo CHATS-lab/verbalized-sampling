@@ -33,6 +33,7 @@ class BaseTask(ABC):
                  all_possible: bool = False,
                  strict_json: bool = False,
                  probability_definition: str = "default",
+                 probability_tuning: float = -1,
                  ):
         self.model = model
         self.method = method
@@ -45,6 +46,7 @@ class BaseTask(ABC):
         self.all_possible = all_possible
         self.strict_json = strict_json
         self.probability_definition = probability_definition
+        self.probability_tuning = probability_tuning
         self.max_turns = num_samples
         
     def get_prompt(self) -> List[Union[List[Dict[str, str]], str]]:
@@ -60,6 +62,7 @@ class BaseTask(ABC):
             all_possible=self.all_possible,
             strict_json=self.strict_json,
             probability_definition=self.probability_definition,
+            probability_tuning=self.probability_tuning,
         )
 
 
