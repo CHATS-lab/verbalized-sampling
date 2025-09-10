@@ -106,6 +106,9 @@ class OpenRouterLLM(BaseLLM):
     def _parse_response_with_schema(self, response: str, schema: BaseModel) -> List[Dict[str, Any]]:
         """Parse the response based on the provided schema."""
         try:
+            # print('TYPE OF RESPONSE: ', type(response))
+            # print('RESPONSE: ', response)
+
             if isinstance(response, str):
                 parsed = json.loads(response)
                 
@@ -117,6 +120,7 @@ class OpenRouterLLM(BaseLLM):
                 if "responses" in parsed:
                     # For schemas with a 'responses' field (SequenceResponse, StructuredResponseList, etc.)
                     responses = parsed["responses"]
+                    # print('RESPONSES: ', responses)
                     
                     if isinstance(responses, list):
                         result = []

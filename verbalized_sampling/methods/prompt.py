@@ -85,7 +85,7 @@ class BasePromptTemplate:
 
         if probability_tuning > 0:
             print(f"Tuning probability to {probability_tuning}")
-            distribution_def = f"Please sample at random from the tails of the distribution: probabilities should be below {probability_tuning}."
+            distribution_def = f"Please sample at random from the tails of the distribution: probability of each response must be below {probability_tuning}."
             print(f"Distribution definition: {distribution_def}")
         else:
             distribution_def = "Randomly sample the responses from the full distribution."
@@ -105,11 +105,17 @@ Return the output in JSON format with the key "responses" (list of dicts). Each 
 
 Return ONLY the JSON object, with no additional explanations or text.
 """,
-            "sequence": f"""
-Return the responses in JSON format with keys: "responses" (list of strings). The list must contain exactly {num_samplings} strings, each representing a unique response.
-Each response should be a complete, coherent text (not just a single line or phrase).
+#             "sequence": f"""
+# Return the responses in JSON format with keys: "responses" (list of strings). The list must contain exactly {num_samplings} strings, each representing a unique response.
+# Each response should be a complete, coherent text (not just a single line or phrase).
 
-Give ONLY the JSON object, with no explanations or extra text.
+# Give ONLY the JSON object, with no explanations or extra text.
+# """,
+            "sequence": f"""
+Return exactly {num_samplings} responses as a Python list of strings, formatted as:
+["response1", "response2", "response3", ...]
+
+Return ONLY the list, with no additional explanations or text.
 """,
             "structure": """
 Return the responses in JSON format with keys: "responses" (list of dicts with 'text'). Each dictionary must include:
@@ -413,42 +419,42 @@ class SyntheticNegativePromptTemplate(BasePromptTemplate):
     
     def get_base_prompt(self, **kwargs) -> str:
         return """
-Generate a solution to the given math problem that look logical but contain at least one hidden mistake, making the final result incorrect.
-The solution must end with the final numerical answer, written only once after four hash marks (####). Example: ####123.
+Generate a solution with reasoning steps to the given math problem that look logical but contain at least one hidden mistake in the reasoning steps, making the final result incorrect.
+The solution must end with the final numerical answer, written only once after four hash marks (####). Example: #### [numerical answer].
 """
     
     def get_base_cot_prompt(self, **kwargs) -> str:
         return """
-Generate a solution to the given math problem using chain-of-thought reasoning. 
-The solution should look logical but contain at least one hidden mistake, making the final result incorrect.
-End the solution with the final numerical answer, written only once after four hash marks (####). Example: ####123.
+Generate a solution with reasoning steps to the given math problem using chain-of-thought reasoning. 
+The solution should look logical but contain at least one hidden mistake in the reasoning steps, making the final result incorrect.
+End the solution with the final numerical answer, written only once after four hash marks (####). Example: #### [numerical answer].
 """
     
     def get_standard_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         return f"""
-Generate {num_samplings} logical and convincing but incorrect solutions to the given math problem. 
-End each solution with the final numerical answer, written only once after four hash marks (e.g., ####123).
+Generate {num_samplings} logical and convincing but incorrect solutions with reasoning steps to the given math problem. 
+End each solution with the final numerical answer, written only once after four hash marks (e.g., #### [numerical answer]).
 """
     
     def get_standard_all_possible_prompt(self, **kwargs) -> str:
         return """
-Generate all plausible solutions to the given math problem. 
+Generate all plausible solutions with reasoning steps to the given math problem. 
 Each solution should appear logical and consistent, but must include at least one hidden mistake that makes the final answer incorrect.
-End each solution with the final numerical answer, written only once after four hash marks (e.g., ####123).
+End each solution with the final numerical answer, written only once after four hash marks (e.g., #### [numerical answer]).
 """
     
     def get_vs_cot_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         return f"""
-Generate {num_samplings} solutions to the given math problem using chain-of-thought reasoning. 
+Generate {num_samplings} solutions with reasoning steps to the given math problem using chain-of-thought reasoning. 
 Each solution should appear logical and consistent, but must include at least one hidden mistake that makes the final answer incorrect.
-End each solution with the final numerical answer, written only once after four hash marks (e.g., ####123).
+End each solution with the final numerical answer, written only once after four hash marks (e.g., #### [numerical answer]).
 """
 
     def get_vs_multi_turn_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs) -> str:
         return f"""
-Generate a total of {num_samplings} solutions to the given math problem. 
+Generate a total of {num_samplings} solutions with reasoning steps to the given math problem. 
 Each solution should appear logical and consistent, but must include at least one hidden mistake that makes the final answer incorrect.
-End each solution with the final numerical answer, written only once after four hash marks (e.g., ####123).
+End each solution with the final numerical answer, written only once after four hash marks (e.g., #### [numerical answer]).
 
 First, sample {num_samples_per_prompt} solutions.
 Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
@@ -461,17 +467,17 @@ Sample the solutions at random from the full distribution. Give ONLY the JSON ob
     def get_continue_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         if num_samplings == 1:
             return f"""
-Generate one alternative seems logical but incorrect solution to the given math problem.
+Generate one alternative seems logical but incorrect solution with reasoning steps to the given math problem.
 """
         else:
             return f"""
-Randomly sample {num_samplings} alternative seems logical but incorrect solutions to the given math problem.
+Randomly sample {num_samplings} alternative seems logical but incorrect solutions with reasoning steps to the given math problem.
 """
     
     def get_format_prompt(self, method: str, num_samplings: int, probability_definition: str = None, probability_tuning: float = -1) -> str:
         if method == "sequence":
             return f"""
-Return exactly {num_samplings} solutions as a Python list of strings, formatted as:
+Return exactly {num_samplings} solutions with reasoning steps as a Python list of strings, formatted as:
 ["solution1", "solution2", "solution3", ...]
 
 Sample the solutions at random from the full distribution. Return ONLY the list, with no additional explanations or text.
