@@ -37,4 +37,4 @@ class BookTask(BaseTask):
     #         "num_prompts": self.num_prompts,
     #         "random_seed": self.random_seed,
     #         "description": "Novel/book continuation task with prompts from literary works"
-    #     } 
+    #     }

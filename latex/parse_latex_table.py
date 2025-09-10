@@ -28,7 +28,7 @@ def get_model_results(model_dir, model_name):
         "Multi-turn": "multi_turn [strict] (samples=5)",
         "VS-Standard": "structure_with_prob [strict] (samples=5)",
         "VS-CoT": "chain_of_thought [strict] (samples=5)",
-        "VS-Combined": "combined [strict] (samples=5)"
+        "VS-Multi": "combined [strict] (samples=5)"
     }
     
     results = {"model": model_name}
@@ -75,7 +75,7 @@ def format_metric(value, std_value=None, is_best=False):
 
 def find_best_values_per_model(results):
     """Find the best value for each metric within a single model"""
-    method_names = ["Direct", "CoT", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Combined"]
+    method_names = ["Direct", "CoT", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Multi"]
     
     # Get all valid values for each metric
     diversity_values = []
@@ -108,7 +108,7 @@ def plot_model_comparison(all_results, output_dir="plots"):
     # Set up the plotting style
     plt.style.use('seaborn-v0_8')
     colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b']
-    method_names = ["Direct", "CoT", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Combined"]
+    method_names = ["Direct", "CoT", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Multi"]
     
     # Filter out models with insufficient data
     valid_models = {}
@@ -179,7 +179,7 @@ def plot_individual_models(all_results, output_dir="plots"):
     sns.set_style("whitegrid")
     # Use muted gray/blue palette
     base_colors = ['#4472C4', '#70AD47', '#FFC000', '#C5504B', '#264478', '#375623', '#7F6000']
-    method_names = ["Direct", "CoT", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Combined"]
+    method_names = ["Direct", "CoT", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Multi"]
     
     for model_name, results in all_results.items():
         # Filter methods with complete data
@@ -346,7 +346,7 @@ def plot_diversity_vs_quality_scatter_academic(all_results, output_dir="plots"):
     
     # Method names and styling
     method_names = ["Direct", "CoT", "Sequence", "Multi-turn", 
-                   "VS-Standard", "VS-CoT", "VS-Combined"]
+                "VS-Standard", "VS-CoT", "VS-Multi"]
     
     # Academic color palette (colorblind-friendly)
     base_colors = ['#0173B2', '#DE8F05', '#029E73', '#CC78BC', 
@@ -494,7 +494,7 @@ def plot_diversity_vs_quality_scatter(all_results, output_dir="plots"):
     })
     
     method_names = ["Direct", "CoT", "Sequence", "Multi-turn", 
-                   "VS-Standard", "VS-CoT", "VS-Combined"]
+                   "VS-Standard", "VS-CoT", "VS-Multi"]
     
     # Grayscale-friendly colors
     colors = ['#000000', '#333333', '#666666', '#999999', 
@@ -558,7 +558,7 @@ def plot_diversity_vs_quality_average(all_results, output_dir="plots"):
         'grid.linewidth': 0.8
     })
     
-    method_names = ["Direct", "CoT", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Combined"]
+    method_names = ["Direct", "CoT", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Multi"]
     # Use colorful palette for all methods (exactly like 2x2)
     base_colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', 
                    '#9467bd', '#8c564b', '#e377c2']

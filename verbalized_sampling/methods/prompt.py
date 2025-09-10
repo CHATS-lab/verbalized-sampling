@@ -68,6 +68,7 @@ class BasePromptTemplate:
         """
         # Default probability definitions
         probability_definitions = {
+            # "default": "- 'probability': how likely this response would be (from 0.0 to 1.0).",
             "implicit": "- 'probability': how likely this response would be (from 0.0 to 1.0).",
             "explicit": "- 'probability': the estimated probability from 0.0 to 1.0 of this response given the input prompt (relative to the full distribution).",
             "relative": "- 'probability': the probability between 0.0 and 1.0, reflecting the relative likelihood of this response given the input.",
@@ -94,8 +95,14 @@ Return the output in JSON format with the key "responses" (list of dicts). Each 
 Return ONLY the JSON object, with no additional explanations or text.
 """,
             "sequence": f"""
-Return responses as a Python list of strings, formatted as:
-["response1", "response2", "response3", ...]
+Return the responses in JSON format with keys: "responses" (list of strings). The list must contain exactly {num_samplings} strings, each representing a unique response.
+Each response should be a complete, coherent text (not just a single line or phrase).
+
+Give ONLY the JSON object, with no explanations or extra text.
+""",
+            "structure": """
+Return the responses in JSON format with keys: "responses" (list of dicts with 'text'). Each dictionary must include:
+- 'text': the response string only (no explanation or extra text).
 
 Return ONLY the list, with no additional explanations or text.
 """,
@@ -139,12 +146,15 @@ class CreativityPromptTemplate(BasePromptTemplate):
         if task_name == "poem":
             return f"""
 Write a poem inspired by the given line or phrase.{word_constraint}
-Create something original, creative, and meaningful. The poem can be in any style or form.
+Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
+
 Output ONLY the poem, with no explanations or extra text.
 """
         else:
             return f"""
 Generate a response to the input prompt.{word_constraint}
+Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
+
 Output ONLY the response, with no explanations or extra text.
 """
 
@@ -160,12 +170,14 @@ Generate a response to the input prompt using chain-of-thought reasoning. The re
         word_constraint = f" Each response should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
 Generate {num_samplings} responses to the input prompt.{word_constraint}
+Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 """
     
     def get_standard_all_possible_prompt(self, target_words: int = 200, **kwargs) -> str:
         word_constraint = f" Each response should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
 Generate all possible responses to the input prompt.{word_constraint}
+Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 """
 
     def get_vs_cot_prompt(self, num_samplings: int = 5, target_words: int = 200, **kwargs) -> str:
@@ -190,6 +202,7 @@ First, sample {num_samples_per_prompt} responses.
         if num_samplings == 1:
             return f"""
 Generate one alternative response to the original input prompt.
+Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 """
         else:
             return f"""
@@ -296,6 +309,7 @@ Provide your {num_samplings} best-guess responses for the given question that yo
     def get_vs_multi_turn_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs) -> str:
         return f"""
 You will generate a total of {num_samplings} responses that you think could be correct for the given question.
+Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 
 First, provide {num_samples_per_prompt} best-guess responses for the given question that you think could be correct.
 Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:

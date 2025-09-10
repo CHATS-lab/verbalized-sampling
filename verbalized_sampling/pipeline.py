@@ -274,7 +274,12 @@ class Pipeline:
                     prompts = []
                     for line in f:
                         # Each line is expected to be a JSON object
-                        data = json.loads(line)
+                        try:
+                            data = json.loads(line)
+                        except Exception as e:
+                            print(line)
+                            raise e
+                        
                         prompt = data["prompt"]
                         responses_list = data["responses"]
                         for i, response in enumerate(responses_list):

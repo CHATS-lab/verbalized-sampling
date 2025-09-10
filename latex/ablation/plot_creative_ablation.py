@@ -5,7 +5,7 @@ import os
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-def plot_training_progression(output_dir="plots/ablation"):
+def plot_training_progression(output_dir="latex_figures"):
     """Create line plot showing diversity improvement across training progression"""
     
     # Model directory mapping for training progression
@@ -75,8 +75,8 @@ def plot_training_progression(output_dir="plots/ablation"):
         'font.size': 16,
         'axes.labelsize': 18,
         'axes.titlesize': 20,
-        'xtick.labelsize': 16,
-        'ytick.labelsize': 16,
+        'xtick.labelsize': 30,
+        'ytick.labelsize': 20,
         'legend.fontsize': 16,
         'figure.titlesize': 20
     })
@@ -115,27 +115,27 @@ def plot_training_progression(output_dir="plots/ablation"):
     
     # Add base model as horizontal dotted red line
     if base_model_score is not None:
-        ax.axhline(y=base_model_score, color='red', linestyle='--', linewidth=3, 
+        ax.axhline(y=base_model_score, color='maroon', linestyle='--', linewidth=3, 
                   alpha=0.8)
         # Add inline annotation for base model
-        ax.text(len(x_positions) - 1.3, base_model_score - 0.5, 'Base Model', 
-               fontsize=16, fontweight='bold', color='red',
+        ax.text(len(x_positions) - 1.45, base_model_score - 0.5, 'Base Model', 
+               fontsize=20, fontweight='bold', color='maroon',
                ha='left', va='top')
     
     # Customize the plot with seaborn styling
     ax.set_xlabel('Training Stage', fontsize=18, fontweight='bold')
-    ax.set_ylabel('Diversity Score (%)', fontsize=18, fontweight='bold')
+    ax.set_ylabel('Diversity', fontsize=18, fontweight='bold')
     # ax.set_title('Diversity Improvement Across Training Progression', fontsize=20, fontweight='bold', pad=20)
     ax.set_xticks(x_positions)
-    ax.set_xticklabels(x_labels, fontsize=16)
-    ax.tick_params(axis='y', labelsize=16)
+    ax.set_xticklabels(x_labels, fontsize=22)
+    ax.tick_params(axis='y', labelsize=20)
     
     # Add more visible grid
     ax.grid(True, alpha=0.6, linestyle='-', linewidth=0.8, color='gray')
     ax.set_axisbelow(True)  # Put grid behind the plot elements
     
     # Put legend on top
-    ax.legend(fontsize=16, loc='upper center', bbox_to_anchor=(0.5, 1.15), ncol=4, frameon=True)
+    ax.legend(fontsize=22, loc='upper center', bbox_to_anchor=(0.5, 1.30), ncol=2, frameon=True)
     
     # Set better y-axis limits with padding (include base model score)
     all_values = []
@@ -172,22 +172,26 @@ def plot_training_progression(output_dir="plots/ablation"):
         # Add improvement percentage text (further to the right)
         text_y = (arrow_y_start + arrow_y_end) / 2
         ax.text(arrow_x + 0.2, text_y, f'+{improvement_pct:.1f}%', 
-               fontsize=14, fontweight='bold', color='#FF6B6B',
+               fontsize=18, fontweight='bold', color='#FF6B6B',
                bbox=dict(boxstyle="round,pad=0.3", facecolor='white', edgecolor='#FF6B6B', alpha=0.9))
     
     # Add subtle background color
     ax.set_facecolor('#FAFAFA')
     
     # Save the plot with proper spacing for top legend
-    os.makedirs(output_dir, exist_ok=True)
+    ablation_output_dir = os.path.join(output_dir, "ablation", "training_progression")
+    os.makedirs(ablation_output_dir, exist_ok=True)
     plt.tight_layout()
     plt.subplots_adjust(top=0.85)  # Make room for top legend
-    plt.savefig(f'{output_dir}/training_progression_diversity.png', dpi=300, bbox_inches='tight', facecolor='white')
-    plt.savefig(f'{output_dir}/training_progression_diversity.pdf', bbox_inches='tight', facecolor='white')
+    plt.savefig(f'{ablation_output_dir}/training_progression_diversity.png', dpi=300, bbox_inches='tight', facecolor='white')
+    plt.savefig(f'{ablation_output_dir}/training_progression_diversity.pdf', bbox_inches='tight', facecolor='white')
     plt.close()
     
-    print(f" Saved training progression diversity plot")
-    print(f"  Data points collected:")
+    print(f"✓ Saved training progression diversity plot")
+    print(f"📁 Results saved to: latex_figures/ablation/training_progression/")
+    print(f"📊 Generated files:")
+    print(f"  - training_progression_diversity.png/pdf")
+    print(f"📈 Data points collected:")
     for method, values in results_data.items():
         valid_count = sum(1 for v in values if v is not None)
         print(f"    {method}: {valid_count}/{len(values)} stages")
