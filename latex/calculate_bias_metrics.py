@@ -537,8 +537,8 @@ def plot_combined_metrics(all_results, task_type, output_dir):
     # Set y-axis limits - same logic as plot_method_averages
     ymax1 = (max(kl_means) if len(kl_means) else 1.0)
     ymax2 = (max(coverage_means) if len(coverage_means) else 1.0)
-    ax1.set_ylim(0, ymax1 * 1.35 if ymax1 > 0 else 1.0)
-    ax2.set_ylim(0, ymax2 * 1.35 if ymax2 > 0 else 1.0)
+    ax1.set_ylim(0, ymax1 * 1.5 if ymax1 > 0 else 1.0)
+    ax2.set_ylim(0, ymax2 * 1.5 if ymax2 > 0 else 1.0)
     
     # Perform statistical tests and add significance markers - same as plot_method_averages
     baseline_methods = ["Direct", "CoT", "Sequence", "Multi-turn"]
@@ -661,36 +661,161 @@ def plot_combined_metrics(all_results, task_type, output_dir):
     print(f"✓ Saved combined KL Divergence and Coverage-N plot to:\n  - {out_pdf}")
 
 
-def output_latex_table(all_model_method_metric_values):
+def output_latex_table(all_model_method_metric_values, average_across_models=False):
     """
-    Print the mean and std for each method and each model, grouped by the model.
+    Print the mean and std for each method and each model, grouped by the model,
+    in a LaTeX table format matching the requested style.
+    Also calculates the average for each method across all models.
     """
     import numpy as np
 
+    # Order and display names for methods
+    method_rows = [
+        ("Direct", None, "Direct"),
+        ("CoT", None, "CoT"),
+        ("Sequence", None, "Sequence"),
+        ("Multi-turn", None, "Multi-turn"),
+        (None, r"\textbf{Verbalized Sampling:}", None),
+        ("VS-Standard", r"$\hookrightarrow$ Standard", "VS-Standard"),
+        ("VS-CoT", r"$\hookrightarrow$ CoT", "VS-CoT"),
+        ("VS-Multi", r"$\hookrightarrow$ Multi-turn", "VS-Multi"),
+    ]
     metric_keys = ["kl_divergence", "unique_recall_rate", "precision"]
+
+    # For method averages across all models
+    # method_agg[dict_key][metric] = list of all values across all models
+    method_agg = {row[2]: {metric: [] for metric in metric_keys} for row in method_rows if row[2] is not None}
+
     for model_name, methods_dict in all_model_method_metric_values.items():
         print(f"Model: {model_name}")
-        # Print header
         print("Method & KL Divergence & Coverage-N & Precision \\\\")
-        for m in DISPLAY_METHODS:
-            if m in methods_dict:
-                row = [m]
+        
+        # Gather all means for each metric for this model, for best/second-best marking
+        metric_means = {metric: [] for metric in metric_keys}
+        for method_key, display_label, dict_key in method_rows:
+            if method_key is None:
+                continue
+            metrics = methods_dict.get(dict_key, {})
+            for i, metric in enumerate(metric_keys):
+                values = metrics.get(metric, [])
+                if values:
+                    mean = np.mean(values)
+                    metric_means[metric].append((mean, method_key))
+                else:
+                    metric_means[metric].append((None, method_key))
+            # Aggregate for method averages
+            if dict_key is not None:
                 for metric in metric_keys:
-                    values = methods_dict[m].get(metric, [])
+                    values = metrics.get(metric, [])
                     if values:
-                        mean = np.mean(values)
-                        std = np.std(values)
-                        row.append(f"{mean:.2f}$_{{\\pm {std:.2f}}}$")
-                    else:
-                        row.append("-")
-                print(" & ".join(row) + " \\\\")
+                        method_agg[dict_key][metric].extend(values)
+        
+        # For each metric, determine best and second best (handle direction)
+        best_methods = {}
+        second_methods = {}
+        for i, metric in enumerate(metric_keys):
+            vals = [(mean, mkey) for mean, mkey in metric_means[metric] if mean is not None]
+            if not vals:
+                continue
+            # Direction: kl_divergence is lower better, others higher better
+            reverse = metric != "kl_divergence"
+            sorted_vals = sorted(vals, key=lambda x: x[0], reverse=reverse)
+            best_methods[metric] = sorted_vals[0][1]
+            if len(sorted_vals) > 1:
+                second_methods[metric] = sorted_vals[1][1]
             else:
-                print(f"{m} & - & - & - \\\\")
+                second_methods[metric] = None
+
+        for idx, (method_key, display_label, dict_key) in enumerate(method_rows):
+            if method_key is None:
+                # Section header row (e.g., Verbalized Sampling)
+                print(f"& {display_label} \\\\")
+                continue
+            metrics = methods_dict.get(dict_key, {})
+            row = []
+            for i, metric in enumerate(metric_keys):
+                values = metrics.get(metric, [])
+                if values:
+                    mean = np.mean(values)
+                    std = np.std(values)
+                    cell = f"{mean:.2f}$_{{\\pm {std:.2f}}}$"
+                    # Mark best/second best
+                    if method_key == best_methods.get(metric):
+                        cell = f"\\bestcell{{{cell}}}"
+                    elif method_key == second_methods.get(metric):
+                        cell = f"\\secondcell{{{cell}}}"
+                    row.append(cell)
+                else:
+                    row.append("-")
+            # For VS rows, indent with & and use display_label
+            if display_label is not None:
+                print(f"& {display_label}  & " + " & ".join(row) + r" \\")
+            else:
+                print(f"& {method_key:<16} & " + " & ".join(row) + r" \\")
+        print("-" * 40)
+
+    if average_across_models:
+        # Now print the average across all models for each method
+        print("Average across all models:")
+        print("Method & KL Divergence & Coverage-N & Precision \\\\")
+        # For best/second-best marking across methods (for each metric)
+        avg_metric_means = {metric: [] for metric in metric_keys}
+        for method_key, display_label, dict_key in method_rows:
+            if method_key is None:
+                continue
+            row = []
+            for metric in metric_keys:
+                values = method_agg[dict_key][metric]
+                if values:
+                    mean = np.mean(values)
+                    std = np.std(values)
+                    avg_metric_means[metric].append((mean, method_key))
+                else:
+                    avg_metric_means[metric].append((None, method_key))
+        # Determine best/second-best for averages
+        avg_best_methods = {}
+        avg_second_methods = {}
+        for metric in metric_keys:
+            vals = [(mean, mkey) for mean, mkey in avg_metric_means[metric] if mean is not None]
+            if not vals:
+                continue
+            reverse = metric != "kl_divergence"
+            sorted_vals = sorted(vals, key=lambda x: x[0], reverse=reverse)
+            avg_best_methods[metric] = sorted_vals[0][1]
+            if len(sorted_vals) > 1:
+                avg_second_methods[metric] = sorted_vals[1][1]
+            else:
+                avg_second_methods[metric] = None
+
+        for method_key, display_label, dict_key in method_rows:
+            if method_key is None:
+                print(f"& {display_label} \\\\")
+                continue
+            row = []
+            for metric in metric_keys:
+                values = method_agg[dict_key][metric]
+                if values:
+                    mean = np.mean(values)
+                    std = np.std(values)
+                    cell = f"{mean:.2f}$_{{\\pm {std:.2f}}}$"
+                    if method_key == avg_best_methods.get(metric):
+                        cell = f"\\bestcell{{{cell}}}"
+                    elif method_key == avg_second_methods.get(metric):
+                        cell = f"\\secondcell{{{cell}}}"
+                    row.append(cell)
+                else:
+                    row.append("-")
+            if display_label is not None:
+                print(f"& {display_label}  & " + " & ".join(row) + r" \\")
+            else:
+                print(f"& {method_key:<16} & " + " & ".join(row) + r" \\")
         print("-" * 40)
 
 
 def main():
-    folder = "method_results_bias"
+    # folder = "method_results_bias"
+    folder = "openended_qa_general"
+    # folder = "openended_qa_coverageqa"
     task_name = "state_name"
     output_dir = "latex"
 
@@ -721,9 +846,10 @@ def main():
         return
 
     for model_dir in os.listdir(folder):
-        if not model_dir.endswith(f"_{task_name}"):
-            continue
-        model_name = model_dir.replace(f"_{task_name}", "")
+        # if not model_dir.endswith(f"_{task_name}"):
+        #     continue
+        # model_name = model_dir.replace(f"_{task_name}", "")
+        model_name = model_dir
         evaluation_dir = base_path / model_dir / "evaluation"
         if not evaluation_dir.exists():
             print(f"Warning: No evaluation directory found for {model_name}")
@@ -766,15 +892,16 @@ def main():
                 for mk in metric_keys:
                     all_values[model_name][display_method][mk].extend(per_prompt_values[mk])
 
-    # Plot method averages across models (using the subset you want to show)
-    plot_method_averages(
-        all_results=all_values,
-        task_type=task_name,
-        output_dir=output_dir,
-        # metric_keys=plot_metric_keys,
-        # metric_labels=metric_labels,
-        # metric_directions=metric_directions,
-    )
+    # print(all_values)
+    # # Plot method averages across models (using the subset you want to show)
+    # plot_method_averages(
+    #     all_results=all_values,
+    #     task_type=task_name,
+    #     output_dir=output_dir,
+    #     # metric_keys=plot_metric_keys,
+    #     # metric_labels=metric_labels,
+    #     # metric_directions=metric_directions,
+    # )
     
     # Plot combined KL divergence and Coverage-N metrics
     plot_combined_metrics(
@@ -783,7 +910,7 @@ def main():
         output_dir=output_dir
     )
     
-    # output_latex_table(all_values)
+    output_latex_table(all_values, average_across_models=True)
 
 
 if __name__ == "__main__":

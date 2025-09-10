@@ -157,7 +157,7 @@ class BaseEvaluator(ABC):
         """Load evaluation results from a file."""
         # Implementation details...
 
-def calculate_stats(values: List[float]) -> Dict[str, float]:
+def calculate_stats(values: List[float], num_responses_per_prompt: Optional[int] = None) -> Dict[str, float]:
     """
     Calculate basic statistics for a list of values.
     
@@ -189,8 +189,9 @@ def calculate_stats(values: List[float]) -> Dict[str, float]:
             "count": 0
         }
     
+    # print("Counts: ", len(values), num_responses_per_prompt)
     return {
-        "mean": float(np.mean(values)),
+        "mean": float(np.sum(values) / num_responses_per_prompt) if num_responses_per_prompt else float(np.mean(values)),
         "std": float(np.std(values, ddof=1)) if len(values) > 1 else 0.0,
         "min": float(np.min(values)),
         "max": float(np.max(values)),

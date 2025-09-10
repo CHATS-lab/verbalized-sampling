@@ -16,55 +16,58 @@ from datasets import load_dataset
 from .base import BaseEvaluator, EvalResult
 from verbalized_sampling.llms import get_model
 
-# Templates for synthetic data quality evaluation
+# Templates for synthetic question quality evaluation
 def get_system_prompt(k: int) -> str:
-    return f"""You are an expert at evaluating data quality for question-answer pairs.
-You will be shown {k} examples. Each example consists of a question and an answer. All but one of them are from a high-quality dataset, while one of them is synthetically generated and may be of lower quality.
-Your task is to identify which example (1, 2, ..., {k}) appears to be synthetically generated or of lower quality. Consider factors like:
+    return f"""You are an expert at evaluating question quality.
+You will be shown {k} questions. All but one of them are from a high-quality dataset, while one of them is synthetically generated and may be of lower quality.
+Your task is to identify which question (1, 2, ..., {k}) appears to be synthetically generated or of lower quality. Consider factors like:
 
-1. Differing natural language patterns and flow
-2. Differing question structure, clarity, and difficulty
+1. Natural language patterns and flow
+2. Question structure, clarity, and difficulty
 3. Context and specificity
 4. Any subtle artifacts or unnatural patterns
+5. Question coherence and logical structure
 
-Analyze each example carefully and explain your reasoning. End with 'Answer: [Question Number]' where Question Number is 1, 2, ..., {k}."""
+Analyze each question carefully and explain your reasoning. End with 'Answer: [Question Number]' where Question Number is 1, 2, ..., {k}."""
 
 def get_user_prompt(k: int, questions: str) -> str:
-    return f"""Here are {k} examples. One of them is synthetically generated. Please identify which one:
+    return f"""Here are {k} questions. One of them is synthetically generated. Please identify which one:
 {questions}
 
-Analyze each example and explain which one you think is synthetically generated or of lower quality. End with 'Answer: [Question Number]'."""
+Analyze each question and explain which one you think is synthetically generated or of lower quality. End with 'Answer: [Question Number]'."""
 
 class GSM8KEvaluator():
     def __init__(self):
         self.dataset = load_dataset("openai/gsm8k", name="main", split="train")
-        self.candidate_examples = [
-            {"question": q, "answer": a}
-            for q, a in zip(self.dataset["question"], self.dataset["answer"])
+        self.candidate_questions = [
+            q for q in self.dataset["question"]
         ]
 
-    def extract_content(
+    def extract_question(
         self, raw_response: str, grounding: Dict = None
-    ) -> Dict[str, str]:
-        parsed = raw_response.split("Question:")[1].split("Answer:")
-        return {
-            "question": parsed[0].strip(),
-            "answer": parsed[1].strip(),
-        }
+    ) -> str:
+        # Extract just the question part
+        if "Question:" in raw_response:
+            parsed = raw_response.split("Question:")[1]
+            if "Answer:" in parsed:
+                return parsed.split("Answer:")[0].strip()
+            else:
+                return parsed.strip()
+        return raw_response.strip()
 
     def get_quality_prompt(self, data_point: str, ground_truth_placement: int = 1, num_examples_to_choose_from: int = 4) -> Dict[str, str]:
         # Examples from same category as data point
         random.seed(hash(data_point) % 2**32)  # Deterministic randomness
-        random_samples = random.sample(self.candidate_examples, num_examples_to_choose_from - 1)
+        random_samples = random.sample(self.candidate_questions, num_examples_to_choose_from - 1)
 
         # Build the questions in the right order based on ground_truth_placement
-        synthetic_example = self.extract_content(data_point)
+        synthetic_question = self.extract_question(data_point)
         questions_compiled, real_example_idx = "", 0
         for i in range(1, num_examples_to_choose_from + 1):
             if i == ground_truth_placement:
-                questions_compiled += f"Question {i}: {synthetic_example['question']}\nAnswer: {synthetic_example['answer']}\n"
+                questions_compiled += f"Question {i}: {synthetic_question}\n"
             else:
-                questions_compiled += f"Question {i}: {random_samples[real_example_idx]['question']}\nAnswer: {random_samples[real_example_idx]['answer']}\n"
+                questions_compiled += f"Question {i}: {random_samples[real_example_idx]}\n"
                 real_example_idx += 1
 
         return {
@@ -76,50 +79,42 @@ class GSM8KEvaluator():
 class LiveCodeBenchEvaluator():
     def __init__(self):
         self.dataset = load_dataset("livecodebench/test_generation", split="test", trust_remote_code='True')
-        self.candidate_examples = [
-            {
-                "question": q,
-                "test_input": eval(t)[0]["input"],
-                "answer": eval(t)[0]["output"],
-            }
-            for q, t in zip(
-                self.dataset["question_content"],
-                self.dataset["test"],
-            )
+        self.candidate_questions = [
+            q for q in self.dataset["question_content"]
         ]
 
-    def extract_content(
+    def extract_question(
         self, raw_response: str, grounding: Dict = None
-    ) -> Dict[str, str]:
-        question_input_reasoning_answer = raw_response.split("Question:")[1]
-        question = question_input_reasoning_answer.split("Test Input:")[0]
-        test_input_reasoning_answer = question_input_reasoning_answer.split(
-            "Test Input:"
-        )[1]
-        test_input = test_input_reasoning_answer.split("Reasoning:")[0]
-        reasoning_answer = test_input_reasoning_answer.split("Reasoning:")[1]
-        reasoning = reasoning_answer.split("Answer:")[0]
-        answer = reasoning_answer.split("Answer:")[1]
-        return {
-            "question": question.strip(),
-            "test_input": test_input.strip(),
-            "reasoning": reasoning.strip(),
-            "answer": answer.strip(),
-        }
+    ) -> str:
+        # Extract just the question part
+        if "Question:" in raw_response:
+            parsed = raw_response.split("Question:")[1]
+            if "Test Input:" in parsed:
+                question = parsed.split("Test Input:")[0].strip()
+            elif "Answer:" in parsed:
+                question = parsed.split("Answer:")[0].strip()
+            else:
+                question = parsed.strip()
+        else:
+            question = raw_response.strip()
+        # Remove all blank lines (空行) and join the rest with a space
+        lines = [line.strip() for line in question.splitlines() if line.strip()]
+        return ' '.join(lines)
     
     def get_quality_prompt(self, data_point: str, ground_truth_placement: int = 1, num_examples_to_choose_from: int = 4) -> Dict[str, str]:
         random.seed(hash(data_point) % 2**32)  # Deterministic randomness
-        random_samples = random.sample(self.candidate_examples, num_examples_to_choose_from - 1)
-        synthetic_example = self.extract_content(data_point)
+        random_samples = random.sample(self.candidate_questions, num_examples_to_choose_from - 1)
+        synthetic_question = self.extract_question(data_point)
 
         questions_compiled, real_example_idx = "", 0
         for i in range(1, num_examples_to_choose_from + 1):
             if i == ground_truth_placement:
-                questions_compiled += f"Question {i}: {synthetic_example['question']}\nTest Input: {synthetic_example['test_input']}\nAnswer: {synthetic_example['answer']}\n"
+                questions_compiled += f"Question {i}: {synthetic_question}\n"
             else:
-                questions_compiled += f"Question {i}: {random_samples[real_example_idx]['question']}\nTest Input: {random_samples[real_example_idx]['test_input']}\nAnswer: {random_samples[real_example_idx]['answer']}\n"
+                questions_compiled += f"Question {i}: {random_samples[real_example_idx]}\n"
                 real_example_idx += 1
 
+        # print(questions_compiled)
         return {
             "system": get_system_prompt(num_examples_to_choose_from),
             "user": get_user_prompt(num_examples_to_choose_from, questions_compiled),
@@ -134,7 +129,7 @@ def check_lcb_dataset(datapoint: str) -> bool:
     return "Test Input" in datapoint
 
 
-class SyntheticDataQualityEvaluator(BaseEvaluator):
+class SyntheticQuestionQualityEvaluator(BaseEvaluator):
     instance_plot_metrics = [
         ("is_distinguishable", "histogram"),
         ("placement", "histogram"),
@@ -146,11 +141,12 @@ class SyntheticDataQualityEvaluator(BaseEvaluator):
         ("avg_ir_rate", "IR Rate (Identification Rate)"),
     ]
 
-    def __init__(self, judge_model: str = "gpt-4.1", num_workers: int = 64, dataset_type: str = "auto"):
-        super().__init__("data_quality", num_workers=num_workers)
+    def __init__(self, judge_model: str = "gpt-4.1", num_workers: int = 64, num_responses_per_prompt: int = 50, dataset_type: str = "auto"):
+        super().__init__("question_quality", num_workers=num_workers)
         self.judge_model_name = judge_model
         self.dataset_type = dataset_type
-        
+        self.num_responses_per_prompt = num_responses_per_prompt
+
         # Initialize dataset evaluators
         self.gsm8k_evaluator = GSM8KEvaluator()
         self.lcb_evaluator = LiveCodeBenchEvaluator()
@@ -197,7 +193,6 @@ class SyntheticDataQualityEvaluator(BaseEvaluator):
         response_text = response.get('text', response)
         if isinstance(response_text, dict):
             response_text = str(response_text)
-        # print(response_text)
 
         # Determine dataset type
         if self.dataset_type == "auto":
@@ -209,9 +204,8 @@ class SyntheticDataQualityEvaluator(BaseEvaluator):
             evaluator = self.lcb_evaluator
         else:
             raise ValueError(f"Unknown dataset_type: {self.dataset_type}")
-        # print(f"Evaluator type: {evaluator.__class__.__name__}")
         
-        # Randomly place the synthetic sample among genuine ones
+        # Randomly place the synthetic question among genuine ones
         placement = random.Random(hash(response_text)).randint(1, 4)  # 1-indexed position
         
         # Get judge model for this thread
@@ -226,7 +220,6 @@ class SyntheticDataQualityEvaluator(BaseEvaluator):
                 {"role": "system", "content": prompt_data["system"]},
                 {"role": "user", "content": prompt_data["user"]},
             ]
-            # print(prompt_messages)
             judge_response = judge_model._chat(prompt_messages)
             
             # Parse the judge's response
@@ -234,7 +227,7 @@ class SyntheticDataQualityEvaluator(BaseEvaluator):
             
             return {
                 'prompt': prompt,
-                'synthetic_response': response_text,
+                'synthetic_question': evaluator.extract_question(response_text),
                 'placement': placement,
                 'judge_response': judge_response,
                 'model_guess': model_guess,
@@ -247,7 +240,7 @@ class SyntheticDataQualityEvaluator(BaseEvaluator):
             print(f"Error in judge evaluation: {e}")
             return {
                 'prompt': prompt,
-                'synthetic_response': response_text,
+                'synthetic_question': evaluator.extract_question(response_text),
                 'placement': placement,
                 'judge_response': '',
                 'model_guess': None,
@@ -264,7 +257,8 @@ class SyntheticDataQualityEvaluator(BaseEvaluator):
         # Calculate detection stats for this prompt group
         indistinguishable_count = sum(1 for m in group if m.get('is_distinguishable', False))
         total_count = len(group)
-        
+
+        # print("Total count: ", total_count, self.num_responses_per_prompt)
         ir_rate = indistinguishable_count / total_count if total_count > 0 else 0
         
         return {
@@ -342,12 +336,16 @@ class SyntheticDataQualityEvaluator(BaseEvaluator):
             metadata = {}
 
         metadata.update({
-            "evaluation_framework": "SyntheticDataQuality",
+            "evaluation_framework": "SyntheticQuestionQuality",
             "judge_model": self.judge_model_name,
             "num_responses": len(responses),
             "num_workers": self.num_workers,
             "dataset_type": self.dataset_type,
-            "evaluation_type": "synthetic_detection"
+            "evaluation_type": "synthetic_question_detection"
         })
         
         return super().evaluate(prompts, responses, metadata)
+
+
+# Backward compatibility alias
+SyntheticDataQualityEvaluator = SyntheticQuestionQualityEvaluator

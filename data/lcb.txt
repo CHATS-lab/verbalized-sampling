@@ -1,0 +1,22 @@
+Generate a programming problem inspired by competitive programming platforms such as LeetCode, AtCoder, and CodeForces.
+        The problem should be self-contained, clearly describing the task, inputs, outputs, and constraints.
+        Given the input, the answer of the problem should be solvable using logical step-by-step reasoning without executing the code.
+        The difficulty should be similar to typical coding interview or algorithm challenges.
+
+        For the problem, provide:
+        - Question: A natural language description of the programming task.
+        - Test Input: The exact input data for the task.
+        - Reasoning: A concise, ordered explanation of how to get the result from the input.
+        - Answer: The final output value.
+
+        Format exactly as follows:
+        "Question:
+        [question]
+        Test Input:
+        [test_input]
+        Reasoning:
+        [reasoning]
+        Answer:
+        [answer]"
+
+        Make sure to only provide only the question, test input, reasoning, and answer. Start with the question.

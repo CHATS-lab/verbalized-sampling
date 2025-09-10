@@ -34,6 +34,7 @@ class BaseTask(ABC):
                  strict_json: bool = False,
                  probability_definition: str = "default",
                  probability_tuning: float = -1,
+                 prompt_path: str = None,
                  ):
         self.model = model
         self.method = method
@@ -48,12 +49,14 @@ class BaseTask(ABC):
         self.probability_definition = probability_definition
         self.probability_tuning = probability_tuning
         self.max_turns = num_samples
+        self.prompt_path = prompt_path
         
     def get_prompt(self) -> List[Union[List[Dict[str, str]], str]]:
         """Get the prompt for the task."""
         return PromptFactory.get_prompt(
             self.task_type, 
-            self.method, 
+            self.method,
+            prompt_path=self.prompt_path,
             num_samplings=self.num_samples,
             num_prompts=self.num_prompts,
             num_samples_per_prompt=self.num_samples_per_prompt,
