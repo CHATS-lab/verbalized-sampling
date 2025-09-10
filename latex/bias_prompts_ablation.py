@@ -97,38 +97,10 @@ plt.rcParams.update({
 #     plt.savefig("qualitative_tasks/comparison_of_different_prompt_variants.pdf", dpi=300, bbox_inches='tight')
 
 
-def load_baseline_data():
-    """
-    Load baseline data (direct and sequence methods) from generated_data/openended_qa_general folder.
-    """
-    baseline_data = {}
-    models = ['gpt-4.1', 'gemini-2.5-flash']
-    
-    for model in models:
-        baseline_data[model] = {}
-        
-        # Load direct method data
-        direct_path = f"generated_data/penended_qa_general/{model}/evaluation/direct (samples=1)/response_count_results.json"
-        if os.path.exists(direct_path):
-            with open(direct_path, 'r') as f:
-                direct_data = json.load(f)
-                baseline_data[model]['direct'] = direct_data['overall_metrics']
-        
-        # Load sequence method data
-        sequence_path = f"generated_data/openended_qa_general/{model}/evaluation/sequence [strict] (samples=20)/response_count_results.json"
-        if os.path.exists(sequence_path):
-            with open(sequence_path, 'r') as f:
-                sequence_data = json.load(f)
-                baseline_data[model]['sequence'] = sequence_data['overall_metrics']
-    
-    return baseline_data
-
-
-def create_line_chart_plot(all_data, baseline_data):
+def create_line_chart_plot(all_data):
     """
     Create a line chart showing performance across probability definitions for each metric and model.
     Layout: 3x2 grid (3 metrics x 2 models) with lines for VS-Standard and VS-Multi.
-    Includes horizontal reference lines for direct and sequence baseline methods.
     """
     
     # Define metrics and their properties
@@ -157,8 +129,6 @@ def create_line_chart_plot(all_data, baseline_data):
     }
     
     method_colors = {
-        'direct': '#ff9755',
-        'sequence': '#a469bd',
         'structure_with_prob': '#4A90E2',  # Red
         'combined': '#FF6B6B'  # Blue
     }
@@ -166,20 +136,6 @@ def create_line_chart_plot(all_data, baseline_data):
     method_markers = {
         'structure_with_prob': 'o',  # Circle
         'combined': 's'  # Square
-    }
-    method_linestyles = {
-        'direct': '-',
-        'sequence': '--'
-    }
-    method_linewidths = {
-        'direct': 3.5,
-        'sequence': 3.5,
-        'structure_with_prob': 3.5, 
-        'combined': 3.5
-    }
-    method_markersize = {
-        'structure_with_prob': 8,
-        'combined': 8
     }
     
     # Probability definition display names and order
@@ -192,7 +148,6 @@ def create_line_chart_plot(all_data, baseline_data):
         'nll': 'NLL',
         'perplexity': 'Perplexity'
     }
-    
     
     # Order for x-axis
     probability_definitions = ['implicit', 'explicit', 'relative', 'percentage', 'confidence', 'nll', 'perplexity']
@@ -246,11 +201,22 @@ def create_line_chart_plot(all_data, baseline_data):
                 x_positions = range(len(probability_definitions))
                 ax.plot(x_positions, values, 
                        marker=method_markers[method],
-                       linewidth=method_linewidths[method],
-                       markersize=method_markersize[method],
+                       linewidth=3,
+                       markersize=8,
                        color=method_colors[method],
                        label=method_names[method],
                        alpha=0.8)
+                
+                # # Add value labels on markers
+                # for i, value in enumerate(values):
+                #     if value > 0:
+                #         ax.annotate(f'{value:.3f}', 
+                #                    (i, value),
+                #                    textcoords="offset points",
+                #                    xytext=(0, 10),
+                #                    ha='center', va='bottom',
+                #                    fontsize=10, fontweight='bold',
+                #                    color=method_colors[method])
             
             # Customize subplot
             ax.set_xlabel('', fontweight='bold')
@@ -262,33 +228,21 @@ def create_line_chart_plot(all_data, baseline_data):
             ax.grid(True, alpha=0.3, axis='y')
             # ax.legend(loc='upper right', fontsize=12)
             
-            # # Add horizontal reference lines for direct and sequence methods
-            # if model in baseline_data:
-            #     # # Direct method reference line
-            #     # if 'direct' in baseline_data[model]:
-            #     #     direct_value = baseline_data[model]['direct'].get(metric_key, None)
-            #     #     if direct_value is not None:
-            #     #         ax.axhline(y=direct_value, color=method_colors['direct'], 
-            #     #                  linestyle='--', linewidth=2, alpha=0.8, 
-            #     #                  label='Direct')
-                
-            #     # Sequence method reference line
-            #     if 'sequence' in baseline_data[model]:
-            #         sequence_value = baseline_data[model]['sequence'].get(metric_key, None)
-            #         print(f"Sequence value for {model} {metric_key}: {sequence_value}")
-            #         if sequence_value is not None:
-            #             ax.axhline(
-            #                 y=sequence_value, color=method_colors['sequence'],
-            #                 linestyle=method_linestyles['sequence'], linewidth=method_linewidths['sequence'], alpha=0.8,
-            #                 label='Sequence')
-            
             # Set y-axis limits based on metric type
             if metric_key == "average_kl_divergence":
-                ax.set_ylim(0.55, 0.9)  # KL Divergence range 0-2
+                ax.set_ylim(0.9, 1.2)  # KL Divergence range 0-2
             if metric_key == "average_unique_recall_rate":
-                ax.set_ylim(0.50, 0.65)
+                ax.set_ylim(0.3, 0.6)
             if metric_key == "average_precision":
                 ax.set_ylim(0.9, 1.0)
+            
+            # # Add horizontal reference line for better comparison
+            # if metric_key == "average_kl_divergence":
+            #     # For KL divergence, add a reference line at a reasonable value
+            #     ax.axhline(y=0.05, color='gray', linestyle='--', alpha=0.5, label='Reference')
+            # else:
+            #     # For other metrics, add reference line at 0.5
+            #     ax.axhline(y=0.5, color='gray', linestyle='--', alpha=0.5, label='Reference')
     
     # Add subplot labels
     subplot_labels = ['a', 'b', 'c', 'd', 'e', 'f']
@@ -299,10 +253,8 @@ def create_line_chart_plot(all_data, baseline_data):
     # Create a legend for the whole figure at the top center
     # Get handles and labels from one of the axes (they are the same for all)
     handles, labels = axes[0, 0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc='upper center', ncol=len(method_names), frameon=False, bbox_to_anchor=(0.5, 1.01))
     
-    all_handles = handles
-    all_labels = labels
-    fig.legend(all_handles, all_labels, loc='upper center', ncol=len(all_labels), frameon=False, bbox_to_anchor=(0.5, 1.01))
     # plt.tight_layout()
     plt.subplots_adjust(top=0.88, hspace=0.50, wspace=0.30)
 
@@ -383,11 +335,9 @@ def main():
     # print(all_data)
     print_numerical_results(all_data)
     
-    # Load baseline data for direct and sequence methods
-    baseline_data = load_baseline_data()
     
     # Create line chart visualization
-    create_line_chart_plot(all_data, baseline_data)
+    create_line_chart_plot(all_data)
 
 
 if __name__ == "__main__":

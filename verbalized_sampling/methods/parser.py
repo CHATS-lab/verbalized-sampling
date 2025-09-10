@@ -79,15 +79,18 @@ class ResponseParser:
     @staticmethod
     def parse_sequence(response: str) -> List[Dict]:
         """Parse sequence response expecting JSON format."""
+        # print('TYPE OF RESPONSE: ', type(response))
+        # print('RESPONSE: ', response)
+
         if isinstance(response, list):
-            return [{'text': item} for item in response]
+            return [{'text': item['response']} for item in response]
         elif isinstance(response, dict):
             response_list = response["responses"]
             return [{'text': item} for item in response_list]
         else:
             try:
                 # Try JSON parsing first (new format)
-                parsed = ResponseParser._extract_json(response)
+                print(f"Parsed: {parsed}")
                 if isinstance(parsed, dict) and "responses" in parsed:
                     return [{'text': item} for item in parsed["responses"]]
                 else:
