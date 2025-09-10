@@ -19,7 +19,7 @@ def create_method_experiments(
         'model_name': model_name,
         'num_responses': 1000,
         'num_prompts': 1, # current total: 300; total: 4326
-        'target_words': 0, 
+        'target_words': 50, 
         'temperature': temperature,
         'top_p': top_p,
         'random_seed': 42,
@@ -65,7 +65,7 @@ def run_method_tests(
     model_basename = model_name.replace("/", "_")
     config = PipelineConfig(
         experiments=experiments,
-        evaluation=EvaluationConfig(metrics=metrics),
+        evaluation=EvaluationConfig(metrics=metrics, num_responses_per_prompt=1000),
         output_base_dir=Path(f"{output_dir}/{model_basename}_{task.value}"),
         skip_existing=True,
     )
@@ -83,11 +83,11 @@ if __name__ == "__main__":
             'strict_json': False,
             'num_samples': 1,
         },
-        {
-            'method': Method.DIRECT_COT,
-            'strict_json': False,
-            'num_samples': 1,
-        },
+        # {
+        #     'method': Method.DIRECT_COT,
+        #     'strict_json': False,
+        #     'num_samples': 1,
+        # },
         {
             'method': Method.MULTI_TURN,
             'strict_json': False,
@@ -102,20 +102,20 @@ if __name__ == "__main__":
             'method': Method.STRUCTURE_WITH_PROB,
             'strict_json': True,
             'num_samples': num_samples,
-            'probability_definition': "confidence"
+            'probability_definition': "explicit"
         },
-        {
-            'method': Method.CHAIN_OF_THOUGHT,
-            'strict_json': True,
-            'num_samples': num_samples,
-            'probability_definition': "confidence"
-        },
+        # {
+        #     'method': Method.CHAIN_OF_THOUGHT,
+        #     'strict_json': True,
+        #     'num_samples': num_samples,
+        #     'probability_definition': "confidence"
+        # },
         {
             'method': Method.COMBINED,
             'strict_json': True,
             'num_samples': num_samples,
             'num_samples_per_prompt': 3,
-            'probability_definition': "confidence"
+            'probability_definition': "perplexity"
         }
     ]
 
@@ -137,7 +137,7 @@ if __name__ == "__main__":
             model_name=model,
             methods=methods,
             metrics=["diversity", "ngram", "synthetic_data_quality"],
-            temperature=0.7,
+            temperature=0.5,
             top_p=1.0,
             output_dir="method_results_gsm8k_1000",
             num_workers=16 if any(x in model_basename for x in ["claude", "gemini"]) else 32,

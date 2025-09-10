@@ -34,9 +34,11 @@ class DiversityEvaluator(BaseEvaluator):
         ("avg_diversity", "Diversity (Pairwise)"),
     ]
     
-    def __init__(self, embed_model: str = "text-embedding-3-small", num_workers: int = 128):
+    def __init__(self, embed_model: str = "text-embedding-3-small", num_workers: int = 128, num_responses_per_prompt: int = 1):
         super().__init__("diversity", num_workers)
         self.embed_model = embed_model
+        self.num_responses_per_prompt = num_responses_per_prompt
+
         # Check for CUDA first, then MPS, then fall back to CPU
         if torch.cuda.is_available():
             self.device = torch.device("cuda")
@@ -157,8 +159,8 @@ class DiversityEvaluator(BaseEvaluator):
                                 diversity = (1 - similarity) / 2
                                 # diversity = similarity
                                 
-                                all_diversities.append(diversity)
                                 pairwise_diversities.append(diversity)
+                                all_diversities.append(diversity)
                     
                     pbar.update(1)
         
@@ -168,9 +170,9 @@ class DiversityEvaluator(BaseEvaluator):
             diversity_stats = calculate_stats(all_diversities)
             
             # Calculate stats for instance-level metrics
-            response_length_stats = calculate_stats([m["response_length"] for m in instance_metrics])
-            unique_words_stats = calculate_stats([m["unique_words"] for m in instance_metrics])
-            vocabulary_richness_stats = calculate_stats([m["vocabulary_richness"] for m in instance_metrics])
+            response_length_stats = calculate_stats([m["response_length"] for m in instance_metrics], self.num_responses_per_prompt)
+            unique_words_stats = calculate_stats([m["unique_words"] for m in instance_metrics], self.num_responses_per_prompt)
+            vocabulary_richness_stats = calculate_stats([m["vocabulary_richness"] for m in instance_metrics], self.num_responses_per_prompt)
             
             metrics = {
                 # Diversity metrics

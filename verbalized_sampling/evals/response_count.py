@@ -23,10 +23,11 @@ class ResponseCountEvaluator(BaseEvaluator):
         ("average_precision", "Precision"),
     ]
 
-    def __init__(self, name: str = "response_count", num_workers: int = 128):
+    def __init__(self, name: str = "response_count", num_workers: int = 128, num_responses_per_prompt: int = 100):
         super().__init__(name=name, num_workers=num_workers)
         with open("data/state_name.json", "r") as f:
             self.gt_data = json.load(f)
+        self.num_responses_per_prompt = num_responses_per_prompt
 
 
     def check_precision(self, response: str, gt_responses: List[Dict[str, Any]]) -> bool:
@@ -70,7 +71,8 @@ class ResponseCountEvaluator(BaseEvaluator):
             return 0.0
             
         observed_counts = np.array(list(response_distribution.values()))
-        total_responses = sum(observed_counts)
+        # print("Total responses per prompt: ", self.num_responses_per_prompt, sum(observed_counts))
+        total_responses = self.num_responses_per_prompt if self.num_responses_per_prompt > sum(observed_counts) else sum(observed_counts)
         observed_probs = observed_counts / total_responses
 
         uniform_probs = np.full_like(observed_probs, 1.0 / num_gt_responses)
@@ -83,50 +85,6 @@ class ResponseCountEvaluator(BaseEvaluator):
         # Calculate KL divergence: KL(P || Q) = sum(P * log(P / Q))
         kl_divergence = float(np.sum(observed_probs * np.log(observed_probs / uniform_probs)))
         return kl_divergence
-
-
-    def _generate_uniform_sample(self, n_trials, n_labels, seed):
-        """Generate what a truly uniform state selection would look like."""
-        if seed:
-            np.random.seed(seed)
-
-        # Simulate uniform random selection
-        state_selections = np.random.choice(range(n_labels), size=n_trials, replace=True)
-        
-        # Count frequencies
-        unique_states, counts = np.unique(state_selections, return_counts=True)
-        
-        # Create full array (including states with 0 counts)
-        full_counts = np.zeros(n_labels)
-        full_counts[unique_states] = counts
-        
-        return sorted([int(count) for count in full_counts], reverse=True)
-
-    def _calculate_chi_square(self, response_distribution: Counter, num_gt_responses: int) -> float:
-        """Calculate chi-square statistic against uniform distribution."""
-        if not response_distribution:
-            return 0.0
-        
-        total_responses = sum(response_distribution.values())
-        observed_values = list(response_distribution.values())
-        
-        # Create observed counts array with proper size
-        observed_counts = np.zeros(num_gt_responses)
-        observed_counts[:len(observed_values)] = observed_values
-        
-        # Generate uniform sample with same size
-        expected_uniform = self._generate_uniform_sample(total_responses, num_gt_responses, 42)
-        
-        # Ensure both arrays are numpy arrays with the same shape
-        observed_counts = np.array(observed_counts, dtype=float)
-        expected_uniform = np.array(expected_uniform, dtype=float)
-        
-        # Add small epsilon to avoid division by zero
-        epsilon = 1e-10
-        expected_uniform = expected_uniform + epsilon
-        
-        chi_square_stat, _ = chisquare(observed_counts, expected_uniform)
-        return float(chi_square_stat)
     
 
     def re_group(self, response_distribution: Counter, gt_responses: List[Dict[str, Any]]) -> Counter:
@@ -150,7 +108,7 @@ class ResponseCountEvaluator(BaseEvaluator):
             return {
                 "per_prompt_stats": {},
                 "average_kl_divergence": 0.0,
-                "average_chi_square": 0.0,
+                # "average_chi_square": 0.0,
                 "average_precision": 0.0,
                 "num_prompts": 0
             }
@@ -166,7 +124,7 @@ class ResponseCountEvaluator(BaseEvaluator):
         # Calculate per-prompt stats
         per_prompt_stats = {}
         total_kl_div = 0.0
-        total_chi_square = 0.0
+        # total_chi_square = 0.0
         total_precision = 0.0
         total_unique_recall_rate = 0.0
         num_prompts = len(prompt_groups)
@@ -175,7 +133,7 @@ class ResponseCountEvaluator(BaseEvaluator):
             # Create a fresh counter for each prompt group
             # print("prompt: ", prompt)
             response_distribution = Counter()
-            num_responses = 0
+            num_correct_responses = 0
             gt_count = group[0]['total_gt_responses'] if group else 0
             
             # Count responses for this prompt group
@@ -183,7 +141,7 @@ class ResponseCountEvaluator(BaseEvaluator):
                 # Only count if it's a correct response
                 if metric.get('correct_response') == 1:
                     response_distribution[metric['response']] += 1
-                    num_responses += 1
+                    num_correct_responses += 1
             
             # re-group the response distribution to the number of gt responses
             prompt_clean = prompt.replace('\n', '')
@@ -191,13 +149,13 @@ class ResponseCountEvaluator(BaseEvaluator):
             
             # Calculate uniformity metrics for this prompt
             kl_div = self._calculate_kl_divergence(response_distribution, gt_count)
-            chi_square = self._calculate_chi_square(response_distribution, gt_count)
-            precision = num_responses / len(group)
+            # chi_square = self._calculate_chi_square(response_distribution, gt_count)
+            precision = num_correct_responses / len(group)
             # unique recall rate
-            unique_recall_rate = len(response_distribution.keys()) / gt_count
+            unique_recall_rate = len(set(response_distribution.keys())) / gt_count
             
             total_kl_div += kl_div
-            total_chi_square += chi_square
+            # total_chi_square += chi_square
             total_precision += precision
             total_unique_recall_rate += unique_recall_rate
 
@@ -211,11 +169,12 @@ class ResponseCountEvaluator(BaseEvaluator):
             per_prompt_stats[prompt] = {
                 "min_responses_per_category": min_responses_per_category,
                 "max_responses_per_category": max_responses_per_category,
-                "num_responses": num_responses,
+                "num_correct_responses": num_correct_responses,
+                "total_responses": self.num_responses_per_prompt,
                 "response_distribution": dict(response_distribution),
                 "num_gt_responses": gt_count,
                 "kl_divergence": kl_div,
-                "chi_square": chi_square,
+                # "chi_square": chi_square,
                 "precision": precision,
                 "unique_recall_rate": unique_recall_rate
             }
@@ -224,7 +183,7 @@ class ResponseCountEvaluator(BaseEvaluator):
         return {
             "per_prompt_stats": per_prompt_stats,
             "average_kl_divergence": total_kl_div / num_prompts if num_prompts > 0 else 0.0,
-            "average_chi_square": total_chi_square / num_prompts if num_prompts > 0 else 0.0,
+            # "average_chi_square": total_chi_square / num_prompts if num_prompts > 0 else 0.0,
             "average_precision": total_precision / num_prompts if num_prompts > 0 else 0.0,
             "average_unique_recall_rate": total_unique_recall_rate / num_prompts if num_prompts > 0 else 0.0,
             "num_prompts": num_prompts
@@ -243,3 +202,47 @@ class ResponseCountEvaluator(BaseEvaluator):
         })
         
         return super().evaluate(prompts, responses, metadata)
+
+
+    # def _generate_uniform_sample(self, n_trials, n_labels, seed):
+    #     """Generate what a truly uniform state selection would look like."""
+    #     if seed:
+    #         np.random.seed(seed)
+
+    #     # Simulate uniform random selection
+    #     state_selections = np.random.choice(range(n_labels), size=n_trials, replace=True)
+        
+    #     # Count frequencies
+    #     unique_states, counts = np.unique(state_selections, return_counts=True)
+        
+    #     # Create full array (including states with 0 counts)
+    #     full_counts = np.zeros(n_labels)
+    #     full_counts[unique_states] = counts
+        
+    #     return sorted([int(count) for count in full_counts], reverse=True)
+
+    # def _calculate_chi_square(self, response_distribution: Counter, num_gt_responses: int) -> float:
+    #     """Calculate chi-square statistic against uniform distribution."""
+    #     if not response_distribution:
+    #         return 0.0
+        
+    #     total_responses = self.num_responses_per_prompt # sum(response_distribution.values())
+    #     observed_values = list(response_distribution.values())
+        
+    #     # Create observed counts array with proper size
+    #     observed_counts = np.zeros(num_gt_responses)
+    #     observed_counts[:len(observed_values)] = observed_values
+        
+    #     # Generate uniform sample with same size
+    #     expected_uniform = self._generate_uniform_sample(total_responses, num_gt_responses, 42)
+        
+    #     # Ensure both arrays are numpy arrays with the same shape
+    #     observed_counts = np.array(observed_counts, dtype=float)
+    #     expected_uniform = np.array(expected_uniform, dtype=float)
+        
+    #     # Add small epsilon to avoid division by zero
+    #     epsilon = 1e-10
+    #     expected_uniform = expected_uniform + epsilon
+        
+    #     chi_square_stat, _ = chisquare(observed_counts, expected_uniform)
+    #     return float(chi_square_stat)
