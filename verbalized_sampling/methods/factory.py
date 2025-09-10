@@ -147,6 +147,7 @@ class PromptFactory:
         task_type: TaskType = None,
         task_name: str = None,
         probability_definition: str = None,
+        probability_tuning: float = -1,
     ) -> Union[List[Dict[str, str]], str]:
         """Pack a prompt using the new class-based prompt system."""
         
@@ -184,7 +185,8 @@ class PromptFactory:
             format_prompt = template.get_format_prompt(
                 format_type, 
                 num_samplings, 
-                probability_definition
+                probability_definition,
+                probability_tuning
             )
             system_prompt = f"{system_prompt}{format_prompt}"
         

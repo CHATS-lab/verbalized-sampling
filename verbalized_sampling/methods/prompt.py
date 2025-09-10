@@ -58,6 +58,7 @@ class BasePromptTemplate:
         method: str,
         num_samplings: int,
         probability_definition: str = None,
+        probability_tuning: float = -1,
     ) -> str:
         """Get the format prompt for a specific method.
 
@@ -65,6 +66,7 @@ class BasePromptTemplate:
             method: The output format method.
             num_samplings: Number of responses to generate (if relevant).
             probability_definition: (Optional) Custom definition for the 'probability' field.
+            probability_tuning: (Optional) Custom tuning for the 'probability' field.
         """
         # Default probability definitions
         probability_definitions = {
@@ -77,9 +79,18 @@ class BasePromptTemplate:
             "perplexity": "- 'perplexity': the exponentiated average negative log likelihood of the response tokens, where lower values indicate higher model certainty in predicting each token.",
             "nll": "- 'nll': the sum of the negative log probabilities of each token in the response given the input prompt, with smaller values reflecting higher model confidence.",
         }
-
+            
         # Use provided probability_definition or default
         prob_def = probability_definitions[probability_definition]
+
+        if probability_tuning > 0:
+            print(f"Tuning probability to {probability_tuning}")
+            distribution_def = f"Please sample at random from the tails of the distribution: probabilities should be below {probability_tuning}."
+            print(f"Distribution definition: {distribution_def}")
+        else:
+            distribution_def = "Randomly sample the responses from the full distribution."
+            print("Tuning probability to 0")
+            print(f"Distribution definition: {distribution_def}")
 
         format_prompts = {
             "direct_cot": """
@@ -111,7 +122,7 @@ Return the responses in JSON format with the key: "responses" (list of dicts). E
 - 'text': the response string only (no explanation or extra text).
 {prob_def}
 
-Randomly sample the responses from the full distribution. Return ONLY the JSON object, with no additional explanations or text.
+{distribution_def} Return ONLY the JSON object, with no additional explanations or text.
 """,
             "vs_cot": f"""
 First, provide a single "reasoning" field as a string, detailing your step-by-step thought process.
@@ -119,14 +130,14 @@ Then, return the output in JSON format with the key "responses" (list of dicts).
 - 'text': the response string only (no explanation or extra text).
 {prob_def}
 
-Randomly sample the responses from the full distribution. Return ONLY the JSON object, with no additional explanations or text.
+{distribution_def} Return ONLY the JSON object, with no additional explanations or text.
 """,
             "vs_multi": f"""
 Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
 - 'text': the response string only (no explanation or extra text).
 {prob_def}
 
-Randomly sample the responses from the full distribution. Return ONLY the JSON object, with no additional explanations or text.
+{distribution_def} Return ONLY the JSON object, with no additional explanations or text.
 """
         }
         return format_prompts.get(method, "")
@@ -209,9 +220,9 @@ Maximizing both creativity and diversity, while ensuring that each response rema
 Sample {num_samplings} alternative responses to the original input prompt.
 """
     
-    def get_format_prompt(self, method: str, num_samplings: int, probability_definition: str = None) -> str:
+    def get_format_prompt(self, method: str, num_samplings: int, probability_definition: str = None, probability_tuning: float = -1) -> str:
         base_template = BasePromptTemplate(TaskType.CREATIVITY)
-        return base_template.get_format_prompt(method, num_samplings, probability_definition)
+        return base_template.get_format_prompt(method, num_samplings, probability_definition, probability_tuning)
 
 
 
@@ -267,9 +278,9 @@ Generate an alternative response to the original input prompt.
 Randomly sample another {num_samplings} responses to the original input prompt.
 """
     
-    def get_format_prompt(self, method: str, num_samplings: int, probability_definition: str) -> str:
+    def get_format_prompt(self, method: str, num_samplings: int, probability_definition: str, probability_tuning: float = -1) -> str:
         base_template = BasePromptTemplate(TaskType.BIAS)
-        return base_template.get_format_prompt(method, num_samplings, probability_definition)
+        return base_template.get_format_prompt(method, num_samplings, probability_definition, probability_tuning)
 
 
 
@@ -329,9 +340,9 @@ Provide one alternative response for the original input prompt that you think co
 Provide {num_samplings} alternative responses for the original input prompt that you think could be correct.
 """
     
-    def get_format_prompt(self, method: str, num_samplings: int, probability_definition: str = None) -> str:
+    def get_format_prompt(self, method: str, num_samplings: int, probability_definition: str = None, probability_tuning: float = -1) -> str:
         base_template = BasePromptTemplate(TaskType.COMMONSENSE)
-        return base_template.get_format_prompt(method, num_samplings, probability_definition)
+        return base_template.get_format_prompt(method, num_samplings, probability_definition, probability_tuning)
 
 
 #############################Synthetic data tasks###################################
@@ -399,9 +410,9 @@ Generate one more data instance based on the original input prompt.
 Randomly sample {num_samplings} alternative data instances based on the original input prompt.
 """
     
-    def get_format_prompt(self, method: str, num_samplings: int, probability_definition: str = None) -> str:
+    def get_format_prompt(self, method: str, num_samplings: int, probability_definition: str = None, probability_tuning: float = -1) -> str:
         base_template = BasePromptTemplate(TaskType.SYNTHETIC_DATA)
-        return base_template.get_format_prompt(method, num_samplings, probability_definition)
+        return base_template.get_format_prompt(method, num_samplings, probability_definition, probability_tuning)
 
 
 #############################Synthetic negative tasks###################################
@@ -468,7 +479,7 @@ Generate one alternative seems logical but incorrect solution to the given math 
 Randomly sample {num_samplings} alternative seems logical but incorrect solutions to the given math problem.
 """
     
-    def get_format_prompt(self, method: str, num_samplings: int, probability_definition: str = None) -> str:
+    def get_format_prompt(self, method: str, num_samplings: int, probability_definition: str = None, probability_tuning: float = -1) -> str:
         if method == "sequence":
             return f"""
 Return exactly {num_samplings} solutions as a Python list of strings, formatted as:
@@ -495,7 +506,7 @@ Randomly sample the solutions from the full distribution. Give ONLY the JSON obj
 """
         else:
             base_template = BasePromptTemplate(TaskType.SYNTHETIC_NEGATIVE)
-            return base_template.get_format_prompt(method, num_samplings, probability_definition)
+            return base_template.get_format_prompt(method, num_samplings, probability_definition, probability_tuning)
 
 
 #############################Prompt factory###################################

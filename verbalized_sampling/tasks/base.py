@@ -33,6 +33,7 @@ class BaseTask(ABC):
                  all_possible: bool = False,
                  strict_json: bool = False,
                  probability_definition: str = "default",
+                 probability_tuning: float = -1,
                  prompt_path: str = None,
                  ):
         self.model = model
@@ -46,6 +47,7 @@ class BaseTask(ABC):
         self.all_possible = all_possible
         self.strict_json = strict_json
         self.probability_definition = probability_definition
+        self.probability_tuning = probability_tuning
         self.max_turns = num_samples
         self.prompt_path = prompt_path
         
@@ -63,6 +65,7 @@ class BaseTask(ABC):
             all_possible=self.all_possible,
             strict_json=self.strict_json,
             probability_definition=self.probability_definition,
+            probability_tuning=self.probability_tuning,
         )
 
 
