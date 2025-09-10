@@ -523,27 +523,33 @@ def draw_combined_metrics_plot(
                 means.append(0)
         return means
 
-    def get_means_std(metric_dict, metric_key):
-        means = []
-        stds = []
+    def get_means_std(metric_dict, metric_keys):
+        """
+        Directly read from metric_dict based on metric_keys (list of two: [mean_key, std_key])
+        and return two lists: means and stds for each method.
+        """
+        means, stds = [], []
+        mean_key, std_key = metric_keys
         for m in methods:
             if m in metric_dict:
-                # Calculate mean and std across all models for this method
-                all_values = []
+                # Directly get mean and std (average across all models if needed)
+                mean_vals = []
+                std_vals = []
                 for model_name in all_model_names:
                     if model_name in metric_dict[m]:
+                        mean_data = metric_dict[m][model_name].get(mean_key, [])
+                        std_data = metric_dict[m][model_name].get(std_key, [])
                         # Handle both list and single value cases
-                        metric_data = metric_dict[m][model_name].get(metric_key, [])
-                        if isinstance(metric_data, list):
-                            all_values.extend(metric_data)
+                        if isinstance(mean_data, list):
+                            mean_vals.extend(mean_data)
                         else:
-                            all_values.append(metric_data)
-                if all_values:
-                    means.append(np.mean(all_values))
-                    stds.append(np.std(all_values))
-                else:
-                    means.append(0)
-                    stds.append(0)
+                            mean_vals.append(mean_data)
+                        if isinstance(std_data, list):
+                            std_vals.extend(std_data)
+                        else:
+                            std_vals.append(std_data)
+                means.append(np.mean(mean_vals) if mean_vals else 0)
+                stds.append(np.mean(std_vals) if std_vals else 0)
             else:
                 means.append(0)
                 stds.append(0)
@@ -551,8 +557,9 @@ def draw_combined_metrics_plot(
 
     # Get data for each metric
     ir_means = get_means(metrics_values, 'avg_ir_rate')
-    distinct_means, distinct_stds = get_means_std(metrics_values, 'avg_distinct_n')
-    diversity_means, diversity_stds = get_means_std(metrics_values, 'avg_diversity')
+    distinct_means, distinct_stds = get_means_std(metrics_values, ['avg_distinct_n', "std_distinct_n"])
+    diversity_means, diversity_stds = get_means_std(metrics_values, ['avg_diversity', "std_diversity"])
+    # print(diversity_means, diversity_stds)
 
     # For cosine similarity, only plot for direct, sequence, vs_standard
     cos_methods = ["direct", "sequence", "vs_standard"]
@@ -637,10 +644,11 @@ def draw_combined_metrics_plot(
     # (c) Semantic Diversity
     ax = axes[1, 0]
     bars = ax.bar(
-        range(len(methods)), diversity_means,
+        range(len(methods)), diversity_means, yerr=diversity_stds,
         color=[colors[m] for m in methods],
         edgecolor=[edge_colors[m] for m in methods],
-        alpha=0.9
+        alpha=0.9,
+        capsize=5
     )
     ax.set_ylabel('Semantic Diversity', fontweight='bold')
     ax.set_title('Semantic Diversity ($\\uparrow$)', fontweight='bold', pad=20)
@@ -649,10 +657,10 @@ def draw_combined_metrics_plot(
     ax.tick_params(axis='y', labelsize=24)
     ax.grid(axis='y', linestyle='--', alpha=0.3)
     ax.set_ylim(0, 0.4)
-    for bar, mean in zip(bars, diversity_means):
+    for bar, mean, std in zip(bars, diversity_means, diversity_stds):
         ax.text(
             bar.get_x() + bar.get_width()/2., 
-            mean + 0.001, 
+            mean + std + 0.001, 
             f'{mean:.2f}',
             ha='center', va='bottom', fontweight='bold'
         )
@@ -688,9 +696,9 @@ def draw_combined_metrics_plot(
     if save_path is not None:
         plt.savefig(save_path, bbox_inches='tight')
     else:
-        plt.savefig("latex/qualitative_tasks/synthetic_data_combined_metrics.pdf", bbox_inches='tight')
+        plt.savefig("latex/qualitative_tasks/synthetic_data_combined_metrics_1000.pdf", bbox_inches='tight')
     plt.close()
-    print(f"✓ Saved combined metrics plot to synthetic_data_combined_metrics.pdf")
+    # print(f"✓ Saved combined metrics plot to synthetic_data_combined_metrics.pdf")
 
 
 def debug_print_data_structure(metrics_values, all_model_names):
@@ -771,7 +779,7 @@ def read_metrics_values(folder, task_name, all_model_names, all_metrics):
 def main():
     folder_1 = "method_results_lcb"
     task_name_1 = "livecodebench"
-    folder_2 = "method_results_gsm8k"
+    folder_2 = "method_results_gsm8k_1000"
     task_name_2 = "gsm8k"
 
     all_model_names = [
@@ -786,7 +794,7 @@ def main():
     ]
     
     # Define the four metrics we want to analyze
-    metrics = ["avg_diversity", "avg_distinct_n", "avg_ir_rate"]
+    metrics = ["avg_diversity", "avg_distinct_n", "avg_ir_rate", "std_diversity", "std_distinct_n", "std_ir_rate"]
     
     # Only keep these metrics for plotting
     plot_metrics = ["avg_diversity", "avg_distinct_n", "avg_ir_rate"]

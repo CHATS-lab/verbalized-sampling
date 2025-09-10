@@ -230,58 +230,51 @@ class PromptFactory:
         """Get prompts for the GSM8K task."""
         user_prompts = f"""Generate a grade school math word problem that involves a sequence of basic arithmetic calculations (addition, subtraction, multiplication, division).
         A bright middle school student should be able to solve the problem. The difficulty of the problem should be similar to typical middle school math problems.
-        
-        For the problem:
-        - Specify the question.
-        - Then provide a brief reasoning and the numerical answer.
-        - The answer should be given after four hash marks (####) at the end of the reasoning. The answer should be a number.
 
         Format the generated problem as follows:
         Question: [question]
-        Answer: [reasoning and answer, ending with #### [numerical answer]]
-
-        Only include the question and answer in your response, and always begin your response with the question.
         """
         return [user_prompts]
     
-    @staticmethod
-    def get_livecodebench_task_prompts(num_icl_example: int, random_seed: int) -> List[str]:
-        """Get prompts for generating synthetic LiveCodeBench-style coding problems."""
-        user_prompt = f"""Generate a programming problem inspired by competitive programming platforms such as LeetCode, AtCoder, and CodeForces.
-        The problem should be self-contained, clearly describing the task, inputs, outputs, and constraints.
-        Given the input, the answer of the problem should be solvable using logical step-by-step reasoning without executing the code.
-        The difficulty should be similar to typical coding interview or algorithm challenges.
+    # @staticmethod
+    # def get_livecodebench_task_prompts(num_icl_example: int, random_seed: int) -> List[str]:
+    #     """Get prompts for generating synthetic LiveCodeBench-style coding problems."""
+    #     user_prompt = f"""Generate a programming problem inspired by competitive programming platforms such as LeetCode, AtCoder, and CodeForces.
+    #     The problem should be self-contained, clearly describing the task, inputs, outputs, and constraints.
+    #     Given the input, the answer of the problem should be solvable using logical step-by-step reasoning without executing the code.
+    #     The difficulty should be similar to typical coding interview or algorithm challenges.
 
-        For the problem, provide:
-        - Question: A natural language description of the programming task.
-        - Test Input: The exact input data for the task.
-        - Reasoning: A concise, ordered explanation of how to get the result from the input.
-        - Answer: The final output value.
+    #     For the problem, provide:
+    #     - Question: A natural language description of the programming task.
+    #     - Test Input: The exact input data for the task.
+    #     - Reasoning: A concise, ordered explanation of how to get the result from the input.
+    #     - Answer: The final output value.
 
-        Format exactly as follows:
-        "Question:
-        [question]
-        Test Input:
-        [test_input]
-        Reasoning:
-        [reasoning]
-        Answer:
-        [answer]"
+    #     Format exactly as follows:
+    #     "Question:
+    #     [question]
+    #     Test Input:
+    #     [test_input]
+    #     Reasoning:
+    #     [reasoning]
+    #     Answer:
+    #     [answer]"
 
-        Make sure to only provide only the question, test input, reasoning, and answer. Start with the question."""
-        return [user_prompt]
+    #     Make sure to only provide only the question, test input, reasoning, and answer. Start with the question."""
+    #     return [user_prompt]
     
     @staticmethod
     def get_prompt(
-        task: str, 
-        method: Method, 
+        task: str,
+        method: "Method",  # Move non-default argument before default arguments
+        prompt_path: str = None,
         num_samplings: int = 5,
         num_prompts: int = None,
         num_samples_per_prompt: int = 2,
         random_seed: int = None,
         target_words: int = 200,
         **kwargs,
-    ) -> List[Union[List[Dict[str, str]], str]]:
+    ) -> List["Union[List[Dict[str, str]], str]"]:
         """Get a prompt for a specific task and format.
         
         Returns:
@@ -294,11 +287,14 @@ class PromptFactory:
             prompts = PromptFactory.get_gsm8k_task_prompts(num_icl_example=3, random_seed=random_seed)
         elif task == "livecodebench":
             prompts = PromptFactory.get_livecodebench_task_prompts(num_icl_example=3, random_seed=random_seed)
-        elif (task == "poem") and (method == Method.DIRECT_BASE): # Handle poem task with clean data
-            prompt_path = "data/poem_titles.txt"
-        else:
-            prompt_path = f"data/{task}.txt"
+        elif prompt_path is None:
+            # Only choose defaults if user didn't provide a prompt_path
+            if (task == "poem") and (method == Method.DIRECT_BASE):
+                prompt_path = "data/poem_titles.txt"
+            else:
+                prompt_path = f"data/{task}.txt"
 
+        print("Prompt path: ", prompt_path)
         # Only try to read from file if we don't have prompts from the special task methods
         if not prompts:
             if not os.path.exists(prompt_path):

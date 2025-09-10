@@ -1,0 +1,13 @@
+Generate a grade school math word problem that involves a sequence of basic arithmetic calculations (addition, subtraction, multiplication, division).
+        A bright middle school student should be able to solve the problem. The difficulty of the problem should be similar to typical middle school math problems.
+        
+        For the problem:
+        - Specify the question.
+        - Then provide a brief reasoning and the numerical answer.
+        - The answer should be given after four hash marks (####) at the end of the reasoning. The answer should be a number.
+
+        Format the generated problem as follows:
+        Question: [question]
+        Answer: [reasoning and answer, ending with #### [numerical answer]]
+
+        Only include the question and answer in your response, and always begin your response with the question.

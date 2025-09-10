@@ -27,6 +27,7 @@ class ExperimentConfig:
     task: Task
     method: Method
     model_name: str
+    prompt_path: Optional[str] = None
     temperature: float = 0.7
     top_p: float = 0.9
     num_responses: int = 10
@@ -46,6 +47,7 @@ class EvaluationConfig:
     """Configuration for evaluation metrics."""
     metrics: List[str]
     num_workers: int = 128
+    num_responses_per_prompt: int = 50
 
 @dataclass
 class PipelineConfig:
@@ -224,6 +226,7 @@ class Pipeline:
                     target_words=exp_config.target_words,
                     probability_definition=exp_config.probability_definition,  # Pass to task for prompt generation
                     probability_tuning=exp_config.probability_tuning,
+                    prompt_path=exp_config.prompt_path,
                     **task_kwargs
                 )
 
@@ -303,19 +306,27 @@ class Pipeline:
                     progress.console.print(f"📊 Evaluating: {exp_name}/{metric}")
                     
                     try:
-                        # Get evaluator and run evaluation
-                        evaluator = get_evaluator(
-                            metric, 
-                            num_workers=self.config.evaluation.num_workers,
-                        )
+                        if metric in ("response_count", "synthetic_data_quality", "diversity"):
+                            num_prompts = len(set(prompts))
+                            num_responses_per_prompt = self.config.evaluation.num_responses_per_prompt
+                            print(f"Num prompts: {num_prompts}, Num responses per prompt: {num_responses_per_prompt}")
+                            evaluator = get_evaluator(
+                                metric, 
+                                num_workers=self.config.evaluation.num_workers,
+                                num_responses_per_prompt=num_responses_per_prompt
+                            )
+                        else:
+                            evaluator = get_evaluator(
+                                metric, 
+                                num_workers=self.config.evaluation.num_workers,
+                            )        
 
                         # print("Evaluation Prompts: ", prompts)
                         # print("Evaluation Responses: ", responses)
                         
                         result = evaluator.evaluate(
                             prompts,
-                            responses,
-                            metadata={"experiment": exp_name, "metric": metric}
+                            responses
                         )
                         
                         # Save results
@@ -724,6 +735,7 @@ def run_pipeline_cli(
             task=Task(exp_data['task']),
             method=Method(exp_data['method']),
             model_name=exp_data['model_name'],
+            prompt_path=exp_data.get('prompt_path'),
             temperature=exp_data.get('temperature', 0.7),
             top_p=exp_data.get('top_p', 0.9),
             num_responses=exp_data.get('num_responses', 10),
@@ -736,7 +748,8 @@ def run_pipeline_cli(
     
     evaluation_config = EvaluationConfig(
         metrics=config_data['evaluation']['metrics'],
-        num_workers=config_data['evaluation'].get('num_workers', 128)
+        num_workers=config_data['evaluation'].get('num_workers', 128),
+        num_responses_per_prompt=config_data['evaluation'].get('num_responses_per_prompt', 100)
     )
     
     # Handle rerun override
@@ -807,7 +820,7 @@ def run_quick_comparison(
             **kwargs
         ))
     
-    evaluation_config = EvaluationConfig(metrics=metrics)
+    evaluation_config = EvaluationConfig(metrics=metrics, num_responses_per_prompt=num_responses_per_prompt)
     
     pipeline_config = PipelineConfig(
         experiments=experiments,
