@@ -5,6 +5,7 @@ import random
 import numpy as np
 from datasets import load_dataset
 from pydantic import BaseModel
+import json
 from .prompt import (
     TaskType,
     PromptTemplateFactory,
@@ -294,6 +295,10 @@ class PromptFactory:
             prompts = PromptFactory.get_gsm8k_task_prompts(num_icl_example=3, random_seed=random_seed)
         elif task == "livecodebench":
             prompts = PromptFactory.get_livecodebench_task_prompts(num_icl_example=3, random_seed=random_seed)
+        elif task == "synthetic_negative":
+            with open("data/synthetic_negative_new.jsonl", "r") as f:
+                for line in f:
+                    prompts.append(json.loads(line)["prompt"])
         elif (task == "poem") and (method == Method.DIRECT_BASE): # Handle poem task with clean data
             prompt_path = "data/poem_titles.txt"
         else:

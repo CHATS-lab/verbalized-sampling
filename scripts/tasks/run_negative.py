@@ -19,7 +19,7 @@ def create_method_experiments(
         'task': task,
         'model_name': model_name,
         'num_responses': 10,
-        'num_prompts': 50, # maximum 100
+        'num_prompts': 100, # maximum 100
         'target_words': 0, 
         'temperature': temperature,
         'top_p': top_p,
@@ -83,11 +83,11 @@ if __name__ == "__main__":
     # Test multi-turn and JSON mode variations
     num_samples = 5
     methods = [
-        # {
-        #     'method': Method.DIRECT,
-        #     'strict_json': False,
-        #     'num_samples': 1,
-        # },
+        {
+            'method': Method.DIRECT,
+            'strict_json': False,
+            'num_samples': 1,
+        },
         # {
         #     'method': Method.DIRECT_COT,
         #     'strict_json': True,
@@ -103,30 +103,30 @@ if __name__ == "__main__":
             'strict_json': True,
             'num_samples': num_samples,
         },
-        # {
-        #     'method': Method.STRUCTURE_WITH_PROB,
-        #     'strict_json': True,
-        #     'num_samples': num_samples,
-        # },
+        {
+            'method': Method.STRUCTURE_WITH_PROB,
+            'strict_json': True,
+            'num_samples': num_samples,
+        },
         # {
         #     'method': Method.CHAIN_OF_THOUGHT,
         #     'strict_json': True,
         #     'num_samples': num_samples,
         # },
-        # {
-        #     'method': Method.COMBINED,
-        #     'strict_json': True,
-        #     'num_samples': num_samples,
-        #     'num_samples_per_prompt': 3,
-        # }
+        {
+            'method': Method.COMBINED,
+            'strict_json': True,
+            'num_samples': num_samples,
+            'num_samples_per_prompt': 2,
+        }
     ]
 
 
 
     models = [
         # "gpt-4.1-mini",
-        "gpt-4.1",
-        # "gemini-2.5-flash",
+        # "gpt-4.1",
+        "gemini-2.5-flash",
         # "gemini-2.5-pro",
         # "llama-3.1-70b-instruct",
         # "claude-4-sonnet",
