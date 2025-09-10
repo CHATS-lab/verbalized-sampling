@@ -234,32 +234,24 @@ class PromptFactory:
         """
         return [user_prompts]
     
-    # @staticmethod
-    # def get_livecodebench_task_prompts(num_icl_example: int, random_seed: int) -> List[str]:
-    #     """Get prompts for generating synthetic LiveCodeBench-style coding problems."""
-    #     user_prompt = f"""Generate a programming problem inspired by competitive programming platforms such as LeetCode, AtCoder, and CodeForces.
-    #     The problem should be self-contained, clearly describing the task, inputs, outputs, and constraints.
-    #     Given the input, the answer of the problem should be solvable using logical step-by-step reasoning without executing the code.
-    #     The difficulty should be similar to typical coding interview or algorithm challenges.
+    @staticmethod
+    def get_livecodebench_task_prompts(num_icl_example: int, random_seed: int) -> List[str]:
+        """Get prompts for generating synthetic LiveCodeBench-style coding problems."""
+        user_prompt = f"""Generate a programming problem inspired by competitive programming platforms such as LeetCode, AtCoder, and CodeForces.
+The problem should be self-contained, clearly describing the task, inputs, and constraints.
+The difficulty should be similar to typical coding interview or algorithm challenges.
 
-    #     For the problem, provide:
-    #     - Question: A natural language description of the programming task.
-    #     - Test Input: The exact input data for the task.
-    #     - Reasoning: A concise, ordered explanation of how to get the result from the input.
-    #     - Answer: The final output value.
+For the problem, provide:
+Question: A natural language description of the programming task.
+Test Input: The exact input data for the task.
 
-    #     Format exactly as follows:
-    #     "Question:
-    #     [question]
-    #     Test Input:
-    #     [test_input]
-    #     Reasoning:
-    #     [reasoning]
-    #     Answer:
-    #     [answer]"
-
-    #     Make sure to only provide only the question, test input, reasoning, and answer. Start with the question."""
-    #     return [user_prompt]
+Format the output exactly as follows:
+Question:  
+[question]  
+Test Input:  
+[test_input]  
+"""
+        return [user_prompt]
     
     @staticmethod
     def get_prompt(

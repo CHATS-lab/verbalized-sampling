@@ -17,9 +17,9 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 500,
+        'num_responses': 50,
         'num_prompts': 1, # current total: 300; total: 4326
-        'target_words': 0, 
+        'target_words': 100, 
         'temperature': temperature,
         'top_p': top_p,
         'random_seed': 42,
@@ -76,18 +76,18 @@ def run_method_tests(
 
 
 if __name__ == "__main__":
-    num_samples = 10
+    num_samples = 5
     methods = [
         {
             'method': Method.DIRECT,
             'strict_json': False,
             'num_samples': 1,
         },
-        {
-            'method': Method.DIRECT_COT,
-            'strict_json': False,
-            'num_samples': 1,
-        },
+        # {
+        #     'method': Method.DIRECT_COT,
+        #     'strict_json': False,
+        #     'num_samples': 1,
+        # },
         {
             'method': Method.MULTI_TURN,
             'strict_json': False,
@@ -102,17 +102,20 @@ if __name__ == "__main__":
             'method': Method.STRUCTURE_WITH_PROB,
             'strict_json': True,
             'num_samples': num_samples,
+            'probability_definition': "explicit"
         },
-        {
-            'method': Method.CHAIN_OF_THOUGHT,
-            'strict_json': True,
-            'num_samples': num_samples,
-        },
+        # {
+        #     'method': Method.CHAIN_OF_THOUGHT,
+        #     'strict_json': True,
+        #     'num_samples': num_samples,
+        #     'probability_definition': "explicit"
+        # },
         {
             'method': Method.COMBINED,
             'strict_json': True,
             'num_samples': num_samples,
-            'num_samples_per_prompt': 5,
+            'num_samples_per_prompt': 3,
+            'probability_definition': "perplexity"
         }
     ]
 
@@ -136,7 +139,7 @@ if __name__ == "__main__":
             metrics=["diversity", "ngram", "synthetic_data_quality"],
             temperature=0.7,
             top_p=1.0,
-            output_dir="method_results_lcb",
+            output_dir="method_results_lcb_1000",
             num_workers=1 if any(x in model_basename for x in ["claude", "gemini"]) else 16,
         )
 

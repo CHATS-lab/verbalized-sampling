@@ -189,7 +189,7 @@ def calculate_stats(values: List[float], num_responses_per_prompt: Optional[int]
             "count": 0
         }
     
-    print("Counts: ", len(values), num_responses_per_prompt)
+    # print("Counts: ", len(values), num_responses_per_prompt)
     return {
         "mean": float(np.sum(values) / num_responses_per_prompt) if num_responses_per_prompt else float(np.mean(values)),
         "std": float(np.std(values, ddof=1)) if len(values) > 1 else 0.0,

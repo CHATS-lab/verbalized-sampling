@@ -32,8 +32,8 @@ def create_method_experiments(
             'name': name,
             'task': task,
             'model_name': model_name,
-            'num_responses': 500, # 500
-            'num_prompts': 5, # 5
+            'num_responses': 40, # 500
+            'num_prompts': 40, # 5
             'target_words': 0, 
             'temperature': temperature,
             'top_p': top_p,
@@ -101,23 +101,23 @@ if __name__ == "__main__":
 
     # Build methods list by iterating all probability definitions
     methods = [
-        {
-            'method': Method.STRUCTURE_WITH_PROB,
-            'strict_json': True,
-            'num_samples': num_samples,
-        }
         # {
-        #     'method': Method.COMBINED,
+        #     'method': Method.STRUCTURE_WITH_PROB,
         #     'strict_json': True,
         #     'num_samples': num_samples,
-        #     'num_samples_per_prompt': 10,
         # }
+        {
+            'method': Method.COMBINED,
+            'strict_json': True,
+            'num_samples': num_samples,
+            'num_samples_per_prompt': 10,
+        }
     ]
     # If you want to add other methods, you can append to the list here
 
     models = [
         # "gpt-4.1-mini",
-        # "gpt-4.1",
+        "gpt-4.1",
         "gemini-2.5-flash",
         # "gemini-2.5-pro",
         # "llama-3.1-70b-instruct",
@@ -141,7 +141,7 @@ if __name__ == "__main__":
                 methods=methods,
                 probability_definition=prob_def,
                 metrics=["response_count"],
-                temperature=0.7,
+                temperature=0.9,
                 top_p=1.0,
                 output_dir="ablation_bias_task",
                 num_workers=16 if any(x in model_basename for x in ["claude", "gemini"]) else 32,

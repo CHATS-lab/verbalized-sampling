@@ -90,12 +90,16 @@ class LiveCodeBenchEvaluator():
         if "Question:" in raw_response:
             parsed = raw_response.split("Question:")[1]
             if "Test Input:" in parsed:
-                return parsed.split("Test Input:")[0].strip()
+                question = parsed.split("Test Input:")[0].strip()
             elif "Answer:" in parsed:
-                return parsed.split("Answer:")[0].strip()
+                question = parsed.split("Answer:")[0].strip()
             else:
-                return parsed.strip()
-        return raw_response.strip()
+                question = parsed.strip()
+        else:
+            question = raw_response.strip()
+        # Remove all blank lines (空行) and join the rest with a space
+        lines = [line.strip() for line in question.splitlines() if line.strip()]
+        return ' '.join(lines)
     
     def get_quality_prompt(self, data_point: str, ground_truth_placement: int = 1, num_examples_to_choose_from: int = 4) -> Dict[str, str]:
         random.seed(hash(data_point) % 2**32)  # Deterministic randomness
@@ -110,6 +114,7 @@ class LiveCodeBenchEvaluator():
                 questions_compiled += f"Question {i}: {random_samples[real_example_idx]}\n"
                 real_example_idx += 1
 
+        # print(questions_compiled)
         return {
             "system": get_system_prompt(num_examples_to_choose_from),
             "user": get_user_prompt(num_examples_to_choose_from, questions_compiled),
