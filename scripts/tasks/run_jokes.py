@@ -19,8 +19,8 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 50, # 30
-        'num_prompts': 1, # 100
+        'num_responses': 30, # 30
+        'num_prompts': 100, # 100
         'target_words': 0,
         'temperature': 0.7,
         'random_seed': 42,
@@ -87,38 +87,38 @@ if __name__ == "__main__":
             'strict_json': False,
             'num_samples': 1,
         },
-        # {
-        #     'method': Method.SEQUENCE,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
-        # {
-        #     'method': Method.MULTI_TURN,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
-        # {
-        #     'method': Method.STRUCTURE_WITH_PROB,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
+        {
+            'method': Method.SEQUENCE,
+            'strict_json': True,
+            'num_samples': 5,
+        },
+        {
+            'method': Method.MULTI_TURN,
+            'strict_json': True,
+            'num_samples': 5,
+        },
+        {
+            'method': Method.STRUCTURE_WITH_PROB,
+            'strict_json': True,
+            'num_samples': 5,
+        },
         {
             'method': Method.CHAIN_OF_THOUGHT,
             'strict_json': True,
             'num_samples': 5,
         },
-        # {
-        #     'method': Method.COMBINED,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        #     'num_samples_per_prompt': 2,
-        # }
+        {
+            'method': Method.COMBINED,
+            'strict_json': True,
+            'num_samples': 5,
+            'num_samples_per_prompt': 2,
+        }
     ]
      
     models = [
         "openai/gpt-4.1",
         # "openai/gpt-4.1-mini",
-        # "google/gemini-2.5-flash",
+        "google/gemini-2.5-flash",
         # "anthropic/claude-4-sonnet",
         # "anthropic/claude-3.7-sonnet",
         # "google/gemini-2.5-pro",
@@ -133,58 +133,7 @@ if __name__ == "__main__":
             task=Task.JOKE,
             model_name=model,
             methods=methods,
-            metrics=["diversity"],
-            output_dir=f"joke_experiments_test_1/{model_basename}",
+            metrics=["diversity", "joke_quality", "ngram"],
+            output_dir=f"joke_experiments_final/{model_basename}",
             num_workers=32 if "claude" in model_basename else 128,
         )
-    # run_method_tests(
-    #     task=Task.POEM,
-    #     # model_name="openai/gpt-4.1",
-    #     model_name="anthropic/claude-4-sonnet",
-    #     methods=methods,
-    #     metrics=["diversity", "ngram", "ttct", "creative_writing_v3"],
-    #     output_dir="method_results_poem/claude_4_sonnet",
-    # )
-    # run_method_tests(
-    #     task=Task.POEM,
-    #     model_name="openai/gpt-4.1",
-    #     # model_name="anthropic/claude-4-sonnet",
-    #     methods=methods,
-    #     metrics=["diversity", "ngram", "ttct", "creative_writing_v3"],
-    #     output_dir="method_results_poem/gpt_4_1",
-    # )
-    # run_method_tests(
-    #     task=Task.POEM,
-    #     model_name="google/gemini-2.5-pro",
-    #     methods=methods,
-    #     metrics=["diversity", "ngram", "ttct", "creative_writing_v3"],
-    #     output_dir="method_results_poem/gemini_2_5_pro",
-    # )
-    # run_method_tests(
-    #     task=Task.POEM,
-    #     model_name="deepseek/deepseek-r1-0528",
-    #     methods=methods,
-    #     metrics=["diversity", "ngram", "ttct", "creative_writing_v3"],
-    #     output_dir="method_results_poem/deepseek_r1_0528",
-    # )
-    # run_method_tests(
-    #     task=Task.POEM,
-    #     model_name="openai/o3",
-    #     methods=methods,
-    #     metrics=["diversity", "ngram", "ttct", "creative_writing_v3", "length"],
-    #     output_dir="method_results_poem/o3",
-    # ) 
-    # run_method_tests(
-    #     task=Task.POEM,
-    #     model_name="google/gemini-2.5-flash",
-    #     methods=methods,
-    #     metrics=["diversity", "ngram", "ttct", "creative_writing_v3", "length"],
-    #     output_dir="method_results_poem/gemini_2_5_flash_001",
-    # ) 
-    # run_method_tests(
-    #     task=Task.JOKE,
-    #     model_name="google/gemini-2.0-flash-001",
-    #     methods=methods,
-    #     metrics=["diversity", "ngram", "ttct"],
-    #     output_dir="method_results_jokes",
-    # )
