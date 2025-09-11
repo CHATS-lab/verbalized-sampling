@@ -57,4 +57,4 @@ def get_evaluator(metric: str, **kwargs):
     elif metric == "synthetic_data_quality":
         return SyntheticDataQualityEvaluator(**kwargs)
     else:
-        raise ValueError(f"Evaluator {metric} not found. Available evaluators: diversity, ttct, creativity_index, length, response_count, creative_writing_v3, ngram, factuality")
+        raise ValueError(f"Evaluator {metric} not found. Available evaluators: diversity, ttct, creativity_index, length, response_count, creative_writing_v3, ngram, factuality, joke_quality, synthetic_data_quality")

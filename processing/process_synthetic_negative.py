@@ -97,7 +97,7 @@ def main():
     parser.add_argument('input_file', type=str, 
                        help='Path to the responses.jsonl file to process')
     parser.add_argument('--positive_dataset', type=str, 
-                       default='simonycl/gsm8k_training_positive_direct_1k_transformed',
+                       default='simonycl/gsm8k_training_positive_1k_transformed',
                        help='HuggingFace positive dataset name')
     parser.add_argument('--output_dataset', type=str, required=True,
                        help='Output HuggingFace dataset name (under simonycl/)')
@@ -121,7 +121,7 @@ def main():
     filtered_records = []
     for record in all_records:
         if record['has_valid_format'] and record['answers_differ'] is True:
-            output_text = record['output']
+            output_text = record['output'].strip('\n')
             output_text = output_text.split("####")[0].strip()
             output_answer = record['output_answer']
             

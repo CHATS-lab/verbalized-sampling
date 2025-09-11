@@ -1,264 +1,213 @@
+# Joke Quality Evaluator
+# LLM-as-Judge evaluation for joke quality
+
 from typing import Dict, List, Any, Optional
 import json
+import re
 from .base import BaseEvaluator, EvalResult
 from verbalized_sampling.llms import get_model
-from pydantic import BaseModel
-import os
-from openai import OpenAI
 
-class FunninessCriteria(BaseModel):
-    score: int
-    justification: str
+SCORE_RANGE_MIN = 0
+SCORE_RANGE_MAX = 5
 
-class ClevernessCriteria(BaseModel):
-    score: int
-    justification: str
+JUDGE_PROMPT = """You will receive:
+1. The original joke prompt (may or may not contain a topic).
+2. The model-generated joke.
 
-class OriginalityCriteria(BaseModel):
-    score: int
-    justification: str
+Your task is to evaluate the joke based on three qualitative metrics.
 
-class StructureCriteria(BaseModel):
-    score: int
-    justification: str
+Evaluation rules:
+- If the prompt includes a topic (e.g., "octopus," "coffee"), check whether the joke is on-topic and score Relevance from 0–5.
+- If the prompt does not include a topic (e.g., "Tell me a joke"), automatically assign Relevance = 5.
+- A good joke should use at least one recognizable comedic device (pun, irony, exaggeration, reversal, absurd logic, etc.).
+- Assign scores on a 0–5 scale (0 = very poor, 5 = excellent) for each dimension:
+  - Relevance (0–5): How well does the joke address the topic (or 5 if no topic given).
+  - Comedic Device (0–5): How clearly does the joke use a humor mechanism.
+  - Humor Quality (0–5): How funny, witty, or clever is the joke overall.
+
+Output format:
+Return a JSON object in the following format:
+{{
+  "Relevance": <int>,
+  "Comedic Device": <int>,
+  "Humor Quality": <int>
+}}
+
+Input format:
+Prompt: {prompt}
+Generated joke: {joke}"""
+
+
+def normalize_score(score: float, min_val: float = SCORE_RANGE_MIN, max_val: float = SCORE_RANGE_MAX) -> float:
+    """Normalize score from 0-5 range to 0-1 range."""
+    # First clamp the score to be within the original range
+    clamped_score = max(min_val, min(max_val, score))
+    # Then map from 0-5 to 0-1
+    normalized_score = clamped_score / max_val
+    return normalized_score
+
+
+def parse_judge_scores_joke(judge_model_response: str) -> Dict[str, float]:
+    """Parse judge scores from the model response."""
+    scores = {}
     
-class JokeQualityCriteria(BaseModel):
-    funniness: FunninessCriteria
-    cleverness: ClevernessCriteria
-    originality: OriginalityCriteria
-    structure: StructureCriteria
+    # Try to parse as JSON first
+    try:
+        # Look for JSON object in the response
+        json_match = re.search(r'\{[^}]*\}', judge_model_response)
+        if json_match:
+            json_str = json_match.group()
+            parsed = json.loads(json_str)
+            
+            # Map the expected keys and normalize scores
+            expected_keys = ["Relevance", "Comedic Device", "Humor Quality"]
+            for key in expected_keys:
+                if key in parsed:
+                    try:
+                        score = float(parsed[key])
+                        normalized_score = normalize_score(score)
+                        # Normalize key name for consistency
+                        normalized_key = key.lower().replace(' ', '_')
+                        scores[normalized_key] = normalized_score
+                    except (ValueError, TypeError):
+                        continue
+            
+            return scores
+    except json.JSONDecodeError:
+        pass
     
+    # Fallback: parse using regex patterns
+    patterns = [
+        r'(?:Relevance|relevance).*?(\d+(?:\.\d+)?)',
+        r'(?:Comedic Device|comedic_device|comedic device).*?(\d+(?:\.\d+)?)', 
+        r'(?:Humor Quality|humor_quality|humor quality).*?(\d+(?:\.\d+)?)'
+    ]
+    
+    keys = ['relevance', 'comedic_device', 'humor_quality']
+    
+    for i, pattern in enumerate(patterns):
+        match = re.search(pattern, judge_model_response, re.IGNORECASE)
+        if match:
+            try:
+                score = float(match.group(1))
+                normalized_score = normalize_score(score)
+                scores[keys[i]] = normalized_score
+            except (ValueError, TypeError):
+                continue
+    
+    return scores
+
+
 class JokeQualityEvaluator(BaseEvaluator):
-    """Comprehensive joke quality evaluator using humor-specific criteria."""
+    """Evaluator for joke quality using LLM-as-Judge scoring on 3 key metrics."""
     
     instance_plot_metrics = [
-        ("funniness.score", "violin"),
-        ("cleverness.score", "violin"),
-        ("originality.score", "violin"),
-        ("structure.score", "violin"),
+        ("relevance", "violin"),
+        ("comedic_device", "violin"),
+        ("humor_quality", "violin"),
+        ("average_score", "violin")
     ]
-
+    
     aggregate_plot_metrics = [
-        "avg_funniness",
-        "avg_cleverness",
-        "avg_originality",
-        "avg_structure",
-        "avg_overall",
+        "avg_score",
     ]
     
     key_plot_metrics = [
-        ("avg_normalized_overall", "Joke Quality")
+        ("avg_score", "Joke Quality (LLM-as-Judge)"),
     ]
-
-    def __init__(self, judge_model: str = "gpt-4o", num_workers=64):
+    
+    def __init__(self, judge_model: str = "anthropic/claude-3.7-sonnet", num_workers: int = 16):
         super().__init__("joke_quality", num_workers=num_workers)
-        self.client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-        self.judge_model = judge_model
-
-    def parse_response(self, response) -> Dict[str, Any]:
-        """Parse the response from the Pydantic model into a dictionary format."""
-        parsed_response = {}
-        for criteria in ["funniness", "cleverness", "originality", "structure"]:
-            criteria_obj = getattr(response, criteria)
-            parsed_response[criteria] = {
-                "score": criteria_obj.score,
-                "justification": criteria_obj.justification
-            }
-        return parsed_response
-
-    def _chat_with_format(self, messages: List[Dict[str, str]]) -> List[Dict[str, Any]]:
-        completion = self.client.beta.chat.completions.parse(
-            model=self.judge_model,
-            messages=messages,
-            temperature=0.1,
-            response_format=JokeQualityCriteria,
-        )
-        message = completion.choices[0].message
-
-        if message.parsed:
-            parsed_response = self.parse_response(message.parsed)
-            return parsed_response
-        else:
-            raise ValueError(message.refusal)
+        self.judge_model = get_model(judge_model, method="direct", config={"temperature": 0.0})
         
-    def compute_instance_metric(self, prompt: Any, response: Dict) -> Dict[str, float]:
-        evaluation_prompt = self._create_evaluation_prompt(prompt, response)
-            
+    def compute_instance_metric(self, prompt: str, response: Dict) -> Dict[str, float]:
+        """Compute joke quality metrics for a single prompt-response pair."""
+        
+        # Create evaluation prompt using the rubric
+        evaluation_prompt = JUDGE_PROMPT.format(
+            prompt=prompt,
+            joke=response['text']
+        )
+        
         # Get evaluation from judge model
         messages = [{"role": "user", "content": evaluation_prompt}]
-        result = self._chat_with_format(messages)
-
-        try:
-            if isinstance(result, str):
-                result_in_schema = json.loads(result)
-            else:
-                result_in_schema = result
-        except json.JSONDecodeError:
-            print(f"Error: Failed to parse JSON response from judge model: {result}")
-            return None
-
-        # Calculate overall joke quality score as weighted average
-        # Weights prioritizing core humor elements:
-        # Funniness: 40%, Cleverness: 25%, Originality: 20%, Structure: 15%
-        weights = {
-            "funniness": 0.40,
-            "cleverness": 0.25,
-            "originality": 0.20,
-            "structure": 0.15
-        }
+        judge_response = self.judge_model._chat(messages)
         
-        weighted_score = sum(
-            result_in_schema[aspect]["score"] * weights[aspect]
-            for aspect in weights.keys()
-        )
+        if judge_response is None:
+            return {"average_score": 0.0}
+            
+        # Parse scores from judge response
+        scores = parse_judge_scores_joke(judge_response)
         
-        # Normalize to 0-1 range (since scores are 1-5)
-        normalized_score = weighted_score / 5
+        # Calculate and normalize average score
+        if scores:
+            avg_score = sum(scores.values()) / len(scores)
+            scores["average_score"] = avg_score
+        else:
+            scores["average_score"] = 0.0
         
-        result_in_schema["overall"] = {
-            "joke_quality_score": weighted_score,
-            "normalized_score": normalized_score
-        }
-
-        return result_in_schema
+        return scores
     
-    def _create_evaluation_prompt(self, prompt: str, response: str) -> str:
-        return f"""You are an expert comedy evaluator with deep knowledge of humor theory, joke mechanics, and what makes content genuinely funny. Evaluate the following joke response across four key dimensions of comedy quality.
-
-REQUEST PROMPT:
-{prompt}
-
-JOKE RESPONSE TO EVALUATE:
-{response}
-
-EVALUATION RUBRICS:
-
-## 1. FUNNINESS
-**Definition**: The core measure of humor - how likely this joke is to make people laugh or smile.
-
-**Scoring Criteria (1-5 scale)**:
-- **5 (Hilarious)**: Genuinely laugh-out-loud funny. Would make most people laugh or at least smile broadly. Strong comedic impact.
-- **4 (Very Funny)**: Clearly humorous with good comedic effect. Would elicit chuckles or smiles from most people.
-- **3 (Moderately Funny)**: Mildly amusing. Some people might find it funny, others might just appreciate the attempt.
-- **2 (Slightly Funny)**: Barely registers as humorous. Might get a polite smile but lacks real comedic impact.
-- **1 (Not Funny)**: Fails to be humorous. No comedic effect, may even be awkward or unfunny.
-
-**Evaluate**: Consider universal appeal, comedic timing, and whether it genuinely evokes laughter or amusement.
-
-## 2. CLEVERNESS
-**Definition**: The wit, intelligence, and sophistication demonstrated in the joke's construction and concept.
-
-**Scoring Criteria (1-5 scale)**:
-- **5 (Brilliant)**: Demonstrates exceptional wit, wordplay, or intellectual humor. Shows sophisticated understanding of language, concepts, or situations.
-- **4 (Very Clever)**: Shows good wit and intelligence. Clear evidence of thoughtful construction or clever observations.
-- **3 (Moderately Clever)**: Some clever elements but not consistently witty. Mix of smart and obvious humor.
-- **2 (Slightly Clever)**: Minimal wit or intelligence. Mostly obvious or simple humor with occasional clever moments.
-- **1 (Not Clever)**: Lacks wit or intelligence. Purely simplistic or obvious humor with no clever elements.
-
-**Evaluate**: Assess wordplay, puns, double meanings, cultural references, intellectual depth, and sophisticated humor techniques.
-
-## 3. ORIGINALITY
-**Definition**: How unique, fresh, and unexpected the joke is compared to common or overused jokes.
-
-**Scoring Criteria (1-5 scale)**:
-- **5 (Highly Original)**: Completely fresh and unexpected. Novel approach or concept that stands out from typical jokes.
-- **4 (Very Original)**: Mostly original with creative elements. Avoids common joke formats while being inventive.
-- **3 (Moderately Original)**: Mix of original and familiar elements. Some fresh aspects but may follow predictable patterns.
-- **2 (Slightly Original)**: Mostly familiar with minor variations. Based on common joke formats with small twists.
-- **1 (Not Original)**: Completely predictable or overused. Relies on tired tropes, clichés, or very common joke formats.
-
-**Evaluate**: Compare against typical jokes in this category, assess uniqueness of approach, and identify novel elements.
-
-## 4. STRUCTURE
-**Definition**: The technical quality of joke construction, including setup, punchline, timing, and delivery.
-
-**Scoring Criteria (1-5 scale)**:
-- **5 (Excellent Structure)**: Perfect setup and punchline. Excellent timing, clear delivery, and masterful joke mechanics.
-- **4 (Good Structure)**: Well-constructed with clear setup and effective punchline. Good timing and delivery.
-- **3 (Adequate Structure)**: Basic joke structure present but may have minor issues with timing or delivery.
-- **2 (Poor Structure)**: Weak structure with unclear setup or weak punchline. Timing or delivery issues affect impact.
-- **1 (No Structure)**: Lacks proper joke structure. Confusing, poorly timed, or missing key elements like setup or punchline.
-
-**Evaluate**: Analyze setup effectiveness, punchline strength, timing, brevity, and overall joke architecture.
-
-EVALUATION INSTRUCTIONS:
-1. Read the joke response carefully, considering both the prompt context and the humor attempt
-2. For each dimension, provide a score (1-5) with clear justification based on the criteria above
-3. Consider the target audience and context when evaluating appropriateness and effectiveness
-4. Be specific about what works and what doesn't in your justifications
-5. Calculate overall joke quality as weighted average:
-   - Funniness: 40% (most important)
-   - Cleverness: 25% (wit and intelligence)
-   - Originality: 20% (freshness and uniqueness)
-   - Structure: 15% (technical construction)
-
-Provide concrete examples from the joke to support your scores. Consider both the immediate comedic impact and the lasting impression.
-
-Return the output in JSON format with keys: "funniness", "cleverness", "originality", "structure". Each key must include:
-- 'score': the score (1-5)
-- 'justification': detailed justification for the score with specific examples
-
-Output ONLY the JSON object, no explanations or extra text."""
-
     def aggregate_metrics(self, instance_metrics: List[Dict[str, float]]) -> Dict[str, float]:
         """Aggregate instance-level metrics into overall metrics."""
+        # Filter out any empty metrics and remove debug fields
+        filtered_metrics = []
+        for metric in instance_metrics:
+            if metric:
+                # Create a copy without debug fields
+                clean_metric = {k: v for k, v in metric.items() if not k.startswith("_")}
+                if clean_metric:  # Only add if there are actual scores
+                    filtered_metrics.append(clean_metric)
         
-        if not instance_metrics:
-            return {
-                "funniness": 0.0, "std_funniness": 0.0,
-                "cleverness": 0.0, "std_cleverness": 0.0,
-                "originality": 0.0, "std_originality": 0.0,
-                "structure": 0.0, "std_structure": 0.0,
-                "overall": 0.0, "std_overall": 0.0,
-                "normalized_overall": 0.0, "std_normalized_overall": 0.0,
-            }
+        if not filtered_metrics:
+            return {}
         
         from .base import calculate_stats
         
-        # Extract values for each metric
-        funniness_values = [metric["funniness"]["score"] for metric in instance_metrics]
-        cleverness_values = [metric["cleverness"]["score"] for metric in instance_metrics]
-        originality_values = [metric["originality"]["score"] for metric in instance_metrics]
-        structure_values = [metric["structure"]["score"] for metric in instance_metrics]
-        overall_values = [metric["overall"]["joke_quality_score"] for metric in instance_metrics]
-        normalized_values = [metric["overall"]["normalized_score"] for metric in instance_metrics]
+        # Get all unique metric names across all instances
+        all_metric_names = set()
+        for metric in filtered_metrics:
+            all_metric_names.update(metric.keys())
         
-        # Calculate stats for each metric
-        funniness_stats = calculate_stats(funniness_values)
-        cleverness_stats = calculate_stats(cleverness_values)
-        originality_stats = calculate_stats(originality_values)
-        structure_stats = calculate_stats(structure_values)
-        overall_stats = calculate_stats(overall_values)
-        normalized_stats = calculate_stats(normalized_values)
+        # Calculate averages and std for each metric
+        aggregated = {}
+        for metric_name in all_metric_names:
+            values = [metric.get(metric_name, 0.0) for metric in filtered_metrics if metric_name in metric]
+            if values:
+                stats = calculate_stats(values)
+                # Normalize the aggregated average
+                avg_key = f"avg_{metric_name.lower().replace(' ', '_')}"
+                std_key = f"std_{metric_name.lower().replace(' ', '_')}"
+                aggregated[avg_key] = stats["mean"]
+                aggregated[std_key] = stats["std"]
+
+        if aggregated:  # Only calculate average if there are aggregated metrics
+            # Calculate overall average from the mean metrics (excluding std metrics)
+            mean_metrics = {k: v for k, v in aggregated.items() if k.startswith("avg_")}
+            if mean_metrics:
+                overall_stats = calculate_stats(list(mean_metrics.values()))
+                aggregated["avg_score"] = overall_stats["mean"]
+                aggregated["std_score"] = overall_stats["std"]
+            else:
+                aggregated["avg_score"] = 0.0
+                aggregated["std_score"] = 0.0
+        else:
+            aggregated["avg_score"] = 0.0
+            aggregated["std_score"] = 0.0
         
-        return {
-            # Means (backward compatible)
-            "avg_funniness": funniness_stats["mean"],
-            "avg_cleverness": cleverness_stats["mean"],
-            "avg_originality": originality_stats["mean"],
-            "avg_structure": structure_stats["mean"],
-            "avg_overall": overall_stats["mean"],
-            "avg_normalized_overall": normalized_stats["mean"],
-            
-            # Standard deviations
-            "std_funniness": funniness_stats["std"],
-            "std_cleverness": cleverness_stats["std"],
-            "std_originality": originality_stats["std"],
-            "std_structure": structure_stats["std"],
-            "std_overall": overall_stats["std"],
-            "std_normalized_overall": normalized_stats["std"],
-        }
+        return aggregated
     
-    def evaluate(self, prompts: List[str], responses: List[Dict], 
+    def evaluate(self, prompts: List[str], responses: List[str], 
                 metadata: Optional[Dict[str, Any]] = None) -> EvalResult:
-        """Evaluate jokes using comedy quality framework."""
+        """Evaluate joke quality responses."""
         if metadata is None:
             metadata = {}
             
         metadata.update({
-            "evaluation_framework": "Joke Quality Assessment",
-            "judge_model": self.judge_model,
-            "num_responses": len(responses)
+            "evaluation_framework": "Joke Quality LLM-as-Judge",
+            "judge_model": self.judge_model.model_name,
+            "num_responses": len(responses),
+            "score_range": f"{SCORE_RANGE_MIN}-{SCORE_RANGE_MAX}"
         })
         
         return super().evaluate(prompts, responses, metadata)
