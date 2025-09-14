@@ -47,12 +47,21 @@ class OpenRouterLLM(BaseLLM):
 
     def _chat(self, messages: List[Dict[str, str]]) -> str:
         """Basic chat functionality without structured response format."""
+        if "deepseek" in self.model_name:
+            provider_args = {
+                    "require_parameters": True,
+                    "only": ["fireworks"]
+                }
+        else:
+            provider_args = None
+            
         try:
             response = self.client.chat.completions.create(
                 model=self.model_name,
                 messages=messages,
                 temperature=self.config.get("temperature", 0.7),
                 top_p=self.config.get("top_p", 0.9),
+                provider=provider_args,
             )
             response = response.choices[0].message.content
             if response:
@@ -68,6 +77,14 @@ class OpenRouterLLM(BaseLLM):
         backoff = 1
         for i in range(tries):
             try:
+                if "deepseek" in self.model_name:
+                    provider_args = {
+                        "require_parameters": True,
+                        "only": ["fireworks"]
+                    }
+                else:
+                    provider_args = None
+                    
                 if isinstance(schema, BaseModel):
                     schema = schema.model_json_schema()
                 
@@ -78,7 +95,8 @@ class OpenRouterLLM(BaseLLM):
                     messages=messages,
                     temperature=self.config.get("temperature", 0.7),
                     top_p=self.config.get("top_p", 0.9),
-                    response_format=schema
+                    response_format=schema,
+                    provider=provider_args,
                 )
                 
                 if completion is None or not completion.choices:

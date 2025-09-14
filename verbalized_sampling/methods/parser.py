@@ -83,10 +83,11 @@ class ResponseParser:
         # print('RESPONSE: ', response)
 
         if isinstance(response, list):
-            return [{'text': item['response']} for item in response]
+            return [{'text': item['response'] if 'response' in item else item} for item in response]
         elif isinstance(response, dict):
             response_list = response["responses"]
-            return [{'text': item} for item in response_list]
+            return [{"text": item} for item in response_list]
+            # return [{'text': item['text'] if 'text' in item else item} for item in response_list]
         else:
             try:
                 # Try JSON parsing first (new format)

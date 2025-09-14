@@ -163,14 +163,12 @@ class CreativityPromptTemplate(BasePromptTemplate):
         if task_name == "poem":
             return f"""
 Write a poem inspired by the given line or phrase.{word_constraint}
-Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 
 Output ONLY the poem, with no explanations or extra text.
 """
         else:
             return f"""
 Generate a response to the input prompt.{word_constraint}
-Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 
 Output ONLY the response, with no explanations or extra text.
 """
@@ -187,14 +185,12 @@ Generate a response to the input prompt using chain-of-thought reasoning. The re
         word_constraint = f" Each response should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
 Generate {num_samplings} responses to the input prompt.{word_constraint}
-Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 """
     
     def get_standard_all_possible_prompt(self, target_words: int = 200, **kwargs) -> str:
         word_constraint = f" Each response should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
 Generate all possible responses to the input prompt.{word_constraint}
-Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 """
 
     def get_vs_cot_prompt(self, num_samplings: int = 5, target_words: int = 200, **kwargs) -> str:
