@@ -24,7 +24,7 @@ def create_method_experiments(
         'target_words': 0,
         'temperature': 0.7,
         'random_seed': 42,
-        # 'use_vllm': True,
+        # 'use_vllm': True,/
     }
 
     # story, target_words: 500, num_responses: 
@@ -83,42 +83,41 @@ if __name__ == "__main__":
     
     # Test multi-turn and JSON mode variations
     methods = [
-        # {
-        #     'method': Method.DIRECT,
-        #     'strict_json': False,
-        #     'num_samples': 1,
-        # },
-        # {
-        #     "method": Method.DIRECT_COT,
-        #     "strict_json": True,
-        #     "num_samples": 1,
-        # },
-        # {
-        #     'method': Method.SEQUENCE,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
-        # {
-        #     'method': Method.MULTI_TURN,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
-        # {
-        #     'method': Method.STRUCTURE_WITH_PROB,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
-        # {
-        #     'method': Method.CHAIN_OF_THOUGHT,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
+        {
+            'method': Method.DIRECT,
+            'strict_json': False,
+            'num_samples': 1,
+        },
+        {
+            "method": Method.DIRECT_COT,
+            "strict_json": True,
+            "num_samples": 1,
+        },
+        {
+            'method': Method.SEQUENCE,
+            'strict_json': True,
+            'num_samples': 5,
+        },
+        {
+            'method': Method.MULTI_TURN,
+            'strict_json': True,
+            'num_samples': 5,
+        },
+        {
+            'method': Method.STRUCTURE_WITH_PROB,
+            'strict_json': True,
+            'num_samples': 5,
+        },
+        {
+            'method': Method.CHAIN_OF_THOUGHT,
+            'strict_json': True,
+            'num_samples': 5,
+        },
         {
             'method': Method.COMBINED,
             'strict_json': True,
             'num_samples': 5,
             'num_samples_per_prompt': 2,
-            'probability_definition': "confidence"
         }
     ]
      
@@ -128,11 +127,11 @@ if __name__ == "__main__":
         # "google/gemini-2.5-flash",
         # "anthropic/claude-4-sonnet",
         # "anthropic/claude-3.7-sonnet",
+        "google/gemini-2.5-pro",
         # "openai/o3",
         # "deepseek/deepseek-r1-0528",
-        # "google/gemini-2.5-pro",
 
-        "Qwen/Qwen3-235B-A22B-Instruct-2507",
+        # "Qwen/Qwen3-235B-A22B-Instruct-2507",
         # "meta-llama/Llama-3.1-70B-Instruct"
         # "meta-llama/llama-3.1-70b-instruct"
         # "openai/o3",
@@ -143,7 +142,7 @@ if __name__ == "__main__":
             task=Task.JOKE,
             model_name=model,
             methods=methods,
-            metrics=["ngram", "diversity", "joke_quality"],
+            metrics=["ngram"],
             output_dir=f"generated_data/joke_experiments_final/{model_basename}",
             num_workers=16 if "claude" in model_basename else 128,
         )
