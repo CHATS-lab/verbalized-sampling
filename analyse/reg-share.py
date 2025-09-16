@@ -1,8 +1,5 @@
-import requests
-import requests_cache
 import random
 import json
-from datetime import timedelta
 import time
 import logging
 import os
@@ -16,15 +13,11 @@ from datasets import Dataset
 import statsmodels.api as sm
 from statsmodels.miscmodels.ordinal_model import OrderedModel
 import pandas as pd
+from openai import OpenAI
 
 logging.basicConfig(level=logging.INFO)
 
 logger = logging.getLogger(__name__)
-session = requests_cache.CachedSession(
-    'helpsteer_cache',
-    expire_after=timedelta(days=14),
-    allowable_methods=('GET', 'POST')
-)
 
 # HelpSteer contains 37,120 samples, each containing a prompt, a response as well as five human-annotated attributes of the response, each ranging between 0 and 4 where higher means better for each attribute.
 # These attributes are:
@@ -49,11 +42,19 @@ API_KEY = os.getenv("HYPERBOLIC_API_KEY", os.getenv("OPENAI_API_KEY", ""))
 API_BASE_URL = os.getenv("API_BASE_URL", "https://api.hyperbolic.xyz/v1")
 MODEL_NAME = os.getenv("MODEL_NAME", "meta-llama/Meta-Llama-3.1-405B")
 
+def create_client(api_base_url: str = None, api_key: str = None) -> OpenAI:
+    """Create OpenAI client with custom base URL and API key."""
+    return OpenAI(
+        api_key=api_key or API_KEY,
+        base_url=api_base_url or API_BASE_URL
+    )
+
 def measure_logprobs(query: str, response: str,
                     api_base_url: str = None,
                     model: str = None,
                     api_key: str = None,
-                    response_prefix: str = "Response") -> float:
+                    response_prefix: str = "Response",
+                    client: OpenAI = None) -> float:
     """
     Returns the average per-token logprob for a continuation of a prompt.
 
@@ -64,76 +65,76 @@ def measure_logprobs(query: str, response: str,
         model: Model name (defaults to env var or Llama-3.1-405B)
         api_key: API key (defaults to env vars)
         response_prefix: Prefix to look for in tokens (default: "Response")
+        client: Pre-initialized OpenAI client (optional, will create if not provided)
 
     Returns:
         Average log probability of response tokens
     """
 
-    # Use provided values or fall back to defaults
-    url = f"{api_base_url or API_BASE_URL}/completions"
-    model_name = model or MODEL_NAME
-    key = api_key or API_KEY
+    # Create client if not provided
+    if client is None:
+        client = create_client(api_base_url, api_key)
 
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {key}",
-    }
+    model_name = model or MODEL_NAME
 
     full_prompt = f"""{query}
 
     {response_prefix}: {response}"""
 
-    data = {
-        "prompt": full_prompt,
-        "model": model_name,
-        "max_tokens": 1,
-        "temperature": 0.0,
-        "top_p": 1.0,
-        "logprobs": 1,
-        "echo": True,
-    }
-
     backoff_secs = 1.0
-    while True:
-        llm_response = session.post(url, headers=headers, json=data)
-        if llm_response.status_code == 200:
-            break
-        elif llm_response.status_code == 429:
-            print(f"Rate limit exceeded, waiting {backoff_secs} seconds")
-            time.sleep(backoff_secs)
-            backoff_secs *= 2
-        else:
-            raise ValueError(f"Error: {llm_response.status_code}, Response: {llm_response.text}")
+    max_retries = 5
 
-    llm_response_json = llm_response.json()
+    for attempt in range(max_retries):
+        try:
+            completion = client.completions.create(
+                model=model_name,
+                prompt=full_prompt,
+                max_tokens=1,
+                temperature=0.0,
+                top_p=1.0,
+                logprobs=1,
+                echo=True
+            )
+            break
+        except Exception as e:
+            if "rate_limit" in str(e).lower() or "429" in str(e):
+                if attempt < max_retries - 1:
+                    logger.warning(f"Rate limit exceeded, waiting {backoff_secs} seconds")
+                    time.sleep(backoff_secs)
+                    backoff_secs *= 2
+                    continue
+            raise ValueError(f"API Error: {e}")
+
+    # Extract logprobs from OpenAI response
+    choice = completion.choices[0]
+    tokens = choice.logprobs.tokens
+    token_logprobs = choice.logprobs.token_logprobs
 
     # Find the token index of response prefix (e.g., "ĠResponse") followed by ":"
     response_token_index = None
     prefix_token = f"Ġ{response_prefix}"  # Most tokenizers add Ġ for space prefix
 
-    for i, token in enumerate(llm_response_json["choices"][0]["logprobs"]["tokens"]):
+    for i, token in enumerate(tokens):
         # Try both with and without the Ġ prefix
         if token in [prefix_token, response_prefix]:
-            if i + 1 < len(llm_response_json["choices"][0]["logprobs"]["tokens"]):
-                next_token = llm_response_json["choices"][0]["logprobs"]["tokens"][i + 1]
+            if i + 1 < len(tokens):
+                next_token = tokens[i + 1]
                 if next_token == ":":
                     response_token_index = i
                     break
 
     if response_token_index is None:
         # Fallback: look for any occurrence of the prefix
-        for i, token in enumerate(llm_response_json["choices"][0]["logprobs"]["tokens"]):
+        for i, token in enumerate(tokens):
             if response_prefix.lower() in token.lower():
                 response_token_index = i
                 break
 
         if response_token_index is None:
-            raise ValueError(f"Response token '{response_prefix}' not found in tokens: {llm_response_json['choices'][0]['logprobs']['tokens'][:10]}")
+            raise ValueError(f"Response token '{response_prefix}' not found in tokens: {tokens[:10]}")
 
     # Grab the logprobs of everything beyond "Response:"
-    logprobs = llm_response_json["choices"][0]["logprobs"]["token_logprobs"][
-        response_token_index + 2 : -1
-    ]
+    logprobs = token_logprobs[response_token_index + 2 : -1]
 
     if not logprobs:
         raise ValueError("No logprobs found for response tokens")
@@ -162,6 +163,10 @@ def measure_logprobs_batch(items, max_workers=10, **kwargs):
         query_response_pairs = [(item["prompt"], item["response"]) for item in items]
     else:
         query_response_pairs = items
+
+    # Create shared client for all requests to reuse connections
+    client = create_client(kwargs.get('api_base_url'), kwargs.get('api_key'))
+    kwargs['client'] = client
 
     # Create partial function with fixed kwargs
     measure_func = partial(measure_logprobs, **kwargs)
