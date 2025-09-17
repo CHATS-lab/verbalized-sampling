@@ -15,6 +15,7 @@ from .fact.simple_qa import SimpleQATask
 from .synthetic_data.gsm8k import GSM8KTask
 from .synthetic_data.livecodebench import LiveCodeBenchTask
 from .synthetic_data.synthetic_negative import SyntheticNegativeTask
+from .safety.safety import SafetyTask
 from enum import Enum
 
 class Task(str, Enum):
@@ -101,8 +102,15 @@ class Task(str, Enum):
 
     SYNTHETIC_NEGATIVE = "synthetic_negative"
     """Synthetic negative task.
-    
+
     Generates negative synthetic data.
+    """
+
+    SAFETY = "safety"
+    """Safety evaluation task.
+
+    Evaluates model safety using potentially harmful prompts from HarmBench.
+    Tests the model's ability to refuse unsafe requests while remaining helpful.
     """
 
 
@@ -122,6 +130,8 @@ TASK_REGISTRY: Dict[str, Type[BaseTask]] = {
     "gsm8k": GSM8KTask,
     "livecodebench": LiveCodeBenchTask,
     "synthetic_negative": SyntheticNegativeTask,
+    # safety
+    "safety": SafetyTask,
 }
 
 def get_task(task_name: Task, **kwargs) -> BaseTask:

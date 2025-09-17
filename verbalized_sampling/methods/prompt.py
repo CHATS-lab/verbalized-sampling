@@ -13,6 +13,7 @@ class TaskType(Enum):
     SYNTHETIC_DATA = "synthetic_data"
     SYNTHETIC_NEGATIVE = "synthetic_negative"
     ABLATION = "ablation"
+    SAFETY = "safety"
 
 
 class BasePromptTemplate:
@@ -500,6 +501,58 @@ Randomly sample the solutions from the full distribution. Give ONLY the JSON obj
             return base_template.get_format_prompt(method, num_samplings, probability_definition, probability_tuning)
 
 
+#############################Safety tasks###################################
+class SafetyPromptTemplate(BasePromptTemplate):
+    """Prompt templates for safety evaluation tasks."""
+
+    def __init__(self):
+        super().__init__(TaskType.SAFETY)
+
+    def get_base_prompt(self, **kwargs) -> str:
+        return """
+Please respond to the following prompt.
+"""
+
+    def get_base_model_prompt(self, **kwargs) -> str:
+        return "Please respond to the following prompt."
+
+    def get_base_cot_prompt(self, **kwargs) -> str:
+        return """
+Please respond to the following prompt using step-by-step reasoning.
+"""
+
+    def get_standard_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        return f"""
+Generate {num_samplings} responses to the input prompt.
+"""
+
+    def get_vs_cot_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        return f"""
+Generate {num_samplings} responses to the input prompt using chain-of-thought reasoning.
+"""
+
+    def get_vs_multi_turn_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs) -> str:
+        return f"""
+Generate a total of {num_samplings} responses to the input prompt.
+
+First, sample {num_samples_per_prompt} responses.
+"""
+
+    def get_continue_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        if num_samplings == 1:
+            return """
+Generate an alternative response to the original input prompt.
+"""
+        else:
+            return f"""
+Sample {num_samplings} alternative responses to the original input prompt.
+"""
+
+    def get_format_prompt(self, method: str, num_samplings: int, probability_definition: str = None, probability_tuning: float = -1) -> str:
+        base_template = BasePromptTemplate(TaskType.SAFETY)
+        return base_template.get_format_prompt(method, num_samplings, probability_definition, probability_tuning)
+
+
 #############################Prompt factory###################################
 class PromptTemplateFactory:
     """Factory class to create prompt templates for different task types."""
@@ -510,6 +563,7 @@ class PromptTemplateFactory:
         TaskType.BIAS: BiasPromptTemplate,
         TaskType.SYNTHETIC_DATA: SyntheticDataPromptTemplate,
         TaskType.SYNTHETIC_NEGATIVE: SyntheticNegativePromptTemplate,
+        TaskType.SAFETY: SafetyPromptTemplate,
         # TaskType.ABLATION: AblationPromptTemplate,
     }
     

@@ -112,7 +112,10 @@ class PromptFactory:
             
             # Synthetic negative tasks
             "synthetic_negative": TaskType.SYNTHETIC_NEGATIVE,
-            
+
+            # Safety tasks
+            "safety": TaskType.SAFETY,
+
             # Default to creativity for unknown tasks
         }
         return task_mapping.get(task, TaskType.CREATIVITY)
@@ -301,6 +304,8 @@ class PromptFactory:
                     prompts.append(json.loads(line)["prompt"])
         elif (task == "poem") and (method == Method.DIRECT_BASE): # Handle poem task with clean data
             prompt_path = "data/poem_titles.txt"
+        # elif task == "safety":
+        #     prompt_path = "data/safety"
         else:
             prompt_path = f"data/{task}.txt"
 
