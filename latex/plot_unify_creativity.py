@@ -161,7 +161,7 @@ def load_experiment_data():
         return results
 
     # Load poem experiment data
-    base_dir = "poem_experiments_final"
+    base_dir = "generated_data/poem_experiments_final"
     poem_results = {}
     
     for model_name, model_dir_name in models.items():

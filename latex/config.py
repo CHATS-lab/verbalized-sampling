@@ -20,10 +20,10 @@ RC_PARAMS = {
     }
 
 COLORS = {
-    'Direct': '#7CC7EA',      # Medium blue (baseline) - swapped with Sequence
-    'CoT': '#B8E0F5',         # Light blue (baseline)
-    'Sequence': '#4A90E2',     # Distinct blue (baseline) - swapped with Direct
-    'Multi-turn': '#6BB6FF',   # Distinct blue (baseline)
+    'Direct': '#B8E0F5',      # Medium blue (baseline) - swapped with Sequence
+    'CoT': '#7CC7EA',         # Light blue (baseline)
+    'Sequence': '#6BB6FF',     # Distinct blue (baseline) - swapped with Direct
+    'Multi-turn': '#4A90E2',   # Distinct blue (baseline)
     'VS-Standard': '#FFCCCB',  # Light red (our method)
     'VS-CoT': '#FF9999',       # Medium red (our method)
     'VS-Multi': '#FF6B6B'      # Distinct red (our method)
