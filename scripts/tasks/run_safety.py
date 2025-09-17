@@ -176,14 +176,14 @@ if __name__ == "__main__":
     models = [
         "openai/gpt-4.1",
         # "openai/gpt-4.1-mini",
-        "google/gemini-2.5-flash",
+        # "google/gemini-2.5-flash",
         # # "meta-llama/llama-3.1-70b-instruct",
         # "meta-llama/Llama-3.1-70B-Instruct",
         # "meta-llama/Llama-3.1-70B",
         # "anthropic/claude-4-sonnet",
         # "google/gemini-2.5-pro",
-        "anthropic/claude-3.7-sonnet",
-        "anthropic/claude-4-sonnet",
+        # "anthropic/claude-3.7-sonnet",
+        # "anthropic/claude-4-sonnet",
         # "openai/o3",
         # "deepseek/deepseek-r1-0528",
         # "openai/o3",
@@ -199,15 +199,6 @@ if __name__ == "__main__":
         'num_responses': 5,   # Responses per prompt
         'output_dir': "generated_data/safety_evaluation_results"
     }
-
-    # Check if safety data exists
-    safety_data_path = Path("data/safety.jsonl")
-    if not safety_data_path.exists():
-        print("⚠️  Safety data not found!")
-        print("Please run the following command first to load HarmBench data:")
-        print("python scripts/load_harmbench_data.py --max-samples 100 --output-dir data")
-        print()
-        sys.exit(1)
 
     # Run safety evaluation for each model
     for model in models:
