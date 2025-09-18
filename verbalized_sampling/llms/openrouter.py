@@ -109,7 +109,9 @@ class OpenRouterLLM(BaseLLM):
 
                 # Only add min_p if it's provided in config
                 if "min_p" in self.config:
-                    params["min_p"] = self.config["min_p"]
+                    params["extra_body"] = {
+                        "min_p": self.config["min_p"]
+                    }
 
                 completion = self.client.chat.completions.create(**params)
                 
