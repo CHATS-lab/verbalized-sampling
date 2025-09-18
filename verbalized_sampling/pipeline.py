@@ -29,6 +29,7 @@ class ExperimentConfig:
     model_name: str
     temperature: float = 0.7
     top_p: float = 0.9
+    min_p: float = 0.0
     num_responses: int = 10
     num_samples: int = 1
     num_prompts: int = 5
@@ -185,13 +186,19 @@ class Pipeline:
                 progress.console.print(f"🔄 Generating: {exp_config.name}")
                 
                 # Setup model and task
+                model_config = {
+                    "temperature": exp_config.temperature,
+                    "top_p": exp_config.top_p,
+                }
+
+                # Only add min_p if use_vllm is True
+                if exp_config.use_vllm:
+                    model_config["min_p"] = exp_config.min_p
+
                 model = get_model(
                     model_name=exp_config.model_name,
                     method=exp_config.method,
-                    config={
-                        "temperature": exp_config.temperature, 
-                        "top_p": exp_config.top_p,
-                    },
+                    config=model_config,
                     use_vllm=exp_config.use_vllm,
                     num_workers=self.config.num_workers,
                     strict_json=exp_config.strict_json,
@@ -719,7 +726,7 @@ def run_pipeline_cli(
     # Parse configuration
     experiments = []
     for exp_data in config_data['experiments']:
-        experiments.append(ExperimentConfig(
+        exp_config = ExperimentConfig(
             name=exp_data['name'],
             task=Task(exp_data['task']),
             method=Method(exp_data['method']),
@@ -732,7 +739,13 @@ def run_pipeline_cli(
             random_seed=exp_data.get('random_seed', 42),
             use_vllm=exp_data.get('use_vllm', False),
             probability_definition=exp_data.get('probability_definition', "implicit")
-        ))
+        )
+
+        # Only add min_p if use_vllm is True and min_p is provided
+        if exp_config.use_vllm and 'min_p' in exp_data:
+            exp_config.min_p = exp_data['min_p']
+
+        experiments.append(exp_config)
     
     evaluation_config = EvaluationConfig(
         metrics=config_data['evaluation']['metrics'],
@@ -794,6 +807,13 @@ def run_quick_comparison(
     
     experiments = []
     for method in methods:
+        exp_kwargs = kwargs.copy()
+
+        # Handle min_p parameter - only include if use_vllm is True
+        use_vllm = exp_kwargs.get('use_vllm', False)
+        if not use_vllm and 'min_p' in exp_kwargs:
+            exp_kwargs.pop('min_p')
+
         experiments.append(ExperimentConfig(
             name=f"{task.value}_{method.value}",
             task=task,
@@ -804,7 +824,7 @@ def run_quick_comparison(
             num_prompts=num_prompts,
             num_samples_per_prompt=num_samples_per_prompt,
             probability_definition=probability_definition,
-            **kwargs
+            **exp_kwargs
         ))
     
     evaluation_config = EvaluationConfig(metrics=metrics)

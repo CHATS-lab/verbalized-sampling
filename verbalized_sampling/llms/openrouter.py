@@ -54,15 +54,22 @@ class OpenRouterLLM(BaseLLM):
                 }
         else:
             provider_args = None
-            
+
+        # Build parameters dynamically
+        params = {
+            "model": self.model_name,
+            "messages": messages,
+            "temperature": self.config.get("temperature", 0.7),
+            "top_p": self.config.get("top_p", 0.9),
+            "provider": provider_args,
+        }
+
+        # Only add min_p if it's provided in config
+        if "min_p" in self.config:
+            params["min_p"] = self.config["min_p"]
+
         try:
-            response = self.client.chat.completions.create(
-                model=self.model_name,
-                messages=messages,
-                temperature=self.config.get("temperature", 0.7),
-                top_p=self.config.get("top_p", 0.9),
-                provider=provider_args,
-            )
+            response = self.client.chat.completions.create(**params)
             response = response.choices[0].message.content
             if response:
                 response = response.replace("\n", "")
@@ -90,14 +97,21 @@ class OpenRouterLLM(BaseLLM):
                 
                 # print("Schema: ", schema)
                 
-                completion = self.client.chat.completions.create(
-                    model=self.model_name,
-                    messages=messages,
-                    temperature=self.config.get("temperature", 0.7),
-                    top_p=self.config.get("top_p", 0.9),
-                    response_format=schema,
-                    provider=provider_args,
-                )
+                # Build parameters dynamically
+                params = {
+                    "model": self.model_name,
+                    "messages": messages,
+                    "temperature": self.config.get("temperature", 0.7),
+                    "top_p": self.config.get("top_p", 0.9),
+                    "response_format": schema,
+                    "provider": provider_args,
+                }
+
+                # Only add min_p if it's provided in config
+                if "min_p" in self.config:
+                    params["min_p"] = self.config["min_p"]
+
+                completion = self.client.chat.completions.create(**params)
                 
                 if completion is None or not completion.choices:
                     print(f"Error: No response from OpenRouter API for model {self.model_name}")
