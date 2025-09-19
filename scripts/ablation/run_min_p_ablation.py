@@ -37,8 +37,8 @@ def create_min_p_ablation_experiments(
     # Grid search parameters
     min_p_values = [0.0, 0.01, 0.02, 0.05, 0.1]
     models = [
-        "Qwen/Qwen3-235B-A22B-Instruct-2507",
-        # "meta-llama/Llama-3.1-70B-Instruct",
+        # "Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "meta-llama/Llama-3.1-70B-Instruct",
         # "meta-llama/Llama-3.1-405B-Instruct-FP8",
     ]
     methods = [Method.DIRECT, Method.SEQUENCE, Method.STRUCTURE_WITH_PROB]
@@ -78,7 +78,7 @@ def run_min_p_ablation():
 
     # Evaluation metrics focused on diversity and quality
     evaluation_config = EvaluationConfig(
-        metrics=["diversity", "ngram", "creative_writing_v3"],
+        metrics=["diversity", "ngram"],
         num_workers=128
     )
 
@@ -110,14 +110,13 @@ if __name__ == "__main__":
         task: str = typer.Option("poem", help="Task to run ablation on"),
         output_dir: str = typer.Option("ablation_data/min_p_ablation", help="Output directory"),
         rerun: bool = typer.Option(False, help="Rerun all experiments"),
-        num_responses: int = typer.Option(50, help="Number of responses per experiment"),
-        num_prompts: int = typer.Option(50, help="Number of prompts per experiment"),
-        include_405b: bool = typer.Option(False, help="Include Llama-3.1-405B model (resource intensive)"),
+        num_responses: int = typer.Option(30, help="Number of responses per experiment"),
+        num_prompts: int = typer.Option(100, help="Number of prompts per experiment"),
     ):
         """Run min_p ablation study for VLLM models."""
 
         # Parse task
-        task_obj = Task(task.upper())
+        task_obj = Task.POEM
 
         # Create experiments with custom config
         base_config = {
@@ -127,14 +126,9 @@ if __name__ == "__main__":
 
         experiments = create_min_p_ablation_experiments(task_obj, base_config)
 
-        # Optionally filter out 405B model for resource constraints
-        if not include_405b:
-            experiments = [exp for exp in experiments if "405b" not in exp.model_name]
-            print("ℹ️  Excluding Llama-3.1-405B model. Use --include-405b to include it.")
-
         # Evaluation metrics
         evaluation_config = EvaluationConfig(
-            metrics=["diversity", "ngram", "creative_writing_v3"],
+            metrics=["diversity", "ngram"],
             num_workers=128
         )
 

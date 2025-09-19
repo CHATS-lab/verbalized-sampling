@@ -19,8 +19,8 @@ def create_top_p_ablation_experiments(
     # Default base configuration
     base = {
         'task': task,
-        'num_responses': 50,
-        'num_prompts': 50,
+        'num_responses': 30,
+        'num_prompts': 100,
         'target_words': 200,
         'random_seed': 42,
         'temperature': 0.7,
@@ -71,7 +71,7 @@ def run_top_p_ablation():
 
     # Evaluation metrics focused on diversity
     evaluation_config = EvaluationConfig(
-        metrics=["diversity", "ngram", "creative_writing_v3"],
+        metrics=["diversity", "ngram"],
         num_workers=128
     )
 
@@ -103,13 +103,13 @@ if __name__ == "__main__":
         task: str = typer.Option("poem", help="Task to run ablation on"),
         output_dir: str = typer.Option("ablation_data/top_p_ablation", help="Output directory"),
         rerun: bool = typer.Option(False, help="Rerun all experiments"),
-        num_responses: int = typer.Option(50, help="Number of responses per experiment"),
-        num_prompts: int = typer.Option(50, help="Number of prompts per experiment"),
+        num_responses: int = typer.Option(30, help="Number of responses per experiment"),
+        num_prompts: int = typer.Option(100, help="Number of prompts per experiment"),
     ):
         """Run top_p ablation study for diversity optimization."""
 
         # Parse task
-        task_obj = Task(task.upper())
+        task_obj = Task.POEM
 
         # Create experiments with custom config
         base_config = {
@@ -121,7 +121,7 @@ if __name__ == "__main__":
 
         # Evaluation metrics
         evaluation_config = EvaluationConfig(
-            metrics=["diversity", "ngram", "creative_writing_v3"],
+            metrics=["diversity", "ngram"],
             num_workers=64
         )
 

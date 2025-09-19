@@ -74,7 +74,7 @@ def run_sampling_candidates_ablation():
 
     # Evaluation metrics focused on diversity and quality
     evaluation_config = EvaluationConfig(
-        metrics=["diversity", "ngram", "creative_writing_v3"],
+        metrics=["diversity", "ngram"],
         num_workers=64
     )
 
@@ -106,26 +106,15 @@ if __name__ == "__main__":
         task: str = typer.Option("poem", help="Task to run ablation on"),
         output_dir: str = typer.Option("ablation_data/sampling_candidates_ablation", help="Output directory"),
         rerun: bool = typer.Option(False, help="Rerun all experiments"),
-        num_responses: int = typer.Option(50, help="Number of responses per experiment"),
-        num_prompts: int = typer.Option(50, help="Number of prompts per experiment"),
-        max_samples: int = typer.Option(20, help="Maximum number of samples to test"),
+        num_responses: int = typer.Option(30, help="Number of responses per experiment"),
+        num_prompts: int = typer.Option(100, help="Number of prompts per experiment"),
     ):
         """Run sampling candidates (num_samples) ablation study."""
 
         # Parse task
-        task_obj = Task(task.upper())
+        task_obj = Task.POEM
 
-        # Create custom num_samples values based on max_samples
-        if max_samples <= 10:
-            num_samples_values = [3, 5, max_samples]
-        elif max_samples <= 15:
-            num_samples_values = [3, 5, 8, 10, max_samples]
-        else:
-            num_samples_values = [3, 5, 8, 10, 15, max_samples]
-
-        # Remove duplicates and sort
-        num_samples_values = sorted(list(set(num_samples_values)))
-
+        num_samples_values = [3, 5, 10, 15, 20]
         # Create experiments with custom config
         base_config = {
             'num_responses': num_responses,
@@ -178,7 +167,7 @@ if __name__ == "__main__":
 
         # Evaluation metrics
         evaluation_config = EvaluationConfig(
-            metrics=["diversity", "ngram", "creative_writing_v3"],
+            metrics=["diversity", "ngram"],
             num_workers=64
         )
 
