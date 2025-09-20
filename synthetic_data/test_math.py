@@ -13,6 +13,8 @@ from pathlib import Path
 from typing import Dict, List
 import argparse
 from tqdm import tqdm
+import concurrent.futures
+from threading import Lock
 
 # Add verbalized_sampling to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -26,13 +28,15 @@ from verbalized_sampling.methods import Method
 class MathTestRunner:
     """Test runner for math model evaluation."""
 
-    def __init__(self, models: List[str], datasets: List[str], num_samples: int = 50, random_seed: int = 42, base_url: str = "http://localhost:8000"):
+    def __init__(self, models: List[str], datasets: List[str], num_samples: int = 50, random_seed: int = 42, base_url: str = "http://localhost:8000", max_workers: int = 32):
         self.models = models
         self.datasets = datasets
         self.num_samples = num_samples
         self.random_seed = random_seed
         self.base_url = base_url
+        self.max_workers = max_workers
         self.results = {}
+        self.results_lock = Lock()
 
     def create_llm(self, model_name: str):
         """Create LLM instance for the given model using vLLM."""
@@ -40,8 +44,8 @@ class MathTestRunner:
             # Configuration for vLLM
             config = {
                 "base_url": f"{self.base_url}/v1",
-                "temperature": 0.1,  # Low temperature for math problems
-                "max_tokens": 2048,
+                "temperature": 0,  # Low temperature for math problems
+                "max_tokens": 16384,
                 "top_p": 0.9,
             }
 
@@ -51,7 +55,7 @@ class MathTestRunner:
                 method=Method.DIRECT,  # Using direct method for math problems
                 config=config,
                 use_vllm=True,
-                num_workers=1,
+                num_workers=128,
                 strict_json=False
             )
             return llm
@@ -61,13 +65,10 @@ class MathTestRunner:
             return None
 
     def test_single_problem(self, model_name: str, llm, problem: Dict, dataset: str) -> Dict:
-        """Test a single math problem."""
+        """Test a single math problem - generation only, no evaluation."""
         try:
             # Create prompt
-            instruction = self._get_instruction_for_dataset(dataset)
-            prompt_text = f"{instruction}\n\nProblem: {problem['problem']}"
-
-            # Get model response
+            prompt_text = f"Question: {problem['problem']}\nPlease reason step by step, and put your final answer within \\boxed{{}}."
             messages = [{"role": "user", "content": prompt_text}]
 
             start_time = time.time()
@@ -78,43 +79,55 @@ class MathTestRunner:
             # Extract answer
             extracted_answer = extract_boxed_answer(response)
 
-            # Evaluate
-            is_correct = evaluate_math_answer(response, problem['answer'], dataset)
-
             return {
                 'problem_id': problem.get('id', -1),
                 'problem': problem['problem'][:100] + "...",  # Truncated for storage
                 'reference_answer': problem['answer'],
-                'model_response': response[:200] + "..." if len(response) > 200 else response,
+                'model_response': response,
                 'extracted_answer': extracted_answer,
-                'is_correct': is_correct,
                 'inference_time': inference_time,
-                'difficulty': problem.get('difficulty', None)
+                'difficulty': problem.get('difficulty', None),
+                'dataset': dataset  # Store dataset for evaluation phase
             }
 
         except Exception as e:
             return {
                 'problem_id': problem.get('id', -1),
                 'error': str(e),
-                'is_correct': False,
-                'inference_time': 0
+                'inference_time': 0,
+                'dataset': dataset
             }
 
-    def _get_instruction_for_dataset(self, dataset: str) -> str:
-        """Get dataset-specific instructions."""
-        base_instruction = "Solve the following math problem step by step."
-
-        if dataset in ["math", "aime"]:
-            return (f"{base_instruction} Show your work clearly and provide your final answer "
-                   "in LaTeX format enclosed in \\boxed{{}}. For example, if the answer is 42, "
-                   "write \\boxed{{42}}.")
-        elif dataset == "amc":
-            return (f"{base_instruction} Show your work clearly and provide your final numerical "
-                   "answer enclosed in \\boxed{{}}. For example, if the answer is 42, "
-                   "write \\boxed{{42}}.")
-        else:  # minerva, olympiad_bench
-            return (f"{base_instruction} Show your work clearly and provide your final answer "
-                   "enclosed in \\boxed{{}}. Express your answer as clearly and simply as possible.")
+    def evaluate_results_single_thread(self, results: List[Dict]) -> List[Dict]:
+        """Evaluate results in single-threaded mode to avoid Math-Verify threading issues."""
+        print(f"  Evaluating {len(results)} responses in single-threaded mode...")
+        
+        evaluated_results = []
+        for result in tqdm(results, desc="Evaluating"):
+            if 'error' in result:
+                # Keep error results as-is
+                result['is_correct'] = False
+                evaluated_results.append(result)
+                continue
+            
+            try:
+                # Evaluate the response
+                is_correct = evaluate_math_answer(
+                    result['model_response'], 
+                    result['reference_answer'], 
+                    result['dataset']
+                )
+                result['is_correct'] = is_correct
+                # result['parsed_ref'] = parsed_ref
+                # result['parsed_pred'] = parsed_pred
+                evaluated_results.append(result)
+            except Exception as e:
+                print(f"    Warning: Evaluation failed for problem {result.get('problem_id', 'unknown')}: {e}")
+                result['is_correct'] = False
+                result['evaluation_error'] = str(e)
+                evaluated_results.append(result)
+        
+        return evaluated_results
 
     def test_dataset(self, model_name: str, dataset: str) -> Dict:
         """Test a model on a specific dataset."""
@@ -171,13 +184,29 @@ class MathTestRunner:
 
         print(f"= Testing {len(sample_problems)} problems...")
 
-        for problem in tqdm(sample_problems, desc="Progress"):
-            result = self.test_single_problem(model_name, llm, problem, dataset)
-            results.append(result)
+        def process_problem(problem):
+            return self.test_single_problem(model_name, llm, problem, dataset)
+        
+        with concurrent.futures.ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            # Submit all problems for processing
+            future_to_problem = {executor.submit(process_problem, problem): problem for problem in sample_problems}
+            
+            # Process completed futures with progress bar
+            for future in tqdm(concurrent.futures.as_completed(future_to_problem), 
+                             total=len(sample_problems), desc="Progress"):
+                result = future.result()
+                results.append(result)
+                
+                total_time += result.get('inference_time', 0)
 
+        # Evaluate results in single-threaded mode to avoid Math-Verify threading issues
+        print(f"  Phase 1 complete: Generated {len(results)} responses")
+        results = self.evaluate_results_single_thread(results)
+        
+        # Count correct answers after evaluation
+        for result in results:
             if result.get('is_correct', False):
                 correct_count += 1
-            total_time += result.get('inference_time', 0)
 
         # Calculate metrics
         accuracy = correct_count / len(results) if results else 0
@@ -209,7 +238,7 @@ class MathTestRunner:
             'total_problems': len(results),
             'avg_inference_time': avg_time,
             'difficulty_breakdown': difficulty_breakdown,
-            'detailed_results': results[:10]  # Store first 10 for inspection
+            'detailed_results': results  # Store first 10 for inspection
         }
 
     def run_all_tests(self) -> Dict:
@@ -308,6 +337,9 @@ Examples:
   # Use custom vLLM server port
   python test_math.py --base_url http://localhost:8001
 
+  # Use 8 worker threads for faster parallel processing
+  python test_math.py --max_workers 8
+
 Before running:
   1. Start vLLM server with one of the models:
      vllm serve Qwen/Qwen3-4B-Base --port 8000
@@ -329,6 +361,8 @@ Before running:
                        help="Output file prefix")
     parser.add_argument("--base_url", default="http://localhost:8000",
                        help="vLLM server base URL")
+    parser.add_argument("--max_workers", type=int, default=128,
+                       help="Number of worker threads for parallel processing")
 
     args = parser.parse_args()
 
@@ -349,7 +383,8 @@ Before running:
         datasets=args.datasets,
         num_samples=args.num_samples,
         random_seed=args.seed,
-        base_url=args.base_url
+        base_url=args.base_url,
+        max_workers=args.max_workers
     )
 
     # Run tests
