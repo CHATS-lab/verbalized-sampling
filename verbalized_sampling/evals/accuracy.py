@@ -43,8 +43,24 @@ class AccuracyEvaluator(BaseEvaluator):
             task_type: Type of task ('math', 'factual', etc.)
                       Determines the evaluation method used
         """
-        super().__init__(**kwargs)
+        super().__init__(name="accuracy", **kwargs)
         self.task_type = task_type
+
+    def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, float]:
+        """
+        Compute metrics for a single instance.
+        Note: This method is required by BaseEvaluator but not used in our custom evaluate method.
+        """
+        # This is a placeholder - we override the evaluate method instead
+        return {}
+
+    def aggregate_metrics(self, instance_metrics: List[Dict[str, float]]) -> Dict[str, float]:
+        """
+        Aggregate instance-level metrics into overall metrics.
+        Note: This method is required by BaseEvaluator but not used in our custom evaluate method.
+        """
+        # This is a placeholder - we override the evaluate method instead
+        return {}
 
     def evaluate(self, prompts: List[str], responses: List[str],
                  reference_answers: Optional[List[str]] = None,
