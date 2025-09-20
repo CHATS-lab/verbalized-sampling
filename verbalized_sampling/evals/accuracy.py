@@ -10,10 +10,12 @@ from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
 import json
 from pathlib import Path
+from rich.console import Console
 
 from .base import BaseEvaluator, EvalResult
 from ..tasks.math_eval import evaluate_math_answer, extract_boxed_answer
 
+console = Console()
 
 @dataclass
 class AccuracyMetrics:
@@ -62,7 +64,7 @@ class AccuracyEvaluator(BaseEvaluator):
         # This is a placeholder - we override the evaluate method instead
         return {}
 
-    def evaluate(self, prompts: List[str], responses: List[str],
+    def evaluate(self, prompts: List[str], responses: List[Dict],
                  reference_answers: Optional[List[str]] = None,
                  **kwargs) -> EvalResult:
         """
@@ -70,33 +72,46 @@ class AccuracyEvaluator(BaseEvaluator):
 
         Args:
             prompts: List of input prompts
-            responses: List of model responses
+            responses: List of model responses (dict format with 'text' key)
             reference_answers: List of correct answers
             **kwargs: Additional arguments (may contain 'metadata' with answers)
 
         Returns:
-            EvaluationResult with accuracy metrics
+            EvalResult with accuracy metrics
         """
         if len(prompts) != len(responses):
             raise ValueError(f"Number of prompts ({len(prompts)}) must match number of responses ({len(responses)})")
 
-        # Get reference answers from kwargs if not provided directly
-        if reference_answers is None:
-            metadata = kwargs.get('metadata', [])
-            if metadata and isinstance(metadata[0], dict):
-                reference_answers = [item.get('answer', item.get('reference_answer', '')) for item in metadata]
+        # Extract text from response objects
+        response_texts = []
+        for response in responses:
+            if isinstance(response, dict):
+                response_texts.append(response.get('text', str(response)))
             else:
-                raise ValueError("Reference answers must be provided either directly or in metadata")
+                response_texts.append(str(response))
 
-        if len(responses) != len(reference_answers):
-            raise ValueError(f"Number of responses ({len(responses)}) must match number of reference answers ({len(reference_answers)})")
+        # For accuracy evaluation, we need reference answers
+        # Since the pipeline doesn't automatically provide them, we need to handle this gracefully
+        if reference_answers is None:
+            # Try to get answers from metadata or generate a warning
+            metadata = kwargs.get('metadata', {})
+            if isinstance(metadata, dict) and 'answers' in metadata:
+                reference_answers = metadata['answers']
+            else:
+                # For now, we'll create a placeholder that marks all as incorrect
+                # In production, this should be handled by the pipeline providing answers
+                console.print("[yellow]Warning: No reference answers provided for accuracy evaluation. All responses will be marked as incorrect.[/yellow]")
+                reference_answers = ["UNKNOWN"] * len(response_texts)
+
+        if len(response_texts) != len(reference_answers):
+            raise ValueError(f"Number of responses ({len(response_texts)}) must match number of reference answers ({len(reference_answers)})")
 
         # Evaluate each response
         instance_metrics = []
         correct_count = 0
 
-        for i, (response, reference) in enumerate(zip(responses, reference_answers)):
-            result = self._evaluate_single_response(response, reference, i)
+        for i, (response_text, reference) in enumerate(zip(response_texts, reference_answers)):
+            result = self._evaluate_single_response(response_text, reference, i)
             instance_metrics.append(result)
 
             if result['is_correct']:
