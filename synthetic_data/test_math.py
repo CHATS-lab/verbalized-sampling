@@ -28,9 +28,10 @@ from verbalized_sampling.methods import Method
 class MathTestRunner:
     """Test runner for math model evaluation."""
 
-    def __init__(self, models: List[str], datasets: List[str], num_samples: int = 50, random_seed: int = 42, base_url: str = "http://localhost:8000", max_workers: int = 32):
+    def __init__(self, models: List[str], datasets: List[str], method: str = "direct", num_samples: int = 50, random_seed: int = 42, base_url: str = "http://localhost:8000", max_workers: int = 32):
         self.models = models
         self.datasets = datasets
+        self.method = Method(method)  # Convert string to Method enum
         self.num_samples = num_samples
         self.random_seed = random_seed
         self.base_url = base_url
@@ -52,7 +53,7 @@ class MathTestRunner:
             # Create LLM using vLLM
             llm = get_model(
                 model_name=model_name,
-                method=Method.DIRECT,  # Using direct method for math problems
+                method=self.method,  # Use the specified method
                 config=config,
                 use_vllm=True,
                 num_workers=128,
@@ -64,30 +65,60 @@ class MathTestRunner:
             print(f"Make sure vLLM server is running at {self.base_url} with model {model_name}")
             return None
 
-    def test_single_problem(self, model_name: str, llm, problem: Dict, dataset: str) -> Dict:
-        """Test a single math problem - generation only, no evaluation."""
+    def test_single_problem(self, task, llm, problem: Dict, dataset: str) -> Dict:
+        """Test a single math problem using the proper task pipeline."""
         try:
-            # Create prompt
-            prompt_text = f"Question: {problem['problem']}\nPlease reason step by step, and put your final answer within \\boxed{{}}."
-            messages = [{"role": "user", "content": prompt_text}]
+            # Create a temporary task instance for this single problem
+            # We'll override the get_prompt method to return just this problem
+            original_problems = task.problems
+            original_num_prompts = task.num_prompts
+
+            # Temporarily set to just this problem
+            task.problems = [problem]
+            task.num_prompts = 1
 
             start_time = time.time()
-            # Use the _chat method from BaseLLM
-            response = llm._chat(messages)
+
+            # Use the task's run method which handles different sampling methods properly
+            task_results = task.run()
+
             inference_time = time.time() - start_time
 
+            # Restore original task state
+            task.problems = original_problems
+            task.num_prompts = original_num_prompts
+
+            # Extract responses from task results
+            if task_results and len(task_results) > 0:
+                result = task_results[0]
+                responses = result.get('responses', [])
+
+                # For different methods, we might get different response formats
+                if isinstance(responses, list) and len(responses) > 0:
+                    # Take the first response or best response
+                    if isinstance(responses[0], dict):
+                        model_response = responses[0].get('text', str(responses[0]))
+                    else:
+                        model_response = str(responses[0])
+                else:
+                    model_response = str(responses) if responses else ""
+            else:
+                model_response = ""
+
             # Extract answer
-            extracted_answer = extract_boxed_answer(response)
+            extracted_answer = extract_boxed_answer(model_response)
 
             return {
                 'problem_id': problem.get('id', -1),
                 'problem': problem['problem'][:100] + "...",  # Truncated for storage
                 'reference_answer': problem['answer'],
-                'model_response': response,
+                'model_response': model_response,
                 'extracted_answer': extracted_answer,
                 'inference_time': inference_time,
                 'difficulty': problem.get('difficulty', None),
-                'dataset': dataset  # Store dataset for evaluation phase
+                'dataset': dataset,
+                'method': str(self.method),
+                'all_responses': responses if 'responses' in locals() else []  # Store all responses for analysis
             }
 
         except Exception as e:
@@ -95,7 +126,8 @@ class MathTestRunner:
                 'problem_id': problem.get('id', -1),
                 'error': str(e),
                 'inference_time': 0,
-                'dataset': dataset
+                'dataset': dataset,
+                'method': str(self.method)
             }
 
     def evaluate_results_single_thread(self, results: List[Dict]) -> List[Dict]:
@@ -147,12 +179,16 @@ class MathTestRunner:
 
         # Load task and get problems
         try:
+            # Determine num_responses based on method
+            num_responses = 1 if self.method == Method.DIRECT else 3  # More responses for sampling methods
+
             task = get_task(
                 f"math_{dataset}",
                 model=llm,
-                method="direct",
+                method=str(self.method),
                 num_prompts=min(self.num_samples, 1000),  # Cap at reasonable number
-                num_responses=1,
+                num_responses=num_responses,
+                num_samples=5,  # For structured methods
                 random_seed=self.random_seed
             )
 
@@ -185,7 +221,7 @@ class MathTestRunner:
         print(f"= Testing {len(sample_problems)} problems...")
 
         def process_problem(problem):
-            return self.test_single_problem(model_name, llm, problem, dataset)
+            return self.test_single_problem(task, llm, problem, dataset)
         
         with concurrent.futures.ThreadPoolExecutor(max_workers=self.max_workers) as executor:
             # Submit all problems for processing
@@ -246,6 +282,7 @@ class MathTestRunner:
         print("=� Starting Math Model Evaluation")
         print(f"Models: {self.models}")
         print(f"Datasets: {self.datasets}")
+        print(f"Method: {self.method}")
         print(f"Samples per dataset: {self.num_samples}")
         print("=" * 60)
 
@@ -328,11 +365,17 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Test both models on MATH dataset with 20 samples
+  # Test both models on MATH dataset with 20 samples using direct method
   python test_math.py --datasets math --num_samples 20
 
-  # Test only the thinking model on all datasets
-  python test_math.py --models Qwen/Qwen3-4B-Thinking-2507
+  # Test using structure_with_prob method for verbalized sampling
+  python test_math.py --method structure_with_prob --num_samples 10
+
+  # Test sequence sampling method on all datasets
+  python test_math.py --method sequence --datasets math aime amc
+
+  # Test only the thinking model with chain-of-thought
+  python test_math.py --models Qwen/Qwen3-4B-Thinking-2507 --method chain_of_thought
 
   # Use custom vLLM server port
   python test_math.py --base_url http://localhost:8001
@@ -353,6 +396,10 @@ Before running:
                        default=["math", "aime", "amc"],
                        choices=["math", "aime", "amc", "minerva", "olympiad_bench"],
                        help="Datasets to test")
+    parser.add_argument("--method", default="direct",
+                       choices=["direct", "direct_base", "direct_cot", "sequence", "structure",
+                               "structure_with_prob", "multi_turn", "chain_of_thought", "combined"],
+                       help="Sampling method to use")
     parser.add_argument("--num_samples", type=int, default=50,
                        help="Number of problems per dataset")
     parser.add_argument("--seed", type=int, default=42,
@@ -381,6 +428,7 @@ Before running:
     runner = MathTestRunner(
         models=args.models,
         datasets=args.datasets,
+        method=args.method,
         num_samples=args.num_samples,
         random_seed=args.seed,
         base_url=args.base_url,

@@ -59,25 +59,36 @@ run_experiment() {
     local datasets="$2"
     local samples="$3"
     local experiment_name="$4"
+    local experiment_type="${5:-test}"  # Default to test, can be "pipeline"
 
     log "\n${BLUE}🚀 Starting experiment: ${experiment_name}${NC}"
     log "${BLUE}Model: ${model_name}${NC}"
+    log "${BLUE}Type: ${experiment_type}${NC}"
     log "${BLUE}Datasets: ${datasets}${NC}"
     log "${BLUE}Samples per dataset: ${samples}${NC}"
 
-    # Create safe filename
-    safe_model_name=$(echo "$model_name" | sed 's/\//_/g')
-    output_file="${OUTPUT_DIR}/${experiment_name}_${safe_model_name}_${TIMESTAMP}"
+    if [[ "$experiment_type" == "pipeline" ]]; then
+        # Use the pipeline-based approach
+        log "${BLUE}Using pipeline-based generation${NC}"
+        cd "$(dirname "$0")/../scripts/tasks"
+        python run_math_simple.py 2>&1 | tee -a "$LOG_FILE"
+        cd - > /dev/null
+    else
+        # Use the direct test approach
+        # Create safe filename
+        safe_model_name=$(echo "$model_name" | sed 's/\//_/g')
+        output_file="${OUTPUT_DIR}/${experiment_name}_${safe_model_name}_${TIMESTAMP}"
 
-    # Run the test
-    python test_math.py \
-        --models "$model_name" \
-        --datasets $datasets \
-        --num_samples "$samples" \
-        --seed "$SEED" \
-        --base_url "$BASE_URL" \
-        --output "$output_file" \
-        2>&1 | tee -a "$LOG_FILE"
+        # Run the test
+        python test_math.py \
+            --models "$model_name" \
+            --datasets $datasets \
+            --num_samples "$samples" \
+            --seed "$SEED" \
+            --base_url "$BASE_URL" \
+            --output "$output_file" \
+            2>&1 | tee -a "$LOG_FILE"
+    fi
 
     if [ $? -eq 0 ]; then
         log "${GREEN}✅ Experiment completed: ${experiment_name}${NC}"
@@ -162,6 +173,7 @@ main() {
         "standard_test|math aime amc|${NUM_SAMPLES}"
         "comprehensive_test|math aime amc minerva|${NUM_SAMPLES}"
         "full_evaluation|math aime amc minerva olympiad_bench|${NUM_SAMPLES}"
+        "pipeline_simple|math|20|pipeline"
     )
 
     log "\n${YELLOW}Available experiments:${NC}"
@@ -173,15 +185,20 @@ main() {
     # Find and run selected experiment
     FOUND_EXP=false
     for exp in "${EXPERIMENTS[@]}"; do
-        IFS='|' read -r name datasets samples <<< "$exp"
+        IFS='|' read -r name datasets samples exp_type <<< "$exp"
         if [[ "$name" == "$SELECTED_EXP" ]]; then
             # Override samples if specified
             if [[ "$samples" == "${NUM_SAMPLES}" ]] && [[ "$NUM_SAMPLES" != "50" ]]; then
                 samples="$NUM_SAMPLES"
             fi
 
+            # Set default experiment type if not specified
+            if [[ -z "$exp_type" ]]; then
+                exp_type="test"
+            fi
+
             log "\n${YELLOW}🎯 Running experiment: ${SELECTED_EXP}${NC}"
-            run_experiment "$CURRENT_MODEL" "$datasets" "$samples" "$SELECTED_EXP"
+            run_experiment "$CURRENT_MODEL" "$datasets" "$samples" "$SELECTED_EXP" "$exp_type"
             FOUND_EXP=true
             break
         fi
