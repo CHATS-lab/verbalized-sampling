@@ -14,6 +14,7 @@ class TaskType(Enum):
     SYNTHETIC_NEGATIVE = "synthetic_negative"
     ABLATION = "ablation"
     SAFETY = "safety"
+    MATH = "math"
 
 
 class BasePromptTemplate:
@@ -553,6 +554,58 @@ Sample {num_samplings} alternative responses to the original input prompt.
         return base_template.get_format_prompt(method, num_samplings, probability_definition, probability_tuning)
 
 
+#############################Math tasks###################################
+class MathPromptTemplate(BasePromptTemplate):
+    """Prompt templates for math reasoning tasks."""
+
+    def __init__(self):
+        super().__init__(TaskType.MATH)
+
+    def get_base_prompt(self, **kwargs) -> str:
+        return """
+Solve the following math problem step by step and provide your final answer.
+"""
+
+    def get_base_model_prompt(self, **kwargs) -> str:
+        return "Solve the following math problem step by step and provide your final answer."
+
+    def get_base_cot_prompt(self, **kwargs) -> str:
+        return """
+Solve the following math problem using detailed step-by-step reasoning. Show your work clearly and provide your final answer.
+"""
+
+    def get_standard_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        return f"""
+Generate {num_samplings} different solutions to the math problem.
+"""
+
+    def get_vs_cot_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        return f"""
+Generate {num_samplings} solutions to the math problem using step-by-step reasoning.
+"""
+
+    def get_vs_multi_turn_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs) -> str:
+        return f"""
+Generate a total of {num_samplings} solutions to the math problem.
+
+First, provide {num_samples_per_prompt} solutions.
+"""
+
+    def get_continue_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        if num_samplings == 1:
+            return """
+Generate an alternative solution to the math problem.
+"""
+        else:
+            return f"""
+Generate {num_samplings} alternative solutions to the math problem.
+"""
+
+    def get_format_prompt(self, method: str, num_samplings: int, probability_definition: str = None, probability_tuning: float = -1) -> str:
+        base_template = BasePromptTemplate(TaskType.MATH)
+        return base_template.get_format_prompt(method, num_samplings, probability_definition, probability_tuning)
+
+
 #############################Prompt factory###################################
 class PromptTemplateFactory:
     """Factory class to create prompt templates for different task types."""
@@ -564,6 +617,7 @@ class PromptTemplateFactory:
         TaskType.SYNTHETIC_DATA: SyntheticDataPromptTemplate,
         TaskType.SYNTHETIC_NEGATIVE: SyntheticNegativePromptTemplate,
         TaskType.SAFETY: SafetyPromptTemplate,
+        TaskType.MATH: MathPromptTemplate,
         # TaskType.ABLATION: AblationPromptTemplate,
     }
     

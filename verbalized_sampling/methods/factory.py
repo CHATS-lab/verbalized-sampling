@@ -116,6 +116,13 @@ class PromptFactory:
             # Safety tasks
             "safety": TaskType.SAFETY,
 
+            # Math tasks
+            "math_math": TaskType.MATH,
+            "math_aime": TaskType.MATH,
+            "math_amc": TaskType.MATH,
+            "math_minerva": TaskType.MATH,
+            "math_olympiad_bench": TaskType.MATH,
+
             # Default to creativity for unknown tasks
         }
         return task_mapping.get(task, TaskType.CREATIVITY)

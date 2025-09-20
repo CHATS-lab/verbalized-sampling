@@ -1,12 +1,9 @@
 """Unified math task implementation for all math datasets."""
 
 from ..base import BaseTask
-from typing import Any, List, Dict, Union
+from typing import List, Dict, Union
 import random
-import os
 import datasets
-from verbalized_sampling.methods import Method
-from verbalized_sampling.methods.factory import PromptFactory
 
 
 class MathTask(BaseTask):
@@ -38,7 +35,12 @@ class MathTask(BaseTask):
 
         super().__init__(**kwargs)
         self.dataset = dataset
-        self.data_path = f"/Users/simonyu/local/local_orby/verbalize-sampling/data/math/{dataset}"
+
+        # Find the data path dynamically
+        import pathlib
+        current_file = pathlib.Path(__file__)
+        project_root = current_file.parent.parent.parent.parent  # Go up to verbalize-sampling root
+        self.data_path = project_root / "data" / "math" / dataset
 
         # Load the dataset
         self._load_dataset()
@@ -87,11 +89,9 @@ class MathTask(BaseTask):
 
         prompts = []
         for problem in sampled_problems:
-            # Create instruction emphasizing boxed answers for better extraction
-            instruction = self._get_instruction_for_dataset()
-
-            # Format the problem
-            problem_text = f"{instruction}\n\nProblem: {problem['problem']}"
+            # Format the problem - prompt template will be applied during inference
+            question = problem['problem']
+            prompt_text = f"Question: {question}\nPlease reason step by step, and put your final answer within \\boxed{{}}."
 
             # Store problem metadata for evaluation
             if not hasattr(self, '_problem_metadata'):
@@ -105,29 +105,11 @@ class MathTask(BaseTask):
                 "difficulty": problem.get("difficulty")
             }
 
-            prompts.append([{"role": "user", "content": problem_text}])
+            # Return as message format for proper chat handling
+            prompts.append(prompt_text)
 
         return prompts
 
-    def _get_instruction_for_dataset(self) -> str:
-        """Get dataset-specific instructions."""
-        base_instruction = "Solve the following math problem step by step."
-
-        if self.dataset in ["math", "aime"]:
-            return (f"{base_instruction} Show your work clearly and provide your final answer "
-                   "in LaTeX format enclosed in \\boxed{{}}. For example, if the answer is 42, "
-                   "write \\boxed{{42}}.")
-
-        elif self.dataset == "amc":
-            return (f"{base_instruction} Show your work clearly and provide your final numerical "
-                   "answer enclosed in \\boxed{{}}. For example, if the answer is 42, "
-                   "write \\boxed{{42}}.")
-
-        elif self.dataset in ["minerva", "olympiad_bench"]:
-            return (f"{base_instruction} Show your work clearly and provide your final answer "
-                   "enclosed in \\boxed{{}}. Express your answer as clearly and simply as possible.")
-
-        return base_instruction
 
     @property
     def task_type(self) -> str:
