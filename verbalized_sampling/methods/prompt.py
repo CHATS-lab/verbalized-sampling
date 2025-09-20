@@ -598,8 +598,78 @@ Generate {num_samplings} alternative solutions to the math problem.
 """
 
     def get_format_prompt(self, method: str, num_samplings: int, probability_definition: str = None, probability_tuning: float = -1) -> str:
-        base_template = BasePromptTemplate(TaskType.MATH)
-        return base_template.get_format_prompt(method, num_samplings, probability_definition, probability_tuning)
+        """Get math-specific format prompts that ensure \\boxed{} format is preserved."""
+
+        # Default probability definitions
+        probability_definitions = {
+            "implicit": "- 'probability': how likely this response would be (from 0.0 to 1.0).",
+            "explicit": "- 'probability': the estimated probability from 0.0 to 1.0 of this response given the input prompt (relative to the full distribution).",
+            "relative": "- 'probability': the probability between 0.0 and 1.0, reflecting the relative likelihood of this response given the input.",
+            "percentage": "- 'probability': the probability of this response relative to the full distribution, expressed as a percentage from 0% to 100%.",
+            "confidence": "- 'confidence': the normalized likelihood score between 0.0 and 1.0 that indicates how representative or typical this response is compared to the full distribution.",
+            "perplexity": "- 'perplexity': the exponentiated average negative log likelihood of the response tokens, where lower values indicate higher model certainty in predicting each token.",
+            "nll": "- 'nll': the sum of the negative log probabilities of each token in the response given the input prompt, with smaller values reflecting higher model confidence.",
+        }
+
+        # Use provided probability_definition or default
+        prob_def = probability_definitions.get(probability_definition, probability_definitions["implicit"])
+
+        if probability_tuning > 0:
+            distribution_def = f"Please sample at random from the tails of the distribution: probability of each response must be below {probability_tuning}."
+        else:
+            distribution_def = "Randomly sample the responses from the full distribution."
+
+        # Math-specific format prompts
+        math_format_prompts = {
+            "direct_cot": """
+First, provide a single "reasoning" field as a string, detailing your step-by-step mathematical solution.
+Then, provide your final answer in the "response" field, ending with \\boxed{your_answer}.
+
+Return ONLY the JSON object, with no additional explanations or text.
+""",
+            "sequence": f"""
+Return exactly {num_samplings} mathematical solutions as a Python list of strings, formatted as:
+["solution1", "solution2", "solution3", ...]
+
+Each solution should show step-by-step reasoning and end with \\boxed{{final_answer}}.
+Return ONLY the list, with no additional explanations or text.
+""",
+            "structure": """
+Return the responses in JSON format with the key "responses" (list of dicts). Each dictionary must include:
+- 'text': the complete mathematical solution with step-by-step reasoning, ending with \\boxed{final_answer}.
+
+Return ONLY the JSON object, with no additional explanations or text.
+""",
+            "vs_standard": f"""
+Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
+- 'text': the complete mathematical solution with step-by-step reasoning, ending with \\boxed{{final_answer}}.
+{prob_def}
+
+{distribution_def} Return ONLY the JSON object, with no additional explanations or text.
+""",
+            "structure_with_prob": f"""
+Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
+- 'text': the complete mathematical solution with step-by-step reasoning, ending with \\boxed{{final_answer}}.
+{prob_def}
+
+{distribution_def} Return ONLY the JSON object, with no additional explanations or text.
+""",
+            "chain_of_thought": f"""
+Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
+- 'text': the complete mathematical solution with detailed step-by-step chain-of-thought reasoning, ending with \\boxed{{final_answer}}.
+{prob_def}
+
+{distribution_def} Return ONLY the JSON object, with no additional explanations or text.
+""",
+        }
+
+        # Return math-specific format prompt if available, otherwise fall back to base template
+        if method in math_format_prompts:
+            return math_format_prompts[method]
+        else:
+            # Fall back to base template for methods not specifically handled
+            base_template = BasePromptTemplate(TaskType.MATH)
+            return base_template.get_format_prompt(method, num_samplings, probability_definition, probability_tuning)
 
 
 #############################Prompt factory###################################
