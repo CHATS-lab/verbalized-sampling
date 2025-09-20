@@ -27,32 +27,6 @@ log() {
     echo -e "$1" | tee -a "$LOG_FILE"
 }
 
-check_vllm_server() {
-    log "${BLUE}🔍 Checking vLLM server at ${BASE_URL}...${NC}"
-
-    if curl -s "${BASE_URL}/v1/models" > /dev/null; then
-        # Get the currently served model
-        CURRENT_MODEL=$(curl -s "${BASE_URL}/v1/models" | python3 -c "
-import sys, json
-try:
-    data = json.load(sys.stdin)
-    if 'data' in data and len(data['data']) > 0:
-        print(data['data'][0].get('id', 'unknown'))
-    else:
-        print('unknown')
-except:
-    print('unknown')
-")
-        log "${GREEN}✅ vLLM server is running${NC}"
-        log "${BLUE}📦 Currently serving: ${CURRENT_MODEL}${NC}"
-        echo "$CURRENT_MODEL"
-    else
-        log "${RED}❌ vLLM server is not responding at ${BASE_URL}${NC}"
-        log "${YELLOW}Please start vLLM server first:${NC}"
-        log "   vllm serve Qwen/Qwen3-4B-Base --port 8000"
-        exit 1
-    fi
-}
 
 run_experiment() {
     local model_name="$1"
@@ -153,12 +127,12 @@ main() {
     mkdir -p "$OUTPUT_DIR"
 
     # Check if vLLM server is running and get current model
-    CURRENT_MODEL=$(check_vllm_server)
+    CURRENT_MODEL="Qwen/Qwen3-4B"
 
     # Experiments configuration
     # Format: "experiment_name|datasets|samples"
     EXPERIMENTS=(
-        "quick_test|math amc|10"
+        "quick_test|math|10"
         "standard_test|math aime amc|${NUM_SAMPLES}"
         "comprehensive_test|math aime amc minerva|${NUM_SAMPLES}"
         "full_evaluation|math aime amc minerva olympiad_bench|${NUM_SAMPLES}"
