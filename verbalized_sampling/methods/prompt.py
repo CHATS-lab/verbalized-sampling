@@ -562,17 +562,13 @@ class MathPromptTemplate(BasePromptTemplate):
         super().__init__(TaskType.MATH)
 
     def get_base_prompt(self, **kwargs) -> str:
-        return """
-Solve the following math problem step by step and provide your final answer.
-"""
+        return "Please reason step by step, and put your final answer within \\boxed{}."
 
     def get_base_model_prompt(self, **kwargs) -> str:
-        return "Solve the following math problem step by step and provide your final answer."
+        return "Please reason step by step, and put your final answer within \\boxed{}."
 
     def get_base_cot_prompt(self, **kwargs) -> str:
-        return """
-Solve the following math problem using detailed step-by-step reasoning. Show your work clearly and provide your final answer.
-"""
+        return "Please reason step by step, and put your final answer within \\boxed{}."
 
     def get_standard_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         return f"""
