@@ -102,6 +102,17 @@ def evaluate_math_answer(predicted: str, reference, dataset_type: str = "math") 
     Returns:
         bool: True if correct, False otherwise
     """
+    if isinstance(reference, list):
+        for ref in reference:
+            ref = ref.replace("\n", "")
+            ref = f"${ref}$"
+            if bool(verify(parse(ref, parsing_timeout=None), parse(predicted, parsing_timeout=None))):
+                return True
+        return False
+    else:
+        reference = reference.replace("\n", "")
+        reference = f"${reference}$"
+        return bool(verify(parse(reference, parsing_timeout=None), parse(predicted, parsing_timeout=None)))
     if not predicted:
         return False
 
