@@ -11,7 +11,7 @@ from dataclasses import dataclass
 import json
 from pathlib import Path
 
-from .base import BaseEvaluator, EvaluationResult
+from .base import BaseEvaluator, EvalResult
 from ..tasks.math_eval import evaluate_math_answer, extract_boxed_answer
 
 
@@ -48,7 +48,7 @@ class AccuracyEvaluator(BaseEvaluator):
 
     def evaluate(self, prompts: List[str], responses: List[str],
                  reference_answers: Optional[List[str]] = None,
-                 **kwargs) -> EvaluationResult:
+                 **kwargs) -> EvalResult:
         """
         Evaluate accuracy of responses.
 
@@ -79,7 +79,7 @@ class AccuracyEvaluator(BaseEvaluator):
         instance_metrics = []
         correct_count = 0
 
-        for i, (prompt, response, reference) in enumerate(zip(prompts, responses, reference_answers)):
+        for i, (response, reference) in enumerate(zip(responses, reference_answers)):
             result = self._evaluate_single_response(response, reference, i)
             instance_metrics.append(result)
 
@@ -97,9 +97,10 @@ class AccuracyEvaluator(BaseEvaluator):
             'success_rate': accuracy
         }
 
-        return EvaluationResult(
+        return EvalResult(
             overall_metrics=overall_metrics,
-            instance_metrics=instance_metrics
+            instance_metrics=instance_metrics,
+            metadata=kwargs.get('metadata', {})
         )
 
     def _evaluate_single_response(self, response: str, reference_answer: str, index: int) -> Dict[str, Any]:
@@ -145,7 +146,7 @@ class AccuracyEvaluator(BaseEvaluator):
                 'error': str(e)
             }
 
-    def save_results(self, result: EvaluationResult, output_path: Path) -> None:
+    def save_results(self, result: EvalResult, output_path: Path) -> None:
         """Save evaluation results to file."""
         output_data = {
             'evaluator_type': 'accuracy',
@@ -162,14 +163,15 @@ class AccuracyEvaluator(BaseEvaluator):
         with open(output_path, 'w') as f:
             json.dump(output_data, f, indent=2)
 
-    def load_results(self, input_path: Path) -> EvaluationResult:
+    def load_results(self, input_path: Path) -> EvalResult:
         """Load evaluation results from file."""
         with open(input_path, 'r') as f:
             data = json.load(f)
 
-        return EvaluationResult(
+        return EvalResult(
             overall_metrics=data['overall_metrics'],
-            instance_metrics=data['instance_metrics']
+            instance_metrics=data['instance_metrics'],
+            metadata=data.get('metadata', {})
         )
 
     def get_metric_names(self) -> List[str]:
