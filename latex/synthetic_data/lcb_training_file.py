@@ -41,27 +41,38 @@ def get_oaireason_question_template_answer(question: str):
 
 
 def generate_answer_parallel(model_name, question):
-    config = {
-        "temperature": 0.7
-    }
-    model = get_model(model_name, method="direct", config=config, strict_json=False)
-    
     system = SYSTEM_MESSAGE_GENERIC
     if "o3" in model_name:
-        print(f"Using o3 model for question: {question}")
+        # print(f"Using o3 model for question: {question}")
         user = get_oaireason_question_template_answer(question)
     else:
-        print(f"Using generic model for question: {question}")
+        # print(f"Using generic model for question: {question}")
         user = get_generic_question_template_answer(question)
 
     messages = [
         {"role": "system", "content": system}, 
         {"role": "user", "content": user}
     ]
-    response = model.chat([messages])[0]
-    # print(f"Response: {response}")
-    
-    return response
+
+    config = {
+        "temperature": 0.7
+    }
+    if "o3" in model_name:
+        config = {
+            "temperature": 0.7,
+            "reasoning_effort": "high"
+        }
+    model = get_model(model_name, method="direct", config=config, strict_json=False)
+
+    max_regen = 3
+    for attempt in range(max_regen):
+        response = model.chat([messages])[0]
+        # print(f"Response: {response}")
+
+        if response.startswith("```python") and response.endswith("```"):
+            return response
+        print(f"Regenerating response for question (attempt {attempt+1}): {question}")
+    return None
 
 
 def generate_answers_batch(model_name, questions, max_workers=16):
@@ -87,33 +98,33 @@ def generate_answers_batch(model_name, questions, max_workers=16):
     return results
 
 
-def prepare_train_test_dataset(lcb_dataset):
-    rng_train = np.random.RandomState(42)
-    train_indices = rng_train.choice(len(lcb_dataset["question_content"]), size=700, replace=False)
-    test_indices = [i for i in range(len(lcb_dataset["question_content"])) if i not in train_indices]
+# def prepare_train_test_dataset(lcb_dataset):
+#     rng_train = np.random.RandomState(42)
+#     train_indices = rng_train.choice(len(lcb_dataset["question_content"]), size=700, replace=False)
+#     test_indices = [i for i in range(len(lcb_dataset["question_content"])) if i not in train_indices]
 
-    output_test_data = []
-    for idx in test_indices:
-        output_test_data.append({
-            "question": lcb_dataset["question_content"][idx],
-        })
-    # Ensure output directory exists
-    os.makedirs("synthetic_lcb", exist_ok=True)
-    with open("synthetic_lcb/lcb_test.json", "w", encoding="utf-8") as f:
-        json.dump(output_test_data, f, indent=4, ensure_ascii=False)
+#     output_test_data = []
+#     for idx in test_indices:
+#         output_test_data.append({
+#             "question": lcb_dataset["question_content"][idx],
+#         })
+#     # Ensure output directory exists
+#     os.makedirs("synthetic_lcb", exist_ok=True)
+#     with open("synthetic_lcb/lcb_test.json", "w", encoding="utf-8") as f:
+#         json.dump(output_test_data, f, indent=4, ensure_ascii=False)
 
-    output_train_data = []
-    train_questions = [lcb_dataset["question_content"][idx] for idx in train_indices]
-    train_answers = generate_answers_batch("o3", train_questions, max_workers=16)
-    for (question, answer) in train_answers:
-        output_train_data.append({
-            "system": SYSTEM_MESSAGE_GENERIC,
-            "instruction": get_generic_question_template_answer(question),
-            "output": answer
-        })
+#     output_train_data = []
+#     train_questions = [lcb_dataset["question_content"][idx] for idx in train_indices]
+#     train_answers = generate_answers_batch("o3", train_questions, max_workers=16)
+#     for (question, answer) in train_answers:
+#         output_train_data.append({
+#             "system": SYSTEM_MESSAGE_GENERIC,
+#             "instruction": get_generic_question_template_answer(question),
+#             "output": answer
+#         })
 
-    with open("synthetic_lcb/lcb_training_positive_700.json", "w", encoding="utf-8") as f:
-        json.dump(output_train_data, f, indent=4, ensure_ascii=False)
+#     with open("synthetic_lcb/lcb_training_positive_700.json", "w", encoding="utf-8") as f:
+#         json.dump(output_train_data, f, indent=4, ensure_ascii=False)
 
 
 def read_response_file(file_path):
@@ -146,9 +157,11 @@ def read_response_file(file_path):
 
 
 def parse_synthetic_postive_data(raw_response):
-    question = raw_response.split("Question:")[1].strip()
+    question = raw_response.split("Question:")[1].strip().split("Difficulty:")[0].strip()
+    difficulty = raw_response.split("Difficulty:")[1].strip()
     return {
         "question": question,
+        "difficulty": difficulty,
     }
 
 
@@ -183,6 +196,7 @@ def prepare_synthetic_positive_method_dataset(question_generate_model_name, answ
             for response in responses:
                 parsed_data = parse_synthetic_postive_data(response)
                 question = parsed_data['question']
+                # print(f"Question: {question}")
                 all_questions.append(question)
         
         # Process all questions in parallel

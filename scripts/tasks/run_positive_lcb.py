@@ -17,7 +17,7 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 500,
+        'num_responses': 1000,
         'num_prompts': 1, # current total: 300; total: 4326
         'target_words': 150, 
         'temperature': temperature,
@@ -136,7 +136,7 @@ if __name__ == "__main__":
             task=Task.LIVECODEBENCH,
             model_name=model,
             methods=methods,
-            metrics=["diversity", "ngram"], # "synthetic_data_quality"
+            metrics=["length"], # "synthetic_data_quality"
             temperature=0.7,
             top_p=1.0,
             output_dir="method_results_lcb_1000",

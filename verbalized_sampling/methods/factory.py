@@ -244,11 +244,13 @@ class PromptFactory:
         The problem must be:
         - Self-contained and clearly stated.
         - Include only the task description, input/output format, and constraints.
-        - At an appropriate difficulty level for coding interviews or algorithmic contests.
+        - At a specified difficulty level (easy, medium, or hard), appropriate for coding interviews or algorithmic contests like LeetCode, AtCoder, Codeforces.
 
         For the problem, output only in the following format:
         Question:
         [problem statement in natural language]
+        Difficulty:
+        [difficulty level]
         """
         return [user_prompt]
     
