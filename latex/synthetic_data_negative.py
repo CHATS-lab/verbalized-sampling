@@ -627,7 +627,7 @@ def draw_diversity_quality_histogram(
         color=[colors[m] for m in methods],
         edgecolor=[edge_colors[m] for m in methods],
         alpha=0.9,
-        capsize=5
+        capsize=8
     )
     ax.set_ylabel('Semantic Diversity', fontweight='bold')
     ax.set_title('Semantic Diversity ($\\uparrow$)', fontweight='bold', pad=20)

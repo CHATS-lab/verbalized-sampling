@@ -46,6 +46,7 @@ class EvaluationConfig:
     """Configuration for evaluation metrics."""
     metrics: List[str]
     num_workers: int = 128
+    num_responses_per_prompt: int = 50
 
 @dataclass
 class PipelineConfig:
@@ -303,11 +304,23 @@ class Pipeline:
                     progress.console.print(f"📊 Evaluating: {exp_name}/{metric}")
                     
                     try:
-                        # Get evaluator and run evaluation
-                        evaluator = get_evaluator(
-                            metric, 
-                            num_workers=self.config.evaluation.num_workers,
-                        )
+                        if metric in ("response_count", "synthetic_data_quality", "diversity"):
+                            num_prompts = len(set(prompts))
+                            num_responses_per_prompt = self.config.evaluation.num_responses_per_prompt
+                            print(f"Num prompts: {num_prompts}, Num responses per prompt: {num_responses_per_prompt}")
+                            # Get evaluator and run evaluation
+                            evaluator = get_evaluator(
+                                metric, 
+                                num_workers=self.config.evaluation.num_workers,
+                                num_responses_per_prompt=num_responses_per_prompt
+                            )
+                        else:
+                            evaluator = get_evaluator(
+                                metric, 
+                                num_workers=self.config.evaluation.num_workers,
+                            )
+
+                        
 
                         # print("Evaluation Prompts: ", prompts)
                         # print("Evaluation Responses: ", responses)

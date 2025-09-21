@@ -18,8 +18,8 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 20,
-        'num_prompts': 1, # current total: 40; 
+        'num_responses': 40,
+        'num_prompts': 40, # current total: 40; 
         'target_words': 0, 
         'temperature': temperature,
         'top_p': top_p,
@@ -94,7 +94,8 @@ if __name__ == "__main__":
         0.5,
         0.1,
         0.05,
-        0.005
+        0.01,
+        # 0.005
     ]
 
 
@@ -142,8 +143,8 @@ if __name__ == "__main__":
 
     # models = [args.model]
     models = [
-        "gpt-4.1",
-        # "google/gemini-2.5-flash",
+        # "gpt-4.1",
+        "google/gemini-2.5-flash",
     ]
     for model in models:
         model_basename = model.replace("/", "_")

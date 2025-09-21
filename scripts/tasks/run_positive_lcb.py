@@ -17,9 +17,9 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 50,
+        'num_responses': 500,
         'num_prompts': 1, # current total: 300; total: 4326
-        'target_words': 100, 
+        'target_words': 150, 
         'temperature': temperature,
         'top_p': top_p,
         'random_seed': 42,
@@ -83,11 +83,11 @@ if __name__ == "__main__":
             'strict_json': False,
             'num_samples': 1,
         },
-        # {
-        #     'method': Method.DIRECT_COT,
-        #     'strict_json': False,
-        #     'num_samples': 1,
-        # },
+        {
+            'method': Method.DIRECT_COT,
+            'strict_json': False,
+            'num_samples': 1,
+        },
         {
             'method': Method.MULTI_TURN,
             'strict_json': False,
@@ -104,18 +104,18 @@ if __name__ == "__main__":
             'num_samples': num_samples,
             'probability_definition': "explicit"
         },
-        # {
-        #     'method': Method.CHAIN_OF_THOUGHT,
-        #     'strict_json': True,
-        #     'num_samples': num_samples,
-        #     'probability_definition': "explicit"
-        # },
+        {
+            'method': Method.CHAIN_OF_THOUGHT,
+            'strict_json': True,
+            'num_samples': num_samples,
+            'probability_definition': "explicit"
+        },
         {
             'method': Method.COMBINED,
             'strict_json': True,
             'num_samples': num_samples,
             'num_samples_per_prompt': 3,
-            'probability_definition': "perplexity"
+            'probability_definition': "confidence"
         }
     ]
 
@@ -136,7 +136,7 @@ if __name__ == "__main__":
             task=Task.LIVECODEBENCH,
             model_name=model,
             methods=methods,
-            metrics=["diversity", "ngram", "synthetic_data_quality"],
+            metrics=["diversity", "ngram"], # "synthetic_data_quality"
             temperature=0.7,
             top_p=1.0,
             output_dir="method_results_lcb_1000",

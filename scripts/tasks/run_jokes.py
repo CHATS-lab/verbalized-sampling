@@ -19,10 +19,11 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 50, # 30
-        'num_prompts': 1, # 100
+        'num_responses': 10, # 30
+        'num_prompts': 100, # 100
         'target_words': 0,
-        'temperature': 0.7,
+        'temperature': 0.5,
+        'top_p': 1.0,
         'random_seed': 42,
     }
 
@@ -87,26 +88,27 @@ if __name__ == "__main__":
             'strict_json': False,
             'num_samples': 1,
         },
-        # {
-        #     'method': Method.SEQUENCE,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
+        {
+            'method': Method.SEQUENCE,
+            'strict_json': True,
+            'num_samples': 5,
+        },
         # {
         #     'method': Method.MULTI_TURN,
         #     'strict_json': True,
         #     'num_samples': 5,
         # },
+        {
+            'method': Method.STRUCTURE_WITH_PROB,
+            'strict_json': True,
+            'num_samples': 5,
+            'probability_definition': "explicit"
+        },
         # {
-        #     'method': Method.STRUCTURE_WITH_PROB,
+        #     'method': Method.CHAIN_OF_THOUGHT,
         #     'strict_json': True,
         #     'num_samples': 5,
         # },
-        {
-            'method': Method.CHAIN_OF_THOUGHT,
-            'strict_json': True,
-            'num_samples': 5,
-        },
         # {
         #     'method': Method.COMBINED,
         #     'strict_json': True,
@@ -116,7 +118,7 @@ if __name__ == "__main__":
     ]
      
     models = [
-        "openai/gpt-4.1",
+        # "openai/gpt-4.1",
         # "openai/gpt-4.1-mini",
         # "google/gemini-2.5-flash",
         # "anthropic/claude-4-sonnet",
@@ -126,6 +128,8 @@ if __name__ == "__main__":
         # "deepseek/deepseek-r1-0528",
         # "meta-llama/llama-3.1-70b-instruct"
         # "openai/o3",
+        # "Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "qwen3-235b"
     ]
     for model in models:
         model_basename = model.replace("/", "_")
@@ -133,9 +137,9 @@ if __name__ == "__main__":
             task=Task.JOKE,
             model_name=model,
             methods=methods,
-            metrics=["diversity"],
-            output_dir=f"joke_experiments_test_1/{model_basename}",
-            num_workers=32 if "claude" in model_basename else 128,
+            metrics=["diversity", "ngram", "length", "joke_quality"],
+            output_dir=f"joke_experiments_test/{model_basename}",
+            num_workers=32 if "claude" in model_basename else 64,
         )
     # run_method_tests(
     #     task=Task.POEM,

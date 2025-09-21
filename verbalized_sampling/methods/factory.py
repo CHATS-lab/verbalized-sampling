@@ -5,7 +5,6 @@ import random
 import numpy as np
 from datasets import load_dataset
 from pydantic import BaseModel
-import json
 from .prompt import (
     TaskType,
     PromptTemplateFactory,
@@ -109,6 +108,7 @@ class PromptFactory:
             # Synthetic data tasks
             "gsm8k": TaskType.SYNTHETIC_DATA,
             "livecodebench": TaskType.SYNTHETIC_DATA,
+            "orz_math": TaskType.SYNTHETIC_DATA,
             
             # Synthetic negative tasks
             "synthetic_negative": TaskType.SYNTHETIC_NEGATIVE,
@@ -231,45 +231,25 @@ class PromptFactory:
         """Get prompts for the GSM8K task."""
         user_prompts = f"""Generate a grade school math word problem that involves a sequence of basic arithmetic calculations (addition, subtraction, multiplication, division).
         A bright middle school student should be able to solve the problem. The difficulty of the problem should be similar to typical middle school math problems.
-        
-        For the problem:
-        - Specify the question.
-        - Then provide a brief reasoning and the numerical answer.
-        - The answer should be given after four hash marks (####) at the end of the reasoning. The answer should be a number.
 
         Format the generated problem as follows:
         Question: [question]
-        Answer: [reasoning and answer, ending with #### [numerical answer]]
-
-        Only include the question and answer in your response, and always begin your response with the question.
         """
         return [user_prompts]
     
     @staticmethod
     def get_livecodebench_task_prompts(num_icl_example: int, random_seed: int) -> List[str]:
         """Get prompts for generating synthetic LiveCodeBench-style coding problems."""
-        user_prompt = f"""Generate a programming problem inspired by competitive programming platforms such as LeetCode, AtCoder, and CodeForces.
-        The problem should be self-contained, clearly describing the task, inputs, outputs, and constraints.
-        Given the input, the answer of the problem should be solvable using logical step-by-step reasoning without executing the code.
-        The difficulty should be similar to typical coding interview or algorithm challenges.
+        user_prompt = f"""Generate a programming challenge in the style of competitive programming platforms (e.g., LeetCode, AtCoder, Codeforces).
+        The problem must be:
+        - Self-contained and clearly stated.
+        - Include only the task description, input/output format, and constraints.
+        - At an appropriate difficulty level for coding interviews or algorithmic contests.
 
-        For the problem, provide:
-        - Question: A natural language description of the programming task.
-        - Test Input: The exact input data for the task.
-        - Reasoning: A concise, ordered explanation of how to get the result from the input.
-        - Answer: The final output value.
-
-        Format exactly as follows:
-        "Question:
-        [question]
-        Test Input:
-        [test_input]
-        Reasoning:
-        [reasoning]
-        Answer:
-        [answer]"
-
-        Make sure to only provide only the question, test input, reasoning, and answer. Start with the question."""
+        For the problem, output only in the following format:
+        Question:
+        [problem statement in natural language]
+        """
         return [user_prompt]
     
     @staticmethod
@@ -295,10 +275,6 @@ class PromptFactory:
             prompts = PromptFactory.get_gsm8k_task_prompts(num_icl_example=3, random_seed=random_seed)
         elif task == "livecodebench":
             prompts = PromptFactory.get_livecodebench_task_prompts(num_icl_example=3, random_seed=random_seed)
-        elif task == "synthetic_negative":
-            with open("data/synthetic_negative_new.jsonl", "r") as f:
-                for line in f:
-                    prompts.append(json.loads(line)["prompt"])
         elif (task == "poem") and (method == Method.DIRECT_BASE): # Handle poem task with clean data
             prompt_path = "data/poem_titles.txt"
         else:
