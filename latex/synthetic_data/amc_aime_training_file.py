@@ -11,6 +11,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import threading
 import time
 from verbalized_sampling.llms import get_model
+from verbalized_sampling.llms.vllm import VLLMOpenAI
 
 def query_openai(model_name, messages, config):
     client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
@@ -20,6 +21,11 @@ def query_openai(model_name, messages, config):
         **config,
     )
     return response.choices[0].message.content
+
+def query_vllm(model_name, messages, config):
+    client = VLLMOpenAI(model_name=model_name, config=config)
+    response = client._chat(messages)
+    return response
 
 # Check for DATASET_CACHE_DIR, set default if not present
 DATASET_CACHE_DIR = os.environ.get("DATASET_CACHE_DIR", "./.cache/hf")
@@ -58,7 +64,8 @@ def generate_answer_parallel(model_name, question):
     ]
 
     config = {
-        "temperature": 0.7
+        "temperature": 0.7,
+        "max_tokens": 10000
     }
     if "o3" in model_name:
         config = {
@@ -69,7 +76,10 @@ def generate_answer_parallel(model_name, question):
 
     max_regen = 3
     for attempt in range(max_regen):
-        response = query_openai(model_name, messages, config)
+        if model_name in ["gpt-4.1", "o3"]:
+            response = query_openai(model_name, messages, config)
+        else:
+            response = query_vllm(model_name, messages, config)
         return response
     return None
 
@@ -192,7 +202,8 @@ def main():
     # Load the livecodebench dataset from Hugging Face
     global DATASET_CACHE_DIR
 
-    prepare_synthetic_positive_method_dataset(question_generate_model_name="gpt-4.1", answer_generate_model_name="gpt-4.1", max_workers=128)
+    # prepare_synthetic_positive_method_dataset(question_generate_model_name="gpt-4.1", answer_generate_model_name="gpt-4.1", max_workers=128)
+    prepare_synthetic_positive_method_dataset(question_generate_model_name="gpt-4.1", answer_generate_model_name="Qwen/Qwen3-32B", max_workers=128)
 
 
 
