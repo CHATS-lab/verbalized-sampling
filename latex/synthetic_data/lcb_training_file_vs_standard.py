@@ -24,36 +24,42 @@ def query_openai(model_name, messages, config):
 # Check for DATASET_CACHE_DIR, set default if not present
 DATASET_CACHE_DIR = os.environ.get("DATASET_CACHE_DIR", "./.cache/hf")
 
+# Check for more prompts: https://github.com/LiveCodeBench/LiveCodeBench/blob/main/lcb_runner/prompts/code_generation.py
 SYSTEM_MESSAGE_GENERIC = (
-    "You are given a math competition question in the style of AMC 10, AMC 12, or AIME. "
-    "Solve it and output both your reasoning process and the final answer.\n\n"
-    "### Format Requirements:\n"
-    "- Do not restate the question.\n"
-    "- Provide the step-by-step solution in a field starting with “Reasoning:”.\n"
-    "- Provide the final numerical result in a separate field starting with “Answer:”.\n\n"
-    "### Constraints:\n"
-    "- The reasoning should include clear intermediate steps and justifications.\n"
-    "- The answer must be exact (no approximations unless explicitly required).\n\n"
-    "### Output Style Example (do not copy directly):\n"
-    "Reasoning: First, observe that the question reduces to solving a quadratic equation… [step-by-step reasoning continues].\n"
-    "Answer: 42"
+    "You are an expert Python programmer. You will be given a question (problem specification) "
+    "and will generate a correct Python program that matches the specification and passes all tests."
+)
+FORMAT_MESSAGE_GENERIC = (
+    "Read the inputs from stdin solve the problem and write the answer to stdout (do not directly test on the sample inputs). "
+    "Enclose your code within delimiters as follows. Ensure that when the python program runs, it reads the inputs, runs the algorithm and writes output to STDOUT."
 )
 
 def get_generic_question_template_answer(question: str):
-    prompt = f"Question: {question}\nPlease reason step by step, and put your final answer within \\boxed{{}}."
+    prompt = f"### Question:\n{question}\n\n"
+    prompt += f"### Format: {FORMAT_MESSAGE_GENERIC}\n"
+    prompt += "```python\n# YOUR CODE HERE\n```\n\n"
+    prompt += f"### Answer: (use the provided format with backticks)\n\n"
     return prompt
 
 def get_oaireason_question_template_answer(question: str):
-    prompt = f"Question:\n{question}"
+    prompt = f"### Question:\n{question}\n\n"
+    prompt += f"### Format: Implement a function called `main()` which orchastrates the solution by reading inputs from stdin and writing the answer to stdout. Feel free to use additional functions as necessary. Next do NOT forget to call `main` function at the end of the program otherwise you will not be awarded any points.\n"
+    prompt += "```python\n# YOUR CODE HERE\n```\n\n"
+    prompt += f"### Answer: (use the provided format with backticks)\n\n"
     return prompt
 
 
 def generate_answer_parallel(model_name, question):
-    # system = SYSTEM_MESSAGE_GENERIC
-    user = get_generic_question_template_answer(question)
+    system = SYSTEM_MESSAGE_GENERIC
+    if "o3" in model_name:
+        # print(f"Using o3 model for question: {question}")
+        user = get_oaireason_question_template_answer(question)
+    else:
+        # print(f"Using generic model for question: {question}")
+        user = get_generic_question_template_answer(question)
 
     messages = [
-        # {"role": "system", "content": system}, 
+        {"role": "system", "content": system}, 
         {"role": "user", "content": user}
     ]
 
@@ -62,15 +68,25 @@ def generate_answer_parallel(model_name, question):
     }
     if "o3" in model_name:
         config = {
-            "temperature": 0.7,
-            "reasoning_effort": "high"
+            # "temperature": 0.7,
+            "reasoning_effort": "medium"
         }
     # model = get_model(model_name, method="direct", config=config, strict_json=False)
 
+    # max_regen = 3
+    # for attempt in range(max_regen):
+    #     response = model._chat(messages)
+
+    #     if response.startswith("```python") and response.endswith("```"):
+    #         return response
+    #     print(f"Regenerating response for question (attempt {attempt+1}): {question}")
+    # return None
     max_regen = 3
     for attempt in range(max_regen):
         response = query_openai(model_name, messages, config)
-        return response
+        if response.startswith("```python") and response.endswith("```"):
+            return response
+        print(f"Regenerating response for question (attempt {attempt+1}): {question}")
     return None
 
 
@@ -95,6 +111,36 @@ def generate_answers_batch(model_name, questions, max_workers=16):
                 results.append((question, None))
     
     return results
+
+
+# def prepare_train_test_dataset(lcb_dataset):
+#     rng_train = np.random.RandomState(42)
+#     train_indices = rng_train.choice(len(lcb_dataset["question_content"]), size=700, replace=False)
+#     test_indices = [i for i in range(len(lcb_dataset["question_content"])) if i not in train_indices]
+
+#     output_test_data = []
+#     for idx in test_indices:
+#         output_test_data.append({
+#             "question": lcb_dataset["question_content"][idx],
+#         })
+#     # Ensure output directory exists
+#     os.makedirs("synthetic_lcb", exist_ok=True)
+#     with open("synthetic_lcb/lcb_test.json", "w", encoding="utf-8") as f:
+#         json.dump(output_test_data, f, indent=4, ensure_ascii=False)
+
+#     output_train_data = []
+#     train_questions = [lcb_dataset["question_content"][idx] for idx in train_indices]
+#     train_answers = generate_answers_batch("o3", train_questions, max_workers=16)
+#     for (question, answer) in train_answers:
+#         output_train_data.append({
+#             "system": SYSTEM_MESSAGE_GENERIC,
+#             "instruction": get_generic_question_template_answer(question),
+#             "output": answer
+#         })
+
+#     with open("synthetic_lcb/lcb_training_positive_700.json", "w", encoding="utf-8") as f:
+#         json.dump(output_train_data, f, indent=4, ensure_ascii=False)
+
 
 def read_response_file(file_path):
     """
@@ -135,19 +181,19 @@ def parse_synthetic_postive_data(raw_response):
 
 
 def prepare_synthetic_positive_method_dataset(question_generate_model_name, answer_generate_model_name, max_workers=16):
-    folder_path = f"method_results_amc_aime_1000/{question_generate_model_name}_amc_aime_math/generation"
+    folder_path = f"method_results_lcb_1000/{question_generate_model_name}_livecodebench/generation"
 
     raw_memthod_name_list = {
-        "direct": "direct",
+        # "direct": "direct",
         # "direct_cot": "direct_cot",
         # "multi_turn": "multi_turn",
-        "sequence": "sequence",
+        # "sequence": "sequence",
         "structure_with_prob": "vs_standard",
-        "chain_of_thought": "vs_cot",
+        # "chain_of_thought": "vs_cot",
         # "combined": "vs_multi"
     }
 
-    os.makedirs("synthetic_amc_aime", exist_ok=True)
+    os.makedirs("synthetic_lcb", exist_ok=True)
     for child_folder in tqdm(os.listdir(folder_path), desc="Processing synthetic positive data"):
         method_name = child_folder.split(" ")[0]
         if method_name not in raw_memthod_name_list.keys():
@@ -170,18 +216,18 @@ def prepare_synthetic_positive_method_dataset(question_generate_model_name, answ
         
         # Process all questions in parallel
         print(f"Processing {len(all_questions)} questions in parallel with {max_workers} workers...")
-        question_answer_pairs = generate_answers_batch(answer_generate_model_name, all_questions, max_workers=max_workers)
+        question_answer_pairs = generate_answers_batch("o3", all_questions, max_workers=max_workers)
         
         # Build the final dataset
         for question, answer in tqdm(question_answer_pairs, desc=f"Building dataset for method: {method_name}"):
             if answer is not None:
                 train_synthetic_data.append({
-                    # "system": SYSTEM_MESSAGE_GENERIC,
+                    "system": SYSTEM_MESSAGE_GENERIC,
                     "instruction": get_generic_question_template_answer(question),
                     "output": answer,
                 })
         
-        with open(f"synthetic_amc_aime/amc_aime_training_synthetic_positive_{raw_memthod_name_list[method_name]}.json", "w", encoding="utf-8") as f:
+        with open(f"synthetic_lcb/lcb_training_synthetic_positive_{raw_memthod_name_list[method_name]}.json", "w", encoding="utf-8") as f:
             json.dump(train_synthetic_data, f, indent=4, ensure_ascii=False)
         train_synthetic_data = []
         # break 
@@ -192,9 +238,20 @@ def main():
     # Load the livecodebench dataset from Hugging Face
     global DATASET_CACHE_DIR
 
-    prepare_synthetic_positive_method_dataset(question_generate_model_name="gpt-4.1", answer_generate_model_name="gpt-4.1", max_workers=128)
+    lcb_codegen = load_dataset(
+        "livecodebench/code_generation_lite", 
+        version_tag="release_v5",
+        # trust_remote_code=True,
+        cache_dir=DATASET_CACHE_DIR
+    )
+    print(len(lcb_codegen["test"])) # 880 questions
+    # print(lcb_codegen["test"][0].keys())
+    
+    # prepare_train_test_dataset(lcb_codegen["test"]) # 700, 180
+    prepare_synthetic_positive_method_dataset(question_generate_model_name="gpt-4.1", answer_generate_model_name="o3", max_workers=128)
 
 
+    
 
 if __name__ == "__main__":
     main()

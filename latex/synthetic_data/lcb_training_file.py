@@ -12,6 +12,15 @@ import threading
 import time
 from verbalized_sampling.llms import get_model
 
+def query_openai(model_name, messages, config):
+    client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+    response = client.chat.completions.create(
+        model=model_name,
+        messages=messages,
+        **config,
+    )
+    return response.choices[0].message.content
+
 # Check for DATASET_CACHE_DIR, set default if not present
 DATASET_CACHE_DIR = os.environ.get("DATASET_CACHE_DIR", "./.cache/hf")
 
@@ -59,16 +68,13 @@ def generate_answer_parallel(model_name, question):
     }
     if "o3" in model_name:
         config = {
-            "temperature": 0.7,
-            "reasoning_effort": "high"
+            # "temperature": 0.7,
+            "reasoning_effort": "medium"
         }
-    model = get_model(model_name, method="direct", config=config, strict_json=False)
 
     max_regen = 3
     for attempt in range(max_regen):
-        response = model.chat([messages])[0]
-        # print(f"Response: {response}")
-
+        response = query_openai(model_name, messages, config)
         if response.startswith("```python") and response.endswith("```"):
             return response
         print(f"Regenerating response for question (attempt {attempt+1}): {question}")
@@ -226,14 +232,14 @@ def main():
     lcb_codegen = load_dataset(
         "livecodebench/code_generation_lite", 
         version_tag="release_v5",
-        trust_remote_code=True,
+        # trust_remote_code=True,
         cache_dir=DATASET_CACHE_DIR
     )
     print(len(lcb_codegen["test"])) # 880 questions
     # print(lcb_codegen["test"][0].keys())
     
     # prepare_train_test_dataset(lcb_codegen["test"]) # 700, 180
-    prepare_synthetic_positive_method_dataset(question_generate_model_name="gpt-4.1", answer_generate_model_name="o3", max_workers=16)
+    prepare_synthetic_positive_method_dataset(question_generate_model_name="gpt-4.1", answer_generate_model_name="o3", max_workers=128)
 
 
     
