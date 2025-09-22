@@ -108,7 +108,7 @@ class PromptFactory:
             # Synthetic data tasks
             "gsm8k": TaskType.SYNTHETIC_DATA,
             "livecodebench": TaskType.SYNTHETIC_DATA,
-            "orz_math": TaskType.SYNTHETIC_DATA,
+            "amc_aime_math": TaskType.SYNTHETIC_DATA,
             
             # Synthetic negative tasks
             "synthetic_negative": TaskType.SYNTHETIC_NEGATIVE,
@@ -236,6 +236,34 @@ class PromptFactory:
         Question: [question]
         """
         return [user_prompts]
+
+    @staticmethod
+    def get_amc_and_aime_math_task_prompts(num_icl_example: int, random_seed: int) -> List[str]:
+        """Get prompts for the AMC and AIME math task."""
+        user_prompt = f"""Generate a math competition problem in the style of AMC 10, AMC 12, or AIME.
+
+Knowledge Coverage:
+Use secondary or high school mathematics — arithmetic, algebra, counting & probability, number theory, combinatorics, geometry, trigonometry, pre-calculus, and common contest techniques (inequalities such as AM–GM or Cauchy–Schwarz, symmetry, invariants, clever manipulations).
+
+Format Requirements:
+- Clearly state a single math problem under a line starting with “Question:”.
+- Provide the difficulty level under a line starting with “Difficulty:”, using exactly one of: AMC or AIME.
+- The answer must be a specific number or simplified expression (no multiple-choice).
+
+Constraints:
+- The problem must be self-contained and well-posed.
+- Do not require advanced undergraduate mathematics (e.g., advanced calculus, abstract algebra).
+- Avoid obscure tricks; rely only on creative applications of standard high-school math.
+- Keep the difficulty level and the style consistent with official AMC/AIME problems.
+
+Output Style Example (do not copy):
+Question: What is the degree measure of the acute angle formed by lines with slopes $2$ and $\frac{1}{3}$? 
+Difficulty: AMC
+
+Question: Let $p$ be the least prime number for which there exists a positive integer $n$ such that $n^{4}+1$ is divisible by $p^{2}$. Find the least positive integer $m$ such that $m^{4}+1$ is divisible by $p^{2}$.
+Difficulty: AIME
+        """
+        return [user_prompt]
     
     @staticmethod
     def get_livecodebench_task_prompts(num_icl_example: int, random_seed: int) -> List[str]:
@@ -275,6 +303,8 @@ class PromptFactory:
         prompts = []
         if task == "gsm8k":
             prompts = PromptFactory.get_gsm8k_task_prompts(num_icl_example=3, random_seed=random_seed)
+        elif task == "amc_aime_math":
+            prompts = PromptFactory.get_amc_and_aime_math_task_prompts(num_icl_example=3, random_seed=random_seed)
         elif task == "livecodebench":
             prompts = PromptFactory.get_livecodebench_task_prompts(num_icl_example=3, random_seed=random_seed)
         elif (task == "poem") and (method == Method.DIRECT_BASE): # Handle poem task with clean data

@@ -13,6 +13,7 @@ from .bias.rand_num import RandomNumberTask
 from .bias.state_name import StateNameTask
 from .fact.simple_qa import SimpleQATask
 from .synthetic_data.gsm8k import GSM8KTask
+from .synthetic_data.amc_aime import AMCAndAIMEMathTask
 from .synthetic_data.livecodebench import LiveCodeBenchTask
 from .synthetic_data.synthetic_negative import SyntheticNegativeTask
 from enum import Enum
@@ -93,6 +94,12 @@ class Task(str, Enum):
     Generates answers to the GSM8K dataset from OpenAI.
     """
 
+    AMCAndAIMEMathTask = "amc_aime_math"
+    """AMC and AIME math task.
+    
+    Generates answers to the AMC and AIME math dataset from OpenAI.
+    """
+
     LIVECODEBENCH = "livecodebench"
     """LiveCodeBench task.
     
@@ -120,6 +127,7 @@ TASK_REGISTRY: Dict[str, Type[BaseTask]] = {
     "simple_qa": SimpleQATask,
     # synthetic data
     "gsm8k": GSM8KTask,
+    "amc_aime_math": AMCAndAIMEMathTask,
     "livecodebench": LiveCodeBenchTask,
     "synthetic_negative": SyntheticNegativeTask,
 }

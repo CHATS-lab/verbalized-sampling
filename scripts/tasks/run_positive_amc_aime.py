@@ -17,9 +17,9 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 1000,
+        'num_responses': 10,
         'num_prompts': 1, # current total: 300; total: 4326
-        'target_words': 150, 
+        'target_words': 80, 
         'temperature': temperature,
         'top_p': top_p,
         'random_seed': 42,
@@ -65,7 +65,7 @@ def run_method_tests(
     model_basename = model_name.replace("/", "_")
     config = PipelineConfig(
         experiments=experiments,
-        evaluation=EvaluationConfig(metrics=metrics),
+        evaluation=EvaluationConfig(metrics=metrics, num_responses_per_prompt=1000),
         output_base_dir=Path(f"{output_dir}/{model_basename}_{task.value}"),
         skip_existing=True,
     )
@@ -115,7 +115,7 @@ if __name__ == "__main__":
             'strict_json': True,
             'num_samples': num_samples,
             'num_samples_per_prompt': 3,
-            'probability_definition': "confidence"
+            'probability_definition': "perplexity"
         }
     ]
 
@@ -133,14 +133,14 @@ if __name__ == "__main__":
     for model in models:
         model_basename = model.replace("/", "_")
         run_method_tests(
-            task=Task.LIVECODEBENCH,
+            task=Task.AMCAndAIMEMathTask,
             model_name=model,
             methods=methods,
-            metrics=["length", "diversity"], # "synthetic_data_quality"
+            metrics=["diversity"],
             temperature=0.7,
             top_p=1.0,
-            output_dir="method_results_lcb_1000",
-            num_workers=1 if any(x in model_basename for x in ["claude", "gemini"]) else 16,
+            output_dir="method_results_amc_aime_1000",
+            num_workers=16 if any(x in model_basename for x in ["claude", "gemini"]) else 32,
         )
 
 
