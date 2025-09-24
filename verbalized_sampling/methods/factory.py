@@ -22,6 +22,7 @@ class Method(str, Enum):
     MULTI_TURN = "multi_turn"
     CHAIN_OF_THOUGHT = "chain_of_thought"
     COMBINED = "combined"
+    STANDARD_ALL_POSSIBLE = "standard_all_possible"
 
 
 def is_method_structured(method: Method) -> bool:
@@ -31,6 +32,7 @@ def is_method_structured(method: Method) -> bool:
         Method.STRUCTURE_WITH_PROB,
         Method.CHAIN_OF_THOUGHT,
         Method.COMBINED,
+        Method.STANDARD_ALL_POSSIBLE,
     ]
 
 def is_method_multi_turn(method: Method) -> bool:
@@ -256,13 +258,18 @@ Constraints:
 - Avoid obscure tricks; rely only on creative applications of standard high-school math.
 - Keep the difficulty level and the style consistent with official AMC/AIME problems.
 
-Output Style Example (do not copy):
-Question: What is the degree measure of the acute angle formed by lines with slopes $2$ and $\frac{1}{3}$? 
-Difficulty: AMC
-
-Question: Let $p$ be the least prime number for which there exists a positive integer $n$ such that $n^{4}+1$ is divisible by $p^{2}$. Find the least positive integer $m$ such that $m^{4}+1$ is divisible by $p^{2}$.
-Difficulty: AIME
+Format exactly as follows:
+Question:
+[problem statement in natural language]
+Difficulty:
+[difficulty level, exactly one of: AMC or AIME]
         """
+# Output Style Example (do not copy):
+# Question: What is the degree measure of the acute angle formed by lines with slopes $2$ and $\frac{1}{3}$? 
+# Difficulty: AMC
+
+# Question: Let $p$ be the least prime number for which there exists a positive integer $n$ such that $n^{4}+1$ is divisible by $p^{2}$. Find the least positive integer $m$ such that $m^{4}+1$ is divisible by $p^{2}$.
+# Difficulty: AIME
         return [user_prompt]
     
     @staticmethod

@@ -15,7 +15,7 @@ import datetime
 from verbalized_sampling.tasks import Task, get_task
 from verbalized_sampling.methods import Method
 from verbalized_sampling.llms import get_model
-from verbalized_sampling.evals import get_evaluator
+from verbalized_sampling.analysis.evals import get_evaluator
 from verbalized_sampling.methods.factory import PromptFactory
 
 console = Console()
@@ -203,6 +203,7 @@ class Pipeline:
                 task_kwargs.update({
                     "num_prompts": exp_config.num_prompts,
                     "random_seed": exp_config.random_seed,
+                    "all_possible": exp_config.all_possible,
                     "num_samples_per_prompt": exp_config.num_samples_per_prompt if exp_config.method == Method.COMBINED else None,
                 })
                 
@@ -359,7 +360,7 @@ class Pipeline:
         Returns:
             Dict[str, Path]
         """
-        from verbalized_sampling.evals import plot_evaluation_comparison, plot_comparison_chart
+        from verbalized_sampling.analysis.evals import plot_evaluation_comparison, plot_comparison_chart
         
         plot_results = {}
         plots_base_dir = self.config.output_base_dir / "plots"
@@ -402,7 +403,7 @@ class Pipeline:
     def generate_report(self, evaluation_results: Dict[str, Dict[str, Path]], 
                        plot_results: Dict[str, Path]) -> Path:
         """Generate a comprehensive HTML report."""
-        from verbalized_sampling.evals.base import EvalResult
+        from verbalized_sampling.analysis.evals.base import EvalResult
         
         report_path = self.config.output_base_dir / "pipeline_report.html"
         

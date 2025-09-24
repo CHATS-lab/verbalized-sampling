@@ -356,42 +356,42 @@ class SyntheticDataPromptTemplate(BasePromptTemplate):
         word_constraint = f" The data instance should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
 Generate a data instance based on the input prompt.{word_constraint}
-Output only the data, without any explanations or extra text.
+Output only the specified format of data instance, without any explanations or extra text.
 """
     
     def get_base_cot_prompt(self, target_words: int = 100, **kwargs) -> str:
         word_constraint = f" The data instance should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
 Generate a data instance based on the input prompt using chain-of-thought reasoning.{word_constraint}
-Output only the data, without any explanations or extra text.
+Output only the specified format of data instance, without any explanations or extra text.
 """
     
     def get_standard_prompt(self, num_samplings: int = 5, target_words: int = 100, **kwargs) -> str:
         word_constraint = f" Each data instance should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
 Generate {num_samplings} data instances based on the input prompt.{word_constraint}
-Output only the data, with no explanations or extra text.
+Output only the specified format of data instance, with no explanations or extra text.
 """
     
     def get_standard_all_possible_prompt(self, target_words: int = 100, **kwargs) -> str:
         word_constraint = f" Each data instance should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
 Generate all plausible data instances based on the input prompt.{word_constraint}
-Output only the data, with no explanations or extra text.
+Output only the specified format of data instance, with no explanations or extra text.
 """
 
     def get_vs_cot_prompt(self, num_samplings: int = 5, target_words: int = 100, **kwargs) -> str:
         word_constraint = f" Each data instance should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
 Generate {num_samplings} data instances based on the input prompt using chain-of-thought reasoning.{word_constraint}
-Output only the data, with no explanations or extra text.
+Output only the specified format of data instance, with no explanations or extra text.
 """
 
     def get_vs_multi_turn_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, target_words: int = 100, **kwargs) -> str:
         word_constraint = f" Each data instance should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
 Generate {num_samplings} data instances based on the input prompt.{word_constraint}
-Output only the data, with no explanations or extra text.
+Output only the specified format of data instance, with no explanations or extra text.
 
 First, sample {num_samples_per_prompt} data instances.
 """

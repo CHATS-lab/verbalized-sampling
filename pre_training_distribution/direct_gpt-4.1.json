@@ -1,0 +1,26 @@
+{
+  "California": {
+    "count": 6,
+    "percentage": 0.12
+  },
+  "Montana": {
+    "count": 10,
+    "percentage": 0.2
+  },
+  "Texas": {
+    "count": 23,
+    "percentage": 0.46
+  },
+  "Oregon": {
+    "count": 9,
+    "percentage": 0.18
+  },
+  "Arizona": {
+    "count": 1,
+    "percentage": 0.02
+  },
+  "Colorado": {
+    "count": 1,
+    "percentage": 0.02
+  }
+}

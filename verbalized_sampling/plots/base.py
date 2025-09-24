@@ -1,6 +1,6 @@
 from typing import Optional
 from dataclasses import dataclass
-from ..evals.base import EvalResult
+from ..analysis.evals.base import EvalResult
 
 @dataclass
 class ComparisonData:

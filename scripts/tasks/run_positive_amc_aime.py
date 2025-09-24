@@ -17,7 +17,7 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 1000,
+        'num_responses': 1050,
         'num_prompts': 1, # current total: 300; total: 4326
         'target_words': 80, 
         'temperature': temperature,
@@ -115,15 +115,15 @@ if __name__ == "__main__":
             'strict_json': True,
             'num_samples': num_samples,
             'num_samples_per_prompt': 3,
-            'probability_definition': "perplexity"
+            'probability_definition': "confidence"
         }
     ]
 
 
     models = [
         # "gpt-4.1-mini",
-        "gpt-4.1",
-        # "gemini-2.5-flash",
+        # "gpt-4.1",
+        "gemini-2.5-flash",
         # "gemini-2.5-pro",
         # "meta-llama/Llama-3.1-70B-Instruct"
         # "anthropic/claude-4-sonnet",
@@ -139,7 +139,7 @@ if __name__ == "__main__":
             metrics=["diversity"],
             temperature=0.7,
             top_p=1.0,
-            output_dir="method_results_amc_aime_1000",
+            output_dir="method_results_amc_aime_1000_no_example",
             num_workers=16 if any(x in model_basename for x in ["claude", "gemini"]) else 32,
         )
 

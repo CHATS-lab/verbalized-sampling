@@ -16,6 +16,7 @@ def load_metrics_data(base_path, model, task, method, prob_tuning_values):
     precisions = []
     coverage_ns = []
     actual_prob_values = []
+    # print("Base path: ", base_path)
     
     for prob_val in prob_tuning_values:
         if prob_val == -1:
@@ -277,7 +278,7 @@ def plot_single_metric(ax, base_path, model, task, prob_values, title, metric, m
     ax.set_xlim(1.2, 0.007)
 
     # Labels and formatting with elegant styling
-    ax.set_xlabel('Probability Tuning Parameter', fontweight='bold')
+    ax.set_xlabel('VS Probability Threshold', fontweight='bold')
     ax.set_ylabel(ylabel if 'GPT-4.1' in title else '', fontweight='bold')
     ax.set_title(f"{title} - {metric_title}", fontweight='bold', pad=15, fontsize=16)
 
@@ -309,7 +310,7 @@ def plot_single_metric(ax, base_path, model, task, prob_values, title, metric, m
 
 
 def main():
-    data_path = "bias_experiments_prob_tuning"
+    data_path = "ablation_data/bias_experiments_prob_tuning"
 
     if "bias" in data_path:
         task = "state_name"
