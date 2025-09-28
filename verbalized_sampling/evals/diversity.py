@@ -151,12 +151,16 @@ class DiversityEvaluator(BaseEvaluator):
                         similarity_matrix = np.clip(similarity_matrix, -1.0, 1.0)
                         
                         # Calculate pairwise diversities within this prompt group
+                        # No double counting
                         for i in range(len(indices_responses)):
                             for j in range(i + 1, len(indices_responses)):
                                 similarity = float(similarity_matrix[i, j])
                                 
                                 # Convert similarity to diversity score (0 to 1)
-                                diversity = (1 - similarity) / 2
+                                # diversity = (1 - similarity) / 2 # old metric
+
+                                # diversity = np.clip(1 - similarity, 0.0, 1.0) # new metric
+                                diversity = 1 - np.clip(similarity, 0.0, 1.0) # new metric
                                 # diversity = similarity
                                 
                                 pairwise_diversities.append(diversity)
