@@ -11,6 +11,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import threading
 import time
 from verbalized_sampling.llms import get_model
+from verbalized_sampling.llms.vllm import VLLMOpenAI
 
 def query_openai(model_name, messages, config):
     client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
@@ -20,6 +21,11 @@ def query_openai(model_name, messages, config):
         **config,
     )
     return response.choices[0].message.content
+
+def query_vllm(model_name, messages, config):
+    client = VLLMOpenAI(model_name=model_name, config=config)
+    response = client._chat(messages)
+    return response
 
 # Check for DATASET_CACHE_DIR, set default if not present
 DATASET_CACHE_DIR = os.environ.get("DATASET_CACHE_DIR", "./.cache/hf")
@@ -48,23 +54,33 @@ def get_oaireason_question_template_answer(question: str):
     prompt += f"### Answer: (use the provided format with backticks)\n\n"
     return prompt
 
+def get_qwen_reasoning_question_template_answer(question: str):
+    prompt = "You will be given a question (problem specification) and will generate a correct Python program that matches the specification and passes all tests.\n\n"
+    prompt += f"Question: {question}\n\n"
+    prompt += f"{FORMAT_MESSAGE_GENERIC}\n"
+    prompt += "```python\n# YOUR CODE HERE\n```\n\n"
+    # prompt += f"### Answer: (use the provided format with backticks)\n\n"
+    return prompt
 
 def generate_answer_parallel(model_name, question):
     system = SYSTEM_MESSAGE_GENERIC
     if "o3" in model_name:
         # print(f"Using o3 model for question: {question}")
         user = get_oaireason_question_template_answer(question)
+    elif "qwen" in model_name:
+        user = get_qwen_reasoning_question_template_answer(question)
     else:
         # print(f"Using generic model for question: {question}")
         user = get_generic_question_template_answer(question)
 
     messages = [
-        {"role": "system", "content": system}, 
+        # {"role": "system", "content": system}, 
         {"role": "user", "content": user}
     ]
 
     config = {
-        "temperature": 0.7
+        "temperature": 0.7,
+        "max_tokens": 10000
     }
     if "o3" in model_name:
         config = {
@@ -74,12 +90,12 @@ def generate_answer_parallel(model_name, question):
 
     max_regen = 3
     for attempt in range(max_regen):
-        response = query_openai(model_name, messages, config)
-        if response.startswith("```python") and response.endswith("```"):
-            return response
-        print(f"Regenerating response for question (attempt {attempt+1}): {question}")
+        if model_name in ["gpt-4.1", "o3"]:
+            response = query_openai(model_name, messages, config)
+        else:
+            response = query_vllm(model_name, messages, config)
+        return response
     return None
-
 
 def generate_answers_batch(model_name, questions, max_workers=16):
     """Generate answers for multiple questions in parallel using threads"""
@@ -172,15 +188,15 @@ def parse_synthetic_postive_data(raw_response):
 
 
 def prepare_synthetic_positive_method_dataset(question_generate_model_name, answer_generate_model_name, max_workers=16):
-    folder_path = f"method_results_lcb_1000/{question_generate_model_name}_livecodebench/generation"
+    # folder_path = f"method_results_lcb_1000/{question_generate_model_name}_livecodebench/generation"
 
     raw_memthod_name_list = {
         "direct": "direct",
         # "direct_cot": "direct_cot",
         # "multi_turn": "multi_turn",
-        # "sequence": "sequence",
-        # "structure_with_prob": "vs_standard",
-        # "chain_of_thought": "vs_cot",
+        "sequence": "sequence",
+        "structure_with_prob": "vs_standard",
+        "chain_of_thought": "vs_cot",
         # "combined": "vs_multi"
     }
 
@@ -207,13 +223,13 @@ def prepare_synthetic_positive_method_dataset(question_generate_model_name, answ
         
         # Process all questions in parallel
         print(f"Processing {len(all_questions)} questions in parallel with {max_workers} workers...")
-        question_answer_pairs = generate_answers_batch("o3", all_questions, max_workers=max_workers)
+        question_answer_pairs = generate_answers_batch(answer_generate_model_name, all_questions, max_workers=max_workers)
         
         # Build the final dataset
         for question, answer in tqdm(question_answer_pairs, desc=f"Building dataset for method: {method_name}"):
             if answer is not None:
                 train_synthetic_data.append({
-                    "system": SYSTEM_MESSAGE_GENERIC,
+                    # "system": SYSTEM_MESSAGE_GENERIC,
                     "instruction": get_generic_question_template_answer(question),
                     "output": answer,
                 })
@@ -239,10 +255,11 @@ def main():
     # print(lcb_codegen["test"][0].keys())
     
     # prepare_train_test_dataset(lcb_codegen["test"]) # 700, 180
-    prepare_synthetic_positive_method_dataset(question_generate_model_name="gpt-4.1", answer_generate_model_name="o3", max_workers=128)
+    # prepare_synthetic_positive_method_dataset(question_generate_model_name="gpt-4.1", answer_generate_model_name="o3", max_workers=128)
+    prepare_synthetic_positive_method_dataset(question_generate_model_name="gpt-4.1", answer_generate_model_name="Qwen/Qwen3-32B", max_workers=128)
 
 
-    
+
 
 if __name__ == "__main__":
     main()
