@@ -20,3 +20,6 @@ scikit-learn
 litellm
 google-genai
 statsmodels
+datasets
+pydantic
+math_verify
