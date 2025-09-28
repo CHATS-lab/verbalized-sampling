@@ -29,6 +29,7 @@ class ExperimentConfig:
     model_name: str
     temperature: float = 0.7
     top_p: float = 0.9
+    min_p: float = 0.0
     num_responses: int = 10
     num_samples: int = 1
     num_prompts: int = 5
@@ -185,13 +186,19 @@ class Pipeline:
                 progress.console.print(f"🔄 Generating: {exp_config.name}")
                 
                 # Setup model and task
+                model_config = {
+                    "temperature": exp_config.temperature,
+                    "top_p": exp_config.top_p,
+                }
+
+                # Only add min_p if use_vllm is True
+                if exp_config.use_vllm:
+                    model_config["min_p"] = exp_config.min_p
+
                 model = get_model(
                     model_name=exp_config.model_name,
                     method=exp_config.method,
-                    config={
-                        "temperature": exp_config.temperature, 
-                        "top_p": exp_config.top_p,
-                    },
+                    config=model_config,
                     use_vllm=exp_config.use_vllm,
                     num_workers=self.config.num_workers,
                     strict_json=exp_config.strict_json,
@@ -305,17 +312,78 @@ class Pipeline:
                     try:
                         # Get evaluator and run evaluation
                         evaluator = get_evaluator(
-                            metric, 
+                            metric,
                             num_workers=self.config.evaluation.num_workers,
                         )
 
+                        # For accuracy evaluation, we need to provide reference answers
+                        evaluation_kwargs = {"metadata": {"experiment": exp_name, "metric": metric}}
+
+                        if metric == "accuracy":
+                            # Find the experiment config for this experiment
+                            exp_config = None
+                            for config in self.config.experiments:
+                                if config.name == exp_name:
+                                    exp_config = config
+                                    break
+
+                            if exp_config and hasattr(exp_config, 'task'):
+                                # Load the task to get reference answers
+                                from verbalized_sampling.tasks import get_task
+                                task = get_task(
+                                    exp_config.task.value,
+                                    model=None,  # We don't need model for getting answers
+                                    method="direct",  # Method doesn't matter for getting answers
+                                    num_prompts=len(set(prompts)),  # Number of unique prompts
+                                    num_responses=1,
+                                    random_seed=exp_config.random_seed
+                                )
+
+                                # Extract reference answers corresponding to the prompts
+                                reference_answers = []
+                                unique_prompts = []
+                                seen_prompts = set()
+
+                                # Get unique prompts in order
+                                for prompt in prompts:
+                                    if prompt not in seen_prompts:
+                                        unique_prompts.append(prompt)
+                                        seen_prompts.add(prompt)
+
+                                # Match prompts to task problems and extract answers
+                                for prompt in unique_prompts:
+                                    # Find the corresponding problem in the task
+                                    matching_answer = None
+                                    for problem in task.problems:
+                                        # Extract the question from the formatted prompt
+                                        if "Question:" in prompt:
+                                            question_part = prompt.split("Question:")[1].split("Please reason")[0].strip()
+                                        else:
+                                            question_part = prompt.strip()
+
+                                        if problem['problem'].strip() in question_part or question_part in problem['problem'].strip():
+                                            matching_answer = problem['answer']
+                                            break
+
+                                    if matching_answer is None:
+                                        matching_answer = "UNKNOWN"
+                                    reference_answers.append(matching_answer)
+
+                                # Expand reference answers to match all responses (including multiple responses per prompt)
+                                expanded_answers = []
+                                prompt_to_answer = dict(zip(unique_prompts, reference_answers))
+                                for prompt in prompts:
+                                    expanded_answers.append(prompt_to_answer.get(prompt, "UNKNOWN"))
+
+                                evaluation_kwargs["reference_answers"] = expanded_answers
+
                         # print("Evaluation Prompts: ", prompts)
                         # print("Evaluation Responses: ", responses)
-                        
+
                         result = evaluator.evaluate(
                             prompts,
                             responses,
-                            metadata={"experiment": exp_name, "metric": metric}
+                            **evaluation_kwargs
                         )
                         
                         # Save results
@@ -719,7 +787,7 @@ def run_pipeline_cli(
     # Parse configuration
     experiments = []
     for exp_data in config_data['experiments']:
-        experiments.append(ExperimentConfig(
+        exp_config = ExperimentConfig(
             name=exp_data['name'],
             task=Task(exp_data['task']),
             method=Method(exp_data['method']),
@@ -732,7 +800,13 @@ def run_pipeline_cli(
             random_seed=exp_data.get('random_seed', 42),
             use_vllm=exp_data.get('use_vllm', False),
             probability_definition=exp_data.get('probability_definition', "implicit")
-        ))
+        )
+
+        # Only add min_p if use_vllm is True and min_p is provided
+        if exp_config.use_vllm and 'min_p' in exp_data:
+            exp_config.min_p = exp_data['min_p']
+
+        experiments.append(exp_config)
     
     evaluation_config = EvaluationConfig(
         metrics=config_data['evaluation']['metrics'],
@@ -794,6 +868,13 @@ def run_quick_comparison(
     
     experiments = []
     for method in methods:
+        exp_kwargs = kwargs.copy()
+
+        # Handle min_p parameter - only include if use_vllm is True
+        use_vllm = exp_kwargs.get('use_vllm', False)
+        if not use_vllm and 'min_p' in exp_kwargs:
+            exp_kwargs.pop('min_p')
+
         experiments.append(ExperimentConfig(
             name=f"{task.value}_{method.value}",
             task=task,
@@ -804,7 +885,7 @@ def run_quick_comparison(
             num_prompts=num_prompts,
             num_samples_per_prompt=num_samples_per_prompt,
             probability_definition=probability_definition,
-            **kwargs
+            **exp_kwargs
         ))
     
     evaluation_config = EvaluationConfig(metrics=metrics)

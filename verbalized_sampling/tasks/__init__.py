@@ -16,6 +16,7 @@ from .synthetic_data.gsm8k import GSM8KTask
 from .synthetic_data.livecodebench import LiveCodeBenchTask
 from .synthetic_data.synthetic_negative import SyntheticNegativeTask
 from .safety.safety import SafetyTask
+from .math.math_task import MathTask
 from enum import Enum
 
 class Task(str, Enum):
@@ -113,6 +114,42 @@ class Task(str, Enum):
     Tests the model's ability to refuse unsafe requests while remaining helpful.
     """
 
+    # Math tasks
+    MATH = "math_math"
+    """MATH dataset task.
+
+    Solves problems from the MATH dataset with LaTeX formatting.
+    Tests mathematical reasoning across various difficulty levels.
+    """
+
+    AIME = "math_aime"
+    """AIME competition task.
+
+    Solves American Invitational Mathematics Examination problems.
+    Tests advanced competition-level mathematical problem solving.
+    """
+
+    AMC = "math_amc"
+    """AMC competition task.
+
+    Solves American Mathematics Competitions problems.
+    Tests intermediate-level mathematical problem solving.
+    """
+
+    MINERVA = "math_minerva"
+    """MINERVA dataset task.
+
+    Solves physics and advanced mathematics problems.
+    Tests scientific reasoning and advanced mathematical concepts.
+    """
+
+    OLYMPIAD_BENCH = "math_olympiad_bench"
+    """Olympiad Bench task.
+
+    Solves mathematical olympiad competition problems.
+    Tests advanced problem-solving and mathematical creativity.
+    """
+
 
 TASK_REGISTRY: Dict[str, Type[BaseTask]] = {
     # creativity
@@ -132,6 +169,12 @@ TASK_REGISTRY: Dict[str, Type[BaseTask]] = {
     "synthetic_negative": SyntheticNegativeTask,
     # safety
     "safety": SafetyTask,
+    # math
+    "math_math": lambda **kwargs: MathTask(dataset="math", **kwargs),
+    "math_aime": lambda **kwargs: MathTask(dataset="aime", **kwargs),
+    "math_amc": lambda **kwargs: MathTask(dataset="amc", **kwargs),
+    "math_minerva": lambda **kwargs: MathTask(dataset="minerva", **kwargs),
+    "math_olympiad_bench": lambda **kwargs: MathTask(dataset="olympiad_bench", **kwargs),
 }
 
 def get_task(task_name: Task, **kwargs) -> BaseTask:
