@@ -65,7 +65,7 @@ def generate_answer_parallel(model_name, question):
 
     config = {
         "temperature": 0.7,
-        "max_tokens": 10000
+        "max_tokens": 12000
     }
     if "o3" in model_name:
         config = {
@@ -124,11 +124,16 @@ def read_response_file(file_path):
                     continue
                 if prompt not in prompt_to_responses:
                     prompt_to_responses[prompt] = {"responses": []}
-                for resp in response.get("responses", []):
-                    try:
-                        prompt_to_responses[prompt]["responses"].append(resp["text"])
-                    except Exception:
-                        continue
+                responses = response.get("responses", [])
+                if isinstance(responses, list):
+                    for resp in responses:
+                        try:
+                            prompt_to_responses[prompt]["responses"].append(resp["text"])
+                        except Exception as e:
+                            print(f"Error decoding JSON in {file_path}: {e}")
+                            continue
+                elif isinstance(responses, dict):
+                    prompt_to_responses[prompt]["responses"].append(responses["text"])
             except json.JSONDecodeError as e:
                 print(f"Error decoding JSON in {file_path}: {e}")
 
@@ -137,7 +142,10 @@ def read_response_file(file_path):
 
 def parse_synthetic_postive_data(raw_response):
     question = raw_response.split("Question:")[1].strip().split("Difficulty:")[0].strip()
-    difficulty = raw_response.split("Difficulty:")[1].strip()
+    if "Difficulty:" not in raw_response:
+        difficulty = "unknown"
+    else:
+        difficulty = raw_response.split("Difficulty:")[1].strip()
     return {
         "question": question,
         "difficulty": difficulty,
@@ -146,20 +154,22 @@ def parse_synthetic_postive_data(raw_response):
 
 def prepare_synthetic_positive_method_dataset(question_generate_model_name, answer_generate_model_name, max_workers=16):
     folder_path = f"method_results_amc_aime_1000/{question_generate_model_name}_amc_aime_math/generation"
+    folder_path = "/root/verbalize-sampling/gemini-2.5-flash_amc_aime_math/generation"
 
     raw_memthod_name_list = {
-        "direct": "direct",
-        # "direct_cot": "direct_cot",
+        # "direct": "direct",
+        "direct_cot": "direct_cot",
         # "multi_turn": "multi_turn",
-        "sequence": "sequence",
-        "structure_with_prob": "vs_standard",
-        "chain_of_thought": "vs_cot",
+        # "sequence": "sequence",
+        # "structure_with_prob": "vs_standard",
+        # "chain_of_thought": "vs_cot",
         # "combined": "vs_multi"
     }
 
-    os.makedirs("synthetic_amc_aime", exist_ok=True)
+    os.makedirs("synthetic_amc_aime_gemini", exist_ok=True)
     for child_folder in tqdm(os.listdir(folder_path), desc="Processing synthetic positive data"):
         method_name = child_folder.split(" ")[0]
+        print(f"child_folder: {child_folder}")
         if method_name not in raw_memthod_name_list.keys():
             continue
         file_path = os.path.join(folder_path, child_folder, "responses.jsonl")
@@ -191,7 +201,8 @@ def prepare_synthetic_positive_method_dataset(question_generate_model_name, answ
                     "output": answer,
                 })
         
-        with open(f"synthetic_amc_aime/amc_aime_training_synthetic_positive_{raw_memthod_name_list[method_name]}.json", "w", encoding="utf-8") as f:
+        # with open(f"synthetic_amc_aime/amc_aime_training_synthetic_positive_{raw_memthod_name_list[method_name]}.json", "w", encoding="utf-8") as f:
+        with open(f"synthetic_amc_aime_gemini/amc_aime_training_synthetic_positive_{raw_memthod_name_list[method_name]}.json", "w", encoding="utf-8") as f:
             json.dump(train_synthetic_data, f, indent=4, ensure_ascii=False)
         train_synthetic_data = []
         # break 
