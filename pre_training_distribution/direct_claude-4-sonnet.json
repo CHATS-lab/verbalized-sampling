@@ -1,0 +1,14 @@
+{
+  "California": {
+    "count": 47,
+    "percentage": 0.94
+  },
+  "Ohio": {
+    "count": 1,
+    "percentage": 0.02
+  },
+  "Texas": {
+    "count": 2,
+    "percentage": 0.04
+  }
+}

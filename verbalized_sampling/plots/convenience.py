@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 from .comparison import ComparisonPlotter
 from .base import ComparisonData
-from ..evals.base import EvalResult
+from ..analysis.evals.base import EvalResult
 
 def plot_evaluation_comparison(results: Dict[str, Union[EvalResult, str, Path]],
                              output_dir: Union[str, Path],
@@ -48,7 +48,7 @@ def plot_comparison_chart(results: Dict[str, Union[EvalResult, str, Path]],
     key_metric_names = []
     
     for metric, results in results.items():
-        from ..evals import get_evaluator
+        from ..analysis.evals import get_evaluator
         evaluator_class = get_evaluator(metric)
         if evaluator_class.key_plot_metrics:
             key_metric_names.extend(evaluator_class.key_plot_metrics)

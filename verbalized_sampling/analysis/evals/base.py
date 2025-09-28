@@ -109,9 +109,10 @@ class BaseEvaluator(ABC):
     aggregate_plot_metrics: List[str] = []  # List of metric names for aggregate plots
     key_plot_metrics: List[tuple[str, str]] = []  # List of (metric_name, plot_title) tuples for key plots
     
-    def __init__(self, name: str, num_workers: int = 128):
+    def __init__(self, name: str, num_workers: int = 128, num_responses_per_prompt: int = 50):
         self.name = name
         self.num_workers = num_workers
+        self.num_responses_per_prompt = num_responses_per_prompt
 
     @abstractmethod
     def compute_instance_metric(self, prompt: str, response: str) -> Dict[str, float]:

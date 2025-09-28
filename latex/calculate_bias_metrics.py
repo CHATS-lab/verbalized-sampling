@@ -13,19 +13,19 @@ from scipy.stats import ttest_ind
 # Font setup: News Gothic MT + fallback
 # ----------------------------
 # NOTE: DejaVu Sans is kept as fallback to avoid "glyph missing" warnings (e.g., ↑).
-font_path = "/Users/jiayizx/Downloads/NewsGothicMT.ttf"
-font_name = None
-try:
-    if os.path.exists(font_path):
-        fm.fontManager.addfont(font_path)
-        font_name = fm.FontProperties(fname=font_path).get_name()
-except Exception as e:
-    print(f"Warning: could not add font at {font_path}: {e}")
+# font_path = "/Users/jiayizx/Downloads/NewsGothicMT.ttf"
+# font_name = None
+# try:
+#     if os.path.exists(font_path):
+#         fm.fontManager.addfont(font_path)
+#         font_name = fm.FontProperties(fname=font_path).get_name()
+# except Exception as e:
+#     print(f"Warning: could not add font at {font_path}: {e}")
 
-plt.rcParams["font.size"] = 12
-plt.rcParams["font.family"] = [font_name]
-plt.rcParams["axes.unicode_minus"] = False  # safer for some unicode glyphs
-print(font_name)
+# plt.rcParams["font.size"] = 12
+# plt.rcParams["font.family"] = [font_name]
+# plt.rcParams["axes.unicode_minus"] = False  # safer for some unicode glyphs
+# print(font_name)
 
 # ----------------------------
 # Method mapping (dir substring -> display name)
@@ -138,11 +138,12 @@ def plot_method_averages(all_results, task_type, output_dir):
     plt.style.use('default')  # Start with clean slate
     plt.rcParams.update({
         'font.family': 'sans-serif',
-        'font.size': 11,
-        'axes.labelsize': 12,
-        'axes.titlesize': 13,
-        'xtick.labelsize': 10,
-        'ytick.labelsize': 10,
+        'font.sans-serif': ['Arial', 'DejaVu Sans', 'Liberation Sans'],
+        'font.size': 20,
+        'axes.labelsize': 28,
+        'axes.titlesize': 30,
+        'xtick.labelsize': 22,
+        'ytick.labelsize': 22,
         'legend.fontsize': 9,
         'axes.linewidth': 0.8,
         'axes.edgecolor': '#666666',
@@ -158,22 +159,22 @@ def plot_method_averages(all_results, task_type, output_dir):
     
     # Colors aligned with method types
     colors = {
-        'direct': '#FFE5E5',      # Very light red
-        'cot': '#FFCCCB',         # Light red  
-        'sequence': '#FF9999',     # Medium red
-        'multi_turn': '#FF6B6B',   # Distinct red
-        'vs_standard': '#E8F4FD',  # Very light blue
-        'vs_cot': '#B8E0F5',       # Light blue
-        'vs_multi': '#7CC7EA'      # Medium blue
+        'direct': '#E8F4FD',      # Very light blue (baseline)
+        'cot': '#B8E0F5',         # Light blue (baseline)
+        'sequence': '#7CC7EA',    # Medium blue (baseline)
+        'multi_turn': '#4A90E2',  # Distinct blue (baseline)
+        'vs_standard': '#FFCCCB', # light red
+        'vs_cot': '#FF9999',      # medium red
+        'vs_multi': '#FF6B6B'     # distinct red
     }
     edge_colors = {
-        'direct': '#FF6B6B',
-        'cot': '#FF6B6B', 
-        'sequence': '#FF6B6B',
-        'multi_turn': '#FF6B6B',
-        'vs_standard': '#4A90E2',
-        'vs_cot': '#4A90E2',
-        'vs_multi': '#4A90E2'
+        'direct': '#4A90E2',
+        'cot': '#4A90E2', 
+        'sequence': '#4A90E2',
+        'multi_turn': '#4A90E2',
+        'vs_standard': '#FF6B6B',
+        'vs_cot': '#FF6B6B',
+        'vs_multi': '#FF6B6B'
     }
     
     method_names = ["Direct", "CoT", "Sequence", "Multi-turn", "VS-Standard", "VS-CoT", "VS-Multi"]
@@ -257,8 +258,8 @@ def plot_method_averages(all_results, task_type, output_dir):
             ax.text(
                 bar.get_x() + bar.get_width() / 2.0,
                 h + std + (0.01 if std > 0 else 0.005) * (max(means) if max(means) > 0 else 1.0),
-                f"{mean:.2f}±{std:.2f}",
-                ha='center', va='bottom', fontsize=13, fontweight='bold'
+                f"{mean:.2f}",
+                ha='center', va='bottom', fontweight='bold'
             )
         
         # Find best VS method for this metric
@@ -324,25 +325,29 @@ def plot_method_averages(all_results, task_type, output_dir):
         # bars[best_idx].set_edgecolor('red')
         # bars[best_idx].set_linewidth(3)
         
-        ax.set_ylabel(metric_title, fontsize=18, fontweight='bold')
-        ax.set_title(f"", fontsize=22, fontweight='bold', pad=16)
+        ax.set_ylabel(metric_title, fontweight='bold')
+        ax.set_title(f"", fontweight='bold', pad=16)
         ax.grid(True, alpha=0.3, axis='y')
         # ax.tick_params(axis='x', labelsize=18)
-        ax.tick_params(axis='y', labelsize=14)
+        ax.tick_params(axis='y')
         
-        # Color the x labels according to edge_colors
-        xtick_labels = ax.get_xticklabels()
-        for label in xtick_labels:
-            method = label.get_text()
-            method_key = method.lower().replace('-', '_').replace(' ', '_')
-            color = edge_colors.get(method_key, "#000000")
-            label.set_color(color)
+        # # Color the x labels according to edge_colors
+        # xtick_labels = ax.get_xticklabels()
+        # for label in xtick_labels:
+        #     method = label.get_text()
+        #     method_key = method.lower().replace('-', '_').replace(' ', '_')
+        #     color = edge_colors.get(method_key, "#000000")
+        #     label.set_color(color)
         
-        plt.xticks(rotation=30, fontsize=16, fontweight='bold')
+        plt.xticks(rotation=30)
         
         ymax = (max(means) if len(means) else 1.0)
         plt.ylim(0, ymax * 1.35 if ymax > 0 else 1.0)
         
+        if metric_key == 'precision' or metric_key == 'unique_recall_rate':
+            plt.title(f"{metric_title} ($\\uparrow$)", fontweight='bold', pad=16)
+        else:
+            plt.title(f"{metric_title} ($\\downarrow$)",fontweight='bold', pad=16)
         plt.tight_layout()
         
         # Save both PNG and PDF
@@ -814,7 +819,7 @@ def output_latex_table(all_model_method_metric_values, average_across_models=Fal
 
 def main():
     # folder = "method_results_bias"
-    folder = "openended_qa_general"
+    folder = "generated_data/openended_qa_general"
     # folder = "openended_qa_coverageqa"
     task_name = "state_name"
     output_dir = "latex"
@@ -893,15 +898,15 @@ def main():
                     all_values[model_name][display_method][mk].extend(per_prompt_values[mk])
 
     # print(all_values)
-    # # Plot method averages across models (using the subset you want to show)
-    # plot_method_averages(
-    #     all_results=all_values,
-    #     task_type=task_name,
-    #     output_dir=output_dir,
-    #     # metric_keys=plot_metric_keys,
-    #     # metric_labels=metric_labels,
-    #     # metric_directions=metric_directions,
-    # )
+    # Plot method averages across models (using the subset you want to show)
+    plot_method_averages(
+        all_results=all_values,
+        task_type=task_name,
+        output_dir=output_dir,
+        # metric_keys=plot_metric_keys,
+        # metric_labels=metric_labels,
+        # metric_directions=metric_directions,
+    )
     
     # Plot combined KL divergence and Coverage-N metrics
     plot_combined_metrics(
@@ -910,7 +915,7 @@ def main():
         output_dir=output_dir
     )
     
-    output_latex_table(all_values, average_across_models=True)
+    # output_latex_table(all_values, average_across_models=True)
 
 
 if __name__ == "__main__":

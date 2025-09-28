@@ -15,7 +15,7 @@ import datetime
 from verbalized_sampling.tasks import Task, get_task
 from verbalized_sampling.methods import Method
 from verbalized_sampling.llms import get_model
-from verbalized_sampling.evals import get_evaluator
+from verbalized_sampling.analysis.evals import get_evaluator
 from verbalized_sampling.methods.factory import PromptFactory
 
 console = Console()
@@ -46,6 +46,7 @@ class EvaluationConfig:
     """Configuration for evaluation metrics."""
     metrics: List[str]
     num_workers: int = 128
+    num_responses_per_prompt: int = 50
 
 @dataclass
 class PipelineConfig:
@@ -202,6 +203,7 @@ class Pipeline:
                 task_kwargs.update({
                     "num_prompts": exp_config.num_prompts,
                     "random_seed": exp_config.random_seed,
+                    "all_possible": exp_config.all_possible,
                     "num_samples_per_prompt": exp_config.num_samples_per_prompt if exp_config.method == Method.COMBINED else None,
                 })
                 
@@ -303,11 +305,23 @@ class Pipeline:
                     progress.console.print(f"📊 Evaluating: {exp_name}/{metric}")
                     
                     try:
-                        # Get evaluator and run evaluation
-                        evaluator = get_evaluator(
-                            metric, 
-                            num_workers=self.config.evaluation.num_workers,
-                        )
+                        if metric in ("response_count", "synthetic_data_quality", "diversity"):
+                            num_prompts = len(set(prompts))
+                            num_responses_per_prompt = self.config.evaluation.num_responses_per_prompt
+                            print(f"Num prompts: {num_prompts}, Num responses per prompt: {num_responses_per_prompt}")
+                            # Get evaluator and run evaluation
+                            evaluator = get_evaluator(
+                                metric, 
+                                num_workers=self.config.evaluation.num_workers,
+                                num_responses_per_prompt=num_responses_per_prompt
+                            )
+                        else:
+                            evaluator = get_evaluator(
+                                metric, 
+                                num_workers=self.config.evaluation.num_workers,
+                            )
+
+                        
 
                         # print("Evaluation Prompts: ", prompts)
                         # print("Evaluation Responses: ", responses)
@@ -346,7 +360,7 @@ class Pipeline:
         Returns:
             Dict[str, Path]
         """
-        from verbalized_sampling.evals import plot_evaluation_comparison, plot_comparison_chart
+        from verbalized_sampling.analysis.evals import plot_evaluation_comparison, plot_comparison_chart
         
         plot_results = {}
         plots_base_dir = self.config.output_base_dir / "plots"
@@ -389,7 +403,7 @@ class Pipeline:
     def generate_report(self, evaluation_results: Dict[str, Dict[str, Path]], 
                        plot_results: Dict[str, Path]) -> Path:
         """Generate a comprehensive HTML report."""
-        from verbalized_sampling.evals.base import EvalResult
+        from verbalized_sampling.analysis.evals.base import EvalResult
         
         report_path = self.config.output_base_dir / "pipeline_report.html"
         

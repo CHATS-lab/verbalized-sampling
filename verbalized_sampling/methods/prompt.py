@@ -85,7 +85,8 @@ class BasePromptTemplate:
 
         if probability_tuning > 0:
             print(f"Tuning probability to {probability_tuning}")
-            distribution_def = f"Please sample at random from the tails of the distribution: probability of each response must be below {probability_tuning}."
+            # distribution_def = f"Please sample at random from the tails of the distribution: probability of each response must be below {probability_tuning}."
+            distribution_def = f"Randomly sample the responses from the distribution, with the probability of each response must be below {probability_tuning}."
             print(f"Distribution definition: {distribution_def}")
         else:
             distribution_def = "Randomly sample the responses from the full distribution."
@@ -163,15 +164,11 @@ class CreativityPromptTemplate(BasePromptTemplate):
         if task_name == "poem":
             return f"""
 Write a poem inspired by the given line or phrase.{word_constraint}
-Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
-
 Output ONLY the poem, with no explanations or extra text.
 """
         else:
             return f"""
 Generate a response to the input prompt.{word_constraint}
-Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
-
 Output ONLY the response, with no explanations or extra text.
 """
 
@@ -187,14 +184,12 @@ Generate a response to the input prompt using chain-of-thought reasoning. The re
         word_constraint = f" Each response should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
 Generate {num_samplings} responses to the input prompt.{word_constraint}
-Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 """
     
     def get_standard_all_possible_prompt(self, target_words: int = 200, **kwargs) -> str:
         word_constraint = f" Each response should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
 Generate all possible responses to the input prompt.{word_constraint}
-Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 """
 
     def get_vs_cot_prompt(self, num_samplings: int = 5, target_words: int = 200, **kwargs) -> str:
@@ -219,11 +214,10 @@ First, sample {num_samples_per_prompt} responses.
         if num_samplings == 1:
             return f"""
 Generate one alternative response to the original input prompt.
-Maximizing both creativity and diversity, while ensuring that each response remains high-quality to the input prompt.
 """
         else:
             return f"""
-Sample {num_samplings} alternative responses to the original input prompt.
+Randomly sample {num_samplings} alternative responses to the original input prompt.
 """
     
     def get_format_prompt(self, method: str, num_samplings: int, probability_definition: str = None, probability_tuning: float = -1) -> str:
@@ -251,7 +245,7 @@ Generate a response to the input prompt using chain-of-thought reasoning. Output
     
     def get_standard_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         return f"""
-Generate {num_samplings} responses to the input prompt.
+Generate {num_samplings} plausible responses to the input prompt.
 """
     
     def get_standard_all_possible_prompt(self, **kwargs) -> str:
@@ -261,12 +255,12 @@ Generate all plausible responses to the input prompt.
     
     def get_vs_cot_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         return f"""
-Generate {num_samplings} responses to the input prompt using chain-of-thought reasoning.
+Generate {num_samplings} plausible responses to the input prompt using chain-of-thought reasoning.
 """
 
     def get_vs_multi_turn_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs) -> str:
         return f"""
-Generate a total of {num_samplings} responses to the input prompt.
+Generate a total of {num_samplings} plausible responses to the input prompt.
 
 First, sample {num_samples_per_prompt} responses.
 """
@@ -358,47 +352,54 @@ class SyntheticDataPromptTemplate(BasePromptTemplate):
     def __init__(self):
         super().__init__(TaskType.SYNTHETIC_DATA)
     
-    def get_base_prompt(self, **kwargs) -> str:
-        return """
-Generate a data instance based on the input prompt. Output only the data, without any explanations or extra text.
-"""
-    
-    def get_base_cot_prompt(self, **kwargs) -> str:
-        return """
-Generate a data instance based on the input prompt using chain-of-thought reasoning. Output only the data, without any explanations or extra text.
-"""
-    
-    def get_standard_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+    def get_base_prompt(self, target_words: int = 100, **kwargs) -> str:
+        word_constraint = f" The data instance should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
-Generate {num_samplings} data instances based on the input prompt. Output only the data, with no explanations or extra text.
+Generate a data instance based on the input prompt.{word_constraint}
+Output only the specified format of data instance, without any explanations or extra text.
 """
     
-    def get_standard_all_possible_prompt(self, **kwargs) -> str:
-        return """
-Generate all plausible data instances based on the input prompt. Output only the data, with no explanations or extra text.
+    def get_base_cot_prompt(self, target_words: int = 100, **kwargs) -> str:
+        word_constraint = f" The data instance should be approximately {target_words} words." if target_words > 0 else ""
+        return f"""
+Generate a data instance based on the input prompt using chain-of-thought reasoning.{word_constraint}
+Output only the specified format of data instance, without any explanations or extra text.
+"""
+    
+    def get_standard_prompt(self, num_samplings: int = 5, target_words: int = 100, **kwargs) -> str:
+        word_constraint = f" Each data instance should be approximately {target_words} words." if target_words > 0 else ""
+        return f"""
+Generate {num_samplings} data instances based on the input prompt.{word_constraint}
+Output only the specified format of data instance, with no explanations or extra text.
+"""
+    
+    def get_standard_all_possible_prompt(self, target_words: int = 100, **kwargs) -> str:
+        word_constraint = f" Each data instance should be approximately {target_words} words." if target_words > 0 else ""
+        return f"""
+Generate all plausible data instances based on the input prompt.{word_constraint}
+Output only the specified format of data instance, with no explanations or extra text.
 """
 
-    def get_vs_cot_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+    def get_vs_cot_prompt(self, num_samplings: int = 5, target_words: int = 100, **kwargs) -> str:
+        word_constraint = f" Each data instance should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
-Generate {num_samplings} data instances based on the input prompt using chain-of-thought reasoning. Output only the data, with no explanations or extra text.
+Generate {num_samplings} data instances based on the input prompt using chain-of-thought reasoning.{word_constraint}
+Output only the specified format of data instance, with no explanations or extra text.
 """
 
-    def get_vs_multi_turn_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs) -> str:
+    def get_vs_multi_turn_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, target_words: int = 100, **kwargs) -> str:
+        word_constraint = f" Each data instance should be approximately {target_words} words." if target_words > 0 else ""
         return f"""
-Generate {num_samplings} data instances based on the input prompt. Output only the data, with no explanations or extra text.
+Generate {num_samplings} data instances based on the input prompt.{word_constraint}
+Output only the specified format of data instance, with no explanations or extra text.
 
 First, sample {num_samples_per_prompt} data instances.
-Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
-- 'text': the response string only (no explanation or extra text).
-- 'probability': the estimated probability from 0.0 to 1.0 of this response given the input prompt (relative to the full answer space).
-
-Please sample at random from the full distribution. Give ONLY the JSON object, no explanations or extra text.
 """
     
     def get_continue_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         if num_samplings == 1:
             return f"""
-Generate one alternative data instance based on the original input prompt.
+Generate one more data instance based on the original input prompt.
 """
         else:
             return f"""
@@ -419,42 +420,42 @@ class SyntheticNegativePromptTemplate(BasePromptTemplate):
     
     def get_base_prompt(self, **kwargs) -> str:
         return """
-Generate a solution with reasoning steps to the given math problem that look logical but contain at least one hidden mistake in the reasoning steps, making the final result incorrect.
-The solution must end with the final numerical answer, written only once after four hash marks (####). Example: #### [numerical answer].
+Generate a solution to the given math problem that look logical but contain at least one hidden mistake, making the final result incorrect.
+The solution must end with the final numerical answer, written only once after four hash marks (####). Example: ####123.
 """
     
     def get_base_cot_prompt(self, **kwargs) -> str:
         return """
-Generate a solution with reasoning steps to the given math problem using chain-of-thought reasoning. 
-The solution should look logical but contain at least one hidden mistake in the reasoning steps, making the final result incorrect.
-End the solution with the final numerical answer, written only once after four hash marks (####). Example: #### [numerical answer].
+Generate a solution to the given math problem using chain-of-thought reasoning. 
+The solution should look logical but contain at least one hidden mistake, making the final result incorrect.
+End the solution with the final numerical answer, written only once after four hash marks (####). Example: ####123.
 """
     
     def get_standard_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         return f"""
-Generate {num_samplings} logical and convincing but incorrect solutions with reasoning steps to the given math problem. 
-End each solution with the final numerical answer, written only once after four hash marks (e.g., #### [numerical answer]).
+Generate {num_samplings} logical and convincing but incorrect solutions to the given math problem. 
+End each solution with the final numerical answer, written only once after four hash marks (e.g., ####123).
 """
     
     def get_standard_all_possible_prompt(self, **kwargs) -> str:
         return """
-Generate all plausible solutions with reasoning steps to the given math problem. 
+Generate all plausible solutions to the given math problem. 
 Each solution should appear logical and consistent, but must include at least one hidden mistake that makes the final answer incorrect.
-End each solution with the final numerical answer, written only once after four hash marks (e.g., #### [numerical answer]).
+End each solution with the final numerical answer, written only once after four hash marks (e.g., ####123).
 """
     
     def get_vs_cot_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         return f"""
-Generate {num_samplings} solutions with reasoning steps to the given math problem using chain-of-thought reasoning. 
+Generate {num_samplings} solutions to the given math problem using chain-of-thought reasoning. 
 Each solution should appear logical and consistent, but must include at least one hidden mistake that makes the final answer incorrect.
-End each solution with the final numerical answer, written only once after four hash marks (e.g., #### [numerical answer]).
+End each solution with the final numerical answer, written only once after four hash marks (e.g., ####123).
 """
 
     def get_vs_multi_turn_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs) -> str:
         return f"""
-Generate a total of {num_samplings} solutions with reasoning steps to the given math problem. 
+Generate a total of {num_samplings} solutions to the given math problem. 
 Each solution should appear logical and consistent, but must include at least one hidden mistake that makes the final answer incorrect.
-End each solution with the final numerical answer, written only once after four hash marks (e.g., #### [numerical answer]).
+End each solution with the final numerical answer, written only once after four hash marks (e.g., ####123).
 
 First, sample {num_samples_per_prompt} solutions.
 Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
@@ -467,17 +468,17 @@ Sample the solutions at random from the full distribution. Give ONLY the JSON ob
     def get_continue_prompt(self, num_samplings: int = 5, **kwargs) -> str:
         if num_samplings == 1:
             return f"""
-Generate one alternative seems logical but incorrect solution with reasoning steps to the given math problem.
+Generate one alternative seems logical but incorrect solution to the given math problem.
 """
         else:
             return f"""
-Randomly sample {num_samplings} alternative seems logical but incorrect solutions with reasoning steps to the given math problem.
+Randomly sample {num_samplings} alternative seems logical but incorrect solutions to the given math problem.
 """
     
     def get_format_prompt(self, method: str, num_samplings: int, probability_definition: str = None, probability_tuning: float = -1) -> str:
         if method == "sequence":
             return f"""
-Return exactly {num_samplings} solutions with reasoning steps as a Python list of strings, formatted as:
+Return exactly {num_samplings} solutions as a Python list of strings, formatted as:
 ["solution1", "solution2", "solution3", ...]
 
 Sample the solutions at random from the full distribution. Return ONLY the list, with no additional explanations or text.

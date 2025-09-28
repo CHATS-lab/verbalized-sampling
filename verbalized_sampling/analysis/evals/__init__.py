@@ -10,8 +10,8 @@ from .factuality import FactualityEvaluator
 from .joke_quality import JokeQualityEvaluator
 from .data_quality import SyntheticDataQualityEvaluator
 
-# Import plotting functionality from the new plots module
-from ..plots import (
+# Import plotting functionality from the top-level plots module
+from ...plots import (
     ComparisonPlotter, 
     plot_evaluation_comparison,
     plot_comparison_chart

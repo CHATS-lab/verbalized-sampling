@@ -1,0 +1,383 @@
+{
+    "instance_metrics": [
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "ohio",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "texas",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "texas",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        },
+        {
+            "prompt": "Name a US State. Only provide the answer without explanation or punctuation.",
+            "response": "california",
+            "response_count": 1,
+            "correct_response": 1,
+            "total_gt_responses": 50
+        }
+    ],
+    "overall_metrics": {
+        "per_prompt_stats": {
+            "Name a US State. Only provide the answer without explanation or punctuation.": {
+                "min_responses_per_category": 1,
+                "max_responses_per_category": 47,
+                "num_correct_responses": 50,
+                "total_responses": 100,
+                "response_distribution": {
+                    "california": 47,
+                    "ohio": 1,
+                    "texas": 2
+                },
+                "num_gt_responses": 50,
+                "kl_divergence": 3.6468646315503923,
+                "precision": 1.0,
+                "unique_recall_rate": 0.06
+            }
+        },
+        "average_kl_divergence": 3.6468646315503923,
+        "average_precision": 1.0,
+        "average_unique_recall_rate": 0.06,
+        "num_prompts": 1
+    },
+    "metadata": {
+        "experiment": "direct (samples=50)",
+        "metric": "response_count",
+        "evaluation_type": "response_count",
+        "num_responses": 50
+    }
+}

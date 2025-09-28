@@ -5,7 +5,6 @@ import random
 import numpy as np
 from datasets import load_dataset
 from pydantic import BaseModel
-import json
 from .prompt import (
     TaskType,
     PromptTemplateFactory,
@@ -23,6 +22,7 @@ class Method(str, Enum):
     MULTI_TURN = "multi_turn"
     CHAIN_OF_THOUGHT = "chain_of_thought"
     COMBINED = "combined"
+    STANDARD_ALL_POSSIBLE = "standard_all_possible"
 
 
 def is_method_structured(method: Method) -> bool:
@@ -32,6 +32,7 @@ def is_method_structured(method: Method) -> bool:
         Method.STRUCTURE_WITH_PROB,
         Method.CHAIN_OF_THOUGHT,
         Method.COMBINED,
+        Method.STANDARD_ALL_POSSIBLE,
     ]
 
 def is_method_multi_turn(method: Method) -> bool:
@@ -109,6 +110,7 @@ class PromptFactory:
             # Synthetic data tasks
             "gsm8k": TaskType.SYNTHETIC_DATA,
             "livecodebench": TaskType.SYNTHETIC_DATA,
+            "amc_aime_math": TaskType.SYNTHETIC_DATA,
             
             # Synthetic negative tasks
             "synthetic_negative": TaskType.SYNTHETIC_NEGATIVE,
@@ -231,45 +233,60 @@ class PromptFactory:
         """Get prompts for the GSM8K task."""
         user_prompts = f"""Generate a grade school math word problem that involves a sequence of basic arithmetic calculations (addition, subtraction, multiplication, division).
         A bright middle school student should be able to solve the problem. The difficulty of the problem should be similar to typical middle school math problems.
-        
-        For the problem:
-        - Specify the question.
-        - Then provide a brief reasoning and the numerical answer.
-        - The answer should be given after four hash marks (####) at the end of the reasoning. The answer should be a number.
 
         Format the generated problem as follows:
         Question: [question]
-        Answer: [reasoning and answer, ending with #### [numerical answer]]
-
-        Only include the question and answer in your response, and always begin your response with the question.
         """
         return [user_prompts]
+
+    @staticmethod
+    def get_amc_and_aime_math_task_prompts(num_icl_example: int, random_seed: int) -> List[str]:
+        """Get prompts for the AMC and AIME math task."""
+        user_prompt = f"""Generate a math competition problem in the style of AMC 10, AMC 12, or AIME.
+
+Knowledge Coverage:
+Use secondary or high school mathematics — arithmetic, algebra, counting & probability, number theory, combinatorics, geometry, trigonometry, pre-calculus, and common contest techniques (inequalities such as AM–GM or Cauchy–Schwarz, symmetry, invariants, clever manipulations).
+
+Format Requirements:
+- Clearly state a single math problem under a line starting with “Question:”.
+- Provide the difficulty level under a line starting with “Difficulty:”, using exactly one of: AMC or AIME.
+- The answer must be a specific number or simplified expression (no multiple-choice).
+
+Constraints:
+- The problem must be self-contained and well-posed.
+- Do not require advanced undergraduate mathematics (e.g., advanced calculus, abstract algebra).
+- Avoid obscure tricks; rely only on creative applications of standard high-school math.
+- Keep the difficulty level and the style consistent with official AMC/AIME problems.
+
+Format exactly as follows:
+Question:
+[problem statement in natural language]
+Difficulty:
+[difficulty level, exactly one of: AMC or AIME]
+        """
+# Output Style Example (do not copy):
+# Question: What is the degree measure of the acute angle formed by lines with slopes $2$ and $\frac{1}{3}$? 
+# Difficulty: AMC
+
+# Question: Let $p$ be the least prime number for which there exists a positive integer $n$ such that $n^{4}+1$ is divisible by $p^{2}$. Find the least positive integer $m$ such that $m^{4}+1$ is divisible by $p^{2}$.
+# Difficulty: AIME
+        return [user_prompt]
     
     @staticmethod
     def get_livecodebench_task_prompts(num_icl_example: int, random_seed: int) -> List[str]:
         """Get prompts for generating synthetic LiveCodeBench-style coding problems."""
-        user_prompt = f"""Generate a programming problem inspired by competitive programming platforms such as LeetCode, AtCoder, and CodeForces.
-        The problem should be self-contained, clearly describing the task, inputs, outputs, and constraints.
-        Given the input, the answer of the problem should be solvable using logical step-by-step reasoning without executing the code.
-        The difficulty should be similar to typical coding interview or algorithm challenges.
+        user_prompt = f"""Generate a programming challenge in the style of competitive programming platforms (e.g., LeetCode, AtCoder, Codeforces).
+        The problem must be:
+        - Self-contained and clearly stated.
+        - Include only the task description, input/output format, and constraints.
+        - At a specified difficulty level (easy, medium, or hard), appropriate for coding interviews or algorithmic contests like LeetCode, AtCoder, Codeforces.
 
-        For the problem, provide:
-        - Question: A natural language description of the programming task.
-        - Test Input: The exact input data for the task.
-        - Reasoning: A concise, ordered explanation of how to get the result from the input.
-        - Answer: The final output value.
-
-        Format exactly as follows:
-        "Question:
-        [question]
-        Test Input:
-        [test_input]
-        Reasoning:
-        [reasoning]
-        Answer:
-        [answer]"
-
-        Make sure to only provide only the question, test input, reasoning, and answer. Start with the question."""
+        For the problem, output only in the following format:
+        Question:
+        [problem statement in natural language]
+        Difficulty:
+        [difficulty level]
+        """
         return [user_prompt]
     
     @staticmethod
@@ -293,12 +310,10 @@ class PromptFactory:
         prompts = []
         if task == "gsm8k":
             prompts = PromptFactory.get_gsm8k_task_prompts(num_icl_example=3, random_seed=random_seed)
+        elif task == "amc_aime_math":
+            prompts = PromptFactory.get_amc_and_aime_math_task_prompts(num_icl_example=3, random_seed=random_seed)
         elif task == "livecodebench":
             prompts = PromptFactory.get_livecodebench_task_prompts(num_icl_example=3, random_seed=random_seed)
-        elif task == "synthetic_negative":
-            with open("data/synthetic_negative_new.jsonl", "r") as f:
-                for line in f:
-                    prompts.append(json.loads(line)["prompt"])
         elif (task == "poem") and (method == Method.DIRECT_BASE): # Handle poem task with clean data
             prompt_path = "data/poem_titles.txt"
         else:

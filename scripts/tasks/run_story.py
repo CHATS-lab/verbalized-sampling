@@ -17,7 +17,7 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 50,
+        'num_responses': 30,
         'num_prompts': 100, # current total: 300; total: 4326
         'target_words': 200, 
         'temperature': temperature,
@@ -64,7 +64,7 @@ def run_method_tests(
     model_basename = model_name.replace("/", "_")
     config = PipelineConfig(
         experiments=experiments,
-        evaluation=EvaluationConfig(metrics=metrics),
+        evaluation=EvaluationConfig(metrics=metrics, num_responses_per_prompt=30),
         output_base_dir=Path(f"{output_dir}/{model_basename}_{task.value}"),
         skip_existing=True,
         num_workers=num_workers,
@@ -77,55 +77,58 @@ def run_method_tests(
 
 if __name__ == "__main__":
     methods = [
-        {
-            'method': Method.DIRECT,
-            'strict_json': False,
-            'num_samples': 1,
-        },
-        {
-            'method': Method.DIRECT_COT,
-            'strict_json': True,
-            'num_samples': 1,
-        },
-        {
-            'method': Method.MULTI_TURN,
-            'strict_json': True,
-            'num_samples': 5,
-        },
+        # {
+        #     'method': Method.DIRECT,
+        #     'strict_json': False,
+        #     'num_samples': 1,
+        # },
+        # {
+        #     'method': Method.DIRECT_COT,
+        #     'strict_json': True,
+        #     'num_samples': 1,
+        # },
+        # {
+        #     'method': Method.MULTI_TURN,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        # },
         {
             'method': Method.SEQUENCE,
             'strict_json': True,
             'num_samples': 5,
         },
-        {
-            'method': Method.STRUCTURE_WITH_PROB,
-            'strict_json': True,
-            'num_samples': 5,
-        },
-        {
-            'method': Method.CHAIN_OF_THOUGHT,
-            'strict_json': True,
-            'num_samples': 5,
-        },
-        {
-            'method': Method.COMBINED,
-            'strict_json': True,
-            'num_samples': 5,
-        },
+        # {
+        #     'method': Method.STRUCTURE_WITH_PROB,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        #     'probability_definition': "explicit"
+        # },
+        # {
+        #     'method': Method.CHAIN_OF_THOUGHT,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        #     'probability_definition': "explicit"
+        # },
+        # {
+        #     'method': Method.COMBINED,
+        #     'strict_json': True,
+        #     'num_samples': 5,
+        #     'probability_definition': "confidence"
+        # },
     ]
 
 
     models = [
-        "openai/gpt-4.1",
+        # "openai/gpt-4.1",
         # "openai/gpt-4.1-mini",
-        "google/gemini-2.5-flash",
+        # "google/gemini-2.5-flash",
         # "meta-llama/Llama-3.1-70B-Instruct",
         # "meta-llama/Llama-3.1-70B-Instruct",
         # "anthropic/claude-4-sonnet",
         # "google/gemini-2.5-pro",
-        "anthropic/claude-3.7-sonnet",
+        # "anthropic/claude-3.7-sonnet",
         # "openai/o3",
-        # "deepseek/deepseek-r1-0528",
+        "deepseek/deepseek-r1-0528",
     ]
     for model in models:
         model_basename = model.replace("/", "_")
@@ -134,9 +137,10 @@ if __name__ == "__main__":
             model_name=model,
             methods=methods,
             metrics=["diversity", "ngram", "creative_writing_v3", "length"],
-            temperature=0.7,
+            temperature=0.5,
             top_p=1.0,
-            output_dir=f"story_experiments_max_diversity/{model_basename}",
+            # output_dir=f"story_experiments_max_diversity/{model_basename}",
+            output_dir=f"story_experiments_test/{model_basename}",
             num_workers=32 if "claude" in model_basename else 128,
         )
 
