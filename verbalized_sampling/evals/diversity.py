@@ -50,8 +50,13 @@ class DiversityEvaluator(BaseEvaluator):
     
     def compute_embedding(self, text: str) -> tuple[np.ndarray, float]:
         """Compute embedding for a text."""
-        response = self.embedding_model.get_embedding(text)
-        return np.array(response.embedding), response.cost
+        try:
+            response = self.embedding_model.get_embedding(text)
+            return np.array(response.embedding), response.cost
+        except Exception as e:
+            print(f"Error computing embedding for text: {text}")
+            print(f"Error: {e}")
+            return np.array([]), 0.0
     
     def compute_instance_metric(self, prompt: str, response: Dict) -> Dict[str, float]:
         """Compute diversity metrics for a single response."""
@@ -151,12 +156,16 @@ class DiversityEvaluator(BaseEvaluator):
                         similarity_matrix = np.clip(similarity_matrix, -1.0, 1.0)
                         
                         # Calculate pairwise diversities within this prompt group
+                        # No double counting
                         for i in range(len(indices_responses)):
                             for j in range(i + 1, len(indices_responses)):
                                 similarity = float(similarity_matrix[i, j])
                                 
                                 # Convert similarity to diversity score (0 to 1)
-                                diversity = (1 - similarity) / 2
+                                # diversity = (1 - similarity) / 2 # old metric
+
+                                # diversity = np.clip(1 - similarity, 0.0, 1.0) # new metric
+                                diversity = 1 - np.clip(similarity, 0.0, 1.0) # new metric
                                 # diversity = similarity
                                 
                                 pairwise_diversities.append(diversity)

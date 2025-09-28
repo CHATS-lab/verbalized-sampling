@@ -112,7 +112,17 @@ class PromptFactory:
             
             # Synthetic negative tasks
             "synthetic_negative": TaskType.SYNTHETIC_NEGATIVE,
-            
+
+            # Safety tasks
+            "safety": TaskType.SAFETY,
+
+            # Math tasks
+            "math_math": TaskType.MATH,
+            "math_aime": TaskType.MATH,
+            "math_amc": TaskType.MATH,
+            "math_minerva": TaskType.MATH,
+            "math_olympiad_bench": TaskType.MATH,
+
             # Default to creativity for unknown tasks
         }
         return task_mapping.get(task, TaskType.CREATIVITY)
@@ -309,6 +319,8 @@ Difficulty: AIME
             prompts = PromptFactory.get_livecodebench_task_prompts(num_icl_example=3, random_seed=random_seed)
         elif (task == "poem") and (method == Method.DIRECT_BASE): # Handle poem task with clean data
             prompt_path = "data/poem_titles.txt"
+        # elif task == "safety":
+        #     prompt_path = "data/safety"
         else:
             prompt_path = f"data/{task}.txt"
 

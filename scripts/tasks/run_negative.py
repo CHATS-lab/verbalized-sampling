@@ -93,9 +93,19 @@ if __name__ == "__main__":
         #     'strict_json': True,
         #     'num_samples': 1,
         # },
+        {
+            'method': Method.MULTI_TURN,
+            'strict_json': False,
+            'num_samples': num_samples,
+        },
         # {
-        #     'method': Method.MULTI_TURN,
-        #     'strict_json': False,
+        #     'method': Method.SEQUENCE,
+        #     'strict_json': True,
+        #     'num_samples': num_samples,
+        # },
+        # {
+        #     'method': Method.STRUCTURE_WITH_PROB,
+        #     'strict_json': True,
         #     'num_samples': num_samples,
         # },
         {
@@ -109,15 +119,10 @@ if __name__ == "__main__":
         #     'num_samples': num_samples,
         # },
         # {
-        #     'method': Method.CHAIN_OF_THOUGHT,
-        #     'strict_json': True,
-        #     'num_samples': num_samples,
-        # },
-        # {
         #     'method': Method.COMBINED,
         #     'strict_json': True,
         #     'num_samples': num_samples,
-        #     'num_samples_per_prompt': 3,
+        #     'num_samples_per_prompt': 2,
         # }
     ]
 

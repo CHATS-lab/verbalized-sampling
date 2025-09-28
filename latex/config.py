@@ -4,7 +4,7 @@ RC_PARAMS = {
         'font.size': 11,
         'axes.labelsize': 12,
         'axes.titlesize': 15,
-        'xtick.labelsize': 15,
+        'xtick.labelsize': 17,
         'ytick.labelsize': 18,
         'legend.fontsize': 9,
         'axes.linewidth': 0.8,
@@ -20,9 +20,9 @@ RC_PARAMS = {
     }
 
 COLORS = {
-    'Direct': '#E8F4FD',      # Very light blue (baseline)
-    'CoT': '#B8E0F5',         # Light blue (baseline)
-    'Sequence': '#7CC7EA',     # Medium blue (baseline)
+    'Direct': '#B8E0F5',      # Medium blue (baseline) - swapped with Sequence
+    'CoT': '#7CC7EA',         # Light blue (baseline)
+    'Sequence': '#6BB6FF',     # Distinct blue (baseline) - swapped with Direct
     'Multi-turn': '#4A90E2',   # Distinct blue (baseline)
     'VS-Standard': '#FFCCCB',  # Light red (our method)
     'VS-CoT': '#FF9999',       # Medium red (our method)

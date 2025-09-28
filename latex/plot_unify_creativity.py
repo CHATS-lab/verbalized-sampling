@@ -161,7 +161,7 @@ def load_experiment_data():
         return results
 
     # Load poem experiment data
-    base_dir = "poem_experiments_final"
+    base_dir = "generated_data/poem_experiments_final"
     poem_results = {}
     
     for model_name, model_dir_name in models.items():
@@ -489,22 +489,24 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
                      edgecolor='#1A8A7A', linewidth=0, label=size_labels['large'])
     
     # Add value labels on bars for better clarity
+    X_SMALL_SUBSET = -0.08
+    X_LARGE_SUBSET = 0.03
     for i, (small_val, large_val) in enumerate(zip(small_diversity_changes, large_diversity_changes)):
         # Small model values
-        if abs(small_val) > 0.1:  # Only show if value is significant
-            sign = '+' if small_val >= 0 else ''
-            ax_burden_div.text(i - width/2, small_val + (0.2 if small_val > 0 else -0.2), 
-                              f'{sign}{small_val:.1f}', ha='center', va='bottom' if small_val > 0 else 'top',
-                              fontsize=11, fontweight='600')
+        # if abs(small_val) > 0.1:  # Only show if value is significant
+        sign = '+' if small_val >= 0 else ''
+        ax_burden_div.text(i - width/2 + X_SMALL_SUBSET, small_val + (0.2 if small_val > 0 else -0.2), 
+                            f'{sign}{small_val:.1f}', ha='center', va='bottom' if small_val > 0 else 'top',
+                            fontsize=11, fontweight='600')
         # Large model values  
-        if abs(large_val) > 0.1:  # Only show if value is significant
-            sign = '+' if large_val >= 0 else ''
-            ax_burden_div.text(i + width/2, large_val + (0.2 if large_val > 0 else -0.2), 
-                              f'{sign}{large_val:.1f}', ha='center', va='bottom' if large_val > 0 else 'top',
-                              fontsize=11, fontweight='600')
+        # if abs(large_val) > 0.1:  # Only show if value is significant
+        sign = '+' if large_val >= 0 else ''
+        ax_burden_div.text(i + width/2 + X_LARGE_SUBSET, large_val + (0.2 if large_val > 0 else -0.2), 
+                            f'{sign}{large_val:.1f}', ha='center', va='bottom' if large_val > 0 else 'top',
+                            fontsize=11, fontweight='600')
     
     ax_burden_div.axhline(y=0, color='#666666', linestyle='-', alpha=0.8, linewidth=1)
-    ax_burden_div.set_ylabel('$\Delta$ Diversity Against Direct', fontweight='bold', fontsize=12)
+    ax_burden_div.set_ylabel('$\Delta$ Diversity (vs. Direct)', fontweight='bold', fontsize=12)
     ax_burden_div.set_title('Emergent Trend: $\Delta$ in Diversity', fontweight='bold', pad=15, fontsize=18)
     ax_burden_div.set_xticks(x_methods)
     ax_burden_div.set_xticklabels(methods_subset, rotation=45, ha='right')
@@ -552,20 +554,20 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
     # Add value labels on bars for better clarity
     for i, (small_val, large_val) in enumerate(zip(small_quality_changes, large_quality_changes)):
         # Small model values
-        if abs(small_val) > 0.1:  # Only show if value is significant
-            sign = '+' if small_val >= 0 else ''
-            ax_burden_qual.text(i - width/2, small_val + (0.2 if small_val > 0 else -0.2), 
-                               f'{sign}{small_val:.1f}', ha='center', va='bottom' if small_val > 0 else 'top',
-                               fontsize=11, fontweight='600')
-        # Large model values  
-        if abs(large_val) > 0.1:  # Only show if value is significant
-            sign = '+' if large_val >= 0 else ''
-            ax_burden_qual.text(i + width/2, large_val + (0.2 if large_val > 0 else -0.2), 
-                               f'{sign}{large_val:.1f}', ha='center', va='bottom' if large_val > 0 else 'top',
-                               fontsize=11, fontweight='600')
+        # if abs(small_val) > 0.1:  # Only show if value is significant
+        sign = '+' if small_val > 0 else ''
+        ax_burden_qual.text(i - width/2 + X_SMALL_SUBSET, small_val + (0.2 if small_val > 0 else -0.2), 
+                            f'{sign}{small_val:.1f}', ha='center', va='bottom' if small_val > 0 else 'top',
+                            fontsize=11, fontweight='600')
+    # Large model values  
+    # if abs(large_val) > 0.1:  # Only show if value is significant
+        sign = '+' if large_val > 0 else ''
+        ax_burden_qual.text(i + width/2 + X_LARGE_SUBSET, large_val + (0.2 if large_val > 0 else -0.2), 
+                            f'{sign}{large_val:.1f}', ha='center', va='bottom' if large_val > 0 else 'top',
+                            fontsize=11, fontweight='600')
     
     ax_burden_qual.axhline(y=0, color='#666666', linestyle='-', alpha=0.8, linewidth=1)
-    ax_burden_qual.set_ylabel('$\Delta$ Quality Against Direct', fontweight='bold', fontsize=12)
+    ax_burden_qual.set_ylabel('$\Delta$ Quality (vs. Direct)', fontweight='bold', fontsize=12)
     ax_burden_qual.set_title('Cognitive Burden: $\Delta$ in Quality', fontweight='bold', pad=15, fontsize=18)
     ax_burden_qual.set_xticks(x_methods)
     ax_burden_qual.set_xticklabels(methods_subset, rotation=45, ha='right')

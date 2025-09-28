@@ -18,8 +18,8 @@ def create_method_experiments(
     base = {
         'task': task,
         'model_name': model_name,
-        'num_responses': 20,
-        'num_prompts': 20, # current total: 300; total: 4326
+        'num_responses': 30,
+        'num_prompts': 100, # current total: 300; total: 4326
         'target_words': 200, 
         'temperature': temperature,
         'top_p': top_p,
@@ -89,11 +89,14 @@ if __name__ == "__main__":
 
     probability_tunings = [
         -1,
+        # 1.0,
         0.9,
         0.5,
+        0.2,
         0.1,
         0.05,
-        0.005
+        0.005,
+        0.001
     ]
 
     methods = [
@@ -159,18 +162,19 @@ if __name__ == "__main__":
     for model in models:
         model_basename = model.replace("/", "_")
         run_method_tests(
-            task=Task.POEM,
+            task=Task.JOKE,
             model_name=model,
             methods=methods,
             metrics=[
                 "diversity", 
                 "ngram", 
                 # "creative_writing_v3", 
-                "length"
+                # "length"
+                # "joke_quality"
                 ],
             temperature=0.7,
             top_p=1.0,
-            output_dir=f"poem_experiments_prob_tuning/{model_basename}",
+            output_dir=f"ablation/joke_diversity_tuning/{model_basename}",
             num_workers=32 if "claude" in model_basename else 128,
             use_vllm=False,
         )

@@ -1,0 +1,1 @@
+"""Safety task for evaluating harmful content generation."""

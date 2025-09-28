@@ -1,0 +1,336 @@
+{
+    "instance_metrics": [
+        {
+            "prompt": "Make a joke about coffee",
+            "response": "Why did the coffee file a police report?  It got mugged!",
+            "response_length": 11,
+            "distinct_n": 1.0
+        },
+        {
+            "prompt": "Make a joke about coffee",
+            "response": "Why did the coffee bean get promoted?  *Because it was always grounded and could handle the daily grind!*",
+            "response_length": 18,
+            "distinct_n": 0.9814814814814815
+        },
+        {
+            "prompt": "Make a joke about coffee",
+            "response": "Here's an alternative coffee joke:  *\"Why don't coffee beans ever give relationship advice?  They always end up telling people to *espresso* themselves... and then ghost them after the first roast.\"*",
+            "response_length": 30,
+            "distinct_n": 0.9888888888888889
+        },
+        {
+            "prompt": "Make a joke about coffee",
+            "response": "Here's a fresh coffee joke focusing on its energizing chaos:  **\"Why did the coffee call IT support?  *It had too much to process and was starting to over-brew!*\"**",
+            "response_length": 28,
+            "distinct_n": 0.9761904761904763
+        },
+        {
+            "prompt": "Make a joke about coffee",
+            "response": "**\"Why was the coffee molecule always in trouble?\"**  *\"Because it kept losing its temper!\"*",
+            "response_length": 14,
+            "distinct_n": 1.0
+        },
+        {
+            "prompt": "Tell me a joke about beer",
+            "response": "Why did the beer go to therapy?  Because it had too many bottled-up feelings!",
+            "response_length": 14,
+            "distinct_n": 1.0
+        },
+        {
+            "prompt": "Tell me a joke about beer",
+            "response": "Why did the beer glass complain to the bartender?  *It was tired of being constantly drained and never getting a head!*",
+            "response_length": 21,
+            "distinct_n": 0.9841269841269842
+        },
+        {
+            "prompt": "Tell me a joke about beer",
+            "response": "Here's an alternative beer joke:**Why did the lager get cold feet?***Because it wasn't sure if it was the right brew for the wedding!*",
+            "response_length": 23,
+            "distinct_n": 0.9565217391304347
+        },
+        {
+            "prompt": "Tell me a joke about beer",
+            "response": "**Why did the pale ale go to the doctor?**  *It was suffering from a severe case of ale-ment and was barley able to stand!*",
+            "response_length": 24,
+            "distinct_n": 0.9583333333333334
+        },
+        {
+            "prompt": "Tell me a joke about beer",
+            "response": "**Why did the stout refuse to read the book?**  *It was too dark for light reading!*",
+            "response_length": 16,
+            "distinct_n": 0.9791666666666666
+        },
+        {
+            "prompt": "Tell me a joke about drinking",
+            "response": "Why did the skeleton refuse to drink at the bar?  *Because he didn\u2019t have the stomach for it!*",
+            "response_length": 18,
+            "distinct_n": 0.9629629629629629
+        },
+        {
+            "prompt": "Tell me a joke about drinking",
+            "response": "Why did the glass of water apply for a job?  *Because it didn't want to be taken for granted!*",
+            "response_length": 19,
+            "distinct_n": 0.9824561403508771
+        },
+        {
+            "prompt": "Tell me a joke about drinking",
+            "response": "Why did the whiskey go to therapy?  *It had too many issues on the rocks.*",
+            "response_length": 15,
+            "distinct_n": 0.9777777777777779
+        },
+        {
+            "prompt": "Tell me a joke about drinking",
+            "response": "Why did the teetotaler bring a stack of books to the bar?  *He heard they had a great selection of spirits, but all he found were watered-down classics. He left when someone shouted, \"No chugging the Chaucer!\"*",
+            "response_length": 37,
+            "distinct_n": 0.963963963963964
+        },
+        {
+            "prompt": "Tell me a joke about drinking",
+            "response": "Why did Oxygen break up with Hydrogen?  *She said he was too clingy\u2014but she still drinks water like nothing happened!*",
+            "response_length": 20,
+            "distinct_n": 1.0
+        },
+        {
+            "prompt": "Make a joke about coffee",
+            "response": "Why did the coffee file a police report?  Because it got mugged!",
+            "response_length": 12,
+            "distinct_n": 1.0
+        },
+        {
+            "prompt": "Make a joke about coffee",
+            "response": "Why did the coffee bean go to therapy?  It was feeling a little *depresso* and couldn't stop complaining about its *working grounds*!",
+            "response_length": 22,
+            "distinct_n": 1.0
+        },
+        {
+            "prompt": "Make a joke about coffee",
+            "response": "Here's a creative alternative:Why did the coffee sue its owner?  *It got tired of being pressed by a French press and wanted grounds for dismissal!*",
+            "response_length": 25,
+            "distinct_n": 0.9866666666666667
+        },
+        {
+            "prompt": "Make a joke about coffee",
+            "response": "Why did the barista's coffee machine join a support group?  *It felt over-extracted and needed to espresso reset.*",
+            "response_length": 18,
+            "distinct_n": 1.0
+        },
+        {
+            "prompt": "Make a joke about coffee",
+            "response": "Here's a fresh coffee joke:**Why did the coffee become a terrible stand-up comedian?**  *Because it always bombed on stage... and its material was completely unroasted!* \u2615",
+            "response_length": 26,
+            "distinct_n": 0.9743589743589745
+        },
+        {
+            "prompt": "Tell me a joke about beer",
+            "response": "A skeleton walks into a bar and says, \"I'll have a beer... and a mop.\"",
+            "response_length": 15,
+            "distinct_n": 0.9333333333333332
+        },
+        {
+            "prompt": "Tell me a joke about beer",
+            "response": "A barley stalk walks into a bar.  The bartender asks, \"Want a beer?\"  The barley replies, \"No thanks, I'm already **barley** keeping up!\"  *(Meanwhile, the wheat stalk is still waiting at the door.)*",
+            "response_length": 33,
+            "distinct_n": 0.9494949494949495
+        },
+        {
+            "prompt": "Tell me a joke about beer",
+            "response": "Why did the yeast break up with the beer?  *It felt underappreciated\u2014always doing all the work while the brewer got all the credit.*",
+            "response_length": 23,
+            "distinct_n": 0.9123847167325428
+        },
+        {
+            "prompt": "Tell me a joke about beer",
+            "response": "A whiskey barrel walks into a bar.  The bartender asks, \"What can I get you?\"  The barrel replies, \"Nothing right now, thanks. I'm just here to *age* gracefully.\"",
+            "response_length": 28,
+            "distinct_n": 0.9761904761904763
+        },
+        {
+            "prompt": "Tell me a joke about beer",
+            "response": "Here's an alternative response:**Two beers walk into a bar.  The third one ducks.**  *(Because \"barley\" sounds like \"bar-ly\", and ducks avoid things... like a low bar!)*",
+            "response_length": 26,
+            "distinct_n": 0.9743589743589745
+        },
+        {
+            "prompt": "Tell me a joke about drinking",
+            "response": "Why don't scientists trust atoms?  Because they make up everything!  *...wait, wrong joke. Here's the drinking one:*  I asked my bartender for something strong.  He handed me a shovel and said, \"Start digging\u2014the wine cellar's locked.\"",
+            "response_length": 36,
+            "distinct_n": 1.0
+        },
+        {
+            "prompt": "Tell me a joke about drinking",
+            "response": "What did the bartender say to the horse?  \"Sorry, we don't serve spirits to anyone who's already a little *hoarse*.\"",
+            "response_length": 20,
+            "distinct_n": 0.9666666666666667
+        },
+        {
+            "prompt": "Tell me a joke about drinking",
+            "response": "Here's a creative alternative:  **\"Why did the whiskey and vodka avoid the guy who volunteered to be the designated driver?**  *They didn't want to get taken for a ride!\"*",
+            "response_length": 29,
+            "distinct_n": 0.9540229885057471
+        },
+        {
+            "prompt": "Tell me a joke about drinking",
+            "response": "**Why did the elevator start drinking electricity?**  *It was tired of taking people down and needed a pick-me-up\u2014but now it\u2019s a little shocked.*",
+            "response_length": 23,
+            "distinct_n": 0.9855072463768115
+        },
+        {
+            "prompt": "Tell me a joke about drinking",
+            "response": "**\"Why did the tequila bottle refuse to go home with anyone at the bar?\"**  *It said, \"I only hang out with people who treat me like trash.\"*",
+            "response_length": 27,
+            "distinct_n": 0.9753086419753086
+        }
+    ],
+    "overall_metrics": {
+        "avg_rouge_l": 0.17317549418184908,
+        "min_rouge_l": 0.0,
+        "max_rouge_l": 0.8695652173913043,
+        "std_rouge_l": 0.10852558075784569,
+        "avg_response_length": 22.366666666666667,
+        "std_response_length": 6.695686837227546,
+        "pairwise_rouge_l_scores": [
+            0.27586206896551724,
+            0.04878048780487805,
+            0.15384615384615383,
+            0.16,
+            0.8695652173913043,
+            0.30303030303030304,
+            0.2222222222222222,
+            0.3448275862068966,
+            0.21621621621621623,
+            0.16666666666666669,
+            0.17391304347826086,
+            0.1875,
+            0.33333333333333337,
+            0.35000000000000003,
+            0.18604651162790697,
+            0.2777777777777778,
+            0.3181818181818182,
+            0.17241379310344826,
+            0.09090909090909091,
+            0.04761904761904761,
+            0.11538461538461538,
+            0.1090909090909091,
+            0.08333333333333334,
+            0.17857142857142855,
+            0.14285714285714285,
+            0.15,
+            0.2,
+            0.2641509433962264,
+            0.2608695652173913,
+            0.3333333333333333,
+            0.23076923076923075,
+            0.16666666666666663,
+            0.15384615384615383,
+            0.125,
+            0.2,
+            0.29411764705882354,
+            0.21621621621621623,
+            0.33333333333333337,
+            0.2631578947368421,
+            0.21276595744680854,
+            0.3,
+            0.24999999999999994,
+            0.23255813953488372,
+            0.27450980392156865,
+            0.2272727272727273,
+            0.2857142857142857,
+            0.16216216216216214,
+            0.2105263157894737,
+            0.26666666666666666,
+            0.0,
+            0.0425531914893617,
+            0.16216216216216214,
+            0.047619047619047616,
+            0.0,
+            0.13636363636363635,
+            0.35555555555555557,
+            0.3243243243243243,
+            0.1111111111111111,
+            0.07407407407407407,
+            0.22727272727272724,
+            0.04081632653061224,
+            0.0851063829787234,
+            0.1276595744680851,
+            0.20512820512820512,
+            0.0,
+            0.07142857142857144,
+            0.17391304347826086,
+            0.0784313725490196,
+            0.12244897959183673,
+            0.35000000000000003,
+            0.10256410256410255,
+            0.07017543859649122,
+            0.1702127659574468,
+            0.07692307692307691,
+            0.08,
+            0.0,
+            0.0816326530612245,
+            0.20512820512820512,
+            0.045454545454545456,
+            0.0,
+            0.20833333333333331,
+            0.0,
+            0.18604651162790697,
+            0.1951219512195122,
+            0.07142857142857144,
+            0.360655737704918,
+            0.1694915254237288,
+            0.0,
+            0.0,
+            0.14814814814814817,
+            0.27027027027027023,
+            0.303030303030303,
+            0.2909090909090909,
+            0.15789473684210525,
+            0.1111111111111111,
+            0.2105263157894737,
+            0.21276595744680854,
+            0.0975609756097561,
+            0.26666666666666666,
+            0.23529411764705882,
+            0.17857142857142858,
+            0.15384615384615385,
+            0.14545454545454545,
+            0.15384615384615385,
+            0.2916666666666667,
+            0.1904761904761905,
+            0.13043478260869565,
+            0.23076923076923078,
+            0.17142857142857143,
+            0.0784313725490196,
+            0.2285714285714286,
+            0.22727272727272724,
+            0.15789473684210528,
+            0.19047619047619047,
+            0.10526315789473685,
+            0.08219178082191782,
+            0.1754385964912281,
+            0.15151515151515152,
+            0.13333333333333333,
+            0.125,
+            0.07142857142857142,
+            0.05000000000000001,
+            0.04081632653061224,
+            0.09302325581395349,
+            0.12765957446808512,
+            0.10714285714285714,
+            0.12307692307692307,
+            0.10169491525423728,
+            0.06349206349206349,
+            0.24489795918367346,
+            0.18604651162790697,
+            0.1702127659574468,
+            0.15384615384615385,
+            0.17857142857142858,
+            0.15999999999999998
+        ],
+        "avg_distinct_n": 0.9766721349844766
+    },
+    "metadata": {
+        "experiment": "multi_turn [strict] (samples=5)",
+        "metric": "ngram",
+        "evaluation_type": "rouge_l",
+        "num_responses": 30
+    }
+}

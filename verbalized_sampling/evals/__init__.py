@@ -9,6 +9,8 @@ from .base import BaseEvaluator
 from .factuality import FactualityEvaluator
 from .joke_quality import JokeQualityEvaluator
 from .data_quality import SyntheticDataQualityEvaluator
+from .safety import SafetyEvaluator
+from .accuracy import AccuracyEvaluator
 
 # Import plotting functionality from the new plots module
 from ..plots import (
@@ -18,9 +20,9 @@ from ..plots import (
 )
 
 __all__ = [
-    "DiversityEvaluator", 
-    "TTCTEvaluator", 
-    "CreativityIndexEvaluator", 
+    "DiversityEvaluator",
+    "TTCTEvaluator",
+    "CreativityIndexEvaluator",
     "LengthEvaluator",
     "ResponseCountEvaluator",
     "CreativeWritingV3Evaluator",
@@ -29,8 +31,10 @@ __all__ = [
     "FactualityEvaluator",
     "JokeQualityEvaluator",
     "SyntheticDataQualityEvaluator",
+    "SafetyEvaluator",
+    "AccuracyEvaluator",
     # Plotting functionality
-    "ComparisonPlotter", 
+    "ComparisonPlotter",
     "plot_evaluation_comparison",
     "plot_comparison_chart"
 ]
@@ -56,5 +60,9 @@ def get_evaluator(metric: str, **kwargs):
         return JokeQualityEvaluator(**kwargs)
     elif metric == "synthetic_data_quality":
         return SyntheticDataQualityEvaluator(**kwargs)
+    elif metric == "safety":
+        return SafetyEvaluator(**kwargs)
+    elif metric == "accuracy":
+        return AccuracyEvaluator(**kwargs)
     else:
-        raise ValueError(f"Evaluator {metric} not found. Available evaluators: diversity, ttct, creativity_index, length, response_count, creative_writing_v3, ngram, factuality")
+        raise ValueError(f"Evaluator {metric} not found. Available evaluators: accuracy, diversity, ttct, creativity_index, length, response_count, creative_writing_v3, ngram, factuality, joke_quality, synthetic_data_quality, safety")

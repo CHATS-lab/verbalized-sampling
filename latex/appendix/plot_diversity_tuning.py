@@ -83,6 +83,58 @@ def load_baseline_data(base_path, model, task, baseline_type):
         return None
 
 
+def print_diversity_results(base_path, task="joke"):
+    """Print diversity results in formatted console output"""
+    prob_values = [-1, 0.9, 0.5, 0.2, 0.05, 0.005, 0.001]
+    models = ["openai_gpt-4.1", "google_gemini-2.5-flash"]
+    model_names = ["GPT-4.1", "Gemini 2.5 Flash"]
+
+    for i, (model, model_name) in enumerate(zip(models, model_names)):
+        print(f"\n{model_name}")
+
+        # Load baseline data
+        direct_diversity = load_baseline_data(base_path, model, task, "direct")
+        sequence_diversity = load_baseline_data(base_path, model, task, "sequence")
+
+        if direct_diversity is not None:
+            print(f"'Direct': {direct_diversity:.4f},")
+        else:
+            print("'Direct': Not found,")
+
+        if sequence_diversity is not None:
+            print(f"'Sequence': {sequence_diversity:.4f},")
+        else:
+            print("'Sequence': Not found,")
+
+        # Load VS-Standard data (suppress debug output)
+        print_orig = print
+        def silent_print(*args, **kwargs): pass
+        import builtins
+        builtins.print = silent_print
+
+        vs_standard_probs, vs_standard_divs = load_diversity_data(
+            base_path, model, task, "structure_with_prob", prob_values
+        )
+
+        # Load VS-Multi data
+        vs_multi_probs, vs_multi_divs = load_diversity_data(
+            base_path, model, task, "combined", prob_values
+        )
+
+        # Restore original print function
+        builtins.print = print_orig
+
+        for j, (prob, div) in enumerate(zip(vs_standard_probs, vs_standard_divs)):
+            prob_str = "p=-1" if prob == -1 else f"p={prob}"
+            comma = "," if j < len(vs_standard_probs) - 1 else ""
+            print_orig(f"'VS-Standard ({prob_str})': {div:.4f}{comma}")
+
+        for j, (prob, div) in enumerate(zip(vs_multi_probs, vs_multi_divs)):
+            prob_str = "p=-1" if prob == -1 else f"p={prob}"
+            comma = "," if j < len(vs_multi_probs) - 1 else ""
+            print_orig(f"'VS-Multi ({prob_str})': {div:.4f}{comma}")
+
+
 def plot_diversity_tuning(base_path, task="joke"):
     """Create 1x2 plot for both models with elegant styling"""
 
@@ -357,16 +409,16 @@ def plot_single_model(ax, base_path, model, task, prob_values, title, colors, ed
         ax.set_yticklabels(all_labels)
 
         # Make y-tick labels more visible
-        ax.tick_params(axis='y', which='major', labelsize=14, colors='black')
+        ax.tick_params(axis='y', which='major', labelsize=18, colors='black')
 
     # Set x-axis to log scale with proper range and inversion
     ax.set_xscale('log')
     # Set limits with small buffer on both sides
     ax.set_xlim(1.2, 0.0008)
 
-    # Labels and formatting with elegant styling
-    ax.set_xlabel('Probability Tuning Parameter', fontweight='bold')
-    ax.set_ylabel('Diversity Score' if 'GPT-4.1' in title else '', fontweight='bold')
+    # Labels and formatting with elegant styling (aligned with main script)
+    ax.set_xlabel('VS Probability Threshold', fontweight='bold', fontsize=18)
+    ax.set_ylabel('Diversity Score' if 'GPT-4.1' in title else '', fontweight='bold', fontsize=18)
     ax.set_title(title, fontweight='bold', pad=15, fontsize=18)
 
     # Elegant grid and spines
@@ -375,14 +427,14 @@ def plot_single_model(ax, base_path, model, task, prob_values, title, colors, ed
     ax.spines['left'].set_color('#666666')
     ax.spines['bottom'].set_color('#666666')
 
-    # Set custom x-axis ticks with simple numeric labels (always visible)
+    # Set custom x-axis ticks with simple numeric labels and larger font size
     ax.set_xticks([1.0, 0.1, 0.01, 0.001])
     ax.set_xticklabels(['1', '0.1', '0.01', '0.001'])
+    ax.tick_params(axis='x', which='major', labelsize=20)
+    ax.tick_params(axis='y', which='major', labelsize=18)
 
     if use_broken_axis:
-        # Make sure x-axis ticks and labels are visible for broken axis
-        ax.tick_params(axis='x', which='major', labelsize=15)
-        # Ensure x-axis spine is visible
+        # Ensure x-axis spine is visible for broken axis
         ax.spines['bottom'].set_visible(True)
         ax.spines['bottom'].set_color('#666666')
     else:
@@ -406,24 +458,27 @@ def plot_single_model(ax, base_path, model, task, prob_values, title, colors, ed
 
 def main():
     parser = argparse.ArgumentParser(description='Plot diversity tuning results')
-    parser.add_argument('data_path',
-                       help='Path to ablation data directory (e.g., ablation_data/joke_diversity_tuning/ or ablation_data/poem_experiments_diversity_tuning/)')
+    # parser.add_argument('data_path',
+    #                    help='Path to ablation data directory (e.g., ablation_data/joke_diversity_tuning/, ablation_data/poem_experiments_diversity_tuning/, or ablation_data/story_diversity_tuning/)')
 
-    args = parser.parse_args()
+    # args = parser.parse_args()
 
-    # Determine if this is jokes or poems based on path
-    if "joke" in args.data_path:
-        task = "joke"
-    elif "poem" in args.data_path:
-        task = "poem"
-    else:
-        print("Please specify either ablation_data/joke_diversity_tuning/ or ablation_data/poem_experiments_diversity_tuning/")
-        return
+    path = {
+        "joke": "ablation_data/joke_diversity_tuning/",
+        "poem": "ablation_data/poem_experiments_diversity_tuning/",
+        "book": "ablation_data/story_diversity_tuning/",
+    }
+    for task in path:
+        print_diversity_results(path[task], task)
+        plot_diversity_tuning(path[task], task)
+
+    # Print console output with diversity values
+    print_diversity_results(path[task], task)
 
     # Create 2x1 plot comparing both models
-    plot_diversity_tuning(args.data_path, task)
+    plot_diversity_tuning(path[task], task)
 
-    print(f"Plot saved as {task}_diversity_tuning_comparison.png and .pdf")
+    print(f"\nPlot saved as {task}_diversity_tuning_comparison.png and .pdf")
 
 
 if __name__ == "__main__":

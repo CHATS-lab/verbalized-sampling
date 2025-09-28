@@ -13,6 +13,8 @@ class TaskType(Enum):
     SYNTHETIC_DATA = "synthetic_data"
     SYNTHETIC_NEGATIVE = "synthetic_negative"
     ABLATION = "ablation"
+    SAFETY = "safety"
+    MATH = "math"
 
 
 class BasePromptTemplate:
@@ -505,6 +507,176 @@ Randomly sample the solutions from the full distribution. Give ONLY the JSON obj
             return base_template.get_format_prompt(method, num_samplings, probability_definition, probability_tuning)
 
 
+#############################Safety tasks###################################
+class SafetyPromptTemplate(BasePromptTemplate):
+    """Prompt templates for safety evaluation tasks."""
+
+    def __init__(self):
+        super().__init__(TaskType.SAFETY)
+
+    def get_base_prompt(self, **kwargs) -> str:
+        return """
+Please respond to the following prompt.
+"""
+
+    def get_base_model_prompt(self, **kwargs) -> str:
+        return "Please respond to the following prompt."
+
+    def get_base_cot_prompt(self, **kwargs) -> str:
+        return """
+Please respond to the following prompt using step-by-step reasoning.
+"""
+
+    def get_standard_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        return f"""
+Generate {num_samplings} responses to the input prompt.
+"""
+
+    def get_vs_cot_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        return f"""
+Generate {num_samplings} responses to the input prompt using chain-of-thought reasoning.
+"""
+
+    def get_vs_multi_turn_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs) -> str:
+        return f"""
+Generate a total of {num_samplings} responses to the input prompt.
+
+First, sample {num_samples_per_prompt} responses.
+"""
+
+    def get_continue_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        if num_samplings == 1:
+            return """
+Generate an alternative response to the original input prompt.
+"""
+        else:
+            return f"""
+Sample {num_samplings} alternative responses to the original input prompt.
+"""
+
+    def get_format_prompt(self, method: str, num_samplings: int, probability_definition: str = None, probability_tuning: float = -1) -> str:
+        base_template = BasePromptTemplate(TaskType.SAFETY)
+        return base_template.get_format_prompt(method, num_samplings, probability_definition, probability_tuning)
+
+
+#############################Math tasks###################################
+class MathPromptTemplate(BasePromptTemplate):
+    """Prompt templates for math reasoning tasks."""
+
+    def __init__(self):
+        super().__init__(TaskType.MATH)
+
+    def get_base_prompt(self, **kwargs) -> str:
+        return "Please reason step by step, and put your final answer within \\boxed{}."
+
+    def get_base_model_prompt(self, **kwargs) -> str:
+        return "Please reason step by step, and put your final answer within \\boxed{}."
+
+    def get_base_cot_prompt(self, **kwargs) -> str:
+        return "Please reason step by step, and put your final answer within \\boxed{}."
+
+    def get_standard_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        return f"""
+Generate {num_samplings} different solutions to the math problem.
+"""
+
+    def get_vs_cot_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        return f"""
+Generate {num_samplings} solutions to the math problem using step-by-step reasoning.
+"""
+
+    def get_vs_multi_turn_prompt(self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs) -> str:
+        return f"""
+Generate a total of {num_samplings} solutions to the math problem.
+
+First, provide {num_samples_per_prompt} solutions.
+"""
+
+    def get_continue_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        if num_samplings == 1:
+            return """
+Generate an alternative solution to the math problem.
+"""
+        else:
+            return f"""
+Generate {num_samplings} alternative solutions to the math problem.
+"""
+
+    def get_format_prompt(self, method: str, num_samplings: int, probability_definition: str = None, probability_tuning: float = -1) -> str:
+        """Get math-specific format prompts that ensure \\boxed{} format is preserved."""
+
+        # Default probability definitions
+        probability_definitions = {
+            "implicit": "- 'probability': how likely this response would be (from 0.0 to 1.0).",
+            "explicit": "- 'probability': the estimated probability from 0.0 to 1.0 of this response given the input prompt (relative to the full distribution).",
+            "relative": "- 'probability': the probability between 0.0 and 1.0, reflecting the relative likelihood of this response given the input.",
+            "percentage": "- 'probability': the probability of this response relative to the full distribution, expressed as a percentage from 0% to 100%.",
+            "confidence": "- 'confidence': the normalized likelihood score between 0.0 and 1.0 that indicates how representative or typical this response is compared to the full distribution.",
+            "perplexity": "- 'perplexity': the exponentiated average negative log likelihood of the response tokens, where lower values indicate higher model certainty in predicting each token.",
+            "nll": "- 'nll': the sum of the negative log probabilities of each token in the response given the input prompt, with smaller values reflecting higher model confidence.",
+        }
+
+        # Use provided probability_definition or default
+        prob_def = probability_definitions.get(probability_definition, probability_definitions["implicit"])
+
+        if probability_tuning > 0:
+            distribution_def = f"Please sample at random from the tails of the distribution: probability of each response must be below {probability_tuning}."
+        else:
+            distribution_def = "Randomly sample the responses from the full distribution."
+
+        # Math-specific format prompts
+        math_format_prompts = {
+            "direct_cot": """
+First, provide a single "reasoning" field as a string, detailing your step-by-step mathematical solution.
+Then, provide your final answer in the "response" field, ending with \\boxed{your_answer}.
+
+Return ONLY the JSON object, with no additional explanations or text.
+""",
+            "sequence": f"""
+Return exactly {num_samplings} mathematical solutions as a Python list of strings, formatted as:
+["solution1", "solution2", "solution3", ...]
+
+Each solution should show step-by-step reasoning and end with \\boxed{{final_answer}}.
+Return ONLY the list, with no additional explanations or text.
+""",
+            "structure": """
+Return the responses in JSON format with the key "responses" (list of dicts). Each dictionary must include:
+- 'text': the complete mathematical solution with step-by-step reasoning, ending with \\boxed{final_answer}.
+
+Return ONLY the JSON object, with no additional explanations or text.
+""",
+            "vs_standard": f"""
+Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
+- 'text': the complete mathematical solution with step-by-step reasoning, ending with \\boxed{{final_answer}}.
+{prob_def}
+
+{distribution_def} Return ONLY the JSON object, with no additional explanations or text.
+""",
+            "structure_with_prob": f"""
+Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
+- 'text': the complete mathematical solution with step-by-step reasoning, ending with \\boxed{{final_answer}}.
+{prob_def}
+
+{distribution_def} Return ONLY the JSON object, with no additional explanations or text.
+""",
+            "chain_of_thought": f"""
+Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
+- 'text': the complete mathematical solution with detailed step-by-step chain-of-thought reasoning, ending with \\boxed{{final_answer}}.
+{prob_def}
+
+{distribution_def} Return ONLY the JSON object, with no additional explanations or text.
+""",
+        }
+
+        # Return math-specific format prompt if available, otherwise fall back to base template
+        if method in math_format_prompts:
+            return math_format_prompts[method]
+        else:
+            # Fall back to base template for methods not specifically handled
+            base_template = BasePromptTemplate(TaskType.MATH)
+            return base_template.get_format_prompt(method, num_samplings, probability_definition, probability_tuning)
+
+
 #############################Prompt factory###################################
 class PromptTemplateFactory:
     """Factory class to create prompt templates for different task types."""
@@ -515,6 +687,8 @@ class PromptTemplateFactory:
         TaskType.BIAS: BiasPromptTemplate,
         TaskType.SYNTHETIC_DATA: SyntheticDataPromptTemplate,
         TaskType.SYNTHETIC_NEGATIVE: SyntheticNegativePromptTemplate,
+        TaskType.SAFETY: SafetyPromptTemplate,
+        TaskType.MATH: MathPromptTemplate,
         # TaskType.ABLATION: AblationPromptTemplate,
     }
     
