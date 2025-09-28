@@ -48,10 +48,10 @@ class OpenRouterLLM(BaseLLM):
     def _chat(self, messages: List[Dict[str, str]]) -> str:
         """Basic chat functionality without structured response format."""
         if "deepseek" in self.model_name:
-            provider_args = {
+            provider_args = {"provider": {
                     "require_parameters": True,
                     "only": ["fireworks"]
-                }
+                }}
         else:
             provider_args = None
 
@@ -80,14 +80,16 @@ class OpenRouterLLM(BaseLLM):
 
     def _chat_with_format(self, messages: List[Dict[str, str]], schema: BaseModel) -> List[Dict[str, Any]]:
         """Chat with structured response format."""
-        tries = 5
+        tries = 10
         backoff = 1
         for i in range(tries):
             try:
                 if "deepseek" in self.model_name:
                     provider_args = {
-                        "require_parameters": True,
-                        "only": ["fireworks"]
+                        "provider": {
+                            "require_parameters": True,
+                            "only": ["fireworks"]
+                        }
                     }
                 else:
                     provider_args = None
@@ -117,15 +119,18 @@ class OpenRouterLLM(BaseLLM):
                 
                 if completion is None or not completion.choices:
                     print(f"Error: No response from OpenRouter API for model {self.model_name}")
+                    raise Exception(f"Error: No response from OpenRouter API for model {self.model_name}")
                 
                 response = completion.choices[0].message.content
                 if response:
-                    # print("Response: ", response)
                     parsed_response = self._parse_response_with_schema(response, schema)
+                    if not parsed_response:
+                        print(f"Error: Empty response from OpenRouter API for model {self.model_name}")
+                        raise Exception(f"Error: Empty response from OpenRouter API for model {self.model_name}")
                     return parsed_response
                 else:
                     print(f"Error: Empty response from OpenRouter API for model {self.model_name}")
-                    
+                    raise Exception(f"Error: Empty response from OpenRouter API for model {self.model_name}")
             except Exception as e:
                 print(f"Error in OpenRouter chat_with_format: {e}")
                 
@@ -140,9 +145,6 @@ class OpenRouterLLM(BaseLLM):
     def _parse_response_with_schema(self, response: str, schema: BaseModel) -> List[Dict[str, Any]]:
         """Parse the response based on the provided schema."""
         try:
-            # print('TYPE OF RESPONSE: ', type(response))
-            # print('RESPONSE: ', response)
-
             if isinstance(response, str):
                 parsed = json.loads(response)
                 
