@@ -35,7 +35,7 @@ def load_diversity_data(base_path, model, task, method, prob_tuning_values):
             try:
                 with open(file_path, 'r') as f:
                     data = json.load(f)
-                    diversity = data['overall_metrics']['avg_diversity']
+                    diversity = data['overall_metrics']['avg_diversity'] * 2
                     diversities.append(diversity)
                     actual_prob_values.append(prob_val)
                     print(f"  ✓ Loaded {method} prob={prob_val}: diversity={diversity:.4f}")
@@ -74,7 +74,7 @@ def load_baseline_data(base_path, model, task, baseline_type):
         try:
             with open(baseline_path, 'r') as f:
                 data = json.load(f)
-                return data['overall_metrics']['avg_diversity']
+                return data['overall_metrics']['avg_diversity'] * 2
         except (json.JSONDecodeError, KeyError) as e:
             print(f"Error loading {baseline_path}: {e}")
             return None
@@ -409,16 +409,16 @@ def plot_single_model(ax, base_path, model, task, prob_values, title, colors, ed
         ax.set_yticklabels(all_labels)
 
         # Make y-tick labels more visible
-        ax.tick_params(axis='y', which='major', labelsize=14, colors='black')
+        ax.tick_params(axis='y', which='major', labelsize=18, colors='black')
 
     # Set x-axis to log scale with proper range and inversion
     ax.set_xscale('log')
     # Set limits with small buffer on both sides
     ax.set_xlim(1.2, 0.0008)
 
-    # Labels and formatting with elegant styling
-    ax.set_xlabel('Probability Tuning Parameter', fontweight='bold')
-    ax.set_ylabel('Diversity Score' if 'GPT-4.1' in title else '', fontweight='bold')
+    # Labels and formatting with elegant styling (aligned with main script)
+    ax.set_xlabel('VS Probability Threshold', fontweight='bold', fontsize=18)
+    ax.set_ylabel('Diversity Score' if 'GPT-4.1' in title else '', fontweight='bold', fontsize=18)
     ax.set_title(title, fontweight='bold', pad=15, fontsize=18)
 
     # Elegant grid and spines
@@ -427,14 +427,14 @@ def plot_single_model(ax, base_path, model, task, prob_values, title, colors, ed
     ax.spines['left'].set_color('#666666')
     ax.spines['bottom'].set_color('#666666')
 
-    # Set custom x-axis ticks with simple numeric labels (always visible)
+    # Set custom x-axis ticks with simple numeric labels and larger font size
     ax.set_xticks([1.0, 0.1, 0.01, 0.001])
     ax.set_xticklabels(['1', '0.1', '0.01', '0.001'])
+    ax.tick_params(axis='x', which='major', labelsize=20)
+    ax.tick_params(axis='y', which='major', labelsize=18)
 
     if use_broken_axis:
-        # Make sure x-axis ticks and labels are visible for broken axis
-        ax.tick_params(axis='x', which='major', labelsize=15)
-        # Ensure x-axis spine is visible
+        # Ensure x-axis spine is visible for broken axis
         ax.spines['bottom'].set_visible(True)
         ax.spines['bottom'].set_color('#666666')
     else:
@@ -458,27 +458,25 @@ def plot_single_model(ax, base_path, model, task, prob_values, title, colors, ed
 
 def main():
     parser = argparse.ArgumentParser(description='Plot diversity tuning results')
-    parser.add_argument('data_path',
-                       help='Path to ablation data directory (e.g., ablation_data/joke_diversity_tuning/, ablation_data/poem_experiments_diversity_tuning/, or ablation_data/story_diversity_tuning/)')
+    # parser.add_argument('data_path',
+    #                    help='Path to ablation data directory (e.g., ablation_data/joke_diversity_tuning/, ablation_data/poem_experiments_diversity_tuning/, or ablation_data/story_diversity_tuning/)')
 
-    args = parser.parse_args()
+    # args = parser.parse_args()
 
-    # Determine if this is jokes, poems, or stories based on path
-    if "joke" in args.data_path:
-        task = "joke"
-    elif "poem" in args.data_path:
-        task = "poem"
-    elif "story" in args.data_path:
-        task = "book"
-    else:
-        print("Please specify either ablation_data/joke_diversity_tuning/, ablation_data/poem_experiments_diversity_tuning/, or ablation_data/story_diversity_tuning/")
-        return
+    path = {
+        "joke": "ablation_data/joke_diversity_tuning/",
+        "poem": "ablation_data/poem_experiments_diversity_tuning/",
+        "book": "ablation_data/story_diversity_tuning/",
+    }
+    for task in path:
+        print_diversity_results(path[task], task)
+        plot_diversity_tuning(path[task], task)
 
     # Print console output with diversity values
-    print_diversity_results(args.data_path, task)
+    print_diversity_results(path[task], task)
 
     # Create 2x1 plot comparing both models
-    plot_diversity_tuning(args.data_path, task)
+    plot_diversity_tuning(path[task], task)
 
     print(f"\nPlot saved as {task}_diversity_tuning_comparison.png and .pdf")
 

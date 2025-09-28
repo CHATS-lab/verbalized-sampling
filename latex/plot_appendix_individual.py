@@ -13,46 +13,56 @@ from config import COLORS, EDGE_COLORS
 def perform_statistical_tests(task_data, task_name, metric):
     """Perform t-tests comparing baselines against VS-Standard"""
     print(f"\n=== Statistical Tests for {task_name} ({metric}) ===")
-    
+
     # Collect individual model data for VS-Standard
     vs_standard_values = []
     for model_name, model_results in task_data.items():
         if 'VS-Standard' in model_results and model_results['VS-Standard'][metric] is not None:
             vs_standard_values.append(model_results['VS-Standard'][metric])
-    
+
     if not vs_standard_values:
         print(f"No VS-Standard data found for {task_name}")
         return {}
-    
+
     baseline_methods = ['Direct', 'CoT', 'Sequence', 'Multi-turn']
     significant_results = {}
-    
+
     for method in baseline_methods:
         # Collect individual model data for this baseline method
         baseline_values = []
         for model_name, model_results in task_data.items():
             if method in model_results and model_results[method][metric] is not None:
                 baseline_values.append(model_results[method][metric])
-        
+
         if len(baseline_values) < 2 or len(vs_standard_values) < 2:
             print(f"Insufficient data for {method} vs VS-Standard comparison")
             continue
-            
+
         # Perform two-sample t-test (one-tailed: VS-Standard > baseline for diversity, < baseline for quality)
         if metric == 'diversity':
             t_stat, p_value = ttest_ind(vs_standard_values, baseline_values, alternative='greater')
         else:  # quality - we want higher quality, so VS-Standard should be greater
             t_stat, p_value = ttest_ind(vs_standard_values, baseline_values, alternative='greater')
-        
+
         vs_mean = np.mean(vs_standard_values)
         baseline_mean = np.mean(baseline_values)
-        
-        significant = p_value < 0.05
-        significant_results[method] = significant
-        
-        significance_marker = "**" if significant else ""
+
+        # Determine significance level and marker
+        if p_value < 0.001:
+            significance_marker = "***"
+            significant_results[method] = "***"
+        elif p_value < 0.01:
+            significance_marker = "**"
+            significant_results[method] = "**"
+        elif p_value < 0.05:
+            significance_marker = "*"
+            significant_results[method] = "*"
+        else:
+            significance_marker = ""
+            significant_results[method] = ""
+
         print(f"{method}{significance_marker}: VS-Standard ({vs_mean:.2f}) vs {method} ({baseline_mean:.2f}), t={t_stat:.3f}, p={p_value:.4f}")
-    
+
     return significant_results
 
 def parse_latex_table_data(file_path):
@@ -86,7 +96,7 @@ def parse_latex_table_data(file_path):
             if match:
                 diversity_val, diversity_std, rouge_val, rouge_std, quality_val, quality_std = match.groups()
                 model_results[model_name][method_name] = {
-                    'diversity': float(diversity_val),
+                    'diversity': float(diversity_val) * 2,
                     'diversity_std': float(diversity_std),
                     'rouge_l': float(rouge_val),
                     'rouge_l_std': float(rouge_std),
@@ -162,14 +172,15 @@ def create_individual_plot(task_data, task_name, metric, output_dir="latex_figur
     # Perform statistical tests and add significance markers
     significance_results = perform_statistical_tests(task_data, task_name, metric)
     
-    # Add ** markers above error bars for statistically significant differences
+    # Add *, **, *** markers above error bars for statistically significant differences
     method_labels = []
     for i, method in enumerate(method_names):
         method_labels.append(method)
         if method in significance_results and significance_results[method]:
-            # Add ** above the error bar
+            # Add significance marker above the error bar
+            significance_marker = significance_results[method]
             y_pos = method_averages[i] + method_stds[i] + (max(method_averages) * 0.05)
-            ax.text(i, y_pos, '**', ha='center', va='bottom', 
+            ax.text(i, y_pos, significance_marker, ha='center', va='bottom',
                    fontsize=20, fontweight='bold', color='red')
     
     # Clean formatting

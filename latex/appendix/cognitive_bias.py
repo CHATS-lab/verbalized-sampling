@@ -197,7 +197,7 @@ def plot_combined(models: List[str], datasets: List[Dict], data: Dict[str, Dict[
             # fontsize=16, ha='right', va='bottom', fontweight='600')
 
     # Labels and ticks with better formatting
-    ax.set_ylabel('Agreement Rate (%)', fontweight='bold', fontsize=18)
+    ax.set_ylabel('Typicality Bias (%)', fontweight='bold', fontsize=18)
     ax.set_xticks(x)
     ax.set_xticklabels([d["label"] for d in datasets], rotation=0, fontweight='500')
 

@@ -2,6 +2,7 @@
 
 import json
 import os
+import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -29,7 +30,7 @@ def plot_training_progression(output_dir="latex_figures"):
         "Direct": "direct_base (samples=1)"
     }
     
-    base_dir = "poem_experiments_test"
+    base_dir = "ablation_data/poem_experiments_test"
     
     # Load diversity results
     results_data = {}
@@ -49,14 +50,27 @@ def plot_training_progression(output_dir="latex_figures"):
         try:
             with open(file_path, 'r') as f:
                 data = json.load(f)
-            diversity_score = data.get('overall_metrics', {}).get('avg_diversity', None)
+            diversity_score = data.get('overall_metrics', {}).get('avg_diversity', None) * 2
             base_model_score = diversity_score * 100 if diversity_score else None
         except (FileNotFoundError, json.JSONDecodeError):
             base_model_score = None
     
+    # Print experiment results header
+    print(f"\n{'='*60}")
+    print(f"TRAINING PROGRESSION DIVERSITY RESULTS")
+    print(f"{'='*60}")
+    
+    # Print base model results
+    if base_model_score is not None:
+        print(f"\nBase Model (meta-llama_Llama-3.1-70B):")
+        print(f"  Direct: {base_model_score:.2f}")
+    else:
+        print(f"\nBase Model: No data available")
+    
     # Load training progression data (excluding base model)
     for stage_name, model_dir in training_models.items():
         model_path = os.path.join(base_dir, model_dir, f"{model_dir}_poem")
+        print(f"\n{stage_name}:")
         
         # Training models have all methods
         for method_name, method_dir in methods_mapping.items():
@@ -64,10 +78,34 @@ def plot_training_progression(output_dir="latex_figures"):
             try:
                 with open(file_path, 'r') as f:
                     data = json.load(f)
-                diversity_score = data.get('overall_metrics', {}).get('avg_diversity', None)
-                results_data[method_name].append(diversity_score * 100 if diversity_score else None)
+                diversity_score = data.get('overall_metrics', {}).get('avg_diversity', None) * 2
+                final_score = diversity_score * 100 if diversity_score else None
+                results_data[method_name].append(final_score)
+                print(f"  {method_name}: {final_score:.2f}" if final_score else f"  {method_name}: No data")
             except (FileNotFoundError, json.JSONDecodeError):
                 results_data[method_name].append(None)
+                print(f"  {method_name}: No data")
+    
+    # Print summary statistics
+    print(f"\n{'='*60}")
+    print(f"SUMMARY STATISTICS")
+    print(f"{'='*60}")
+    
+    for method_name, values in results_data.items():
+        valid_values = [v for v in values if v is not None]
+        if valid_values:
+            avg_score = np.mean(valid_values)
+            max_score = max(valid_values)
+            min_score = min(valid_values)
+            print(f"{method_name}:")
+            print(f"  Average: {avg_score:.2f}")
+            print(f"  Best: {max_score:.2f}")
+            print(f"  Worst: {min_score:.2f}")
+            print(f"  Data points: {len(valid_values)}/{len(values)}")
+        else:
+            print(f"{method_name}: No valid data")
+    
+    print(f"{'='*60}")
     
     # Set up seaborn style for beautiful plots
     sns.set_style("whitegrid")

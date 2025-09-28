@@ -4,7 +4,7 @@ RC_PARAMS = {
         'font.size': 11,
         'axes.labelsize': 12,
         'axes.titlesize': 15,
-        'xtick.labelsize': 15,
+        'xtick.labelsize': 17,
         'ytick.labelsize': 18,
         'legend.fontsize': 9,
         'axes.linewidth': 0.8,
