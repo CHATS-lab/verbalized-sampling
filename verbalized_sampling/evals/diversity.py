@@ -50,8 +50,13 @@ class DiversityEvaluator(BaseEvaluator):
     
     def compute_embedding(self, text: str) -> tuple[np.ndarray, float]:
         """Compute embedding for a text."""
-        response = self.embedding_model.get_embedding(text)
-        return np.array(response.embedding), response.cost
+        try:
+            response = self.embedding_model.get_embedding(text)
+            return np.array(response.embedding), response.cost
+        except Exception as e:
+            print(f"Error computing embedding for text: {text}")
+            print(f"Error: {e}")
+            return np.array([]), 0.0
     
     def compute_instance_metric(self, prompt: str, response: Dict) -> Dict[str, float]:
         """Compute diversity metrics for a single response."""

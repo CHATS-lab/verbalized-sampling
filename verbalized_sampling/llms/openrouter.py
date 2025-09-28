@@ -48,10 +48,10 @@ class OpenRouterLLM(BaseLLM):
     def _chat(self, messages: List[Dict[str, str]]) -> str:
         """Basic chat functionality without structured response format."""
         if "deepseek" in self.model_name:
-            provider_args = {
+            provider_args = {"provider": {
                     "require_parameters": True,
                     "only": ["fireworks"]
-                }
+                }}
         else:
             provider_args = None
             
@@ -61,7 +61,8 @@ class OpenRouterLLM(BaseLLM):
                 messages=messages,
                 temperature=self.config.get("temperature", 0.7),
                 top_p=self.config.get("top_p", 0.9),
-                provider=provider_args,
+                extra_body=provider_args,
+                # provider=provider_args,
             )
             response = response.choices[0].message.content
             if response:
@@ -73,43 +74,46 @@ class OpenRouterLLM(BaseLLM):
 
     def _chat_with_format(self, messages: List[Dict[str, str]], schema: BaseModel) -> List[Dict[str, Any]]:
         """Chat with structured response format."""
-        tries = 5
+        tries = 10
         backoff = 1
         for i in range(tries):
             try:
                 if "deepseek" in self.model_name:
                     provider_args = {
-                        "require_parameters": True,
-                        "only": ["fireworks"]
+                        "provider": {
+                            "require_parameters": True,
+                            "only": ["fireworks"]
+                        }
                     }
                 else:
                     provider_args = None
                     
                 if isinstance(schema, BaseModel):
                     schema = schema.model_json_schema()
-                
-                # print("Schema: ", schema)
-                
+                                
                 completion = self.client.chat.completions.create(
                     model=self.model_name,
                     messages=messages,
                     temperature=self.config.get("temperature", 0.7),
                     top_p=self.config.get("top_p", 0.9),
                     response_format=schema,
-                    provider=provider_args,
+                    extra_body=provider_args,
                 )
                 
                 if completion is None or not completion.choices:
                     print(f"Error: No response from OpenRouter API for model {self.model_name}")
+                    raise Exception(f"Error: No response from OpenRouter API for model {self.model_name}")
                 
                 response = completion.choices[0].message.content
                 if response:
-                    # print("Response: ", response)
                     parsed_response = self._parse_response_with_schema(response, schema)
+                    if not parsed_response:
+                        print(f"Error: Empty response from OpenRouter API for model {self.model_name}")
+                        raise Exception(f"Error: Empty response from OpenRouter API for model {self.model_name}")
                     return parsed_response
                 else:
                     print(f"Error: Empty response from OpenRouter API for model {self.model_name}")
-                    
+                    raise Exception(f"Error: Empty response from OpenRouter API for model {self.model_name}")
             except Exception as e:
                 print(f"Error in OpenRouter chat_with_format: {e}")
                 
@@ -124,9 +128,6 @@ class OpenRouterLLM(BaseLLM):
     def _parse_response_with_schema(self, response: str, schema: BaseModel) -> List[Dict[str, Any]]:
         """Parse the response based on the provided schema."""
         try:
-            # print('TYPE OF RESPONSE: ', type(response))
-            # print('RESPONSE: ', response)
-
             if isinstance(response, str):
                 parsed = json.loads(response)
                 
