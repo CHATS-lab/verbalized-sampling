@@ -506,7 +506,7 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
                             fontsize=11, fontweight='600')
     
     ax_burden_div.axhline(y=0, color='#666666', linestyle='-', alpha=0.8, linewidth=1)
-    ax_burden_div.set_ylabel('$\Delta$ Diversity Against Direct', fontweight='bold', fontsize=12)
+    ax_burden_div.set_ylabel('$\Delta$ Diversity (vs. Direct)', fontweight='bold', fontsize=12)
     ax_burden_div.set_title('Emergent Trend: $\Delta$ in Diversity', fontweight='bold', pad=15, fontsize=18)
     ax_burden_div.set_xticks(x_methods)
     ax_burden_div.set_xticklabels(methods_subset, rotation=45, ha='right')
@@ -567,7 +567,7 @@ def create_unified_creativity_figure(output_dir="latex_figures"):
                             fontsize=11, fontweight='600')
     
     ax_burden_qual.axhline(y=0, color='#666666', linestyle='-', alpha=0.8, linewidth=1)
-    ax_burden_qual.set_ylabel('$\Delta$ Quality Against Direct', fontweight='bold', fontsize=12)
+    ax_burden_qual.set_ylabel('$\Delta$ Quality (vs. Direct)', fontweight='bold', fontsize=12)
     ax_burden_qual.set_title('Cognitive Burden: $\Delta$ in Quality', fontweight='bold', pad=15, fontsize=18)
     ax_burden_qual.set_xticks(x_methods)
     ax_burden_qual.set_xticklabels(methods_subset, rotation=45, ha='right')

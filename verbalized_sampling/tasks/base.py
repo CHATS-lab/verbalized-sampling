@@ -274,6 +274,7 @@ class BaseTask(ABC):
         
         return parsed_results
     
+    
     def save_results(self, results: List[Any], output_file: Path):
         """Save the results to a file."""
         output_file.parent.mkdir(parents=True, exist_ok=True)

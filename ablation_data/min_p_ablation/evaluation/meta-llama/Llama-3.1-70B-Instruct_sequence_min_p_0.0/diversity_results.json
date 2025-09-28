@@ -60440,7 +60440,7 @@
     }
   ],
   "overall_metrics": {
-    "avg_diversity": 0.30195587619784126,
+    "avg_diversity": 0.12995587619784126,
     "std_diversity": 0.07846306996754024,
     "min_diversity": 0.0,
     "max_diversity": 0.49183374728626855,

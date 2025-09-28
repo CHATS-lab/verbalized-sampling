@@ -15,8 +15,8 @@ class VLLMOpenAI(BaseLLM):
 
     def _chat(self, messages: List[Dict[str, str]]) -> str:
         """Basic chat functionality without structured response format."""
-        if 'max_tokens' not in self.config:
-            self.config['max_tokens'] = 4096
+        # if 'max_tokens' not in self.config:
+        #     self.config['max_tokens'] = 4096
         
         response = self.client.chat.completions.create(
             model=self.model_name,
@@ -24,8 +24,8 @@ class VLLMOpenAI(BaseLLM):
             **self.config
         )
         response = response.choices[0].message.content
-        if response:
-            response = response.replace("\n", "")
+        # if response:
+        #     response = response.replace("\n", "")
         return response
 
     def _chat_with_format(self, messages: List[Dict[str, str]], schema: BaseModel) -> List[Dict[str, Any]]:

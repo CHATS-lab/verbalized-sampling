@@ -22,7 +22,8 @@ def create_method_experiments(
         'num_responses': 30, # 30
         'num_prompts': 100, # 100
         'target_words': 0,
-        'temperature': 0.7,
+        'temperature': 0.5,
+        'top_p': 1.0,
         'random_seed': 42,
         # 'use_vllm': True,
     }
@@ -136,6 +137,8 @@ if __name__ == "__main__":
         # "meta-llama/Llama-3.1-70B-Instruct"
         # "meta-llama/llama-3.1-70b-instruct"
         # "openai/o3",
+        # "Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "qwen3-235b"
     ]
     for model in models:
         model_basename = model.replace("/", "_")
