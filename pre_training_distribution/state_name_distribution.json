@@ -1,0 +1,202 @@
+{
+  "New York": {
+    "count": 206166867,
+    "percentage": 0.14707665898914413
+  },
+  "California": {
+    "count": 112179564,
+    "percentage": 0.08002738616568718
+  },
+  "Washington": {
+    "count": 106959431,
+    "percentage": 0.07630341377239773
+  },
+  "Texas": {
+    "count": 80346003,
+    "percentage": 0.05731775360573215
+  },
+  "Florida": {
+    "count": 68026763,
+    "percentage": 0.04852937413986277
+  },
+  "Virginia": {
+    "count": 48411180,
+    "percentage": 0.03453588210234612
+  },
+  "Georgia": {
+    "count": 38136778,
+    "percentage": 0.02720626245365941
+  },
+  "Michigan": {
+    "count": 36942762,
+    "percentage": 0.026354467562390186
+  },
+  "Ohio": {
+    "count": 33974570,
+    "percentage": 0.024236999469913884
+  },
+  "Colorado": {
+    "count": 29851567,
+    "percentage": 0.021295704803772315
+  },
+  "Illinois": {
+    "count": 29269722,
+    "percentage": 0.020880624437587487
+  },
+  "Pennsylvania": {
+    "count": 27916754,
+    "percentage": 0.01991543533589141
+  },
+  "Arizona": {
+    "count": 26586112,
+    "percentage": 0.018966173301121138
+  },
+  "Minnesota": {
+    "count": 25914386,
+    "percentage": 0.018486973043224497
+  },
+  "Massachusetts": {
+    "count": 24403700,
+    "percentage": 0.017409270050038526
+  },
+  "North Carolina": {
+    "count": 24185515,
+    "percentage": 0.017253619817251382
+  },
+  "New Jersey": {
+    "count": 23419802,
+    "percentage": 0.016707370502687394
+  },
+  "Kansas": {
+    "count": 23237150,
+    "percentage": 0.01657706903228825
+  },
+  "Wisconsin": {
+    "count": 22846709,
+    "percentage": 0.016298533695121874
+  },
+  "Oregon": {
+    "count": 22154809,
+    "percentage": 0.01580494157804038
+  },
+  "Iowa": {
+    "count": 21721316,
+    "percentage": 0.015495693525417156
+  },
+  "Maryland": {
+    "count": 20796769,
+    "percentage": 0.014836134180032932
+  },
+  "Tennessee": {
+    "count": 20262863,
+    "percentage": 0.01445525284911443
+  },
+  "Indiana": {
+    "count": 19795161,
+    "percentage": 0.014121600557824866
+  },
+  "Alabama": {
+    "count": 19200771,
+    "percentage": 0.013697570758038671
+  },
+  "Missouri": {
+    "count": 18096844,
+    "percentage": 0.012910044142872574
+  },
+  "Kentucky": {
+    "count": 17006183,
+    "percentage": 0.012131981312971982
+  },
+  "Oklahoma": {
+    "count": 16910208,
+    "percentage": 0.01206351404394915
+  },
+  "Utah": {
+    "count": 16785875,
+    "percentage": 0.011974816560652296
+  },
+  "Mississippi": {
+    "count": 15714803,
+    "percentage": 0.01121072825883598
+  },
+  "Louisiana": {
+    "count": 15201924,
+    "percentage": 0.010844847305784036
+  },
+  "Connecticut": {
+    "count": 14551036,
+    "percentage": 0.010380512595706078
+  },
+  "Alaska": {
+    "count": 14320543,
+    "percentage": 0.010216082001917285
+  },
+  "Hawaii": {
+    "count": 14182773,
+    "percentage": 0.010117798744263988
+  },
+  "Maine": {
+    "count": 14069394,
+    "percentage": 0.010036915696652219
+  },
+  "Nevada": {
+    "count": 12828828,
+    "percentage": 0.009151912663960616
+  },
+  "South Carolina": {
+    "count": 12813481,
+    "percentage": 0.009140964321395433
+  },
+  "Arkansas": {
+    "count": 11418198,
+    "percentage": 0.008145588270090593
+  },
+  "New Mexico": {
+    "count": 10712446,
+    "percentage": 0.0076421143232565155
+  },
+  "Montana": {
+    "count": 9930530,
+    "percentage": 0.007084306007286153
+  },
+  "Delaware": {
+    "count": 9800476,
+    "percentage": 0.006991527239841556
+  },
+  "Nebraska": {
+    "count": 9186388,
+    "percentage": 0.006553445152842943
+  },
+  "Vermont": {
+    "count": 8707866,
+    "percentage": 0.006212074019658854
+  },
+  "Idaho": {
+    "count": 8387468,
+    "percentage": 0.005983506412882331
+  },
+  "West Virginia": {
+    "count": 8022508,
+    "percentage": 0.005723148877038911
+  },
+  "New Hampshire": {
+    "count": 7998533,
+    "percentage": 0.005706045435780017
+  },
+  "Wyoming": {
+    "count": 6448603,
+    "percentage": 0.004600346302916713
+  },
+  "Rhode Island": {
+    "count": 6396080,
+    "percentage": 0.004562877103949418
+  },
+  "North Dakota": {
+    "count": 4940180,
+    "percentage": 0.0035242577033728216
+  },
+  "South Dakota": {
+    "count": 4626496,
+    "percentage": 0.0033004797735352856
+  }
+}

@@ -84,42 +84,32 @@ if __name__ == "__main__":
     
     # Test multi-turn and JSON mode variations
     methods = [
-        # {
-        #     'method': Method.DIRECT,
-        #     'strict_json': False,
-        #     'num_samples': 1,
-        # },
-        # {
-        #     "method": Method.DIRECT_COT,
-        #     "strict_json": True,
-        #     "num_samples": 1,
-        # },
-        # {
-        #     'method': Method.SEQUENCE,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
-        # {
-        #     'method': Method.MULTI_TURN,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
-        # {
-        #     'method': Method.STRUCTURE_WITH_PROB,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
-        # {
-        #     'method': Method.CHAIN_OF_THOUGHT,
-        #     'strict_json': True,
-        #     'num_samples': 5,
-        # },
+        {
+            'method': Method.DIRECT,
+            'strict_json': False,
+            'num_samples': 1,
+        },
+        {
+            'method': Method.SEQUENCE,
+            'strict_json': True,
+            'num_samples': 5,
+        },
+        {
+            'method': Method.MULTI_TURN,
+            'strict_json': True,
+            'num_samples': 5,
+        },
+        {
+            'method': Method.STRUCTURE_WITH_PROB,
+            'strict_json': True,
+            'num_samples': 5,
+            'probability_definition': "explicit"
+        },
         {
             'method': Method.COMBINED,
             'strict_json': True,
             'num_samples': 5,
             'num_samples_per_prompt': 2,
-            'probability_definition': "confidence"
         }
     ]
      
@@ -146,7 +136,58 @@ if __name__ == "__main__":
             task=Task.JOKE,
             model_name=model,
             methods=methods,
-            metrics=["ngram", "diversity", "joke_quality"],
-            output_dir=f"generated_data/joke_experiments_final/{model_basename}",
-            num_workers=16 if "claude" in model_basename else 128,
+            metrics=["diversity", "ngram", "length", "joke_quality"],
+            output_dir=f"joke_experiments_test/{model_basename}",
+            num_workers=32 if "claude" in model_basename else 64,
         )
+    # run_method_tests(
+    #     task=Task.POEM,
+    #     # model_name="openai/gpt-4.1",
+    #     model_name="anthropic/claude-4-sonnet",
+    #     methods=methods,
+    #     metrics=["diversity", "ngram", "ttct", "creative_writing_v3"],
+    #     output_dir="method_results_poem/claude_4_sonnet",
+    # )
+    # run_method_tests(
+    #     task=Task.POEM,
+    #     model_name="openai/gpt-4.1",
+    #     # model_name="anthropic/claude-4-sonnet",
+    #     methods=methods,
+    #     metrics=["diversity", "ngram", "ttct", "creative_writing_v3"],
+    #     output_dir="method_results_poem/gpt_4_1",
+    # )
+    # run_method_tests(
+    #     task=Task.POEM,
+    #     model_name="google/gemini-2.5-pro",
+    #     methods=methods,
+    #     metrics=["diversity", "ngram", "ttct", "creative_writing_v3"],
+    #     output_dir="method_results_poem/gemini_2_5_pro",
+    # )
+    # run_method_tests(
+    #     task=Task.POEM,
+    #     model_name="deepseek/deepseek-r1-0528",
+    #     methods=methods,
+    #     metrics=["diversity", "ngram", "ttct", "creative_writing_v3"],
+    #     output_dir="method_results_poem/deepseek_r1_0528",
+    # )
+    # run_method_tests(
+    #     task=Task.POEM,
+    #     model_name="openai/o3",
+    #     methods=methods,
+    #     metrics=["diversity", "ngram", "ttct", "creative_writing_v3", "length"],
+    #     output_dir="method_results_poem/o3",
+    # ) 
+    # run_method_tests(
+    #     task=Task.POEM,
+    #     model_name="google/gemini-2.5-flash",
+    #     methods=methods,
+    #     metrics=["diversity", "ngram", "ttct", "creative_writing_v3", "length"],
+    #     output_dir="method_results_poem/gemini_2_5_flash_001",
+    # ) 
+    # run_method_tests(
+    #     task=Task.JOKE,
+    #     model_name="google/gemini-2.0-flash-001",
+    #     methods=methods,
+    #     metrics=["diversity", "ngram", "ttct"],
+    #     output_dir="method_results_jokes",
+    # )

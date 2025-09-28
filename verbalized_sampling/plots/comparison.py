@@ -2,7 +2,7 @@ from typing import Dict, List, Optional, Union, Tuple
 from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
-from ..evals.base import EvalResult
+from ..analysis.evals.base import EvalResult
 from .base import ComparisonData, MetricExtractor
 from .factory import PlotterFactory, EvaluatorPlotterFactory
 
@@ -310,7 +310,7 @@ class ComparisonPlotter:
     def _create_standard_evaluator_plots(self, evaluator_type: str, comparison_data: List[ComparisonData], output_dir: Path):
         """Create standard evaluator plots using evaluator class information."""
         try:
-            from ..evals import get_evaluator
+            from ..analysis.evals import get_evaluator
             evaluator_class = get_evaluator(evaluator_type)
             
             # Create instance metric plots

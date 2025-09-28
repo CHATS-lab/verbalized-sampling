@@ -12,8 +12,8 @@ from .data_quality import SyntheticDataQualityEvaluator
 from .safety import SafetyEvaluator
 from .accuracy import AccuracyEvaluator
 
-# Import plotting functionality from the new plots module
-from ..plots import (
+# Import plotting functionality from the top-level plots module
+from ...plots import (
     ComparisonPlotter, 
     plot_evaluation_comparison,
     plot_comparison_chart

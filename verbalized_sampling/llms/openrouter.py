@@ -38,6 +38,9 @@ class OpenRouterLLM(BaseLLM):
         
         if model_name in OPENROUTER_MODELS_MAPPING:
             self.model_name = OPENROUTER_MODELS_MAPPING[model_name]
+        
+        if "gemini-2.5-flash" in model_name:
+            config["reasoning"] = {"exclude": "true"}
             
         self.client = OpenAI(
             base_url="https://openrouter.ai/api/v1",
