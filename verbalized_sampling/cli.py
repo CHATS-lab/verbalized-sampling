@@ -49,11 +49,11 @@ TASK_DESCRIPTIONS = {
     Task.MINERVA: "Minerva math - mathematical reasoning evaluation dataset",
     Task.OLYMPIAD_BENCH: "Olympiad problems - international mathematics olympiad challenges",
 
-    # Safety evaluation (Appendix)
-    Task.SAFETY: "Safety evaluation - test refusal rates for harmful content using StrongReject",
-
     # Dialogue simulation (Section 6)
     Task.PERSUASION_DIALOGUE: "PersuasionForGood dialogue simulation - multi-turn persuasive conversations about charity donation",
+
+    # Safety evaluation (Appendix)
+    Task.SAFETY: "Safety evaluation - test refusal rates for harmful content using StrongReject",
 }
 
 # Method descriptions (VS = Verbalized Sampling)
@@ -81,53 +81,55 @@ METHOD_DESCRIPTIONS = {
 @app.command()
 def run(
     task: Task = typer.Option(..., help="Task to run (e.g., JOKE, POEM, STATE_NAME)"),
+    prompt: Optional[str] = typer.Option(None, help="Override dataset with a single user prompt"),
     model: str = typer.Option(..., help="Model to use (e.g., openai/gpt-4.1)"),
-    methods: List[Method] = typer.Option([Method.DIRECT], help="Methods to compare"),
+    methods: str = typer.Option(
+        "DIRECT",
+        "--methods",
+        help="Methods to compare, space-separated (e.g., 'DIRECT VS_STANDARD')",
+        show_default=True,
+    ),
     num_responses: int = typer.Option(50, help="Number of responses to generate"),
     num_samples: int = typer.Option(5, help="Number of samples per prompt"),
     num_prompts: int = typer.Option(1, help="Number of prompts to use"),
     strict_json: bool = typer.Option(False, help="Use strict JSON mode"),
-    metrics: List[str] = typer.Option(["diversity", "length", "ngram"], help="Metrics to evaluate"),
+    metrics: str = typer.Option(
+        "diversity length ngram",
+        "--metrics",
+        help="Metrics to evaluate, space-separated (e.g., 'diversity length ngram')",
+        show_default=True,
+    ),
     output_dir: Path = typer.Option(Path("results"), help="Output directory"),
     temperature: float = typer.Option(0.7, help="Sampling temperature"),
     top_p: float = typer.Option(1.0, help="Top-p sampling parameter"),
     rerun: bool = typer.Option(False, help="Rerun existing results"),
 ):
     """Run a quick comparison experiment."""
+    # Parse space-separated strings into lists
+    method_list = [Method(m.strip()) for m in methods.split()]
+    metric_list = [m.strip() for m in metrics.split()]
+    
     console.print(f"🔬 Running {task.value} experiment with {model}")
     
     results = run_quick_comparison(
         task=task,
-        methods=methods,
+        methods=method_list,
         model_name=model,
-        metrics=metrics,
+        metrics=metric_list,
         output_dir=output_dir,
         num_responses=num_responses,
         num_samples=num_samples,
-        num_prompts=num_prompts,
+        num_prompts=(1 if prompt else num_prompts),
+        prompt=prompt,
         strict_json=strict_json,
         rerun=rerun,
         temperature=temperature,
         top_p=top_p,
     )
     
-    # Display results summary
-    table = Table(title="Results Summary")
-    table.add_column("Method")
-    for metric in metrics:
-        table.add_column(metric)
-    
-    for method, method_results in results.items():
-        row = [method.value]
-        for metric in metrics:
-            if metric in method_results:
-                row.append(f"{method_results[metric]:.3f}")
-            else:
-                row.append("N/A")
-        table.add_row(*row)
-    
-    console.print(table)
-    console.print(f"✅ Done! Check {output_dir}/pipeline_report.html")
+    # Display summary and point to the report
+    report_path = results.get("report_path", output_dir / "pipeline_report.html")
+    console.print(f"✅ Done! Check {report_path}")
 
 @app.command()
 def list_tasks():
@@ -157,9 +159,6 @@ def list_methods():
     
     console.print(table)
 
-if __name__ == "__main__":
-    app()
-    
 @app.command()
 def dialogue(
     persuader_model: str = typer.Option("openai/gpt-4.1-mini", help="Model name for persuader role"),
@@ -288,3 +287,6 @@ def _iter_results_jsonl(path: Path):
                 yield json.loads(line)
             except Exception:
                 continue
+
+if __name__ == "__main__":
+    app()

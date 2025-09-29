@@ -1,7 +1,7 @@
 # Verbalized Sampling
 
 <p align="center">
-  <img src="assets/teaser.png" alt="Verbalized Sampling teaser" width="800">
+  <img src="https://raw.githubusercontent.com/jia-yi-zhang/verbalized-sampling/main/assets/teaser.png" alt="Verbalized Sampling teaser" width="800">
 </p>
 
 **Verbalized Sampling (VS)** is a prompting strategy that mitigates mode collapse in Large Language Models by explicitly requesting responses with associated probabilities. This repository contains the official implementation of our paper **"Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity"**.
@@ -50,19 +50,35 @@ verbalize list-methods
 
 # Run an experiment
 verbalize run \
-    --task JOKE \
-    --model "anthropic/claude-sonnet-4" \
-    --methods DIRECT VS_STANDARD \
-    --num-responses 50 \
-    --metrics diversity length ngram
+    --task joke \
+    --model "gpt-4.1" \
+    --methods "vs_standard direct vs_cot vs_multi" \
+    --num-responses 50
 
 # Run quick test (TODO add this support to the CLI)
 verbalize run \
+    --task joke \
     --prompt "Write a joke about the weather." \
-    --model "anthropic/claude-sonnet-4" \
-    --methods DIRECT VS_STANDARD \
+    --model "gpt-4.1" \
+    --methods "direct vs_standard sequence vs_multi" \
     --num-responses 50 \
-    --metrics diversity length ngram
+    --metrics "diversity length ngram joke_quality"
+
+verbalize dialogue \
+  --persuader-model "gpt-4.1" \
+  --persuadee-model "gpt-4.1" \
+  --method direct \
+  --num-conversations 5 \
+  --num-samplings 4 \
+  --max-turns 10 \
+  --word-limit 160 \
+  --temperature 0.7 \
+  --top-p 0.9 \
+  --max-tokens 500 \
+  --response-selection probability \
+  --evaluate \
+  --output-file results/dialogue/persuasion_vs_standard.jsonl
+
 ```
 
 ### Python API

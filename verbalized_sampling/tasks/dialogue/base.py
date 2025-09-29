@@ -161,8 +161,8 @@ class DialogueTask(BaseTask):
             if is_persuader_turn:
                 # Persuader turn - always use direct generation
                 prompt = self.create_persuader_prompt(state, is_first_turn)
-                response = self.persuader_model.generate([prompt])[0]
-
+                # response = self.persuader_model.generate([prompt])[0]
+                response = self.persuadee_model.chat([[{"role": "user", "content": prompt}]])[0] 
                 state.add_turn(
                     role=DialogueRole.PERSUADER,
                     text=response,
@@ -194,7 +194,7 @@ class DialogueTask(BaseTask):
 
         if self.method in [Method.VS_STANDARD, Method.VS_COT, Method.VS_MULTI]:
             # Use verbalized sampling method
-            responses = self.persuadee_model.generate([prompt])[0]
+            responses = self.persuadee_model.chat([[{"role": "user", "content": prompt}]])[0]
             # Parse structured response (expecting JSON with responses and probabilities)
             try:
                 if isinstance(responses, str):
@@ -212,7 +212,7 @@ class DialogueTask(BaseTask):
                 return [{"text": str(responses), "probability": 1.0}]
         else:
             # Direct or other methods - single response
-            response = self.persuadee_model.generate([prompt])[0]
+            response = self.persuadee_model.chat([[{"role": "user", "content": prompt}]])[0]
             return [{"text": response, "probability": 1.0}]
 
     def _select_response(self, responses: List[Dict[str, Any]]) -> Dict[str, Any]:

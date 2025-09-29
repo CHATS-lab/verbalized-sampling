@@ -381,6 +381,7 @@ Difficulty:
         num_samples_per_prompt: int = 2,
         random_seed: int = None,
         target_words: int = 200,
+        custom_prompts: Optional[List[str]] = None,
         **kwargs,
     ) -> List[Union[List[Dict[str, str]], str]]:
         """Get a prompt for a specific task and format.
@@ -390,22 +391,26 @@ Difficulty:
                 - A list of system and user messages (for chat models)
                 - A string prompt (for base models)
         """
-        prompts = []
-        if task == "gsm8k":
+        # If custom prompts are provided, use them directly
+        if custom_prompts is not None and len(custom_prompts) > 0:
+            prompts = list(custom_prompts)
+        else:
+            prompts = []
+        if not custom_prompts and task == "gsm8k":
             prompts = PromptFactory.get_gsm8k_task_prompts(num_icl_example=3, random_seed=random_seed)
-        elif task == "amc_aime_math":
+        elif not custom_prompts and task == "amc_aime_math":
             prompts = PromptFactory.get_amc_and_aime_math_task_prompts(num_icl_example=3, random_seed=random_seed)
-        elif task == "livecodebench":
+        elif not custom_prompts and task == "livecodebench":
             prompts = PromptFactory.get_livecodebench_task_prompts(num_icl_example=3, random_seed=random_seed)
-        elif (task == "poem") and (method == Method.DIRECT_BASE): # Handle poem task with clean data
+        elif not custom_prompts and (task == "poem") and (method == Method.DIRECT_BASE): # Handle poem task with clean data
             prompt_path = "data/poem_titles.txt"
         # elif task == "safety":
         #     prompt_path = "data/safety"
-        else:
+        elif not custom_prompts:
             prompt_path = f"data/{task}.txt"
 
         # Only try to read from file if we don't have prompts from the special task methods
-        if not prompts:
+        if not prompts and not custom_prompts:
             if not os.path.exists(prompt_path):
                 raise ValueError(f"Prompt file {prompt_path} not found.")
             
@@ -416,10 +421,12 @@ Difficulty:
                     if line:  # Skip empty lines
                         prompts.append(line)
         
-        # TODO add selection of prompts
-        if (num_prompts is not None) and (random_seed is not None):
-            random.seed(random_seed)
-            prompts = random.sample(prompts, min(num_prompts, len(prompts)))
+        # Selection of prompts (if custom prompts given, sample from them if requested)
+        if num_prompts is not None:
+            if random_seed is not None:
+                random.seed(random_seed)
+            if len(prompts) > num_prompts:
+                prompts = random.sample(prompts, num_prompts)
 
         print(f"Num samplings: {num_samplings}, Method: {method}, Sample size: {num_prompts}, Random seed: {random_seed}")
         

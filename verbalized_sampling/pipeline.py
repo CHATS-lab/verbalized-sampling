@@ -41,6 +41,7 @@ class ExperimentConfig:
     strict_json: bool = False # If True, the request would enable JSON mode
     probability_definition: str = "implicit" # Type of probability definition to use
     probability_tuning: float = -1 # Probability tuning for the probability definition
+    custom_prompts: Optional[List[str]] = None # Optional override prompts
 
 @dataclass
 class EvaluationConfig:
@@ -233,6 +234,7 @@ class Pipeline:
                     target_words=exp_config.target_words,
                     probability_definition=exp_config.probability_definition,  # Pass to task for prompt generation
                     probability_tuning=exp_config.probability_tuning,
+                    custom_prompts=exp_config.custom_prompts,
                     **task_kwargs
                 )
 
@@ -859,6 +861,7 @@ def run_quick_comparison(
     num_samples: int = 1,
     num_prompts: int = 5,
     num_samples_per_prompt: int = 2,
+    prompt: Optional[str] = None,
     rerun: bool = False,
     create_backup: bool = False,
     probability_definition: str = "implicit",
@@ -896,9 +899,10 @@ def run_quick_comparison(
             model_name=model_name,
             num_responses=num_responses,
             num_samples=num_samples,
-            num_prompts=num_prompts,
+            num_prompts=(1 if prompt else num_prompts),
             num_samples_per_prompt=num_samples_per_prompt,
             probability_definition=probability_definition,
+            custom_prompts=([prompt] if prompt else None),
             **exp_kwargs
         ))
     

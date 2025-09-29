@@ -34,6 +34,7 @@ class BaseTask(ABC):
                  strict_json: bool = False,
                  probability_definition: str = "default",
                  probability_tuning: float = -1,
+                 custom_prompts: list = None,
                  ):
         self.model = model
         self.method = method
@@ -48,6 +49,7 @@ class BaseTask(ABC):
         self.probability_definition = probability_definition
         self.probability_tuning = probability_tuning
         self.max_turns = num_samples
+        self.custom_prompts = custom_prompts
         
     def get_prompt(self) -> List[Union[List[Dict[str, str]], str]]:
         """Get the prompt for the task."""
@@ -63,6 +65,7 @@ class BaseTask(ABC):
             strict_json=self.strict_json,
             probability_definition=self.probability_definition,
             probability_tuning=self.probability_tuning,
+            custom_prompts=self.custom_prompts,
         )
 
 
