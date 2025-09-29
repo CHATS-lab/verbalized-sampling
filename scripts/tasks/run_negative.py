@@ -104,7 +104,7 @@ if __name__ == "__main__":
         #     'num_samples': num_samples,
         # },
         # {
-        #     'method': Method.STRUCTURE_WITH_PROB,
+        #     'method': Method.VS_STANDARD,
         #     'strict_json': True,
         #     'num_samples': num_samples,
         # },
@@ -114,12 +114,12 @@ if __name__ == "__main__":
             'num_samples': num_samples,
         },
         # {
-        #     'method': Method.STRUCTURE_WITH_PROB,
+        #     'method': Method.VS_STANDARD,
         #     'strict_json': True,
         #     'num_samples': num_samples,
         # },
         # {
-        #     'method': Method.COMBINED,
+        #     'method': Method.VS_MULTI,
         #     'strict_json': True,
         #     'num_samples': num_samples,
         #     'num_samples_per_prompt': 2,

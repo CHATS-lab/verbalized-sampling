@@ -13,9 +13,9 @@ METHOD_MAP = {
     "direct_cot": ("CoT", "cot"),
     "sequence": ("Sequence", "sequence"),
     "multi_turn": ("Multi-turn", "multi_turn"),
-    "vs_standard": ("VS-Standard", "structure_with_prob"),
-    "vs_cot": ("VS-CoT", "chain_of_thought"),
-    "vs_combined": ("VS-Combined", "combined"),
+    "vs_standard": ("VS-Standard", "vs_standard"),
+    "vs_cot": ("VS-CoT", "vs_cot"),
+    "vs_combined": ("VS-Combined", "vs_multi"),
 }
 
 
@@ -68,7 +68,7 @@ METHOD_MAP = {
 #     Calculate t-tests to see if any of the baseline methods are statistically significant compared to each VS method for each metric.
 #     """
 #     baseline_methods = ["direct", "direct_cot", "sequence", "multi_turn"]
-#     vs_methods = ["vs_standard", "vs_cot", "vs_combined"]
+#     vs_methods = ["vs_standard", "vs_cot", "vs_VS-Multi (vs_multi)"]
 #     for metric in plot_metrics:
 #         print(f"\n=== T-TESTS for {metric} ===")
 #         for v in vs_methods:

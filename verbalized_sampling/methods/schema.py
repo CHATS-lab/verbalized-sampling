@@ -101,7 +101,7 @@ def _create_chain_of_thought_schema(probability_definition: str) -> Dict[str, An
     }
 
 def _create_combined_schema(probability_definition: str) -> Dict[str, Any]:
-    """Create a combined schema with the appropriate field type."""
+    """Create a VS-Multi (vs_multi) schema with the appropriate field type."""
     field_name, field_description = _get_probability_field_info(probability_definition)
     
     return {
@@ -228,7 +228,7 @@ def get_tool_schema(method: Method, probability_definition: str = "default") -> 
             }
         }]
     
-    elif method == Method.STRUCTURE_WITH_PROB:
+    elif method == Method.VS_STANDARD:
         field_name, field_description = _get_probability_field_info(probability_definition)
         return [{
             "name": "generate_responses_with_probability",
@@ -257,7 +257,7 @@ def get_tool_schema(method: Method, probability_definition: str = "default") -> 
             }
         }]
     
-    elif method == Method.CHAIN_OF_THOUGHT:
+    elif method == Method.VS_COT:
         field_name, field_description = _get_probability_field_info(probability_definition)
         return [{
             "name": "generate_with_reasoning",
@@ -296,7 +296,7 @@ def get_tool_schema(method: Method, probability_definition: str = "default") -> 
             }
         }]
     
-    elif method == Method.COMBINED:
+    elif method == Method.VS_MULTI:
         field_name, field_description = _get_probability_field_info(probability_definition)
         return [{
             "name": "generate_with_reasoning",
@@ -427,11 +427,11 @@ def get_schema(method: Method, use_tools: bool = False, probability_definition: 
         return SequenceResponse
     elif method == Method.STRUCTURE:
         return StructuredResponseList
-    elif method == Method.STRUCTURE_WITH_PROB:
+    elif method == Method.VS_STANDARD:
         return _create_structured_response_with_field_schema(probability_definition)
-    elif method == Method.CHAIN_OF_THOUGHT:
+    elif method == Method.VS_COT:
         return _create_chain_of_thought_schema(probability_definition)
-    elif method == Method.COMBINED:
+    elif method == Method.VS_MULTI:
         return _create_combined_schema(probability_definition)
     else:
         return None
@@ -554,7 +554,7 @@ def get_appropriate_schema(method: Method, model_name: str, probability_definiti
 # ChainOfThoughtResponse = {
 #     "type": "json_schema",
 #     "json_schema": {
-#         "name": "chain_of_thought_response",
+#         "name": "VS-CoT (vs_cot)_response",
 #         "strict": True,
 #         "schema": {
 #             "type": "object",
@@ -594,7 +594,7 @@ def get_appropriate_schema(method: Method, model_name: str, probability_definiti
 # CombinedResponse = {
 #     "type": "json_schema",
 #     "json_schema": {
-#         "name": "combined_response",
+#         "name": "VS-Multi (vs_multi)_response",
 #         "strict": True,
 #         "schema": {
 #             "type": "object",

@@ -9,8 +9,8 @@ from .base import BaseEvaluator
 from .factuality import FactualityEvaluator
 from .joke_quality import JokeQualityEvaluator
 from .data_quality import SyntheticDataQualityEvaluator
-from .safety import SafetyEvaluator
-from .accuracy import AccuracyEvaluator
+# from .safety import SafetyEvaluator  # TODO: Missing file
+# from .accuracy import AccuracyEvaluator  # TODO: Missing file
 
 # Import plotting functionality from the top-level plots module
 from ...plots import (
@@ -31,8 +31,8 @@ __all__ = [
     "FactualityEvaluator",
     "JokeQualityEvaluator",
     "SyntheticDataQualityEvaluator",
-    "SafetyEvaluator",
-    "AccuracyEvaluator",
+    # "SafetyEvaluator",  # TODO: Missing file
+    # "AccuracyEvaluator",  # TODO: Missing file
     # Plotting functionality
     "ComparisonPlotter",
     "plot_evaluation_comparison",
@@ -61,8 +61,8 @@ def get_evaluator(metric: str, **kwargs):
     elif metric == "synthetic_data_quality":
         return SyntheticDataQualityEvaluator(**kwargs)
     elif metric == "safety":
-        return SafetyEvaluator(**kwargs)
+        raise NotImplementedError("SafetyEvaluator not available - missing implementation")
     elif metric == "accuracy":
-        return AccuracyEvaluator(**kwargs)
+        raise NotImplementedError("AccuracyEvaluator not available - missing implementation")
     else:
         raise ValueError(f"Evaluator {metric} not found. Available evaluators: accuracy, diversity, ttct, creativity_index, length, response_count, creative_writing_v3, ngram, factuality, joke_quality, synthetic_data_quality, safety")

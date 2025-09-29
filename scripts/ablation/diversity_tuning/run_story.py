@@ -128,13 +128,13 @@ if __name__ == "__main__":
     ]
     for prob_def in probability_tunings:
         methods.append({
-            'method': Method.STRUCTURE_WITH_PROB,
+            'method': Method.VS_STANDARD,
             'strict_json': True,
             'num_samples': 5,
             'probability_tuning': prob_def,
         })
         methods.append({
-            'method': Method.COMBINED,
+            'method': Method.VS_MULTI,
             'strict_json': True,
             'num_samples': 5,
             'num_samples_per_prompt': 2,

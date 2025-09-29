@@ -1,0 +1,81 @@
+\section{Proof: RLHF Causes Mode Collapse} \label{sec:proof}
+\wyshi{TODO: biggest change, need to read this}
+
+% \simoncomment{Lack of the enough human cognitive bias here yet. seems like we directly jump into the iterative DPO -$>$ concentrate distribution.}
+
+This section provides a formal theoretical framework to prove  why RLHF will cause \emph{mode collapse} and how \ourslower can mitigate it. \emph{Mode collapse} is a phenomenon where an LLM always generates the most common output, or the ``mode''. For example, in a fantasy generation task, it may always start with ``It was a dark and stormy night'' 
+% \wyshi{is this true? is this the best example?} 
+and fail to provide other diverse responses. To make our proof concrete, we will use this case as a running example. 
+
+% \wyshi{I like this overview paragraph, but right now it feels a missed opportunity to explain things more clearly and intuitively, with lots of jargons}
+% In \cref{sec:formal_framework}, as preliminary, we formally describe the RLHF process and define two query types: instance-level queries that ask for one single instance and distribution-level queries that ask for a distribution of responses and probabilities.
+% and define the two types of queries.   
+% This section starts by defining terminology in \Cref{sec:formal_framework}, distinguishing between instance-level and distribution-level queries. 
+We start by proving how RLHF amplifies human annotators' cognitive biases, causing models to converge on prototypical responses (the mode) in \Cref{sec:cause_of_mode_collapse}. Next, in \Cref{sec:oracle_principle}, we show how the same mode-collapsed model that produces stereotypes for instance-level queries can accurately estimate distributions in distribution-level queries. % when explicitly prompted for probabilities in distribution-level queries. %reformulating the prompt can produce % Our key contribution, the \textbf{Mode Collapse Paradox} (\Cref{sec:oracle_principle}), reveals that 
+% the same mode-collapsed model that produces stereotypes for instance queries can accurately report distributions when explicitly prompted for probabilities. 
+Building on this theoretical insight, we introduce our method that leverages distribution-level queries, \emph{\ours}, which explicitly prompts models to generate a distribution of responses with probability estimates.
+
+% \wyshi{population simulation, is very out of the blue, the whole paper is about diversity, can you find a better term? I am not sure what you mean exactly here, but maybe realistic distribution simulation?}. 
+% \wyshi{add a sentence like: xx is an typical example of mode collapse, always gererating the mode xx. So we will use xx as a running example to explain xxx}
+
+
+\subsection{The Cause of Mode Collapse}\label{sec:cause_of_mode_collapse}
+% \wyshi{replace "prototype" with "stereotype"}
+% \simoncomment{Prototype should be the correct one throughout}
+% Mode collapse is caused because of amplifying human cognitive biases located in reward models during the RLHF optimization loop\wyshi{ungrammatical sentence}. Human evaluators tend to prefer responses that align with their mental prototypes \wyshi{what does this mean, an intuitive example?}. 
+Mode collapse is caused by the amplification of human biases within the RLHF process, which is a predictable outcome rooted in people's reliance on mental shortcuts, or cognitive prototypes~\citep{rosch1973natural, judgement_bias}. For instance, when asked to rate fantasy story openings, a human might subconsciously favor a familiar but cliché phrase like, ``It was a dark and stormy night''. This phrase is a cognitive prototype: it is not necessarily the best response, but the most ``typical'' and ``representative'' example that comes to mind. This preference for the prototype over more creative alternatives leads to cognitive bias.
+
+% \vspace{-1em}
+% \jiayicomment{adding the preference dataset results to support the stereotypical bias of human} \simoncomment{TODO: add here for the preference dataset results in the appendix}
+\begin{definition}[Cognitive Prototype] For any instruction $x$, the \textbf{cognitive prototype} $\ystereo(x)$ is the response that is most cognitively available or ``typical'' to a human evaluator~\citep{judgement_bias}. \end{definition} This bias is implicitly encoded in the reward function. We can model the reward $r(x,y)$ as a sum of a true quality reward ($r_q$) and a stereotypical bias ($S(y|x)$): 
+\begin{equation} r(x,y) = r_{q}(x,y) + \delta \cdot S(y|x) \end{equation} 
+where $\delta > 0$ captures the level of the bias. 
+ The term $S(y|x)$ can be any function that increases monotonically with the distance between $y$ and $\ystereo(x)$. Without loss of generality, we use the logarithmic form: $S(y|x) = -\log(1 + d(y, \ystereo(x)))$ for mathematical convenience. Here, $d(\cdot,\cdot)$ represents a general distance metric in the response space.  
+A perfect match ($d=0$) yields a bias score of zero, and then the score is negative and decreases monotonically as the outcome diverges from the stereotype.
+% A score of zero indicates a perfect match (d=0), and the score becomes increasingly negative as the outcome diverges from the stereotype.
+% \as{Why? It's not clear why these assumptions are appropriate representations of the data in RLHF. I think it is okay to rely on the past cognitive theories but may want to develop it slightly more and elated to claims in the intro/abstract, it is maybe more accurate to clarify assumptions are made based on cognitive prototype theory.}
+
+%
+By plugging the $r(x,y)$ into \Cref{eq:rlhf_close_form}, after $n$ iterations of RLHF, the policy becomes: 
+
+\begin{equation} \pi_{n}(y|x) \propto \pi_{0}(y|x) \cdot \exp\left(\frac{\sum_{i=1}^n r_{q}^i(x,y)}{\beta}\right) \cdot (1 + d(y, y_{\text{bias}}(x)))^{-n\delta/\beta} 
+\end{equation} 
+
+\begin{theorem}[Prototype Convergence]\label{theorem:prototype_convergence} Under RLHF training with a reward function that includes the implicit stereotypical bias $S(y|x)$, the model distribution progressively concentrates all probability mass onto the cognitive prototype response, leading to \emph{mode collapse
+}.\end{theorem}
+The rigorous proof of \Cref{theorem:prototype_convergence} is provided in \Cref{appendix:prototype_convergence}. This theorem formally establishes how the implicit bias in the reward function acts as a direct cause for mode collapse. Having identified the root of the problem, we now turn to its solution in the following subsection. We also showed in \Cref{appendix:preference_bias_base_model} that the pre-RLHF base model already contains bias (more than 50\% random) to the preference data, which is amplified later during RLHF.
+
+\subsection{Different Query Types Have Different Modes }\label{sec:oracle_principle} 
+
+We first formally define two query types. %We will use query, instruction, prompt interchangeably in this paper.
+
+\begin{definition}[Query Types]\label{def:query_types}
+The effect of mode collapse depends critically on how the model is queried. We distinguish between two fundamental types. An \textbf{Instance-Level Query}, denoted $x_{\text{instance}}$, asks the model to generate one single response %that is a sample from a distribution of good answers 
+(e.g., ``Write an opening for a fantasy story.''). In contrast, a \textbf{Distribution-Level Query}, denoted $x_{\text{distribution}}$, requests information about the \textit{entire distribution} of valid answers, for instance by asking %for a sequence of samples (e.g., "Generate five  openings...") or 
+for a distribution of samples paired with their likelihood (e.g., ``Generate five openings and their estimated probabilities.''). This distinction is fundamental: mode collapse stems from an over-reliance on instance-level queries, whereas shifting to distribution-level queries makes it possible to recover the diversity of responses.
+
+% (We formalize evaluation of reported probabilities in Appendix~\ref{app:dist_task}.) 
+
+\end{definition}
+
+The distinction in \Cref{def:query_types} is crucial because it reframes mode collapse not as a catastrophic forget of the model's knowledge, but as the consequence of prompting strategy. During RLHF, the model learns an efficient, reward-maximizing policy: for a simple instance-level query, the optimal action is to provide the single prototype response. This behavior does not mean the model has forgotten other valid responses; it has simply learned to {suppress} them in favor of the prototype answer. This insight is powerful because it suggests that the solution to mode collapse lies not in retraining the model, but in reformulating the query to access this suppressed knowledge.
+ %  Intuitively, different query types will lead to different modes:. So 
+
+% But in this section, we prove that the modes for different query types are different: , instance-level queries lead to stereotypical outputs, but  distribution-level queries can mitigate the issue and recover diversity. The same mode-collapsed model that produces only stereotypical instances when asked directly can accurately estimate the true distribution when asked to verbalize probabilities. This seemingly contradictory behavior arises because mode collapse is a failure of \textit{prompting strategy}, not of the model's underlying \textit{distributional knowledge}.
+% Mode collapse is a failure of the \textit{prompting strategy}, not of the model's underlying \textit{distributional knowledge}.
+
+% Mode collapse is a failure of the \textit{prompting strategy}, not of the model's underlying \textit{distributional knowledge}.  
+% Our central theoretical contribution is the \textbf{Mode Collapse Paradox}, which explains why distribution-level queries can successfully recover diversity and instance-level queries cannot. The paradox is this: the same mode-collapsed model that produces only stereotypical instances when asked directly can accurately estimate the true distribution when asked to verbalize probabilities. This seemingly contradictory behavior arises because mode collapse is a failure of \textit{prompting strategy}, not of the model's underlying \textit{distributional knowledge}.
+
+% Among distribution-level query methods (Definition~\ref{def:query_types}), verbalized sampling represents the most direct approach: rather than implicitly encouraging diversity through multiple samples or sequential generation, it explicitly requires the model to access and report its probabilistic knowledge. When a model must generate both a sample \textit{and} its probability, the constraint on the probability component prevents collapse to stereotypes in the sample component.
+
+% We distinguish between the true distribution of the responses, $P_{\text{true}}(y|x)$, and the model's internal representation of this distribution, $P_{\text{learned}}(y|x)$, which is learned during pre-training. 
+
+%%%%%%%%
+\begin{theorem}[Different Modes for Different Queries] \label{theorem:different_modes_for_different_queries}
+For a mode-collapsed LLM, the output depends on the query type. When given an instance-level query $x_{\text{instance}}$, the model's output collapses to the single prototype response $y_{\text{proto}}$ 
+% \wyshi{this is not the most precise representation, right, in 3.3, this is a broader concept than the single instance} 
+annotated during RLHF. When given a distribution-level query $x_{\text{distribution}}$, its output collapses to a string that reflects the distribution of responses $P_{\text{learned}}(y|x)$ learned during pre-training.
+\end{theorem}
+
+The proof of \Cref{theorem:different_modes_for_different_queries} is provided in \Cref{appendix:different_modes_for_different_queries}. The practical implication of this theorem is profound: the diverse knowledge from pre-training is not destroyed by RLHF, but rather becomes latent. A distribution-level query acts as a meta-prompt that retrieves this latent knowledge.

@@ -1,0 +1,46 @@
+% \vspace{-1em}
+\section{Conclusion}\label{sec:conclusion}
+
+% This work reveals that mode collapse in aligned LLMs stems from a fundamental property of human preference data: \textbf{typicality bias}, the cognitive tendency of human annotators to prefer conventional responses. We formalize this bias theoretically and validate it empirically across multiple preference datasets, confirming its pervasiveness. 
+
+
+This work reveals that mode collapse in aligned LLMs stems from a fundamental property of human preference data: \textit{typicality bias}, the cognitive tendency of human annotators to prefer conventional responses. We formalize this bias theoretically and validate it empirically across multiple preference datasets, confirming its pervasiveness. Grounded in our theoretical understanding, we propose Verbalized Sampling (VS), a simple but principled prompting method that mitigates mode collapse. VS instructs the model to generate a probability distribution over candidate responses, thereby restoring the diverse distribution learned during pretraining. 
+Extensive experiments show that VS significantly enhances performance across tasks (creative writing, dialogue simulation, synthetic data generation, open-ended QA) without compromising safety or factual accuracy. We also identified an emergent trend where stronger models benefit more from VS, suggesting that our method effectively unlocks LLMs' inherent creative potential. 
+This work provides both a novel data-level lens to understand the limitations of various alignment methods and a practical, lightweight solution to overcome mode collapse, paving the way for more creative applications with LLMs.
+
+% \derek{This section is almost completely identical to the abstract and the 3 contributions in the introduction? Some raw materials:}
+
+% This work reveals that mode collapse in aligned LLMs stems from a fundamental property of human preference data: \textbf{typicality bias}, the cognitive tendency of human annotators to prefer conventional responses. We formalize this bias theoretically and validate it empirically across multiple preference datasets, confirming its pervasiveness. 
+
+
+
+% This work reveals that mode collapse in aligned LLMs stems from a fundamental property of human preference data: typicality bias. Our investigation shows that alignment methods like RLHF do not create this bias but rather **dramatically amplify** one already present in pre-trained models. This reframes mode collapse as a problem of bias amplification, necessitating solutions that can directly access the less-biased, pre-aligned distribution. Verbalized Sampling offers such a solution through a key insight: distribution-level prompts recover the generative diversity that instance-level prompts suppress. Crucially, VS proves robust throughout the entire post-training pipeline—while standard prompting suffers catastrophic diversity collapse as models progress from SFT to DPO, VS consistently preserves access to the base model's rich generative capabilities.
+
+% Our extensive experiments establish VS as both a practical diversity recovery method and a novel model auditing tool. When combined with existing decoding strategies like temperature or top-p sampling, VS creates a superior quality-diversity Pareto front, offering practitioners a more effective toolkit for this fundamental trade-off. Beyond improving diversity, VS provides an inference-time window into a model's underlying pre-training distribution, enabling unprecedented transparency in black-box systems. The emergent scaling trend we observe—where more capable models benefit disproportionately from VS—suggests that alignment locks away creative potential that scales with model capability but remains accessible through appropriate prompting.
+
+% These findings raise important questions for future work. Can preference data collection be redesigned to mitigate typicality bias at its source? How might "distributional prompt engineering" be automated to discover optimal phrasings for different models? As LLMs increasingly serve as creative partners and simulation engines, methods that unlock their full generative range become critical. This work demonstrates that the tension between alignment and diversity may be navigable not through complex training procedures, but through thoughtful prompt engineering that respects both safety and creative expression.
+
+% \derek{(End of raw materials)}
+
+
+% We provide a theoretical proof that RLHF inherently causes mode collapse by amplifying cognitive biases present in human preference data, concentrating probability mass on a narrow subset of prototypical responses. 
+% Building on this insight, we proposed \textbf{\ours (VS)}, a principled, inference-time prompting method that reframes instance-level queries as distribution-level ones, eliciting multiple candidate responses along with their verbalized probabilities.
+% Empirically, VS increases diversity in creative writing, improves behavioral fidelity in dialogue simulation, and reduces stereotypical outputs in open-ended QA, while maintaining factual accuracy on commonsense reasoning benchmarks.
+% We observe a positive correlation between model scale and the effectiveness of VS, indicating that its benefits amplify with increasing model capacity.
+% Overall, this work offers both a theoretical foundation for understanding mode collapse and a practical, lightweight method for mitigating its effects, helping unlock the broader generative potential of aligned LLMs.
+
+\newpage
+\section*{Reproducibility Statement}
+To ensure reproducibility, we provide comprehensive documentation of all experimental details.
+Detailed experimental settings, including inference parameters such as temperature and top-p, are provided in~\Cref{appendix:experiment_settings}, and the full prompts for all tasks are listed in~\Cref{appendix:experiment_prompt}. For experiments involving training or open-source model inference, we use an 8×H100 GPU cluster, and queries to proprietary LLMs were conducted through the official API or OpenRouter. 
+Descriptions of datasets and preprocessing steps are provided in the main text and appendix for each task with clear references. 
+The core proofs are included in the main text, with supplementary or extended proofs placed in~\Cref{appendix:additional_proof}.
+We also provide the experiment code as supplementary materials. 
+
+\section*{Ethics Statement}
+% \paragraph{Human Study.}
+This work includes a human study conducted to evaluate diversity in creative writing tasks. The study was reviewed and approved by the Institutional Review Board (IRB) at the researchers' institution. All participants provided informed consent prior to participation, and no personally identifiable information (PII) was collected, stored, or shared. Data were handled in accordance with institutional and ethical standards to ensure participant privacy and confidentiality.
+
+% \paragraph{xxx}\jiayicomment{adding more ethical consideration}
+
+

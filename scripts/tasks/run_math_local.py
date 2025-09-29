@@ -96,12 +96,12 @@ if __name__ == "__main__":
             'num_samples': 3,
         },
         {
-            'method': Method.STRUCTURE_WITH_PROB,
+            'method': Method.VS_STANDARD,
             'strict_json': True,
             'num_samples': 3,
         },
         {
-            'method': Method.CHAIN_OF_THOUGHT,
+            'method': Method.VS_COT,
             'strict_json': True,
             'num_samples': 3,
         },

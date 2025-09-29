@@ -34,7 +34,7 @@ def create_sampling_candidates_ablation_experiments(
     # Grid search parameters
     num_samples_values = [3, 5, 10, 15, 20]
     models = ["gpt-4.1", "gemini-2.5-flash"]
-    methods = [Method.DIRECT, Method.SEQUENCE, Method.STRUCTURE_WITH_PROB]
+    methods = [Method.DIRECT, Method.SEQUENCE, Method.VS_STANDARD]
 
     for model in models:
         for method in methods:
@@ -135,7 +135,7 @@ if __name__ == "__main__":
 
             experiments = []
             models = ["gpt-4.1", "gemini-2.5-flash"]
-            methods = [Method.DIRECT, Method.SEQUENCE, Method.STRUCTURE_WITH_PROB]
+            methods = [Method.DIRECT, Method.SEQUENCE, Method.VS_STANDARD]
 
             for model in models:
                 for method in methods:

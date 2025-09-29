@@ -1,0 +1,42 @@
+\appendix
+
+% Table of contents for Appendix
+\clearpage
+% Start collecting ToC entries from here onward (appendix only)
+\startcontents[apx]
+% Optional: styling
+\hypersetup{linkcolor=black}
+\begin{center}
+  {\Large\bfseries Appendix Contents}
+  \vspace{0.5cm}
+\end{center}
+% Depth: 1=sections, 2=subsections, etc.
+\setcounter{tocdepth}{2}
+\printcontents[apx]{}{1}{}  % prints only items collected since \startcontents
+\hypersetup{linkcolor=red}
+
+\newpage
+\input{appendix/limitation_and_future}
+
+% \newpage
+% \input{appendix/Anthony_proof}
+
+\newpage
+\input{appendix/vs_proofs}
+
+% \newpage
+% \input{appendix/appendix_proof}
+
+\newpage
+\input{appendix/all_exp_results}
+
+\newpage
+\input{appendix/ablation_study}
+
+\clearpage
+\input{appendix/experimental_detials}
+
+\newpage
+\input{appendix/qualitative_examples}
+
+

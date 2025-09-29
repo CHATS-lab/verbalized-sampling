@@ -1,0 +1,268 @@
+\section{Complete Proofs}\label{app:proof}
+
+\subsection{Preliminary: RLHF} \label{sec:formal_framework}
+
+To analyze mode collapse, we first formalize the RLHF process and define two query types. Let $\mathcal{X}$ be the space of instructions and $\mathcal{Y}$ be the space of responses. Let $D$ be the distribution over $\mathcal{X}$. The model's generative behavior is governed by its policy, $\pi_{\text{LLM}}(y|x)$, which is the probability of generating a sequence of tokens $y$ given an instruction $x$.
+
+\begin{definition}[RLHF]
+The standard RLHF optimization objective is:
+\begin{equation}
+\pi_{\text{new}} = \arg\max_{\pi} \mathbb{E}_{x \sim D}\left[\mathbb{E}_{y \sim \pi(y|x)}[r(x,y)] - \beta \cdot \text{KL}(\pi(\cdot|x) \| \pi_{\text{old}}(\cdot|x))\right]
+\label{eq:rlhf_objective}
+\end{equation}
+\end{definition}
+
+where $r(x,y)$ is a scalar score from a reward model serving as a proxy for human preferences, and $\beta$ is the coefficient controlling the KL divergence penalty.
+
+%
+This has the following closed-form solution~\citep{rafailov2024directpreferenceoptimizationlanguage}, where $Z(x)$ is a normalization constant ensuring $\sum_{y}\pi_{\text{new}}(y|x)=1$:
+\begin{equation}\label{eq:rlhf_close_form}
+\pi_{\text{new}}(y|x) = \frac{1}{Z(x)}\pi_{\text{old}}(y|x) \exp\left(\frac{r(x,y)}{\beta}\right)
+\end{equation}
+(See Appendix~\ref{app:kl} for a short derivation and assumptions on support/normalization.)
+
+\subsection{\Cref{theorem:prototype_convergence}: Prototype Convergence} \label{appendix:prototype_convergence}
+\begin{proof} 
+We analyze the ratio of probabilities for any response $y$ and the prototype response $y_{\text{bias}}(x)$ after $n$ iterations. This removes the normalization constant. 
+\begin{equation} \frac{\pi_n(y|x)}{\pi_n(\ystereo(x)|x)} = \frac{\pi_0(y|x)}{\pi_0(\ystereo(x)|x)} \cdot \exp\left(\frac{\Delta r_{q}}{\beta}\right) \cdot \left(\frac{1 + d(y, y_{\text{bias}}(x))}{1 + d(\ystereo(x), \ystereo(x))}\right)^{-n\delta/\beta} \end{equation}
+where $\Delta r_q = \sum_{i=1}^{n} \left( r_q^i(x, y) - r_q^i(x, \ystereo(x)) \right)$ % [EDIT] keep symbol for contrast but we recommend $\ystereo$; either is fine
+is the cumulative reward difference. By the properties of a distance metric, $d(\ystereo, \ystereo) = 0$. For any $y \neq \ystereo$, we have $d(y, \ystereo) > 0$. % [EDIT] these two lines can be switched to $\ystereo$ if you prefer; keeping wording.
+The expression simplifies to: 
+\begin{equation}
+\frac{\pi_n(y|x)}{\pi_n(\ystereo(x)|x)} = \frac{\pi_0(y|x)}{\pi_0(\ystereo(x)|x)} \cdot \exp\left(\frac{\Delta r_{q}}{\beta}\right) \cdot \left(1 + d(y, \ystereo(x))\right)^{-n\delta/\beta}
+\end{equation} 
+% The critical term is the final power-law component. 
+Since $1 + d(y, \ystereo(x)) > 1$ and both $\delta$ and $\beta$ are positive, the last power-law term approaches zero as the number of iterations $n$ increases: 
+\begin{equation}
+\lim_{n \to \infty} \left(1 + d(y, \ystereo(x))\right)^{-n\delta/\beta} = 0
+\end{equation} 
+Thus, the probability ratio of any non-prototype % [EDIT] -> non-stereotype (word only)
+response to the prototype % [EDIT] -> stereotype (word only)
+response converges to zero. As probabilities must sum to one, this proves that RLHF systematically drives the probability mass of all non-stereotype responses to zero, forcing the model's output distribution to collapse onto the single most stereotypical response and lead to \emph{mode collapse}.
+
+\end{proof}
+
+\subsection{KL-Constrained Solution and Assumptions}\label{app:kl}
+
+\subsubsection{Derivation of \texorpdfstring{\eqref{eq:rlhf_close_form}}{the closed form}}
+Fix $x\in\mathcal X$ and write $\pi(\cdot):=\pi(\cdot\mid x)$, $\pi_{\text{old}}(\cdot):=\pi_{\text{old}}(\cdot\mid x)$, $r(y):=r(x,y)$. The per-$x$ objective is
+\[
+\max_{\pi\in\Delta(\mathcal Y)} \ \sum_{y}\pi(y)\,r(y) \ - \ \beta \sum_{y}\pi(y)\log\frac{\pi(y)}{\pi_{\text{old}}(y)} .
+\]
+Form the Lagrangian with multiplier $\lambda$ for $\sum_y \pi(y)=1$:
+\[
+\mathcal L(\pi,\lambda)=\sum_{y}\pi(y)\,r(y) - \beta \sum_{y}\pi(y)\log\frac{\pi(y)}{\pi_{\text{old}}(y)} + \lambda\Big(\sum_{y}\pi(y)-1\Big).
+\]
+First-order conditions (for $\pi(y)>0$) give
+\[
+0=\frac{\partial\mathcal L}{\partial \pi(y)} = r(y) - \beta\Big(\log\frac{\pi(y)}{\pi_{\text{old}}(y)}+1\Big) + \lambda
+\quad\Longrightarrow\quad
+\pi(y) \propto \pi_{\text{old}}(y)\exp\!\Big(\frac{r(y)}{\beta}\Big).
+\]
+Normalizing yields
+\[
+\pi_{\text{new}}(y\mid x) \ = \ \frac{1}{Z(x)}\,\pi_{\text{old}}(y\mid x)\exp\!\Big(\tfrac{r(x,y)}{\beta}\Big),
+\]
+with $Z(x)=\sum_{y}\pi_{\text{old}}(y\mid x)\exp(r(x,y)/\beta)$ ensuring $\sum_y \pi_{\text{new}}(y\mid x)=1$.
+
+\subsection{\Cref{theorem:different_modes_for_different_queries}: Different Modes for Different Queries} \label{appendix:different_modes_for_different_queries}
+\begin{proof} 
+We decompose the proof into three steps: \\
+
+\textbf{Step 1: Instance queries collapse to prototype responses.}
+As proven in \Cref{theorem:prototype_convergence},
+% (which specifically analyzes instance-level queries \wyshi{if 3.3 is on instance specifically, then why did we use x instead of $x_\text{instance}$, I actually don't know if 3.3 is specifically for instance? ),
+RLHF amplifies the cognitive prototype $y_{\text{proto}}$ during the RLHF annotation. Under mode collapse, the model defaults to these prototypes:
+\begin{equation}
+\lim_{\text{mode collapse}} \pi_{\text{LLM}}(y|x_{\text{instance}}) \rightarrow y_{\text{proto}}
+\end{equation}
+% \as{This is a non-traditional notation, consider formalizing or defining.}
+
+\textbf{Step 2: Distribution queries preserve knowledge.} 
+For distribution-level queries,
+the model must generate distributional information. During pre-training, it learns about the distribution of responses from abundant data sources. This is based on the assumption that such pretraining knowledge is preserved during RLHF.
+%\wyshi{i like the expression, but we cannot claim in pretraining that correct outnumber incorrect ones without a proof, and you don't need that in the proof, you don't need the pretraining data to be accurate, VS's job is to recover whatever capability the base model has, but we cannot do anything more than the base model.}
+As~\citet{sorensen2024roadmappluralisticalignment,xiao2024algorithmicbiasaligninglarge} state, human annotators in RLHF pipelines focus on instance-level annotation, leaving pre-trained distributional knowledge largely intact.
+% \wyshi{how did we prove knowledge preservation in the appendix? if it's not related to how annotation in RLHF focuses on instance-level, then we can delete this sentence}. \simoncomment{Need additional proof in the appendix} 
+Even when the fine-tuned policy $\pi_{LLM}$ is mode-collapsed, our distribution-level queries can still unlock the rich, diverse knowledge of the pre-trained distribution, $P_{learned}$. We argue that $P_{learned}$ is a strong proxy for the true distribution of answers, $P_{true}(y|x)$, as it was formed by learning from a vast, real-world corpus. Our core claim is that our method prompts the fine-tuned model to approximate this richer, underlying distribution:
+\begin{equation}
+\lim_{\text{mode collapse} \to 1}  \pi_{\text{LLM}}(y|x_{\text{distribution}}) \rightarrow P_{\text{learned}}(y|x) \sim P_{\text{true}}(y|x)
+\end{equation}
+% \as{I think this part, especially the notion of proxy needs a formal proof. Now, it reads more intuitively (this is also fine, but can be improved and taken out of a thm)}
+
+\textbf{Step 3: Different queries have different modes.}
+Thus, the same mode-collapsing mechanism produces different outputs for different query types: for instance queries, the mode is the cognitive \textit{prototype} amplified after RLHF; for distribution-level queries, the mode is a \textit{distribution} learned from pre-training and preserved during RLHF. %Thus, the same mode-collapsing mechanism leads to different output for different query types.
+
+% To bypass  %that fails for instance-level queries generation succeeds for distribution-level queries. 
+% Verbalized sampling exploits this paradox by reformulating generation as a distribution-level task, bypassing stereotypical collapse while accessing the model's accurate statistical knowledge.
+
+\end{proof}
+
+
+% \subsection{Pre-trained Knowledge Preservation}\label{appendix:pretrain_preservation}
+% \subsubsection{Regularity Assumptions}\label{app:assumptions}
+% We collect mild conditions used across proofs.
+% \begin{assumption}[Bounded quality reward]
+% There exists $R<\infty$ such that $\lvert r_q(x,y)\rvert\le R$ for all $(x,y)$.
+% \end{assumption}
+% \begin{assumption}[Stereotype affinity margin]
+% For each $x$, $S(y\mid x)$ is monotone in similarity to $\ystereo(x)$ with
+% \[
+% \Delta_S(x,y)\ :=\ S(\ystereo(x)\mid x)-S(y\mid x)\ \ge\ c_S(x)>0\quad \text{for all }y\neq \ystereo(x).
+% \]
+% For $S(y\mid x)=-\log(1+d(y,\ystereo(x)))$, this holds with $c_S(x)=\log(1+d(y,\ystereo(x)))$.
+% \end{assumption}
+% \begin{assumption}[Support and positive mass]
+% For all $x$, $\pi_0(\ystereo(x)\mid x)>0$ and $\operatorname{supp}(\pi_0(\cdot\mid x))\subseteq \operatorname{supp}(\pi_n(\cdot\mid x))$ for all $n$ (no support loss).
+% \end{assumption}
+% \begin{assumption}[Temperature and decoding]
+% When we discuss sampling temperature $T>0$, decoding uses logits divided by $T$; argmax decoding is temperature-invariant.
+% \end{assumption}
+
+% \subsection{Stereotype Convergence: Full Proofs and Rates}\label{app:stereo_convergence}
+
+% \subsubsection{Multi-round composition lemma}
+% Let $r^i$ denote the reward at RLHF update $i$ and $\pi_i$ the resulting policy. Iterating the per-$x$ closed form yields
+% \begin{equation}\label{eq:product_form}
+% \pi_n(y\mid x) \ \propto \ \pi_0(y\mid x)\,\exp\!\Big(\tfrac{1}{\beta}\sum_{i=1}^{n} r^i(x,y)\Big).
+% \end{equation}
+% \begin{proof}
+% Induct on $n$ using $\pi_{i}(y)\propto \pi_{i-1}(y)\exp(r^i/\beta)$ and telescope the product.
+% \end{proof}
+
+% \subsubsection{Formal statement and proof of Stereotype Convergence}
+% Let $\Delta r_q^i(x;y):=r_q^i(x,y)-r_q^i(x,\ystereo(x))$ and $\Delta r_q^{1:n}(x;y):=\sum_{i=1}^{n}\Delta r_q^i(x;y)$. From \eqref{eq:product_form} and the decomposition $r=r_q+\delta S$,
+% \[
+% \frac{\pi_n(y\mid x)}{\pi_n(\ystereo(x)\mid x)}
+% =\frac{\pi_0(y\mid x)}{\pi_0(\ystereo(x)\mid x)}\cdot
+% \exp\!\Big(\tfrac{1}{\beta}\Delta r_q^{1:n}(x;y)\Big)\cdot
+% \exp\!\Big(\tfrac{\delta}{\beta}\,n\,[S(y\mid x)-S(\ystereo(x)\mid x)]\Big)
+% \]
+% By the margin assumption, $S(y\mid x)-S(\ystereo(x)\mid x)\le -c_S(x)$ for $y\neq \ystereo(x)$. Hence
+% \begin{equation}\label{eq:key_ratio_bound}
+% \frac{\pi_n(y\mid x)}{\pi_n(\ystereo(x)\mid x)}
+% \ \le\
+% \frac{\pi_0(y\mid x)}{\pi_0(\ystereo(x)\mid x)}\cdot
+% \exp\!\Big(\tfrac{1}{\beta}\Delta r_q^{1:n}(x;y) - \tfrac{\delta}{\beta}n\,c_S(x)\Big).
+% \end{equation}
+
+% \begin{theorem}[Stereotype Convergence: sufficient condition]
+% Suppose for each fixed $(x,y\neq\ystereo(x))$ there exists $\kappa(x;y)\ge 0$ such that $\Delta r_q^{1:n}(x;y)\le \kappa(x;y)\,n$ for all $n$. If
+% \[
+% \frac{\delta}{\beta}c_S(x) \ >\ \frac{\kappa(x;y)}{\beta}\qquad \text{for all } y\neq \ystereo(x),
+% \]
+% then $\pi_n(\cdot\mid x)$ collapses onto $\ystereo(x)$ exponentially fast:
+% \[
+% \frac{\pi_n(y\mid x)}{\pi_n(\ystereo(x)\mid x)} \ \le\ C(x;y)\,\exp\!\Big(-n\Big[\tfrac{\delta}{\beta}c_S(x) - \tfrac{\kappa(x;y)}{\beta}\Big]\Big)\ \xrightarrow[n\to\infty]{}\ 0,
+% \]
+% with $C(x;y)=\pi_0(y\mid x)/\pi_0(\ystereo(x)\mid x)$.
+% \end{theorem}
+
+% \paragraph{Remarks.}
+% (i) If $\Delta r_q^i$ are mean-zero and sub-Gaussian with parameter $\sigma^2$, Azuma–Hoeffding implies $\Delta r_q^{1:n}\le O(\sigma\sqrt{n\log(1/\delta')})$ w.h.p., which still yields exponential decay for any fixed margin $c_S(x)>0$.  
+% (ii) For $S(y\mid x)=-\log(1+d(y,\ystereo(x)))$, $c_S(x)=\log(1+d(y,\ystereo(x)))$; this recovers the main-text ratio argument.  
+
+% \subsubsection{Finite-\texorpdfstring{$\beta$}{beta} concentration via Laplace}
+% In continuous neighborhoods or on large discrete supports, consider $\phi(y):=\tfrac{1}{\beta}\bar r_q(x,y)+\tfrac{\delta}{\beta}S(y\mid x)$ where $\bar r_q$ is the average of $r_q^i$. Around $y=\ystereo(x)$, assume $\phi$ is twice differentiable and has a unique maximizer at $\ystereo(x)$ with negative-definite Hessian $H$. Then
+% \[
+% \pi_n(y\mid x)\ \propto\ \pi_0(y\mid x)\exp\!\big(n\,\phi(y)\big)\ \approx\ \text{const}\cdot \exp\!\Big(n\,\phi(\ystereo)+\tfrac{n}{2}(y-\ystereo)^\top H (y-\ystereo)\Big),
+% \]
+% so the distribution concentrates at rate $\operatorname{Cov}\big[\pi_n(\cdot\mid x)\big]\approx (-nH)^{-1}$. The curvature increases linearly in $n$ and in $\delta/\beta$ through $S$.
+
+% \subsection{Distribution-level Tasks and Evaluation}\label{app:dist_task}
+
+% We formalize distribution-level outputs as strings that a verifier parses into a finite list $\{(y_i,\hat p_i)\}_{i=1}^{c}$ and an optional residual mass $\hat p_{\mathrm{rest}}:=1-\sum_{i=1}^{c}\hat p_i\ge 0$ associated with an \textsc{Other} category (the verifier can distribute this residual over unlisted outcomes via a fixed baseline $q_0(\cdot)$). The evaluation functional is the log score
+% \[
+% \mathcal S(\hat p;P)\ :=\ \mathbb E_{Y\sim P}\big[\log \hat p(Y)\big],
+% \]
+% where $\hat p(y_i)=\hat p_i$ for listed $y_i$ and $\hat p(y)=\hat p_{\mathrm{rest}}\,q_0(y)$ for unlisted $y$.
+
+% \subsection{Oracle Invariance and Proper Scoring}\label{app:oracle}
+
+% We separate (i) the model’s internal estimate $P_{\text{learned}}(\cdot\mid x)$ and (ii) its sampling policy $\pi_{\text{LLM}}(\cdot\mid x)$ after RLHF.
+
+% \begin{assumption}[Oracle invariance]
+% RLHF primarily modifies $\pi_{\text{LLM}}(\cdot\mid x)$ for \emph{sampling} without destroying $P_{\text{learned}}(\cdot\mid x)$ used for \emph{reporting} probabilities (or degrades it much less).
+% \end{assumption}
+
+% \begin{lemma}[Strictly proper scoring $\Rightarrow$ truthful reporting]
+% For the log score $\mathcal S$, the unique maximizer of $\mathbb E_{Y\sim P_{\text{learned}}}[\log \hat p(Y)]$ over all reported distributions $\hat p$ is $\hat p=P_{\text{learned}}$ (restricted to the representable family; if a residual is allowed, the optimum sets $\hat p_i=P_{\text{learned}}(y_i)$ and places the residual on the tail).
+% \end{lemma}
+% \begin{proof}
+% $\mathbb E_{Y\sim P_{\text{learned}}}[\log \hat p(Y)]= -\mathrm{KL}\big(P_{\text{learned}}\|\hat p\big) - H(P_{\text{learned}})$, maximized uniquely at $\hat p=P_{\text{learned}}$ when feasible.
+% \end{proof}
+
+% \paragraph{Temperature robustness.}
+% For decoding by $\arg\max_y \log \pi(y\mid x)/T$, the maximizer is independent of $T>0$. Hence any argmax-style verification of a reported distribution is temperature-invariant; temperature only affects \emph{sampling} dispersion, not the \emph{argmax content} of a distribution string.
+
+% \subsection{I-Projection for Finite Lists and Truncation Error}\label{app:iprojection}
+
+% Let $P:=P_{\text{learned}}(\cdot\mid x)$ on finite $\mathcal Y$, ordered so $P(y_1)\ge \cdots \ge P(y_{|\mathcal Y|})$. For a budget $c$, consider strings listing $S=\{y_1,\dots,y_c\}$ with probabilities $\{\hat p_i\}_{i=1}^{c}$ and a residual $\hat p_{\mathrm{rest}}$. The log-score objective is
+% \[
+% \mathcal S(\hat p;P)= \sum_{i=1}^{c} P(y_i)\log \hat p_i + \sum_{y\notin S} P(y)\log\big(\hat p_{\mathrm{rest}}\,q_0(y)\big).
+% \]
+
+% \begin{proposition}[Best finite-list report]\label{prop:best_c}
+% For any fixed $S$ and baseline $q_0$, $\mathcal S$ is maximized by $\hat p_i=P(y_i)$ for $i\le c$ and $\hat p_{\mathrm{rest}}=1-\sum_{i=1}^{c}P(y_i)$. Among all $S$ with $|S|=c$, the maximizer is the \emph{top-$c$ mass} set $S^\star=\{y_1,\dots,y_c\}$. 
+% \end{proposition}
+% \begin{proof}
+% Given $S$, the objective is concave in $(\hat p_1,\dots,\hat p_c,\hat p_{\mathrm{rest}})$ under the simplex constraint; Lagrange multipliers yield $\hat p_i=P(y_i)$ and $\hat p_{\mathrm{rest}}=1-\sum_{i\le c}P(y_i)$. Comparing sets $S$ shows the only $S$-dependent term is $\sum_{y\in S}P(y)\log P(y)$, which is maximized by collecting the largest masses.
+% \end{proof}
+
+% Write $\alpha_c:=1-\sum_{i=1}^{c}P(y_i)$ for the tail mass. Let $\mathcal S_{\text{full}}=\sum_{y}P(y)\log P(y)=-H(P)$ be the score if the full distribution is exactly reportable.
+
+% \begin{corollary}[Truncation gap]
+% With the optimal $S^\star$ and probabilities from Proposition~\ref{prop:best_c},
+% \[
+% \mathcal S_{\text{full}}-\mathcal S(\hat p;P) \ \le\ \alpha_c \log\!\frac{1}{\alpha_c},
+% \]
+% where the bound is achieved when the residual is concentrated on a single tail outcome and is otherwise an upper bound independent of $q_0$.
+% \end{corollary}
+% \begin{proof}
+% $\mathcal S_{\text{full}}-\mathcal S=\sum_{y\notin S^\star} P(y)\log\frac{P(y)}{\hat p_{\mathrm{rest}}\,q_0(y)} - \sum_{y\notin S^\star} P(y)\log P(y) + \sum_{y\notin S^\star} P(y)\log P(y)$ reduces to $-\sum_{y\notin S^\star} P(y)\log(\hat p_{\mathrm{rest}}\,q_0(y)) + \alpha_c\log \alpha_c$. By Jensen, $\sum_{y\notin S^\star} \frac{P(y)}{\alpha_c}\log q_0(y)\le \log\!\big(\sum_{y\notin S^\star}\frac{P(y)}{\alpha_c}q_0(y)\big)=\log 1=0$, so the worst case occurs when $q_0$ puts all mass on the heaviest tail point; the stated bound follows.
+% \end{proof}
+
+% \paragraph{Takeaway.}
+% Increasing $c$ reduces $\alpha_c$; the score gap vanishes at the sharp rate $O\big(\alpha_c\log(1/\alpha_c)\big)$ as the covered mass approaches one.
+
+% \subsection{Predictions and Diagnostics}\label{app:predictions}
+
+% \subsubsection{P1: Temperature robustness of VS}
+% \textbf{Claim.} The \emph{content} of VS outputs (the encoded distribution $\hat p$) is invariant to sampling temperature $T>0$; temperature only affects surface-form variability.
+
+% \begin{proposition}[VS is temperature-invariant in content]\label{prop:vs_temp_invariant}
+% Assume decoding selects a highest-probability string under temperature-scaled logits (greedy/beam over $\log \pi(\cdot\mid x)/T$) and the verifier scores reported distributions by a strictly proper rule (log score). Then for any $T>0$, all VS-optimal outputs encode the same distribution $\hat p^\star=P_{\text{learned}}(\cdot\mid x)$.
+% \end{proposition}
+% \begin{proof}
+% (i) \emph{Argmax invariance:} for any scores $\{s_y\}$ and $T>0$, $\arg\max_y s_y/T=\arg\max_y s_y$, hence deterministic decoding is $T$-invariant.  
+% (ii) \emph{Proper scoring:} by App.~\ref{app:oracle}, $\hat p^\star=\arg\max_{\hat p}\mathbb{E}_{Y\sim P_{\text{learned}}}[\log \hat p(Y)]=P_{\text{learned}}$, which contains no $T$. Thus the reported distribution is independent of $T$; only the sampled surface form may vary.
+% \end{proof}
+
+% \subsubsection{P2: Diversity vs.\ candidate $c$}
+% \textbf{Claim.} Increasing the VS candidate $c$ monotonically increases covered mass and non-decreases calibration; the log-score gap to the full distribution is bounded by $\,\alpha_c\log\!\frac{1}{\alpha_c}$ with $\alpha_c:=1-\sum_{i=1}^{c}P_{\text{learned}}(y_i)$ for the top-$c$ outcomes $\{y_i\}$.
+
+% \begin{proposition}[Monotone improvement and truncation rate]\label{prop:mono_c}
+% Let $\mathcal S_c$ be the optimal VS log score with list size $c$ and $\mathcal S_{\text{full}}$ the log score of the full (exactly reportable) distribution. Then (i) $1-\alpha_c$ is non-decreasing in $c$ and $\mathcal S_{c+1}\ge \mathcal S_c$; (ii) 
+% \[
+% \mathcal S_{\text{full}}-\mathcal S_c \ \le\ \alpha_c\log\!\frac{1}{\alpha_c}, 
+% \qquad \text{with}\quad \alpha_{c+1}\le \alpha_c.
+% \]
+% \end{proposition}
+% \begin{proof}
+% By App.~\ref{app:iprojection}, the optimal report with budget $c$ lists the top-$c$ outcomes with $\hat p_i=P_{\text{learned}}(y_i)$ and places residual on the tail. Adding one slot cannot reduce covered mass nor the optimal log score, yielding monotonicity. The stated gap bound is the corollary in App.~\ref{app:iprojection}.
+% \end{proof}
+
+% \subsubsection{P3: Bias sensitivity (Instance-level Query $>$ \ours)}
+% \textbf{Claim.} Holding $(\beta,n)$ fixed, increasing the stereotypical weight $\delta$ shifts \emph{instance-level} outputs toward $\ystereo(x)$ exponentially fast, whereas VS reports remain first-order anchored to $P_{\text{learned}}$.
+
+% \begin{proposition}[First-order sensitivity to stereotypical bias]\label{prop:bias_sensitivity}
+% Under App.~\ref{app:assumptions} and App.~\ref{app:stereo_convergence}, for any $y\neq \ystereo(x)$,
+% \[
+% \log\frac{\pi_n(y\mid x)}{\pi_n(\ystereo(x)\mid x)}
+% = \log\frac{\pi_0(y\mid x)}{\pi_0(\ystereo(x)\mid x)} + \frac{1}{\beta}\Delta r_q^{1:n}(x;y) - \frac{n\delta}{\beta}\,c_S(x),
+% \]
+% whence $\partial_\delta \log\!\big[\pi_n(y)/\pi_n(\ystereo)\big]=-(n/\beta)c_S(x)<0$. In contrast, under oracle invariance (App.~\ref{app:oracle}) and proper scoring, the VS optimum satisfies $\hat p^\star=P_{\text{learned}}$ and thus $\partial_\delta \hat p^\star(y)=0$ at $\delta=0$ (envelope theorem).
+% \end{proposition}
+% \begin{proof}
+% The identity follows from the product form and the decomposition $r=r_q+\delta S$ (App.~\ref{app:stereo_convergence}); differentiating in $\delta$ yields the stated slope. For VS, the objective $\mathbb{E}_{Y\sim P_{\text{learned}}}[\log \hat p(Y)]$ is $\delta$-independent, so its maximizer is locally flat in $\delta$.
+% \end{proof}

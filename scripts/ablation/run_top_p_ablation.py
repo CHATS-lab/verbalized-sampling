@@ -34,7 +34,7 @@ def create_top_p_ablation_experiments(
     # Grid search parameters
     top_p_values = [0.7, 0.8, 0.9, 0.95, 1.0]
     models = ["gpt-4.1", "gemini-2.5-flash"]
-    methods = [Method.DIRECT, Method.SEQUENCE, Method.STRUCTURE_WITH_PROB]
+    methods = [Method.DIRECT, Method.SEQUENCE, Method.VS_STANDARD]
 
     for model in models:
         for method in methods:

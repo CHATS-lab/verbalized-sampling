@@ -4,7 +4,7 @@ import numpy as np
 import os
 from pathlib import Path
 
-def extract_prob_tuning_data(base_dir, model_name, method_type='combined'):
+def extract_prob_tuning_data(base_dir, model_name, method_type='vs_multi'):
     """Extract probability tuning data for a specific model and method"""
     prob_values = []
     diversity_scores = []
@@ -75,12 +75,12 @@ def plot_prob_tuning_results():
     for i, (model_display_name, model_dir_name) in enumerate(models.items()):
         ax = ax1 if i == 0 else ax2
         
-        # Extract data for both combined and structure_with_prob methods
+        # Extract data for both VS-Multi (vs_multi) and structure_with_prob methods
         combined_prob_vals, combined_diversity = extract_prob_tuning_data(
-            base_dir, model_dir_name, 'combined'
+            base_dir, model_dir_name, 'vs_multi'
         )
         structure_prob_vals, structure_diversity = extract_prob_tuning_data(
-            base_dir, model_dir_name, 'structure_with_prob'
+            base_dir, model_dir_name, 'vs_standard'
         )
         
         # Plot the probability tuning curves

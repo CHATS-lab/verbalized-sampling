@@ -18,7 +18,9 @@
       "Bash(pip install:*)",
       "Bash(./run_math_experiments.sh:*)",
       "Bash(git add:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nReorganize repository structure for OSS release\n\nMajor restructuring to professional OSS standards:\n\n**New Directory Structure:**\n- scripts/: Organized by purpose (analysis/, data_processing/, experiments/)\n- generated_data/: All experiment results moved here\n- plots/: All generated plots and figures\n- examples/: Usage examples and demos\n- docs/: Ready for documentation\n\n**File Movements:**\n- 8 Python scripts → scripts/ subdirectories\n- 9 experiment directories → generated_data/\n- PNG files + latex_figures → plots/\n- processing/ → scripts/data_processing/\n- demo_safety_usage.py → examples/\n\n**Infrastructure:**\n- Updated .gitignore for new structure\n- Removed temporary files (temp_combine_script.py, test.py, __init__.py)\n- Updated OSSPLAN.md with completed tasks\n\nRepository is now clean and follows Python packaging best practices.\nEOF\n)\")",
+      "Bash(python3:*)"
     ],
     "deny": [],
     "ask": []

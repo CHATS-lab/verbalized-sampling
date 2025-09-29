@@ -62,9 +62,9 @@ def main():
         "direct_cot": "direct_cot",
         "sequence": "sequence",
         "multi_turn": "multi_turn",
-        "structure_with_prob": "vs_standard",
-        "chain_of_thought": "vs_cot",
-        "combined": "vs_multi",
+        "vs_standard": "vs_standard",
+        "vs_cot": "vs_cot",
+        "vs_multi": "vs_multi",
     }
 
     from tabulate import tabulate

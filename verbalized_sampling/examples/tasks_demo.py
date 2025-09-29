@@ -59,7 +59,7 @@ def demo_poem_task():
     
     # Demo with structure with probability method
     try:
-        prompt = poem_task.get_prompt(Method.STRUCTURE_WITH_PROB, num_samples=4, prompt_index=2)
+        prompt = poem_task.get_prompt(Method.VS_STANDARD, num_samples=4, prompt_index=2)
         print(f"STRUCTURE_WITH_PROB method prompt:")
         print(f"{prompt[:200]}...")
         print()
@@ -226,7 +226,7 @@ def main():
     print("   prompt = task.get_prompt(Method.DIRECT, prompt_index=0)")
     print()
     print("2. With structured output:")
-    print("   prompt = task.get_prompt(Method.STRUCTURE_WITH_PROB, num_samples=3)")
+    print("   prompt = task.get_prompt(Method.VS_STANDARD, num_samples=3)")
     print()
     print("3. Iterate through all prompts:")
     print("   for i, _ in enumerate(task.get_prompts()):")

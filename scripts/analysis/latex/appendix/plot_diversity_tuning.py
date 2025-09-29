@@ -113,12 +113,12 @@ def print_diversity_results(base_path, task="joke"):
         builtins.print = silent_print
 
         vs_standard_probs, vs_standard_divs = load_diversity_data(
-            base_path, model, task, "structure_with_prob", prob_values
+            base_path, model, task, "vs_standard", prob_values
         )
 
         # Load VS-Multi data
         vs_multi_probs, vs_multi_divs = load_diversity_data(
-            base_path, model, task, "combined", prob_values
+            base_path, model, task, "vs_multi", prob_values
         )
 
         # Restore original print function
@@ -216,12 +216,12 @@ def plot_diversity_tuning(base_path, task="joke"):
 def plot_single_model(ax, base_path, model, task, prob_values, title, colors, edge_colors):
     """Plot diversity tuning for a single model with elegant styling and broken axis for jokes"""
 
-    # Load data for VS-Standard (structure_with_prob) and VS-Multi (combined)
+    # Load data for VS-Standard (structure_with_prob) and VS-Multi (VS-Multi (vs_multi))
     vs_standard_probs, vs_standard_divs = load_diversity_data(
-        base_path, model, task, "structure_with_prob", prob_values
+        base_path, model, task, "vs_standard", prob_values
     )
     vs_multi_probs, vs_multi_divs = load_diversity_data(
-        base_path, model, task, "combined", prob_values
+        base_path, model, task, "vs_multi", prob_values
     )
 
     # Debug: Print what data was loaded

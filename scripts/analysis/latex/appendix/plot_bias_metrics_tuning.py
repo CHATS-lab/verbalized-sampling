@@ -28,9 +28,9 @@ def load_metrics_data(base_path, model, task, method, prob_tuning_values):
         if "gpt" in model:
             prob_def = "prob_def=explicit"
         elif "gemini" in model:
-            if method == "structure_with_prob":
+            if method == "vs_standard":
                 prob_def = "prob_def=explicit"
-            elif method == "combined":
+            elif method == "vs_multi":
                 prob_def = "prob_def=confidence"
             else:
                 raise ValueError(f"Unknown method: {method}")
@@ -193,12 +193,12 @@ def plot_metrics_tuning(base_path, task="state_name"):
 def plot_single_metric(ax, base_path, model, task, prob_values, title, metric, metric_title, ylabel, colors, edge_colors, show_legend):
     """Plot a single metric for a single model"""
 
-    # Load data for VS-Standard (structure_with_prob) and VS-Multi (combined)
+    # Load data for VS-Standard (structure_with_prob) and VS-Multi (VS-Multi (vs_multi))
     vs_standard_probs, vs_standard_kl, vs_standard_prec, vs_standard_cov = load_metrics_data(
-        base_path, model, task, "structure_with_prob", prob_values
+        base_path, model, task, "vs_standard", prob_values
     )
     vs_multi_probs, vs_multi_kl, vs_multi_prec, vs_multi_cov = load_metrics_data(
-        base_path, model, task, "combined", prob_values
+        base_path, model, task, "vs_multi", prob_values
     )
 
     # Select the appropriate metric data

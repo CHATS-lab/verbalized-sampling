@@ -139,29 +139,29 @@ if __name__ == "__main__":
             'num_samples': 5,
         },
         {
-            'method': Method.STRUCTURE_WITH_PROB,
+            'method': Method.VS_STANDARD,
             'strict_json': True,
             'num_samples': 5,
         },
         {
-            'method': Method.CHAIN_OF_THOUGHT,
+            'method': Method.VS_COT,
             'strict_json': True,
             'num_samples': 5,
         },
         {
-            'method': Method.COMBINED,
+            'method': Method.VS_MULTI,
             'strict_json': True,
             'num_samples': 5,
             'num_samples_per_prompt': 2,
         }
         # {
-        #     'method': Method.STRUCTURE_WITH_PROB,
+        #     'method': Method.VS_STANDARD,
         #     'strict_json': True,
         #     'num_samples': 3,
         #     'probability_definition': 'explicit',  # Use explicit probability definition for safety
         # },
         # {
-        #     'method': Method.CHAIN_OF_THOUGHT,
+        #     'method': Method.VS_COT,
         #     'strict_json': True,
         #     'num_samples': 3,
         # },

@@ -652,14 +652,14 @@ Return the responses in JSON format with the key: "responses" (list of dicts). E
 
 {distribution_def} Return ONLY the JSON object, with no additional explanations or text.
 """,
-            "structure_with_prob": f"""
+            "vs_standard": f"""
 Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
 - 'text': the complete mathematical solution with step-by-step reasoning, ending with \\boxed{{final_answer}}.
 {prob_def}
 
 {distribution_def} Return ONLY the JSON object, with no additional explanations or text.
 """,
-            "chain_of_thought": f"""
+            "vs_cot": f"""
 Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
 - 'text': the complete mathematical solution with detailed step-by-step chain-of-thought reasoning, ending with \\boxed{{final_answer}}.
 {prob_def}
@@ -752,7 +752,7 @@ class PromptTemplateFactory:
 # Give ONLY the JSON object, no explanations or extra text.
 # """
 
-# def get_combined_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+# def get_VS-Multi (vs_multi)_prompt(self, num_samplings: int = 5, **kwargs) -> str:
 #         return f"""
 # Provide your {num_samplings} best guesses for the given question that you believe could be correct.
 

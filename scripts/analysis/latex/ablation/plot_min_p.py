@@ -22,7 +22,7 @@ def load_results_data(base_path="../../ablation_data/min_p_ablation"):
     method_mapping = {
         'direct': 'Direct',
         'sequence': 'Sequence',
-        'structure_with_prob': 'VS-Standard'
+        'vs_standard': 'VS-Standard'
     }
 
     min_p_values = [0.0, 0.01, 0.02, 0.05, 0.1]

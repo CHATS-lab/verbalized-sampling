@@ -1,0 +1,71 @@
+% \vspace{1em}
+\section{Dialogue Simulation} \label{sec:dialogue_simulation_task}
+\vspace{-0.5em}
+% \wyshi
+
+% Simulating human responses in multi-turn dialogues with LLMs is crucial for many applications, such as user simulator in RL~\citep{lin2025usersimulators}, LLM evaluations~\citep{zhou2024sotopiainteractiveevaluationsocial}, social simulation~\citep{anthisposition}. However, existing models often generate generic responses and lack evaluations of their realism against real human dialogues.  Therefore, we test VS on multi-turn dialogue response simulation.
+
+Simulating multi-turn dialogues with LLMs is crucial for applications like social simulation~\citep{lin2025usersimulators, anthisposition} and LLM evaluation~\citep{zhou2024sotopiainteractiveevaluationsocial}. But existing methods suffer from generic responses and low realism against human dialogues. We therefore test VS on this task.
+% However, existing models often generate generic responses and lack evaluations of their realism against real human dialogues.  Therefore, we test VS on multi-turn dialogue response simulation.
+
+\paragraph{Benchmark.}
+We use the \textit{PersuasionForGood}~\citep{wang-etal-2019-persuasion}, containing 1,017 dialogues where one participant persuades another to donate to the ``Save the Children'' charity. 
+This dataset includes participant personas and a clear, verifiable final donation amount, allowing us to compare between our simulation and human interactions. After filtering out dialogues with inconsistent donation amounts, we obtain 939 valid instances, partitioned into 739 for training and 200 for testing.
+
+
+
+% We use the \textit{PersuasionForGood} ~\citep{wang-etal-2019-persuasion} task, where one participant needs to persuade the other to donate to a charity called ``Save the Children''. We chose this task because it comes with a dataset with 1,017 real human interactions, where the final donation amount provides a clear, verifiable outcome reflecting varied human behavior. This task contains 1,017 human-human persuasive dialogues, the participants' persona information and their final donation amount, allowing us to compare our simulation with human-human interactions. 
+% After filtering out instances where the donation amount mentioned in the chat is different from the final donation amount,  we obtain 939 valid dialogues, partitioned into 739 for training and 200 for testing (80/20 split). 
+
+% dataset because it contains real human dialogues and persuasion outcomes, and has been used by recent dialogue-based RL works~\citep{ hong2024interactivedialogueagentsreinforcement, hong2025planningsearchrefiningfrontier}. Unlike more recent benchmarks that often focus on tool-use or game settings and rely on synthetic data~\citep{light2023avalonbenchevaluatingllmsplaying, yao2024taubenchbenchmarktoolagentuserinteraction}, this dataset contains real human interactions, where the final donation amount provides a clear, verifiable outcome reflecting varied human behavior, a feature often absent in other settings, such as negotiation. This task contains 1,017 human-human persuasive dialogues, the participants' persona information and their final donation amount, allowing us to compare our simulation with human-human interactions. 
+% After filtering out instances where the donation amount mentioned in the chat is different from the final donation amount,  we obtain 939 valid dialogues, partitioned into 739 for training and 200 for testing (80/20 split). 
+
+
+\paragraph{Experiment Setup.} 
+% In our experiments, we focus on simulating the persuadee to assess the realism of persuasion outcomes. The model is given a task instruction and a persona description same as the human participant. It interacts We fix the persuader as GPT-4.1 prompted with the persuader instruction and persona, engaging in turn-by-turn interactions with the persuadee (prompts detailed in \Cref{appendix:prompt}). To approximate the upper bound for the persuadee, we also fine-tuned Llama-3.1-8B on the \textit{PersuasionForGood} training set, optimizing only the persuadee side.
+
+In our experiments, we focus on simulating the persuadee to assess the realism of persuasion outcomes. The model is given a task instruction and a persona to match the human participant. It interacts with a  GPT-4.1-based persuader, prompted with the persuader instruction and persona (see \Cref{appendix:experiment_prompt} for prompts). To establish a strong supervised baseline for the simulation, we also fine-tuned Llama-3.1-8B on the persuadee responses in the \textit{PersuasionForGood} training set. % To ensure strong performance, we conduct extensive prompt engineering, including prompting with additional dialogue acts, in-context learning (ICL) examples, and various instruction and persona description formats. 
+% \wyshi{as I understand it, the final prompt doesn't use ICL, dialogue act, right? so i deleted this sentence}
+% \jiayicomment{we did not use these}
+
+Unlike single-output creativity writing, dialogue simulation is a multi-turn task, so we need to select a response to continue the interaction at each turn. 
+We explore two design choices at each turn: (1) \textit{Number of candidates}: either a model-decided variable or a human-decided constant ($k=5$); (2) \textit{Response sampling strategy}: probability-weighted (using verbalized probabilities) or random (uniform over candidates). Empirical results show that model-decided random sampling and human-decided probability-weighted sampling best balance the response quality and diversity. %As the task is more expensive, we only evaluate VS-Standard.
+
+\begin{figure*}[t] %t
+    \centering
+    \includegraphics[width=\textwidth]{figures/dialogue_simulation/combined_visualization.pdf}
+    \vspace{-1em}
+    \caption{\textbf{VS performance in Persuasive Dialogue Simulation.}
+    \textbf{(a) Donation Amount Distributions} simulated by small, large, and reasoning models with direct and VS, compared against fine-tuned model (\textcolor{Green}{green}) and human (\textcolor{ProcessBlue}{blue}). 
+    We see that VS simulates donation distributions more similar to human, especially for the larger and reasoning-focused models. 
+    \textbf{(b)  Linguistic Alignment} on Distinct-1/2/3, semantic diversity, and readability. Black dashed lines denote human levels; closer values indicate better stylistic match.
+    VS achieves higher diversity than the direct prompting, approaching human levels. But the readability score remains higher, suggesting room for improvement.     
+    \vspace{-2em}
+    }
+    \label{fig:dialogue_simulation_combined_performance}
+\end{figure*}
+
+
+
+\paragraph{Evaluation.} 
+% We evaluate our simulation against the human–human test set of \textit{PersuasionForGood} along two dimensions. 
+% \textbf{(1) Donation amount alignment}: we compare the human and simulated donation amounts with (i) Kolmogorov-Smirnov (KS) test~\citep{ks-test} for distributional alignment and (ii) L1 distance for per-dialogue alignment. \textbf{(2) Linguistic alignment}: we evaluate \text{(i) Lexical diversity} with Distinct-N~\citep{li-etal-2016-diversity}, the proportion of unique n-grams; \text{(iii) semantic diversity} with the same diversity score \wyshi{calculated between intra-dialogue responses}, and \text{(iii) Readability} with Flesch–Kincaid Grade Level~\citep{flesch1948new}, based on sentence and word length.
+
+We evaluate our simulation on the \textit{PersuasionForGood} human-human test set across two dimensions: donation amount and linguistic style. (1) For \textbf{donation amount alignment}, we compare simulated and human donation amounts with the (i) Kolmogorov-Smirnov (KS) test~\citep{ks-test} for distributional alignment and (ii) L1 distance for per-dialogue alignment. (2) For \textbf{linguistic alignment}, we assess three metrics: (i) lexical diversity using Distinct-N (the proportion of unique n-grams), (ii) semantic diversity using pairwise embedding-based diversity on persuadee responses within a dialogue, and (iii) readability using the Flesch–Kincaid Grade Level~\citep{flesch1948new}.
+
+
+\vspace{-0.5em}
+
+\subsection{Results}
+\vspace{-0.5em}
+\paragraph{Donation Amount Alignment.} Figure~\ref{fig:dialogue_simulation_combined_performance}(a) shows the distribution of donation amounts, with the human ground truth in blue. Across models, VS simulates donation distributions more aligned with human behaviors than direct prompting. We also observe an \emph{emergent trend} that larger models (e.g., GPT-4.1 vs. GPT-4.1-mini) and reasoning-focused models like DeepSeek-R1 benefit more from VS. Notably, GPT-4.1 with VS matches a fine-tuned Llama-3.1-8B persuadee simulator, and DeepSeek-R1 even surpasses it in simulating the median donation amount. The qualitative example in Figure~\ref{fig:intro_teaser} shows that VS can generate human-like behaviors, such as resistance and changes of mind (see ~\Cref{tab:example_simulated_dialogue}). We did not evaluate other VS variants due to high simulation costs. Quantitative results on KS tests and L1 distance are provided in \Cref{tab:dialogue_simulation_donation_all_results}. 
+
+\paragraph{Linguistic Alignment.}  Figure~\ref{fig:dialogue_simulation_combined_performance}(b) shows the linguistic results. On the diversity side,  VS with different settings (model-decided random sampling and human-decided probability sampling) outperforms direct prompting on Distinct-1/2/3 and semantic diversity,  approaching the fine-tuned model's performance and the human distribution. 
+Qualitative analysis shows that VS simulates more substantive responses instead of repetitive fillers, such as greetings at the end of the dialogue (see~\Cref{tab:example_simulated_dialogue_repetitive_ending}).
+On the readability side, VS  still simulates more complex responses than fine-tuned models and humans, suggesting room for improvement. 
+Full results are provided in \Cref{tab:dialogue_simulation_linguistic_all_results}.
+
+%This shows that \ourslower enhances structural and compositional \wyshi{what does this mean?} diversity comparable to humans while remaining less lexically rich than fine-tuned models or humans \wyshi{feels AI-written}.
+% In terms of readability, all prompting methods fall short of fine-tuning and humans, with \ourslower performing slightly worse than direct prompting, suggesting that diversity gains do come at a small cost to clarity. \ours also reaches human-level turn-level semantic diversity, producing a broad range of substantive responses instead of repetitive fillers (e.g., greetings) often seen in Direct at the end of dialogues. 
+
+% \newtakeaway{VS helps models better simulate multi-turn dialogues, leading to more diverse conversations and donation distributions that are closer to actual human donation behavior.}

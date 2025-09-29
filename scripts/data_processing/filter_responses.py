@@ -1,6 +1,6 @@
 import json
 
-input_file = "story_experiments_final/anthropic_claude-3.7-sonnet/anthropic_claude-3.7-sonnet_book/generation/combined [strict] (samples=5)/responses.jsonl"
+input_file = "story_experiments_final/anthropic_claude-3.7-sonnet/anthropic_claude-3.7-sonnet_book/generation/vs_multi [strict] (samples=5)/responses.jsonl"
 output_file = input_file.replace(".jsonl", "_filtered.jsonl")
 
 def is_list_of_dicts(obj):

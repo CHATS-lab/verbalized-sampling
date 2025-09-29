@@ -24,7 +24,7 @@ def calculate_coverage_comparison(data_dir="generated_data/openended_qa_general"
         if not os.path.exists(eval_path):
             continue
         
-        # Look for sequence and structure_with_prob methods
+        # Look for sequence and VS-Standard (vs_standard) methods
         sequence_file = None
         structure_file = None
         
@@ -40,7 +40,7 @@ def calculate_coverage_comparison(data_dir="generated_data/openended_qa_general"
             if 'sequence' in method_dir and 'strict' in method_dir:
                 sequence_file = json_file
                 print(f"  Found sequence method: {method_dir}")
-            elif 'structure_with_prob' in method_dir and 'strict' in method_dir:
+            elif 'vs_standard' in method_dir and 'strict' in method_dir:
                 structure_file = json_file
                 print(f"  Found structure_with_prob method: {method_dir}")
         
@@ -54,7 +54,7 @@ def calculate_coverage_comparison(data_dir="generated_data/openended_qa_general"
             with open(sequence_file, 'r') as f:
                 sequence_data = json.load(f)
             
-            # Load structure_with_prob data
+            # Load VS-Standard (vs_standard) data
             with open(structure_file, 'r') as f:
                 structure_data = json.load(f)
             
@@ -71,10 +71,10 @@ def calculate_coverage_comparison(data_dir="generated_data/openended_qa_general"
                 sequence_responses = set(sequence_stats[prompt].get('response_distribution', {}).keys())
                 structure_responses = set(structure_stats[prompt].get('response_distribution', {}).keys())
                 
-                # Check if structure_with_prob fully covers sequence
+                # Check if VS-Standard (vs_standard) fully covers sequence
                 structure_covers_sequence = sequence_responses.issubset(structure_responses)
                 
-                # Check if sequence fully covers structure_with_prob (reverse)
+                # Check if sequence fully covers VS-Standard (vs_standard) (reverse)
                 sequence_covers_structure = structure_responses.issubset(sequence_responses)
                 
                 # Calculate coverage metrics

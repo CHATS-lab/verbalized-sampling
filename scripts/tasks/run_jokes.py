@@ -100,13 +100,13 @@ if __name__ == "__main__":
             'num_samples': 5,
         },
         {
-            'method': Method.STRUCTURE_WITH_PROB,
+            'method': Method.VS_STANDARD,
             'strict_json': True,
             'num_samples': 5,
             'probability_definition': "explicit"
         },
         {
-            'method': Method.COMBINED,
+            'method': Method.VS_MULTI,
             'strict_json': True,
             'num_samples': 5,
             'num_samples_per_prompt': 2,

@@ -21,7 +21,7 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # class Method(Enum):
 #     DIRECT = "direct"
-#     STRUCTURE_WITH_PROB = "structure_with_prob"
+#     STRUCTURE_WITH_PROB = "vs_standard"
 #     SEQUENCE = "sequence"
 
 # structured_response_list_with_prob_schema = {
@@ -204,7 +204,7 @@ def get_gsm8k_test_examples(n=1, seed=42):
 #         system_prompt = get_direct_system_prompt()
 #     elif method == Method.SEQUENCE:
 #         system_prompt = get_sequence_system_prompt(num_samples_per_turn)
-#     elif method == Method.STRUCTURE_WITH_PROB:
+#     elif method == Method.VS_STANDARD:
 #         system_prompt = get_verbalized_system_prompt(num_samples_per_turn)
 #     user_prompts = [get_user_prompt(example) for example in examples]
 
@@ -424,15 +424,15 @@ def extract_synthetic_data_negative_diversity(base_dir, task_name):
     #     "Llama-3.1-70B-Instruct", "deepseek-r1", "o3", "claude-4-sonnet"
     # ]
     model_list = ["gpt-4.1"]
-    method_list = ["direct", "direct_cot", "sequence", "multi_turn", "structure_with_prob", "chain_of_thought", "combined"]
+    method_list = ["direct", "direct_cot", "sequence", "multi_turn", "vs_standard", "vs_cot", "vs_multi"]
     method_to_label = {
         "direct": "Direct",
         "direct_cot": "Direct_CoT",
         "sequence": "Sequence",
         "multi_turn": "Multi_turn",
-        "structure_with_prob": "VS_Standard",
-        "chain_of_thought": "VS_CoT",
-        "combined": "VS_Multi"
+        "vs_standard": "VS_Standard",
+        "vs_cot": "VS_CoT",
+        "vs_multi": "VS_Multi"
     }
     metrics = ["avg_diversity", "std_diversity"]
     metrics_values = {}
@@ -690,9 +690,9 @@ def main():
         direct_cot_file = f"{folder_name}/{model_name}_synthetic_negative/generation/direct_cot [strict] (samples=1)/responses.jsonl"
         multi_turn_file = f"{folder_name}/{model_name}_synthetic_negative/generation/multi_turn (samples=5)/responses.jsonl"
         sequence_file = f"{folder_name}/{model_name}_synthetic_negative/generation/sequence [strict] (samples=5)/responses.jsonl"
-        vs_standard_file = f"{folder_name}/{model_name}_synthetic_negative/generation/structure_with_prob [strict] (samples=5)/responses.jsonl"
-        vs_cot_file = f"{folder_name}/{model_name}_synthetic_negative/generation/chain_of_thought [strict] (samples=5)/responses.jsonl"
-        vs_multi_turn_file = f"{folder_name}/{model_name}_synthetic_negative/generation/combined [strict] (samples=5)/responses.jsonl"
+        vs_standard_file = f"{folder_name}/{model_name}_synthetic_negative/generation/vs_standard [strict] (samples=5)/responses.jsonl"
+        vs_cot_file = f"{folder_name}/{model_name}_synthetic_negative/generation/vs_cot [strict] (samples=5)/responses.jsonl"
+        vs_multi_turn_file = f"{folder_name}/{model_name}_synthetic_negative/generation/vs_multi [strict] (samples=5)/responses.jsonl"
         
         direct_responses = read_response_file(direct_file)
         direct_cot_responses = read_response_file(direct_cot_file)
@@ -838,7 +838,7 @@ def main():
     #     print("Generating verbalized responses...")
     #     start_time = time.time()
     #     responses_verbalized = generate_responses_gsm8k(
-    #         examples, Method.STRUCTURE_WITH_PROB, num_responses=num_samples, 
+    #         examples, Method.VS_STANDARD, num_responses=num_samples, 
     #         model_name=model_name, config=config, num_samples_per_turn=num_samples_per_turn, 
     #         max_workers=max_workers
     #     )

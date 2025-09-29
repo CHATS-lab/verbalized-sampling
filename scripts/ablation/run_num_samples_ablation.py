@@ -35,7 +35,7 @@ def create_num_samples_ablation_experiments(
     
     # Grid search parameters
     num_samples_values = [3, 5, 10, 20]
-    methods = [Method.DIRECT, Method.SEQUENCE, Method.MULTI_TURN, Method.STRUCTURE_WITH_PROB]
+    methods = [Method.DIRECT, Method.SEQUENCE, Method.MULTI_TURN, Method.VS_STANDARD]
     
     for method in methods:
         for num_samples in num_samples_values:
@@ -51,7 +51,7 @@ def create_num_samples_ablation_experiments(
                     ))
             else:
                 # Other methods use the actual num_samples values
-                strict_json = method in [Method.SEQUENCE, Method.MULTI_TURN, Method.STRUCTURE_WITH_PROB]
+                strict_json = method in [Method.SEQUENCE, Method.MULTI_TURN, Method.VS_STANDARD]
                 experiments.append(ExperimentConfig(
                     name=f"{method.value.lower()}_num_samples_{num_samples}",
                     method=method,

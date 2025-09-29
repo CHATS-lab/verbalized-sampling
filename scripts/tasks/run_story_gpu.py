@@ -98,17 +98,17 @@ if __name__ == "__main__":
             'num_samples': 5,
         },
         {
-            'method': Method.STRUCTURE_WITH_PROB,
+            'method': Method.VS_STANDARD,
             'strict_json': True,
             'num_samples': 5,
         },
         {
-            'method': Method.CHAIN_OF_THOUGHT,
+            'method': Method.VS_COT,
             'strict_json': True,
             'num_samples': 5,
         },
         {
-            'method': Method.COMBINED,
+            'method': Method.VS_MULTI,
             'strict_json': True,
             'num_samples': 5,
         },
@@ -258,7 +258,7 @@ if __name__ == "__main__":
 # # Structure without probability
 # results = run_quick_comparison(
 #     task=Task.SIMPLE_QA,
-#     methods=[Method.STRUCTURE], # Method.STRUCTURE, Method.STRUCTURE_WITH_PROB
+#     methods=[Method.STRUCTURE], # Method.STRUCTURE, Method.VS_STANDARD
 #     model_name="openai/gpt-4.1", # google/gemini-2.5-flash-preview, openai/gpt-4.1
 #     metrics=["factuality"], # diversity, ttct, creativity_index, length
 #     output_dir=Path("comparison_results/structure"),
@@ -275,7 +275,7 @@ if __name__ == "__main__":
 # # Structure with probabilitys
 # results = run_quick_comparison(
 #     task=Task.SIMPLE_QA,
-#     methods=[Method.STRUCTURE_WITH_PROB], # Method.STRUCTURE, Method.STRUCTURE_WITH_PROB
+#     methods=[Method.VS_STANDARD], # Method.STRUCTURE, Method.VS_STANDARD
 #     model_name="openai/gpt-4.1", # google/gemini-2.5-flash-preview, openai/gpt-4.1
 #     metrics=["factuality"], # diversity, ttct, creativity_index, length
 #     output_dir=Path("comparison_results/sequence_with_prob"),

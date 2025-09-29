@@ -24,7 +24,7 @@ def load_results_data(base_path="../../ablation_data/sampling_candidates_ablatio
     method_mapping = {
         'direct': 'Direct',
         'sequence': 'Sequence',
-        'structure_with_prob': 'VS-Standard'
+        'vs_standard': 'VS-Standard'
     }
 
     # Default num_samples values from the ablation script

@@ -76,7 +76,7 @@ class EvalResult:
         for result in results:
             merged_metadata.update(result.metadata)
             
-        # Recalculate overall metrics based on combined instance metrics
+        # Recalculate overall metrics based on VS-Multi (vs_multi) instance metrics
         # This is a simplified version - you might want to customize this based on your needs
         merged_overall_metrics = {}
         

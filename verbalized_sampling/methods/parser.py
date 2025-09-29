@@ -46,13 +46,13 @@ class ResponseParser:
                 return ResponseParser.parse_sequence(response)
             case Method.STRUCTURE:
                 return ResponseParser.parse_structure_response_only(response)
-            case Method.STRUCTURE_WITH_PROB:
+            case Method.VS_STANDARD:
                 return ResponseParser.parse_structure_with_probability(response)
             case Method.MULTI_TURN:
                 return ResponseParser.parse_multi_turn(response)
-            case Method.CHAIN_OF_THOUGHT:
+            case Method.VS_COT:
                 return ResponseParser.parse_chain_of_thought(response)
-            case Method.COMBINED:
+            case Method.VS_MULTI:
                 return ResponseParser.parse_combined(response)
             case _:
                 raise ValueError(f"Unknown parsing method: {method}")
@@ -120,7 +120,7 @@ class ResponseParser:
 
     @staticmethod
     def parse_combined(response: str) -> List[Dict]:
-        """Parse combined response."""
+        """Parse VS-Multi (vs_multi) response."""
         return ResponseParser.parse_structure_with_probability(response)
     
     @staticmethod

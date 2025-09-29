@@ -124,18 +124,18 @@ def create_line_chart_plot(all_data):
     
     # Method display names and colors
     method_names = {
-        'structure_with_prob': 'VS-Standard',
-        'combined': 'VS-Multi'
+        'vs_standard': 'VS-Standard',
+        'vs_multi': 'VS-Multi'
     }
     
     method_colors = {
-        'structure_with_prob': '#4A90E2',  # Red
-        'combined': '#FF6B6B'  # Blue
+        'vs_standard': '#4A90E2',  # Red
+        'vs_multi': '#FF6B6B'  # Blue
     }
     
     method_markers = {
-        'structure_with_prob': 'o',  # Circle
-        'combined': 's'  # Square
+        'vs_standard': 'o',  # Circle
+        'vs_multi': 's'  # Square
     }
     
     # Probability definition display names and order
@@ -151,7 +151,7 @@ def create_line_chart_plot(all_data):
     
     # Order for x-axis
     probability_definitions = ['implicit', 'explicit', 'relative', 'percentage', 'confidence', 'nll', 'perplexity']
-    methods = ['structure_with_prob', 'combined']
+    methods = ['vs_standard', 'vs_multi']
     models = ['gpt-4.1', 'gemini-2.5-flash']
     model_names = {
         'gpt-4.1': 'GPT-4.1',
@@ -308,12 +308,12 @@ def print_numerical_results(all_data):
 def main():
     folder_path = "ablation_bias_task"
 
-    methods = ['structure_with_prob', 'combined'] #  'combined'
+    methods = ['vs_standard', 'vs_multi'] #  'vs_multi'
     models = ['gpt-4.1', 'gemini-2.5-flash'] # 'gemini-2.5-flash'
     probability_definitions = ['implicit', 'explicit', 'relative', 'percentage', 'confidence', 'nll', 'perplexity']
     detailed_methods = {
-        'structure_with_prob': 'structure_with_prob [strict] (samples=20)',
-        'combined': 'combined [strict] (samples=20)'
+        'vs_standard': 'structure_with_prob [strict] (samples=20)',
+        'vs_multi': 'combined [strict] (samples=20)'
     }
 
     all_data = {}

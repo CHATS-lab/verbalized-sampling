@@ -878,7 +878,7 @@ def find_pareto_frontier(diversity_values, quality_values):
     return pareto_mask
 
 def plot_combined_pareto_scatter(all_results, output_dir="plots"):
-    """Create combined scatter plot showing Pareto frontier across all models"""
+    """Create VS-Multi (vs_multi) scatter plot showing Pareto frontier across all models"""
     
     # Create output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)

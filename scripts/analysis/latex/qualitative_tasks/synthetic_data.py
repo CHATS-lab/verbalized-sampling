@@ -16,7 +16,7 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 class Method(Enum):
     DIRECT = "direct"
-    STRUCTURE_WITH_PROB = "structure_with_prob"
+    STRUCTURE_WITH_PROB = "vs_standard"
 
 structured_response_list_with_prob_schema = {
     "type": "json_schema",  # Required for OpenRouter
@@ -167,7 +167,7 @@ def generate_responses_gsm8k(examples, method, num_responses=1, model_name="gpt-
     
     if method == Method.DIRECT:
         system_prompt = get_direct_system_prompt()
-    elif method == Method.STRUCTURE_WITH_PROB:
+    elif method == Method.VS_STANDARD:
         system_prompt = get_verbalized_system_prompt(num_samples_per_turn)
     user_prompt = get_user_prompt(examples)
     
@@ -258,7 +258,7 @@ def main():
     
     if not os.path.exists("qualitative_tasks/gsm8k_verbalized_responses.json"):
         print("Generating verbalized responses...")
-        responses_verbalized = generate_responses_gsm8k(examples, Method.STRUCTURE_WITH_PROB, num_responses=num_samples, model_name=model_name, config=config, num_samples_per_turn=num_samples_per_turn)
+        responses_verbalized = generate_responses_gsm8k(examples, Method.VS_STANDARD, num_responses=num_samples, model_name=model_name, config=config, num_samples_per_turn=num_samples_per_turn)
         with open("qualitative_tasks/gsm8k_verbalized_responses.json", "w", encoding="utf-8") as f:
             json.dump(responses_verbalized, f, ensure_ascii=False, indent=2)
     else:

@@ -28,7 +28,7 @@ def get_ablation_results(base_dir, model_name):
     """Extract ablation results for diversity and quality across different methods and sample sizes"""
     
     # Available methods in the ablation study
-    methods = ["direct", "sequence", "multi_turn", "structure_with_prob"]
+    methods = ["direct", "sequence", "multi_turn", "vs_standard"]
     
     # Sample sizes to test (note: direct only has 1 sample)
     sample_sizes = [1, 3, 5, 10, 20]
@@ -94,7 +94,7 @@ def plot_ablation_diversity(results, model_name):
         "direct": {"color": "#1f77b4", "marker": "o", "label": "Direct"},
         "sequence": {"color": "#ff7f0e", "marker": "s", "label": "Sequence"},
         "multi_turn": {"color": "#2ca02c", "marker": "^", "label": "Multi-turn"},
-        "structure_with_prob": {"color": "#d62728", "marker": "D", "label": "VS-Standard"}
+        "vs_standard": {"color": "#d62728", "marker": "D", "label": "VS-Standard"}
     }
     
     for method, data in results.items():
@@ -162,7 +162,7 @@ def plot_ablation_quality(results, model_name):
         "direct": {"color": "#1f77b4", "marker": "o", "label": "Direct"},
         "sequence": {"color": "#ff7f0e", "marker": "s", "label": "Sequence"},
         "multi_turn": {"color": "#2ca02c", "marker": "^", "label": "Multi-turn"},
-        "structure_with_prob": {"color": "#d62728", "marker": "D", "label": "VS-Standard"}
+        "vs_standard": {"color": "#d62728", "marker": "D", "label": "VS-Standard"}
     }
     
     for method, data in results.items():
@@ -230,7 +230,7 @@ def plot_combined_ablation(results, model_name):
         "direct": {"color": "#1f77b4", "marker": "o", "label": "Direct"},
         "sequence": {"color": "#ff7f0e", "marker": "s", "label": "Sequence"},
         "multi_turn": {"color": "#2ca02c", "marker": "^", "label": "Multi-turn"},
-        "structure_with_prob": {"color": "#d62728", "marker": "D", "label": "VS-Standard"}
+        "vs_standard": {"color": "#d62728", "marker": "D", "label": "VS-Standard"}
     }
     
     # Plot diversity

@@ -22,7 +22,7 @@ def load_results_data(base_path="../../ablation_data/sampling_candidates_ablatio
     method_mapping = {
         'direct': 'Direct',
         'sequence': 'Sequence',
-        'structure_with_prob': 'VS-Standard'
+        'vs_standard': 'VS-Standard'
     }
 
     # Note: Direct method uses samples=1, others use variable sample counts

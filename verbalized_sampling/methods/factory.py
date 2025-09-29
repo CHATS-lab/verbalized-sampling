@@ -13,25 +13,84 @@ from .prompt import (
 
 class Method(str, Enum):
     """Available sampling methods for verbalized sampling experiments."""
+    # Standard baseline methods
     DIRECT = "direct"
     DIRECT_BASE = "direct_base"
     DIRECT_COT = "direct_cot"
-    SEQUENCE = "sequence" 
+    SEQUENCE = "sequence"
     STRUCTURE = "structure"
-    STRUCTURE_WITH_PROB = "structure_with_prob"
     MULTI_TURN = "multi_turn"
-    CHAIN_OF_THOUGHT = "chain_of_thought"
-    COMBINED = "combined"
+
+    # New VS method names (paper-aligned)
+    VS_STANDARD = "vs_standard"           # Primary VS method with probabilities
+    VS_COT = "vs_cot"                    # VS with chain-of-thought
+    VS_MULTI = "vs_multi"                # VS with multi-turn/vs_multi sampling
+
+    # Legacy aliases for backwards compatibility (deprecated)
+    STRUCTURE_WITH_PROB = "vs_standard"  # Use VS_STANDARD instead
+    CHAIN_OF_THOUGHT = "vs_cot"        # Use VS_COT instead
+    COMBINED = "vs_multi"                        # Use VS_MULTI instead
+
+    # Additional methods
     STANDARD_ALL_POSSIBLE = "standard_all_possible"
+
+    @property
+    def paper_name(self) -> str:
+        """Get the paper-published name for this method."""
+        mapping = {
+            "vs_standard": "VS-Standard",
+            "vs_standard": "VS-Standard",  # Legacy
+            "vs_cot": "VS-CoT",
+            "vs_cot": "VS-CoT",  # Legacy
+            "vs_multi": "VS-Multi",
+            "vs_multi": "VS-Multi",  # Legacy
+        }
+        return mapping.get(self.value, self.value.replace("_", "-").title())
+
+
+# Migration mapping for backwards compatibility
+METHOD_MIGRATION_MAP = {
+    "vs_standard": "vs_standard",
+    "vs_cot": "vs_cot",
+    "vs_multi": "vs_multi"
+}
+
+REVERSE_MIGRATION_MAP = {v: k for k, v in METHOD_MIGRATION_MAP.items()}
+
+
+def migrate_method_name(old_name: str) -> str:
+    """Convert old method name to new name."""
+    return METHOD_MIGRATION_MAP.get(old_name, old_name)
+
+
+def legacy_method_name(new_name: str) -> str:
+    """Convert new method name to legacy name for data access."""
+    return REVERSE_MIGRATION_MAP.get(new_name, new_name)
+
+
+def normalize_method(method: Union[str, Method]) -> Method:
+    """Normalize method to use new naming, with migration support."""
+    if isinstance(method, str):
+        # Try migration first
+        migrated = migrate_method_name(method)
+        try:
+            return Method(migrated)
+        except ValueError:
+            # Fall back to original if migration fails
+            return Method(method)
+    return method
 
 
 def is_method_structured(method: Method) -> bool:
     """Check if a method requires structured JSON output."""
     return method in [
-        Method.STRUCTURE, 
-        Method.STRUCTURE_WITH_PROB,
-        Method.CHAIN_OF_THOUGHT,
-        Method.COMBINED,
+        Method.STRUCTURE,
+        Method.VS_STANDARD,  # Legacy
+        Method.VS_STANDARD,          # New
+        Method.VS_COT,     # Legacy
+        Method.VS_COT,               # New
+        Method.VS_MULTI,             # Legacy
+        Method.VS_MULTI,             # New
         Method.STANDARD_ALL_POSSIBLE,
     ]
 
@@ -40,8 +99,15 @@ def is_method_multi_turn(method: Method) -> bool:
     return method == Method.MULTI_TURN
 
 def is_method_combined(method: Method) -> bool:
-    """Check if a method requires combined sampling."""
-    return method == Method.COMBINED
+    """Check if a method requires VS-Multi (vs_multi) sampling."""
+    return method in [Method.VS_MULTI, Method.VS_MULTI]  # Support both old and new
+
+def is_vs_method(method: Method) -> bool:
+    """Check if a method is a Verbalized Sampling method."""
+    return method in [
+        Method.VS_STANDARD, Method.VS_COT, Method.VS_MULTI,
+        Method.VS_STANDARD, Method.VS_COT, Method.VS_MULTI  # Legacy support
+    ]
 
 def is_method_base_model(method: Method) -> bool:
     """Check if a method is for base models (no chat template)."""
@@ -65,11 +131,18 @@ class PromptFactory:
     # Map methods to format types for the new prompt system
     METHOD_TO_FORMAT = {
         Method.SEQUENCE: "sequence",
-        Method.STRUCTURE: "structure", 
+        Method.STRUCTURE: "structure",
         Method.DIRECT_COT: "direct_cot",
-        Method.STRUCTURE_WITH_PROB: "vs_standard",
-        Method.CHAIN_OF_THOUGHT: "vs_cot",
-        Method.COMBINED: "vs_multi",
+
+        # New VS method names (primary)
+        Method.VS_STANDARD: "vs_standard",
+        Method.VS_COT: "vs_cot",
+        Method.VS_MULTI: "vs_multi",
+
+        # Legacy method names (deprecated but supported for backwards compatibility)
+        Method.VS_STANDARD: "vs_standard",
+        Method.VS_COT: "vs_cot",
+        Method.VS_MULTI: "vs_multi",
     }
     
     # Available probability definition types
@@ -138,9 +211,9 @@ class PromptFactory:
             return "base_model"
         elif method == Method.DIRECT_COT:
             return "base_cot"
-        elif method == Method.CHAIN_OF_THOUGHT:
+        elif method == Method.VS_COT:
             return "vs_cot"
-        elif method == Method.COMBINED:
+        elif method == Method.VS_MULTI:
             return "vs_multi"
         elif all_possible:
             return "standard_all_possible"
@@ -184,7 +257,7 @@ class PromptFactory:
                     task_type=task_type,
                     prompt_type=prompt_type,
                     num_samplings=num_samplings,
-                    num_samples_per_prompt=num_samples_per_prompt if method == Method.COMBINED else None,
+                    num_samples_per_prompt=num_samples_per_prompt if method == Method.VS_MULTI else None,
                     target_words=target_words,
                     task_name=task_name
                 )
@@ -230,7 +303,7 @@ class PromptFactory:
 
     @staticmethod
     def get_combined_continuation(chat_history: List[Dict[str, str]], num_samplings_per_prompt: int, task: str, target_words: int) -> List[Dict[str, str]]:
-        """Get continuation prompt for combined sampling."""
+        """Get continuation prompt for VS-Multi (vs_multi) sampling."""
         task_type = PromptFactory._get_task_type_from_task_name(task)
         template = PromptTemplateFactory.get_template(task_type)
         continuation_prompt = template.get_continue_prompt(num_samplings=num_samplings_per_prompt, target_words=target_words)

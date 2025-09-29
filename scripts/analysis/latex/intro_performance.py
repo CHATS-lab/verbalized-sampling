@@ -10,9 +10,9 @@ METHOD_MAP = {
     "direct_cot": ("Direct_CoT", "direct_cot"),
     "sequence": ("Sequence", "sequence"),
     "multi_turn": ("Multi_turn", "multi_turn"),
-    "structure_with_prob": ("Structure_with_prob", "structure_with_prob"),
-    "chain_of_thought": ("Chain_of_thought", "chain_of_thought"),
-    "combined": ("Combined", "combined"),
+    "vs_standard": ("Structure_with_prob", "vs_standard"),
+    "vs_cot": ("Chain_of_thought", "vs_cot"),
+    "vs_multi": ("Combined", "vs_multi"),
 }
 
 def load_metric_from_file(file_path, metric_key):
@@ -42,7 +42,7 @@ def extract_creative_data(base_dir, task_name):
     baseline_method = ["direct", "direct_cot", "sequence", "multi_turn"]
     if task_name == "joke":
         baseline_method = ["direct", "sequence", "multi_turn"]
-    verbalized_methods = ["structure_with_prob", "chain_of_thought", "combined"]
+    verbalized_methods = ["vs_standard", "vs_cot", "vs_multi"]
     metrics = ["avg_diversity"]
     
     # Collect all data
@@ -128,7 +128,7 @@ def extract_creative_task_data(exp_path, task_name):
     baseline_methods = ["direct", "direct_cot", "sequence", "multi_turn"]
     if task_name == "joke":
         baseline_methods = ["direct", "sequence", "multi_turn"]
-    vs_methods = ["structure_with_prob", "chain_of_thought", "combined"]
+    vs_methods = ["vs_standard", "vs_cot", "vs_multi"]
     metrics = ["avg_diversity"]
     baseline_method_means = []
     vs_method_means = []
@@ -185,7 +185,7 @@ def extract_bias_data():
         "claude-4-sonnet",
     ]
     baseline_methods = ["direct", "direct_cot", "sequence", "multi_turn"]
-    vs_methods = ["structure_with_prob", "chain_of_thought", "combined"]  # Use the keys, not the values
+    vs_methods = ["vs_standard", "vs_cot", "vs_multi"]  # Use the keys, not the values
     
     # Collect all data
     metrics_values = {}

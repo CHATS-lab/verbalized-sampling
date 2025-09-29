@@ -41,7 +41,7 @@ def create_min_p_ablation_experiments(
         "meta-llama/Llama-3.1-70B-Instruct",
         # "meta-llama/Llama-3.1-405B-Instruct-FP8",
     ]
-    methods = [Method.DIRECT, Method.SEQUENCE, Method.STRUCTURE_WITH_PROB]
+    methods = [Method.DIRECT, Method.SEQUENCE, Method.VS_STANDARD]
 
     for model in models:
         for method in methods:

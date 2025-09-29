@@ -141,10 +141,10 @@ def read_sequence_response(response_file: str) -> Dict[str, str]:
 
 def main():
     # direct_response_file = "method_results_lcb/gpt-4.1_livecodebench/generation/direct (samples=1)/responses.jsonl"
-    # vs_response_file = "method_results_lcb/gpt-4.1_livecodebench/generation/structure_with_prob [strict] (samples=20)/responses.jsonl"
+    # vs_response_file = "method_results_lcb/gpt-4.1_livecodebench/generation/vs_standard [strict] (samples=20)/responses.jsonl"
     direct_response_file = "method_results_gsm8k/gpt-4.1_gsm8k/generation/direct (samples=1)/responses.jsonl"
     sequence_response_file = "method_results_gsm8k/gpt-4.1_gsm8k/generation/sequence [strict] (samples=5)/responses.jsonl"
-    vs_response_file = "method_results_gsm8k/gpt-4.1_gsm8k/generation/structure_with_prob [strict] (samples=5)/responses.jsonl"
+    vs_response_file = "method_results_gsm8k/gpt-4.1_gsm8k/generation/vs_standard [strict] (samples=5)/responses.jsonl"
 
     direct_responses = read_direct_response(direct_response_file)
     sequence_responses = read_sequence_response(sequence_response_file)

@@ -31,7 +31,7 @@ class SpeechTask(BaseTask):
     
     # def parse_response(self, method: Method, response: str) -> Any:
     #     """Parse the model's response based on the method."""
-    #     if method in [Method.STRUCTURE, Method.STRUCTURE_WITH_PROB]:
+    #     if method in [Method.STRUCTURE, Method.VS_STANDARD]:
     #         # Try to parse as JSON for structured methods
     #         import json
     #         try:

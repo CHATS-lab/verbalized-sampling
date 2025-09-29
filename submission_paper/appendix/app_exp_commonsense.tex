@@ -1,0 +1,153 @@
+%-------------------------------------Commonsense Reasoning Task-------------------------------------%
+\subsection{Commonsense Reasoning}\label{appendix:commonsense}
+
+VS shows notable gains in diversity, but these improvements are only meaningful if factual accuracy is maintained. In this section, we therefore evaluate VS on commonsense reasoning tasks, as it requires both factual understanding and sound judgment~\citep{guan_deliberative_2025}.
+
+\paragraph{Experiment Setup.} 
+We use the \textbf{SimpleQA} dataset~\citep{wei2024measuringshortformfactualitylarge}, which contains 4,326 open-ended fact-seeking questions across 10 domains. 
+To construct a balanced test set, we randomly sample 30 questions per domain, resulting in 300 data points. 
+For each data points, every method samples $N=5$ responses, with each LLM call producing $c=5$ candidate responses.  
+% \wyshi{use the terms in Table 1}
+Prompts used for generation are detailed in~\Cref{appendix:experiment_prompt}.
+Factual accuracy is assessed following the official protocol in \citet{wei2024measuringshortformfactualitylarge}, using LLM-as-a-judge with GPT-4.1 to compare model outputs against ground-truth answers. 
+We report results on two metrics: \textbf{Top@1 accuracy}, defined as the proportion of questions where the highest probability (or first) response is correct, and \textbf{Pass@N accuracy}, which measures the fraction of questions for which any of the $N$ generated responses is factually accurate. 
+Further details on our experimental setup, including judge prompts, are in ~\Cref{app:evaluation}.
+
+\begin{wraptable}{r}{0.55\textwidth}
+    \centering
+    \small
+    \caption{Average Top@1 and Pass@N accuracy for each method across all models. The best result for each metric is in \colorbox[HTML]{d2e7fa}{\textbf{blue}}; the second-best is \colorbox[HTML]{d7ead3}{\underline{green}}. Both metrics are the higher the better. This shows that \ourslower achieves a similar level of factual accuracy as other methods. 
+    % \wyshi{why is this table sticking out?}
+    % So it can increase diversity while maintaining quality.
+    }
+    \resizebox{0.54\textwidth}{!}{
+    \begin{tabular}{lcc}
+    \toprule
+    Method & Top@1 Accuracy & Pass@N Accuracy \\
+    \midrule
+    Direct & 0.310$_{\pm0.161}$ & 0.430$_{\pm0.171}$  \\
+    \underline{CoT} & \secondcell{0.342$_{\pm0.147}$} & \secondcell{0.473$_{\pm0.151}$} \\
+    Sequence & 0.313$_{\pm0.154}$ & 0.438$_{\pm0.160}$ \\
+    Multi-turn & 0.323$_{\pm0.163}$ & 0.452$_{\pm0.167}$ \\
+    VS-Standard & 0.329$_{\pm0.151}$ & 0.448$_{\pm0.146}$  \\
+    \textbf{VS-CoT} & \bestcell{0.348$_{\pm0.157}$} & \bestcell{0.485$_{\pm0.138}$} \\
+    VS-Multi & 0.335$_{\pm0.152}$ & 0.470$_{\pm0.144}$  \\
+    \bottomrule
+    \end{tabular}
+    }
+    \label{tab:commonsense_accuracy_ttest_table}
+\end{wraptable}
+
+\paragraph{Results.}
+Table~\ref{tab:commonsense_accuracy_ttest_table} summarizes the average Top@1 and Pass@N accuracy across models for all the evaluated methods. 
+Performance is comparable across methods: all three \ourslower variants achieve Top@1 accuracy between $0.33$ and $0.35$, and Pass@N accuracy between $0.45$ and $0.49$, similar to the strongest baseline (CoT: $0.34$ Top@1, $0.47$ Pass@N). Notably, the best-performing variant, \emph{VS-CoT}, achieves the highest scores on both metrics, outperforming all baselines.
+\Cref{tab:commonsense_reasoning_all_results} provided detailed performance on individual model families with similar findings. %further summarizes these findings, 
+This result shows that \ours can increase output diversity without hurting factual accuracy, and can be used as a universal sampler for improved creativity and diversity. %on par with previous methods, while providing the additional benefit of increased output diversity and creativity.
+% \jiayicomment{No enough data to perform the equivalence test}
+
+\newtakeaway{\ours maintains factual accuracy on par with the strongest baseline, confirming that diversity gains do not come at the expense of factual accuracy.}
+
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{Comprehensive results for the \textbf{Commonsense Reasoning} Task. We evaluate each setting by Top@1 Accuracy (higher is better), Pass@N Accuracy (higher is better). \textbf{Bolded values} indicate the best result among the Verbalized Sampling methods, while \underline{underlined values} denote the overall best among all methods. The differences between the best \ourslower and the direct are color-coded: \textcolor{ForestGreen}{\(\uparrow\)} indicates improvement, and \textcolor{red}{\(\downarrow\)} denotes reductions.}
+\label{tab:commonsense_reasoning_all_results}
+\resizebox{0.67\textwidth}{!}{
+\begin{tabular}{llcc}
+\toprule
+\textbf{Model} & \textbf{Settings} & \textbf{Accuracy (Top@1)} $\uparrow$ & \textbf{Accuracy (Pass@N)} $\uparrow$ \\
+\midrule
+\multirow{8}{*}{GPT-4.1-mini} 
+& Direct & 0.110 & 0.250 \\
+& CoT & \underline{0.173} & 0.283 \\
+& Sequence &  0.106 & 0.227 \\
+& Multi-turn & 0.147 & 0.230 \\
+& \textbf{Verbalized Sampling:} \\
+& $\hookrightarrow$ Standard & 0.126 & 0.253 \\
+& $\hookrightarrow$ CoT & 0.130 & \underline{\textbf{0.300}} {\scriptsize\,(\gain{0.05})}\\
+& $\hookrightarrow$ Combined & \textbf{0.153} {\scriptsize\,(\gain{0.43})} & 0.266 \\
+\midrule
+\multirow{8}{*}{GPT-4.1} 
+& Direct & 0.440 & 0.513 \\
+& CoT & \underline{0.447} & \underline{0.580} \\
+& Sequence & 0.370 & 0.523\\
+& Multi-turn & 0.440 & 0.626 \\
+& \textbf{Verbalized Sampling:} \\
+& $\hookrightarrow$ Standard & 0.440 & 0.540 \\
+& $\hookrightarrow$ CoT & \textbf{0.440} {\scriptsize\,(\gain{0.0})}  & \textbf{0.573} {\scriptsize\,(\gain{0.06})}\\
+& $\hookrightarrow$ Combined & 0.440 & 0.560 \\
+\midrule
+\multirow{8}{*}{Gemini-2.5-Flash} 
+& Direct & 0.183 & 0.256 \\
+& CoT & 0.300 & \underline{0.430} \\
+& Sequence &  0.230 & 0.320 \\
+& Multi-turn &  0.190 & 0.310 \\
+& \textbf{Verbalized Sampling:} \\
+& $\hookrightarrow$ Standard & 0.250 & 0.323 \\
+& $\hookrightarrow$ CoT & \underline{\textbf{0.313}} {\scriptsize\,(\gain{0.13})} & \textbf{0.390} {\scriptsize\,(\gain{0.134})}\\
+& $\hookrightarrow$ Combined & 0.283 & 0.347 \\
+\midrule
+\multirow{8}{*}{Gemini-2.5-Pro}
+& Direct &  0.567 & 0.687 \\  
+& CoT & 0.583 & \underline{0.710} \\
+& Sequence &  0.580 & 0.677 \\
+& Multi-turn & 0.567 & 0.653 \\
+& \textbf{Verbalized Sampling:} \\
+& $\hookrightarrow$ Standard & 0.573 & 0.677 \\
+& $\hookrightarrow$ CoT & \underline{\textbf{0.593}} {\scriptsize\,(\gain{0.026})} & \underline{\textbf{0.693}} {\scriptsize\,(\gain{0.006})}\\
+& $\hookrightarrow$ Combined & 0.567 & 0.677 \\
+\midrule
+ \multirow{8}{*}{Claude-4-Sonnet} 
+& Direct & 0.196 & 0.256 \\
+& CoT & 0.216 & 0.300 \\
+& Sequence & 0.223 & 0.373 \\
+& Multi-turn & 0.190 & 0.370 \\
+& \textbf{Verbalized Sampling:} \\
+& $\hookrightarrow$ Standard & 0.233 & 0.383 \\
+& $\hookrightarrow$ CoT & \underline{\textbf{0.283}} {\scriptsize\,(\gain{0.087})}  & \underline{\textbf{0.426}} {\scriptsize\,(\gain{0.17})} \\
+& $\hookrightarrow$ Combined & 0.227 & 0.420 \\
+\midrule
+\multirow{8}{*}{DeepSeek-R1}
+& Direct & 0.296 & 0.476\\
+& CoT & 0.327 & 0.463 \\
+& Sequence & 0.324 & 0.429 \\
+& Multi-turn & 0.310 & 0.423 \\
+& \textbf{Verbalized Sampling:} \\
+& $\hookrightarrow$ Standard & 0.303  & 0.436 \\ % (no delta shown)
+& $\hookrightarrow$ CoT & \underline{\textbf{0.341}}{\scriptsize\,(\gain{0.045})} & \underline{\textbf{0.478}}{\scriptsize\,(\gain{0.002})} \\
+& $\hookrightarrow$ Combined & 0.320 & 0.453 \\
+\midrule
+\multirow{8}{*}{o3} 
+& Direct & 0.506 & 0.666 \\
+& CoT & 0.513 & 0.660 \\
+& Sequence & 0.500 & 0.673 \\
+& Multi-turn & 0.553 & 0.690 \\
+& \textbf{Verbalized Sampling:} \\
+& $\hookrightarrow$ Standard & 0.513 & 0.653 \\
+& $\hookrightarrow$ CoT & \underline{\textbf{0.540}} {\scriptsize\,(\gain{0.034})}  & \underline{\textbf{0.693}} {\scriptsize\,(\gain{0.027})}\\
+& $\hookrightarrow$ Combined & 0.536 & 0.680 \\
+\midrule
+\multirow{8}{*}{Llama-3.1-70B}
+& Direct & 0.176 & 0.327 \\
+& CoT & 0.176 & 0.360 \\
+& Sequence & 0.167 & 0.285 \\
+& Multi-turn & 0.187 & 0.313 \\
+& \textbf{Verbalized Sampling:} \\
+& $\hookrightarrow$ Standard & \underline{\textbf{0.190}} {\scriptsize\,(\gain{0.014})} & 0.327 \\
+& $\hookrightarrow$ CoT & 0.178  &  0.357 \\
+& $\hookrightarrow$ Combined & 0.157 & \underline{\textbf{0.360}} {\scriptsize\,(\gain{0.033})} \\
+\midrule
+\multirow{8}{*}{Qwen3-235B}
+& Direct & 0.416 & 0.603 \\
+& CoT & \underline{0.470} & \underline{0.683} \\
+& Sequence & 0.310 & 0.556 \\
+& Multi-turn & 0.457 & 0.443 \\
+& \textbf{Verbalized Sampling:} \\
+& $\hookrightarrow$ Standard & 0.381 & 0.498 \\
+& $\hookrightarrow$ CoT & \textbf{0.463}{\scriptsize\,(\gain{0.047})} &  \textbf{0.583}{\scriptsize\,(\drop{0.020})} \\
+& $\hookrightarrow$ Combined & 0.401 & 0.545 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}

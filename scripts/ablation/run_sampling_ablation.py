@@ -85,7 +85,7 @@ def create_sampling_ablation_experiments(
     for temp in temperatures:
         experiments.append(ExperimentConfig(
             name=f"structure_with_prob_temp_{temp}",
-            method=Method.STRUCTURE_WITH_PROB,
+            method=Method.VS_STANDARD,
             temperature=temp,
             top_p=0.9,
             strict_json=True,
@@ -96,7 +96,7 @@ def create_sampling_ablation_experiments(
     for top_p in top_p_values:
         experiments.append(ExperimentConfig(
             name=f"structure_with_prob_top_p_{top_p}",
-            method=Method.STRUCTURE_WITH_PROB,
+            method=Method.VS_STANDARD,
             temperature=0.7,
             top_p=top_p,
             strict_json=True,
@@ -210,7 +210,7 @@ def run_focused_comparison(
         # Structure with probability sampling with best parameters
         ExperimentConfig(
             name="structure_with_prob_best_params",
-            method=Method.STRUCTURE_WITH_PROB,
+            method=Method.VS_STANDARD,
             temperature=best_temp,
             top_p=best_top_p,
             strict_json=True,

@@ -26,13 +26,18 @@ TASK_DESCRIPTIONS = {
     Task.JOKE: "Joke generation - tests humor and creative wordplay",
 }
 
-# Method descriptions
+# Method descriptions (VS = Verbalized Sampling)
 METHOD_DESCRIPTIONS = {
     Method.DIRECT: "Direct sampling - baseline method using prompt as-is",
     Method.SEQUENCE: "Sequential sampling - generates multiple responses in list format",
     Method.STRUCTURE: "Structured sampling - uses JSON format with response field",
-    Method.STRUCTURE_WITH_PROB: "Structured with probability - JSON with response and confidence",
+    Method.VS_STANDARD: "VS-Standard - verbalized sampling with responses and probabilities",
+    Method.VS_COT: "VS-CoT - verbalized sampling with chain-of-thought reasoning",
+    Method.VS_MULTI: "VS-Multi - verbalized sampling with multi-turn/combined approach",
     Method.MULTI_TURN: "Multi-turn conversation - conversational format with multiple turns",
+
+    # Note: Legacy method names (STRUCTURE_WITH_PROB, CHAIN_OF_THOUGHT, COMBINED)
+    # are aliases that resolve to the same enum objects as VS_STANDARD, VS_COT, VS_MULTI
 }
 
 @app.command()
@@ -108,7 +113,9 @@ def list_methods():
     
     for method in Method:
         description = METHOD_DESCRIPTIONS.get(method, "No description available")
-        table.add_row(method.value, description)
+        # Use paper name if available, otherwise use method value
+        display_name = method.paper_name if hasattr(method, 'paper_name') else method.value
+        table.add_row(display_name, description)
     
     console.print(table)
 

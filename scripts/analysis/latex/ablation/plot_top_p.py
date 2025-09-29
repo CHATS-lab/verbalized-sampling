@@ -24,7 +24,7 @@ def load_results_data(base_path="../../ablation_data/top_p_ablation"):
     method_mapping = {
         'direct': 'Direct',
         'sequence': 'Sequence',
-        'structure_with_prob': 'VS-Standard'
+        'vs_standard': 'VS-Standard'
     }
 
     top_p_values = [0.7, 0.8, 0.9, 0.95, 1.0]

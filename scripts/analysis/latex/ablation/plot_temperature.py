@@ -23,7 +23,7 @@ def load_results_data(base_path="../../ablation_data/poem_experiments_temperatur
     method_mapping = {
         'direct': 'Direct',
         'sequence': 'Sequence', 
-        'structure_with_prob': 'VS-Standard'
+        'vs_standard': 'VS-Standard'
     }
     
     temperatures = [0.4, 0.6, 0.8, 1.0, 1.2, 1.4]

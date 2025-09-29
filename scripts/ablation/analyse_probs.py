@@ -133,7 +133,7 @@ def find_all_experiments(base_dir: str = "poem_experiments_final") -> Dict[str, 
         print(f"Warning: Base directory {base_dir} not found.")
         return experiments
     
-    # Look for structure_with_prob directories in each model folder
+    # Look for VS-Standard (vs_standard) directories in each model folder
     for model_dir in base_path.iterdir():
         if model_dir.is_dir():
             model_name = model_dir.name

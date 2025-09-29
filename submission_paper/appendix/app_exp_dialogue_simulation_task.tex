@@ -1,0 +1,115 @@
+\subsection{Dialogue Simulation}\label{appendix:dialogue_simulation}
+
+\begin{table}[!htbp] % htbp
+\centering
+\small
+\caption{
+Individual model performance on \textbf{donation amount alignment} measured by KS test and L1 distance, on the \textbf{Dialogue Simulate} task. %\ours and its variants  achieve better performance than baselines across models. \colorbox[HTML]{d2e7fa}{\textbf{Blue}} highlights the best-performing method for each model, and \underline{\colorbox[HTML]{d7ead3}{green}} marks the second-best method. 
+% Comprehensive results for the \textbf{Dialogue Simulation} task. VS denotes Verbalized Sampling. 
+Model/Human indicates who decides the number of candidate responses to generate; Random/Probability indicates how to select the response from the candidate responses to continue the conversation. \colorbox{LightSkyBlue}{Blue} highlights performance improvements over the baseline, while \colorbox{pink}{pink} indicates degradations. The color intensity shows the magnitude of improvement or decline relative to the baseline. Average results for each method across models are shown in the grey rows at the end.
+% \wyshi{why is the first column so wide, and can you make the last two columns of similar width? }
+% \wyshi{can you report the average across models}
+}
+\label{tab:dialogue_simulation_donation_all_results}
+\resizebox{0.70\textwidth}{!}{
+\begin{tabular}{llcc}
+% \begin{tabular}{p{3.2cm}l>{\centering\arraybackslash}p{2.2cm}>{\centering\arraybackslash}p{2.2cm}}
+\toprule
+\textbf{Model} & \textbf{Settings} & \textbf{KS Test} $\downarrow$ & \textbf{L1 Distance} $\downarrow$ \\
+\midrule
+\multirow{4}{*}{GPT-4.1-mini} 
+& Direct & 0.514 & 0.660 \\
+& Sequence & \cellcolor{LightSkyBlue!26}0.454 & \cellcolor{LightSkyBlue!100}0.643 \\
+& VS (Model, Random) & \cellcolor{LightSkyBlue!100}0.291 & \cellcolor{pink!46}0.667 \\
+& VS (Human, Probability) & \cellcolor{LightSkyBlue!75}0.345 & \cellcolor{pink!100}0.675 \\
+\midrule
+\multirow{4}{*}{GPT-4.1} 
+& Direct & 0.373 & 0.613 \\
+& Sequence & \cellcolor{LightSkyBlue!40}0.308 & \cellcolor{LightSkyBlue!64}0.591 \\
+& VS (Model, Random) & \cellcolor{LightSkyBlue!99}0.211 & \cellcolor{LightSkyBlue!100}0.579 \\
+& VS (Human, Probability) & \cellcolor{LightSkyBlue!80}0.243 & \cellcolor{LightSkyBlue!11}0.609 \\
+\midrule
+\multirow{4}{*}{Gemini-2.5-Flash}
+& Direct & 0.259 & 0.558 \\
+& Sequence & \cellcolor{LightSkyBlue!100}0.157 & \cellcolor{pink!100}0.631 \\
+& VS (Model, Random) & \cellcolor{LightSkyBlue!84}0.172 & \cellcolor{LightSkyBlue!100}0.543 \\
+& VS (Human, Probability) & \cellcolor{LightSkyBlue!52}0.205 & \cellcolor{pink!73}0.611 \\
+\midrule
+\multirow{4}{*}{Gemini-2.5-Pro}
+& Direct & 0.454 & 0.715 \\
+& Sequence & \cellcolor{LightSkyBlue!47}0.357 & \cellcolor{pink!100}0.721 \\
+& VS (Model, Random) & \cellcolor{LightSkyBlue!100}0.248 & \cellcolor{LightSkyBlue!56}0.682 \\
+& VS (Human, Probability) & \cellcolor{LightSkyBlue!86}0.275 & \cellcolor{LightSkyBlue!99}0.657 \\
+\midrule
+\multirow{4}{*}{Claude-4-Sonnet}
+& Direct & 0.319 & 0.606 \\
+& Sequence & \cellcolor{LightSkyBlue!32}0.277 & \cellcolor{LightSkyBlue!100}0.569 \\
+& VS (Model, Random) & \cellcolor{LightSkyBlue!100}0.190 & \cellcolor{LightSkyBlue!75}0.578 \\
+& VS (Human, Probability) & \cellcolor{LightSkyBlue!70}0.228 & \cellcolor{pink!100}0.614 \\
+\midrule
+\multirow{4}{*}{DeepSeek-R1}
+& Direct & 0.368 & 0.684 \\
+& Sequence & \cellcolor{LightSkyBlue!51}0.238 & \cellcolor{pink!100}0.693 \\
+& VS (Model, Random) & \cellcolor{LightSkyBlue!100}0.114 & \cellcolor{LightSkyBlue!26}0.642 \\
+& VS (Human, Probability) & \cellcolor{LightSkyBlue!74}0.178 & \cellcolor{LightSkyBlue!100}0.525 \\
+\midrule
+\multirow{4}{*}{o3} 
+& Direct & 0.443 & 0.709 \\
+& Sequence & \cellcolor{LightSkyBlue!80}0.217 & \cellcolor{LightSkyBlue!100}0.620 \\
+& VS (Model, Random) & \cellcolor{LightSkyBlue!100}0.163 & \cellcolor{LightSkyBlue!29}0.683 \\
+& VS (Human, Probability) & \cellcolor{LightSkyBlue!68}0.251 & \cellcolor{LightSkyBlue!4}0.705 \\
+\midrule
+\multirow{4}{*}{Llama-3.1-70b}
+& Direct & 0.562 & 0.885 \\
+& Sequence & \cellcolor{LightSkyBlue!20}0.508 & \cellcolor{LightSkyBlue!45}0.793 \\
+& VS (Model, Random) & \cellcolor{LightSkyBlue!100}0.303 & \cellcolor{LightSkyBlue!98}0.686 \\
+& VS (Human, Probability) & \cellcolor{LightSkyBlue!89}0.329 & \cellcolor{LightSkyBlue!100}0.683 \\
+\midrule
+\multirow{4}{*}{Qwen3-235B}
+& Baseline & 0.519 & 0.735 \\
+& Sequence & \cellcolor{LightSkyBlue!44}0.389 & \cellcolor{LightSkyBlue!36}0.699 \\
+& VS (Model, Random) & \cellcolor{LightSkyBlue!100}0.227 & \cellcolor{LightSkyBlue!72}0.662 \\
+& VS (Human, Probability) & \cellcolor{LightSkyBlue!53}0.362 & \cellcolor{LightSkyBlue!100}0.635 \\
+\midrule
+\multirow{1}{*}{Finetuned Llama-3.1-8b} 
+& Direct & 0.119 & 0.608 \\
+\midrule
+\rowcolor{gray!15}
+\textbf{Direct} & & 0.390 & 0.649 \\
+\rowcolor{gray!15}
+\textbf{Sequence} & & 0.287 & 0.638 \\
+\rowcolor{gray!15}
+\textbf{VS (Model, Random)} & & 0.198 & 0.625 \\
+\rowcolor{gray!15}
+\textbf{VS (Human, Probability)} & & 0.246 & 0.628 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+% \jiayicomment{Adding the big table of the linguistic results}
+\begin{table}[!htbp]
+\centering
+\small
+\caption{
+\textbf{Linguistic alignment} results for the \textbf{Dialogue Simulation} task averaged across models. \textbf{Bold} indicates the best-performing prompting method for each metric. 
+% \wyshi{be consistent with the main paper, they are no longer quality metrics}
+}
+\label{tab:dialogue_simulation_linguistic_all_results}
+\resizebox{\textwidth}{!}{     
+    \begin{tabular}{lccccc}     
+    \toprule     
+    \textbf{Method} & \textbf{Distinct-1$\uparrow$} & \textbf{Distinct-2$\uparrow$} & \textbf{Distinct-3$\uparrow$} & \textbf{Pairwise Semantic Diversity$\uparrow$} & \textbf{Readability$\downarrow$} \\     
+    \midrule     
+    Direct & 0.178 & 0.633 & 0.874 & 0.577  & \textbf{5.087} \\     
+    Sequence & 0.234 & 0.726 & 0.913 & 0.641 & 5.404 \\     
+    \textbf{Verbalized Sampling} & & & & & \\     
+    $\hookrightarrow$ Model-decided Random Sampling & \textbf{0.269} & \textbf{0.763} & \textbf{0.924} & \textbf{0.664} & 5.218 \\     
+    $\hookrightarrow$ Human-decided Probability Sampling & 0.264 & 0.760 & 0.924 & 0.659 & 5.431 \\     
+    \midrule     
+    Fine-tuned Llama-3.1-8b & 0.400 & 0.791 & 0.888 & 0.696 & 3.502 \\     
+    Human Ground Truth & 0.419 & 0.809 & 0.892 & 0.721 & 3.585 \\     
+    \bottomrule     
+    \end{tabular} 
+} 
+\end{table}

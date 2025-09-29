@@ -1,0 +1,498 @@
+\subsection{Creative Writing}\label{appendix:creativity}
+In this section, we present detailed results  on (1) diversity-quality trade-off, and (2) individual model performance, on the three creative writing tasks (poem, story, joke). 
+The diversity score is the same semantic diversity score based on embeddings and the quality score is evaluated by Claude-3.7-Sonnet~\citep{AnthropicClaude4} with corresponding rubrics as mentioned in the main text. 
+
+% We also describe the human study experiments in more detail. 
+
+\subsubsection{Poem}\label{tab:model_comparison_creativity}
+\begin{figure*}[!htbp]
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{figures/creative_writing/poem/poem_diversity_appendix.pdf}
+      %\caption{Semantic diversity of generated poems.}
+      \label{fig:poem_creative_diversity}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{figures/creative_writing/poem/poem_quality_appendix.pdf}
+      %\caption{Overall Poem Quality including coherence and engagement.}
+      \label{fig:poem_creative_quality}
+  \end{subfigure}
+  \caption{
+  Semantic diversity (\%) and quality scores on the \textbf{Poem Continuation} task averaged across models (higher is better). We perform one-tailed t-test between VS-Standard and baselines (*$p < 0.05$, **$p < 0.01$, ***$p < 0.001$). This figure shows that VS and its variants improve diversity while achieving  comparable quality.
+      % Creative writing performance on the \textbf{poem writing} task across sampling methods.
+      % Panel~\ref{fig:poem_creative_diversity} reports semantic diversity scores, and Panel~\ref{fig:poem_creative_quality} reports overall quality scores combining coherence and engagement.
+      % Results are averaged across all models, with higher values indicating better performance.
+      % Statistical significance tests (Panel~\ref{fig:poem_creative_diversity}) compare baseline methods with \ours variants, showing substantial diversity gains for Sequence and Multi-turn approaches while maintaining comparable quality.
+  }
+  \label{fig:poem_continuation}
+\end{figure*}
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{Individual model performance on the \textbf{Poem Continuation} task. \ours and its variants show significant improvements over baselines across models. \sethlcolor{LightBlue}\hl{\textbf{Blue}} highlights the best-performing method for each model, \sethlcolor{LightGreen}\underline{\hl{green}} and marks the second-best method.
+}
+\label{tab:model_comparison_creativity_poem}
+\resizebox{0.63\textwidth}{!}{
+\begin{tabular}{llccc}
+\toprule
+\textbf{Model} & \textbf{Settings} & {\textbf{Diversity} $\uparrow$} & {\textbf{Rouge-L} $\downarrow$} & {\textbf{Quality} $\uparrow$} \\
+\midrule
+\multirow{8}{*}{GPT-4.1-Mini}
+& Direct & 8.4$_{\pm{1.3}}$ & 25.7$_{\pm{5.5}}$ & \secondcell{61.1$_{\pm{10.0}}$} \\
+& CoT & 10.0$_{\pm{1.5}}$ & 24.7$_{\pm{5.6}}$ & 59.9$_{\pm{10.4}}$ \\
+& Sequence & 9.6$_{\pm{1.9}}$ & 25.9$_{\pm{5.2}}$ & 59.6$_{\pm{10.6}}$ \\
+& Multi-turn & 9.6$_{\pm{1.4}}$ & 24.9$_{\pm{5.3}}$ & 61.0$_{\pm{9.9}}$ \\
+& \textbf{Verbalized Sampling} \\
+& $\hookrightarrow$ Standard & \secondcell{14.8$_{\pm{2.5}}$} & 23.1$_{\pm{5.2}}$ & 56.5$_{\pm{10.3}}$ \\
+& $\hookrightarrow$ CoT & \bestcell{15.0$_{\pm{2.5}}$} & \secondcell{20.6$_{\pm{5.0}}$} & 57.8$_{\pm{9.9}}$ \\
+& $\hookrightarrow$ Multi & 13.8$_{\pm{2.6}}$ & \bestcell{20.0$_{\pm{3.7}}$} & \bestcell{61.3$_{\pm{10.4}}$} \\
+% Best VS method (Combined) improvements: +66.9%, -21.9%, +0.2%
+\midrule
+\multirow{8}{*}{GPT-4.1}
+& Direct & 10.6$_{\pm{1.4}}$ & \secondcell{21.0$_{\pm{3.7}}$} & \secondcell{68.6$_{\pm{8.6}}$} \\
+& CoT & 11.8$_{\pm{1.6}}$ & 21.4$_{\pm{4.2}}$ & 67.6$_{\pm{9.3}}$ \\
+& Sequence & 10.6$_{\pm{1.7}}$ & 24.6$_{\pm{4.6}}$ & 65.6$_{\pm{9.5}}$ \\
+& Multi-turn & 11.8$_{\pm{1.6}}$ & 21.2$_{\pm{3.8}}$ & 67.2$_{\pm{8.8}}$ \\
+& \textbf{Verbalized Sampling} \\
+& $\hookrightarrow$ Standard & 15.2$_{\pm{2.0}}$ & 21.6$_{\pm{4.3}}$ & 63.7$_{\pm{9.5}}$ \\
+& $\hookrightarrow$ CoT & \bestcell{25.6$_{\pm{3.8}}$} & \bestcell{18.8$_{\pm{5.9}}$} & 60.5$_{\pm{9.1}}$ \\
+& $\hookrightarrow$ Multi & \secondcell{16.2$_{\pm{2.0}}$} & 21.1$_{\pm{4.5}}$ & \bestcell{69.6$_{\pm{8.0}}$} \\
+% Best VS method (Combined) improvements: +51.5%, --0.2%, +1.6%
+\midrule
+\multirow{8}{*}{Claude-3.7-Sonnet}
+& Direct & 10.8$_{\pm{2.5}}$ & 22.2$_{\pm{6.9}}$ & 60.6$_{\pm{8.7}}$ \\
+& CoT & 12.0$_{\pm{2.4}}$ & 21.5$_{\pm{5.1}}$ & 66.9$_{\pm{8.2}}$ \\
+& Sequence & 17.2$_{\pm{3.0}}$ & 17.1$_{\pm{4.0}}$ & 61.4$_{\pm{9.3}}$ \\
+& Multi-turn & 14.0$_{\pm{2.5}}$ & 18.6$_{\pm{4.5}}$ & 63.1$_{\pm{8.7}}$ \\
+& \textbf{Verbalized Sampling} \\
+& $\hookrightarrow$ Standard & 17.0$_{\pm{3.0}}$ & \secondcell{15.8$_{\pm{3.5}}$} & 69.7$_{\pm{7.9}}$ \\
+& $\hookrightarrow$ CoT & \bestcell{29.0$_{\pm{4.0}}$} & \bestcell{15.1$_{\pm{3.9}}$} & \secondcell{70.1$_{\pm{6.4}}$} \\
+& $\hookrightarrow$ Multi & \secondcell{21.6$_{\pm{3.3}}$} & 16.1$_{\pm{3.7}}$ & \bestcell{71.5$_{\pm{7.6}}$} \\
+% Best VS method (CoT) improvements: +171.4%, -31.8%, +15.8%
+\midrule
+\multirow{8}{*}{Claude-4-Sonnet}
+& Direct & 10.2$_{\pm{2.2}}$ & 23.7$_{\pm{7.5}}$ & 61.4$_{\pm{9.4}}$ \\
+& CoT & 10.4$_{\pm{2.4}}$ & 22.2$_{\pm{5.5}}$ & \secondcell{68.1$_{\pm{8.2}}$} \\
+& Sequence & 21.4$_{\pm{3.9}}$ & 16.3$_{\pm{4.2}}$ & 60.6$_{\pm{9.5}}$ \\
+& Multi-turn & 17.0$_{\pm{3.1}}$ & 17.5$_{\pm{4.3}}$ & 63.8$_{\pm{9.7}}$ \\
+& \textbf{Verbalized Sampling} \\
+& $\hookrightarrow$ Standard & \secondcell{22.4$_{\pm{3.9}}$} & 16.5$_{\pm{4.5}}$ & 61.1$_{\pm{9.6}}$ \\
+& $\hookrightarrow$ CoT & 21.4$_{\pm{3.6}}$ & \secondcell{15.7$_{\pm{3.5}}$} & 67.4$_{\pm{7.3}}$ \\
+& $\hookrightarrow$ Multi & \bestcell{30.4$_{\pm{5.2}}$} & \bestcell{14.0$_{\pm{3.9}}$} & \bestcell{69.9$_{\pm{9.1}}$} \\
+% Best VS method (Combined) improvements: +198.3%, -41.0%, +13.9%
+\midrule
+\multirow{8}{*}{Gemini-2.5-Flash}
+& Direct & 11.0$_{\pm{2.2}}$ & 19.9$_{\pm{5.2}}$ & 55.4$_{\pm{7.9}}$ \\
+& CoT & 11.2$_{\pm{2.3}}$ & 21.3$_{\pm{4.7}}$ & \secondcell{61.9$_{\pm{10.2}}$} \\
+& Sequence & 13.0$_{\pm{3.0}}$ & 19.9$_{\pm{3.7}}$ & 52.6$_{\pm{7.8}}$ \\
+& Multi-turn & 12.6$_{\pm{4.0}}$ & 19.9$_{\pm{11.7}}$ & 55.6$_{\pm{8.6}}$ \\
+& \textbf{Verbalized Sampling} \\
+& $\hookrightarrow$ Standard & 17.2$_{\pm{3.3}}$ & 18.5$_{\pm{4.0}}$ & 51.6$_{\pm{7.2}}$ \\
+& $\hookrightarrow$ CoT & \secondcell{18.0$_{\pm{3.6}}$} & \bestcell{16.5$_{\pm{3.0}}$} & \bestcell{62.0$_{\pm{9.1}}$} \\
+& $\hookrightarrow$ Multi & \bestcell{20.8$_{\pm{4.4}}$} & \secondcell{18.0$_{\pm{5.2}}$} & 56.7$_{\pm{8.2}}$ \\
+% Best VS method (CoT) improvements: +63.7%, -17.2%, +11.9%
+\midrule
+\multirow{8}{*}{Gemini-2.5-Pro}
+& Direct & 13.4$_{\pm{2.5}}$ & 17.8$_{\pm{3.1}}$ & 65.6$_{\pm{8.0}}$ \\
+& CoT & 13.4$_{\pm{5.0}}$ & \bestcell{16.6$_{\pm{7.2}}$} & 62.7$_{\pm{7.7}}$ \\
+& Sequence & 22.2$_{\pm{3.8}}$ & 17.8$_{\pm{2.8}}$ & 66.4$_{\pm{8.1}}$ \\
+& Multi-turn & 23.2$_{\pm{4.5}}$ & 17.3$_{\pm{6.4}}$ & 69.2$_{\pm{8.4}}$ \\
+& \textbf{Verbalized Sampling} \\
+& $\hookrightarrow$ Standard & 28.2$_{\pm{4.4}}$ & 16.7$_{\pm{3.0}}$ & 65.0$_{\pm{8.5}}$ \\
+& $\hookrightarrow$ CoT & \bestcell{29.4$_{\pm{4.3}}$} & \secondcell{16.6$_{\pm{3.2}}$} & \secondcell{73.4$_{\pm{7.6}}$} \\
+& $\hookrightarrow$ Multi & \secondcell{27.8$_{\pm{4.3}}$} & 17.0$_{\pm{5.7}}$ & \bestcell{74.6$_{\pm{7.3}}$} \\
+% Best VS method (Combined) improvements: +106.5%, -4.3%, +13.7%
+\midrule
+\multirow{8}{*}{DeepSeek-R1}
+& Direct & 12.4$_{\pm{4.2}}$ & 16.3$_{\pm{4.3}}$ & 58.6$_{\pm{9.2}}$ \\
+& CoT & 12.0$_{\pm{4.8}}$ & 13.3$_{\pm{6.8}}$ & 53.5$_{\pm{8.0}}$ \\
+& Sequence & 19.4$_{\pm{3.6}}$ & 14.9$_{\pm{3.5}}$ & 66.6$_{\pm{8.2}}$ \\
+& Multi-turn & 17.2$_{\pm{3.7}}$ & 15.3$_{\pm{5.9}}$ & 61.2$_{\pm{8.6}}$ \\
+& \textbf{Verbalized Sampling} \\
+& $\hookrightarrow$ Standard & \secondcell{28.0$_{\pm{4.5}}$} & 13.7$_{\pm{4.1}}$ & 63.0$_{\pm{8.6}}$ \\
+& $\hookrightarrow$ CoT & \bestcell{33.6$_{\pm{4.8}}$} & \bestcell{10.9$_{\pm{3.8}}$} & \bestcell{69.6$_{\pm{8.5}}$} \\
+& $\hookrightarrow$ Multi & 24.8$_{\pm{4.3}}$ & \secondcell{11.9$_{\pm{3.3}}$} & \secondcell{68.8$_{\pm{7.6}}$} \\
+% Best VS method (CoT) improvements: +170.4%, -33.4%, +18.8%
+\midrule
+\multirow{8}{*}{GPT-o3}
+& Direct & 13.2$_{\pm{1.6}}$ & 14.8$_{\pm{2.7}}$ & 77.0$_{\pm{5.8}}$ \\
+& CoT & 13.4$_{\pm{1.8}}$ & 15.0$_{\pm{2.7}}$ & \bestcell{79.5$_{\pm{6.9}}$} \\
+& Sequence & \secondcell{26.8$_{\pm{3.7}}$} & \secondcell{13.1$_{\pm{2.6}}$} & 76.9$_{\pm{5.7}}$ \\
+& Multi-turn & 14.0$_{\pm{1.7}}$ & 14.5$_{\pm{2.7}}$ & 78.4$_{\pm{5.2}}$ \\
+& \textbf{Verbalized Sampling} \\
+& $\hookrightarrow$ Standard & 26.0$_{\pm{3.7}}$ & 13.5$_{\pm{2.5}}$ & 77.0$_{\pm{5.8}}$ \\
+& $\hookrightarrow$ CoT & \bestcell{28.0$_{\pm{3.9}}$} & \bestcell{12.7$_{\pm{2.7}}$} & \secondcell{79.5$_{\pm{6.9}}$} \\
+& $\hookrightarrow$ Multi & 22.2$_{\pm{3.4}}$ & 13.2$_{\pm{2.6}}$ & 79.5$_{\pm{6.0}}$ \\
+% Best VS method (CoT) improvements: +113.6%, -14.3%, +3.2%
+\midrule
+\multirow{8}{*}{Llama-3.1-70B}
+& Direct & 12.4$_{\pm{2.4}}$ & 21.6$_{\pm{4.5}}$ & \secondcell{48.7$_{\pm{8.4}}$} \\
+& CoT & 15.8$_{\pm{2.7}}$ & 22.6$_{\pm{5.3}}$ & \bestcell{50.4$_{\pm{8.8}}$} \\
+& Sequence & 24.2$_{\pm{4.5}}$ & 23.5$_{\pm{9.2}}$ & 41.5$_{\pm{7.5}}$ \\
+& Multi-turn & 14.8$_{\pm{2.8}}$ & 21.9$_{\pm{6.2}}$ & 47.4$_{\pm{8.0}}$ \\
+& \textbf{Verbalized Sampling} \\
+& $\hookrightarrow$ Standard & 28.0$_{\pm{4.3}}$ & 21.9$_{\pm{8.1}}$ & 41.5$_{\pm{7.8}}$ \\
+& $\hookrightarrow$ CoT & \bestcell{32.2$_{\pm{4.6}}$} & \bestcell{20.4$_{\pm{7.6}}$} & 41.8$_{\pm{7.8}}$ \\
+& $\hookrightarrow$ Multi & \secondcell{31.6$_{\pm{5.1}}$} & \secondcell{21.2$_{\pm{5.6}}$} & 45.5$_{\pm{8.6}}$ \\
+% Best VS method (Combined) improvements: +153.3%, -2.0%, +-6.5%
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+
+
+\newpage
+\subsubsection{Story} 
+
+\begin{figure*}[!htbp]
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{figures/creative_writing/story/story_diversity_appendix.pdf}
+      % \caption{Semantic diversity of generated Story.}
+      \label{fig:story_creative_diversity}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{figures/creative_writing/story/story_quality_appendix.pdf}
+      % \caption{Overall Story Quality, judged by LLM-as-Judge.}
+      \label{fig:story_creative_quality}
+  \end{subfigure}
+  \caption{
+  Semantic diversity (\%) and quality scores on the \textbf{Story Generation} task averaged across models. We perform one-tailed t-test between VS-Standard and baselines (*$p < 0.05$, **$p < 0.01$, ***$p < 0.001$). VS and its variants also improve diversity while achieving comparable quality for story generation.
+      % Creative writing performance on the \textbf{Story generation} task across sampling methods.
+      % Panel~\ref{fig:story_creative_diversity} reports semantic diversity scores, and Panel~\ref{fig:story_creative_quality} reports overall quality scores combining coherence and engagement.
+      % Results are averaged across all models, with higher values indicating better performance.
+      % Statistical significance tests (Panel~\ref{fig:story_creative_diversity}) compare baseline methods with \ours variants, showing substantial diversity gains for Sequence and Multi-turn approaches while maintaining comparable quality.
+  }
+  \label{fig:poem_continuation}
+\end{figure*}
+
+
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{Individual model performance on the \textbf{Story Generation} task. \ours and its variants show significant improvements over baselines across models. \sethlcolor{LightBlue}\hl{\textbf{Blue}} highlights the best-performing method for each model, \sethlcolor{LightGreen}\underline{\hl{green}} and marks the second-best method. 
+}\label{tab:model_comparison_creativity_story}
+\resizebox{0.63\textwidth}{!}{
+\begin{tabular}{llccc}
+\toprule
+\textbf{Model} & \textbf{Settings} & {\textbf{Diversity} $\uparrow$} & {\textbf{Rouge-L} $\downarrow$} & {\textbf{Quality} $\uparrow$} \\
+\midrule
+\multirow{8}{*}{GPT-4.1-Mini}
+& Direct & 17.2$_{\pm{3.9}}$ & \secondcell{22.5$_{\pm{5.4}}$} & \bestcell{50.1$_{\pm{8.0}}$} \\
+& CoT & 18.6$_{\pm{4.8}}$ & 23.0$_{\pm{5.8}}$ & \secondcell{48.3$_{\pm{8.6}}$} \\
+& Sequence & 24.6$_{\pm{10.8}}$ & 23.6$_{\pm{23.8}}$ & 44.8$_{\pm{8.5}}$ \\
+& Multi-turn & 20.6$_{\pm{5.3}}$ & 22.9$_{\pm{6.1}}$ & 47.9$_{\pm{8.4}}$ \\
+& \textbf{Verbalized Sampling} & & & \\
+& $\hookrightarrow$ Standard & 27.6$_{\pm{6.9}}$ & 23.8$_{\pm{7.5}}$ & 43.4$_{\pm{9.3}}$ \\
+& $\hookrightarrow$ CoT & \bestcell{33.4$_{\pm{7.1}}$} & \bestcell{20.3$_{\pm{6.7}}$} & 44.4$_{\pm{9.3}}$ \\
+& $\hookrightarrow$ Multi & \secondcell{28.2$_{\pm{6.2}}$} & 23.1$_{\pm{6.9}}$ & 45.2$_{\pm{9.9}}$ \\
+% Best VS method (CoT) improvements: +98.0%, -9.9%, +-15.3%
+\midrule
+\multirow{8}{*}{GPT-4.1}
+& Direct & 19.0$_{\pm{4.2}}$ & 20.2$_{\pm{4.8}}$ & \secondcell{59.7$_{\pm{7.9}}$} \\
+& CoT & 20.0$_{\pm{4.4}}$ & 19.3$_{\pm{4.7}}$ & \bestcell{60.0$_{\pm{8.3}}$} \\
+& Sequence & 27.8$_{\pm{6.4}}$ & \secondcell{17.6$_{\pm{5.6}}$} & 54.9$_{\pm{8.4}}$ \\
+& Multi-turn & 20.6$_{\pm{5.0}}$ & 20.2$_{\pm{4.9}}$ & 58.7$_{\pm{7.9}}$ \\
+& \textbf{Verbalized Sampling} & & & \\
+& $\hookrightarrow$ Standard & 29.2$_{\pm{5.9}}$ & 18.7$_{\pm{5.1}}$ & 54.5$_{\pm{8.4}}$ \\
+& $\hookrightarrow$ CoT & \bestcell{34.8$_{\pm{6.3}}$} & \bestcell{16.8$_{\pm{5.3}}$} & 54.9$_{\pm{8.7}}$ \\
+& $\hookrightarrow$ Multi & \secondcell{30.8$_{\pm{5.5}}$} & 18.6$_{\pm{4.9}}$ & 58.9$_{\pm{8.9}}$ \\
+% Best VS method (CoT) improvements: +95.2%, -17.1%, +-8.0%
+\midrule
+\multirow{8}{*}{Claude-3.7-Sonnet}
+& Direct & 23.6$_{\pm{4.4}}$ & 17.5$_{\pm{5.6}}$ & 61.6$_{\pm{7.4}}$ \\
+& CoT & 22.6$_{\pm{4.7}}$ & 18.9$_{\pm{5.5}}$ & 61.0$_{\pm{7.5}}$ \\
+& Sequence & 27.8$_{\pm{6.5}}$ & 16.1$_{\pm{4.9}}$ & 60.9$_{\pm{7.2}}$ \\
+& Multi-turn & 27.6$_{\pm{4.9}}$ & 16.4$_{\pm{6.9}}$ & \secondcell{63.0$_{\pm{7.1}}$} \\
+& \textbf{Verbalized Sampling} & & & \\
+& $\hookrightarrow$ Standard & 35.2$_{\pm{6.3}}$ & 15.6$_{\pm{4.8}}$ & 61.4$_{\pm{7.4}}$ \\
+& $\hookrightarrow$ CoT & \bestcell{38.6$_{\pm{5.7}}$} & \bestcell{13.9$_{\pm{4.9}}$} & 62.7$_{\pm{7.2}}$ \\
+& $\hookrightarrow$ Multi & \secondcell{36.8$_{\pm{5.7}}$} & \secondcell{14.6$_{\pm{4.4}}$} & \bestcell{63.0$_{\pm{7.4}}$} \\
+% Best VS method (CoT) improvements: +81.0%, -20.7%, +1.9%
+\midrule
+\multirow{8}{*}{Claude-4-Sonnet}
+& Direct & {23.0$_{\pm{4.5}}$} & {18.0$_{\pm{5.9}}$} & \bestcell{62.2$_{\pm{7.3}}$} \\
+& CoT & 21.0$_{\pm{4.4}}$ & 19.8$_{\pm{6.4}}$ & 60.9$_{\pm{7.5}}$ \\
+& Sequence & 26.4$_{\pm{5.8}}$ & 17.3$_{\pm{5.4}}$ & 59.8$_{\pm{7.1}}$ \\
+& Multi-turn & 24.2$_{\pm{4.9}}$ & 18.5$_{\pm{6.2}}$ & 61.5$_{\pm{7.2}}$ \\
+& \textbf{Verbalized Sampling} & & & \\
+& $\hookrightarrow$ Standard & 32.4$_{\pm{6.2}}$ & 16.8$_{\pm{5.1}}$ & 58.9$_{\pm{7.3}}$ \\
+& $\hookrightarrow$ CoT & \bestcell{34.2$_{\pm{5.9}}$} & \bestcell{15.9$_{\pm{4.8}}$} & 61.3$_{\pm{7.4}}$ \\
+& $\hookrightarrow$ Multi & \secondcell{32.8$_{\pm{5.7}}$} & \secondcell{16.5$_{\pm{4.9}}$} & \secondcell{62.1$_{\pm{7.2}}$} \\
+\midrule
+\multirow{8}{*}{Gemini-2.5-Flash}
+& Direct & 21.0$_{\pm{4.5}}$ & 18.0$_{\pm{4.4}}$ & \secondcell{60.0$_{\pm{7.9}}$} \\
+& CoT & 21.4$_{\pm{5.4}}$ & 20.2$_{\pm{6.4}}$ & 59.4$_{\pm{8.4}}$ \\
+& Sequence & 29.2$_{\pm{5.8}}$ & 18.1$_{\pm{5.0}}$ & 56.9$_{\pm{6.8}}$ \\
+& Multi-turn & 23.4$_{\pm{5.7}}$ & 18.9$_{\pm{11.8}}$ & \bestcell{60.8$_{\pm{7.7}}$} \\
+& \textbf{Verbalized Sampling} & & & \\
+& $\hookrightarrow$ Standard & 33.4$_{\pm{6.7}}$ & 18.3$_{\pm{4.9}}$ & 57.0$_{\pm{8.0}}$ \\
+& $\hookrightarrow$ CoT & \bestcell{37.8$_{\pm{6.5}}$} & \bestcell{17.4$_{\pm{5.1}}$} & 57.2$_{\pm{8.1}}$ \\
+& $\hookrightarrow$ Multi & \secondcell{34.6$_{\pm{6.2}}$} & \secondcell{17.9$_{\pm{4.9}}$} & 59.1$_{\pm{8.4}}$ \\
+% Best VS method (Multi) improvements: +63.1%, -0.9%, +0.4%
+\midrule
+\multirow{8}{*}{Gemini-2.5-Pro}
+& Direct & 23.4$_{\pm{5.2}}$ & 20.3$_{\pm{5.2}}$ & 65.8$_{\pm{7.1}}$ \\
+& CoT & 24.8$_{\pm{5.1}}$ & 20.8$_{\pm{5.5}}$ & 67.6$_{\pm{7.1}}$ \\
+& Sequence & 29.6$_{\pm{6.1}}$ & 19.6$_{\pm{5.8}}$ & 66.2$_{\pm{7.0}}$ \\
+& Multi-turn & 27.0$_{\pm{5.4}}$ & 20.1$_{\pm{5.7}}$ & \bestcell{68.1$_{\pm{7.2}}$} \\
+& \textbf{Verbalized Sampling} & & & \\
+& $\hookrightarrow$ Standard & 34.6$_{\pm{6.4}}$ & 18.9$_{\pm{5.3}}$ & 65.9$_{\pm{7.1}}$ \\
+& $\hookrightarrow$ CoT & \bestcell{38.2$_{\pm{6.2}}$} & \bestcell{18.1$_{\pm{5.1}}$} & 67.8$_{\pm{7.3}}$ \\
+& $\hookrightarrow$ Multi & \secondcell{37.0$_{\pm{6.0}}$} & \secondcell{18.7$_{\pm{5.2}}$} & \secondcell{68.0$_{\pm{7.4}}$} \\
+% Best VS method (Multi) improvements: +65.7%, -7.3%, +2.8%
+\midrule
+\multirow{8}{*}{DeepSeek-R1}
+& Direct & 24.8$_{\pm{5.7}}$ & 14.8$_{\pm{3.9}}$ & \secondcell{63.0$_{\pm{7.6}}$} \\
+& CoT & 29.0$_{\pm{6.5}}$ & 14.9$_{\pm{5.1}}$ & 57.0$_{\pm{7.3}}$ \\
+& Sequence & 41.8$_{\pm{6.7}}$ & 11.8$_{\pm{5.1}}$ & 59.0$_{\pm{8.1}}$ \\
+& Multi-turn & 31.8$_{\pm{5.8}}$ & 14.0$_{\pm{4.1}}$ & \bestcell{65.4$_{\pm{7.4}}$} \\
+& \textbf{Verbalized Sampling} & & & \\
+& $\hookrightarrow$ Standard & \secondcell{49.0$_{\pm{6.7}}$} & \secondcell{11.0$_{\pm{5.3}}$} & 58.2$_{\pm{8.0}}$ \\
+& $\hookrightarrow$ CoT & 47.6$_{\pm{6.4}}$ & \bestcell{10.9$_{\pm{5.6}}$} & 56.6$_{\pm{7.5}}$ \\
+& $\hookrightarrow$ Multi & \bestcell{48.4$_{\pm{6.5}}$} & 11.8$_{\pm{4.5}}$ & 60.5$_{\pm{8.7}}$ \\
+% Best VS method (Multi) improvements: +79.4%, -20.2%, +-5.6%
+\midrule
+\multirow{8}{*}{GPT-o3}
+& Direct & 25.6$_{\pm{4.2}}$ & 16.3$_{\pm{4.6}}$ & 70.7$_{\pm{7.8}}$ \\
+& CoT & 26.2$_{\pm{4.5}}$ & 15.7$_{\pm{4.7}}$ & 72.1$_{\pm{7.9}}$ \\
+& Sequence & 30.4$_{\pm{5.3}}$ & 14.9$_{\pm{4.2}}$ & 71.8$_{\pm{7.7}}$ \\
+& Multi-turn & 29.4$_{\pm{4.8}}$ & 15.5$_{\pm{4.5}}$ & \bestcell{73.2$_{\pm{8.1}}$} \\
+& \textbf{Verbalized Sampling} & & & \\
+& $\hookrightarrow$ Standard & 36.2$_{\pm{5.9}}$ & 14.2$_{\pm{4.1}}$ & 71.5$_{\pm{7.9}}$ \\
+& $\hookrightarrow$ CoT & \bestcell{40.2$_{\pm{5.7}}$} & \bestcell{13.8$_{\pm{4.0}}$} & 72.8$_{\pm{8.0}}$ \\
+& $\hookrightarrow$ Multi & \secondcell{38.6$_{\pm{5.5}}$} & \secondcell{14.1$_{\pm{4.2}}$} & \secondcell{73.1$_{\pm{8.2}}$} \\
+\midrule
+\multirow{8}{*}{Llama-3.1-70B}
+& Direct & 22.8$_{\pm{5.0}}$ & 20.4$_{\pm{4.6}}$ & \secondcell{43.8$_{\pm{8.2}}$} \\
+& CoT & 25.2$_{\pm{5.9}}$ & 21.6$_{\pm{5.7}}$ & 42.3$_{\pm{8.1}}$ \\
+& Sequence & 28.6$_{\pm{8.3}}$ & 19.2$_{\pm{7.8}}$ & 38.2$_{\pm{8.5}}$ \\
+& Multi-turn & 29.6$_{\pm{6.3}}$ & 20.3$_{\pm{5.2}}$ & \bestcell{44.1$_{\pm{8.2}}$} \\
+& \textbf{Verbalized Sampling} & & & \\
+& $\hookrightarrow$ Standard & 34.8$_{\pm{6.8}}$ & 19.0$_{\pm{5.9}}$ & 37.8$_{\pm{8.7}}$ \\
+& $\hookrightarrow$ CoT & \bestcell{39.2$_{\pm{6.8}}$} & \bestcell{18.2$_{\pm{5.5}}$} & 38.5$_{\pm{8.7}}$ \\
+& $\hookrightarrow$ Multi & \secondcell{37.2$_{\pm{6.5}}$} & \secondcell{18.8$_{\pm{4.5}}$} & 41.1$_{\pm{9.4}}$ \\
+% Best VS method (Multi) improvements: +63.1%, -7.8%, +-3.9%
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+
+\newpage
+\subsubsection{Joke}
+\begin{figure*}[!htbp]
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{figures/creative_writing/joke/joke_diversity_appendix.pdf}
+      % \caption{Semantic diversity of generated stories.}
+      \label{fig:joke_creative_diversity}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{figures/creative_writing/joke/joke_quality_appendix.pdf}
+      % \caption{Overall story quality including coherence and engagement.}
+      \label{fig:joke_creative_quality}
+  \end{subfigure}
+  \caption{
+  Semantic diversity (\%) and quality scores on the \textbf{Joke Writin} task averaged across models (higher is better). We perform one-tailed t-test between VS-Standard and baselines (*$p < 0.05$, **$p < 0.01$, ***$p < 0.001$). This figure shows that VS and its variants improve diversity while  comparable quality.}
+  \label{fig:creative_joke}
+\end{figure*}
+
+
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{Individual model performance on the \textbf{Joke Writing} task. \ours and its variants  achieve better performance than baselines across models. \sethlcolor{LightBlue}\hl{\textbf{Blue}} highlights the best-performing method for each model, \sethlcolor{LightGreen}\underline{\hl{green}} and marks the second-best method. 
+}
+\label{tab:joke_writing_performance_new}
+\resizebox{0.58\textwidth}{!}{
+\begin{tabular}{llccc}
+\toprule
+\textbf{Model} & \textbf{Settings} & {\textbf{Diversity} $\uparrow$} & {\textbf{Rouge-L} $\downarrow$} & {\textbf{Quality} $\uparrow$} \\
+\midrule
+\multirow{7}{*}{Claude-4-Sonnet}
+& Direct & 17.4$_{\pm{11.0}}$ & 69.8$_{\pm{30.6}}$ & 84.4$_{\pm{11.0}}$ \\
+& CoT & 30.4$_{\pm{12.2}}$ & 50.5$_{\pm{33.9}}$ & 85.7$_{\pm{11.4}}$ \\
+& Sequence & 51.2$_{\pm{4.0}}$ & 19.4$_{\pm{22.3}}$ & \bestcell{88.0}$_{\pm{9.9}}$ \\
+& Multi-turn & 52.0$_{\pm{9.2}}$ & 23.0$_{\pm{21.0}}$ & \secondcell{86.1}$_{\pm{10.9}}$ \\
+& \textbf{Verbalized Sampling} \\
+& $\hookrightarrow$ Standard & 60.2$_{\pm{10.5}}$ & \secondcell{16.5}$_{\pm{24.3}}$ & 84.6$_{\pm{11.1}}$ \\
+& $\hookrightarrow$ CoT & \secondcell{60.6$_{\pm{10.3}}$} & 16.9$_{\pm{23.9}}$ & 84.1$_{\pm{10.9}}$ \\
+& $\hookrightarrow$ Multi & \bestcell{61.0$_{\pm{10.1}}$} & \bestcell{15.6}$_{\pm{22.9}}$ & 83.8$_{\pm{11.4}}$ \\
+\midrule
+\multirow{7}{*}{Claude-3.7-Sonnet}
+& Direct & 25.0$_{\pm{14.2}}$ & 61.8$_{\pm{36.2}}$ & 77.8$_{\pm{9.2}}$ \\
+& CoT & 22.2$_{\pm{11.1}}$ & 58.3$_{\pm{32.6}}$ & \secondcell{84.7}$_{\pm{11.6}}$ \\
+& Sequence & 53.8$_{\pm{4.0}}$ & 14.4$_{\pm{19.6}}$ & \bestcell{88.0}$_{\pm{9.0}}$ \\
+& Multi-turn & 58.6$_{\pm{10.1}}$ & 16.2$_{\pm{19.1}}$ & 80.4$_{\pm{9.6}}$ \\
+& \textbf{Verbalized Sampling} \\
+& $\hookrightarrow$ Standard & 63.4$_{\pm{10.6}}$ & \bestcell{2.8}$_{\pm{15.9}}$ & 83.9$_{\pm{9.3}}$ \\
+& $\hookrightarrow$ CoT & \secondcell{64.0$_{\pm{9.9}}$} & \secondcell{3.6}$_{\pm{16.7}}$ & 84.0$_{\pm{9.5}}$ \\
+& $\hookrightarrow$ Multi & \bestcell{64.6$_{\pm{9.4}}$} & 8.9$_{\pm{18.7}}$ & 82.4$_{\pm{9.6}}$ \\
+\midrule
+\multirow{7}{*}{Gemini-2.5-Pro}
+& Direct & 30.4$_{\pm{12.0}}$ & 36.3$_{\pm{20.0}}$ & \secondcell{88.5}$_{\pm{36.7}}$ \\
+& CoT & 47.2$_{\pm{15.0}}$ & 34.9$_{\pm{35.7}}$ & \bestcell{88.6}$_{\pm{8.9}}$ \\
+& Sequence & 59.0$_{\pm{8.6}}$ & \secondcell{12.9}$_{\pm{17.0}}$ & 86.7$_{\pm{9.1}}$ \\
+& Multi-turn & 62.6$_{\pm{6.9}}$ & 14.7$_{\pm{17.2}}$ & 86.2$_{\pm{9.1}}$ \\
+& \textbf{Verbalized Sampling} \\
+& $\hookrightarrow$ Standard & \bestcell{67.2$_{\pm{8.8}}$} & \bestcell{12.7}$_{\pm{17.6}}$ & 87.3$_{\pm{8.7}}$ \\
+& $\hookrightarrow$ CoT & 66.2$_{\pm{9.1}}$ & 13.5$_{\pm{18.6}}$ & 87.0$_{\pm{9.2}}$ \\
+& $\hookrightarrow$ Multi & \secondcell{66.6$_{\pm{9.1}}$} & 14.0$_{\pm{19.3}}$ & 86.2$_{\pm{9.3}}$ \\
+\midrule
+\multirow{7}{*}{Gemini-2.5-Flash}
+& Direct & 25.0$_{\pm{13.7}}$ & 64.5$_{\pm{31.9}}$ & 81.4$_{\pm{11.0}}$ \\
+& CoT & 34.0$_{\pm{13.5}}$ & 53.9$_{\pm{31.5}}$ & \bestcell{82.2}$_{\pm{11.4}}$ \\
+& Sequence & 58.6$_{\pm{10.6}}$ & \secondcell{16.6}$_{\pm{24.1}}$ & 77.8$_{\pm{9.4}}$ \\
+& Multi-turn & 58.0$_{\pm{9.8}}$ & 23.6$_{\pm{22.4}}$ & \secondcell{81.6}$_{\pm{10.9}}$ \\
+& \textbf{Verbalized Sampling} \\
+& $\hookrightarrow$ Standard & \secondcell{62.6$_{\pm{10.1}}$} & 16.8$_{\pm{23.6}}$ & 79.1$_{\pm{10.0}}$ \\
+& $\hookrightarrow$ CoT & \bestcell{63.2$_{\pm{9.8}}$} & \bestcell{15.6}$_{\pm{22.3}}$ & 79.5$_{\pm{10.6}}$ \\
+& $\hookrightarrow$ Multi & 62.2$_{\pm{10.6}}$ & 17.2$_{\pm{25.8}}$ & 78.8$_{\pm{10.3}}$ \\
+\midrule
+\multirow{7}{*}{GPT-4.1}
+& Direct & 27.0$_{\pm{13.1}}$ & 61.2$_{\pm{31.7}}$ & \bestcell{84.3}$_{\pm{12.9}}$ \\
+& CoT & 33.2$_{\pm{13.7}}$ & 55.3$_{\pm{31.8}}$ & 83.7$_{\pm{12.7}}$ \\
+& Sequence & 58.0$_{\pm{8.7}}$ & 19.9$_{\pm{19.8}}$ & 83.3$_{\pm{12.8}}$ \\
+& Multi-turn & 56.6$_{\pm{9.0}}$ & 26.0$_{\pm{20.6}}$ & \secondcell{83.9}$_{\pm{12.8}}$ \\
+& \textbf{Verbalized Sampling} \\
+& $\hookrightarrow$ Standard & \secondcell{60.2$_{\pm{9.0}}$} & 18.7$_{\pm{20.6}}$ & 83.4$_{\pm{12.6}}$ \\
+& $\hookrightarrow$ CoT & \bestcell{60.8$_{\pm{9.2}}$} & \bestcell{17.9}$_{\pm{21.3}}$ & 83.0$_{\pm{12.5}}$ \\
+& $\hookrightarrow$ Multi & 60.6$_{\pm{9.2}}$ & \secondcell{18.2}$_{\pm{21.5}}$ & 83.1$_{\pm{12.6}}$ \\
+\midrule
+\multirow{7}{*}{GPT-4.1-Mini}
+& Direct & 21.6$_{\pm{12.2}}$ & 69.5$_{\pm{29.9}}$ & \bestcell{83.3}$_{\pm{13.0}}$ \\
+& CoT & 28.6$_{\pm{13.2}}$ & 60.7$_{\pm{30.9}}$ & 82.9$_{\pm{13.0}}$ \\
+& Sequence & 55.6$_{\pm{9.3}}$ & 21.0$_{\pm{21.9}}$ & 82.7$_{\pm{13.1}}$ \\
+& Multi-turn & 53.4$_{\pm{9.2}}$ & 31.1$_{\pm{20.6}}$ & \secondcell{83.1}$_{\pm{13.6}}$ \\
+& \textbf{Verbalized Sampling} \\
+& $\hookrightarrow$ Standard & \secondcell{58.2$_{\pm{9.3}}$} & \secondcell{19.5}$_{\pm{22.0}}$ & 82.6$_{\pm{13.4}}$ \\
+& $\hookrightarrow$ CoT & \bestcell{59.2$_{\pm{9.5}}$} & \bestcell{19.3}$_{\pm{22.1}}$ & 82.2$_{\pm{13.0}}$ \\
+& $\hookrightarrow$ Multi & 56.8$_{\pm{9.5}}$ & 22.8$_{\pm{23.1}}$ & 82.3$_{\pm{13.3}}$ \\
+\midrule
+\multirow{7}{*}{Llama-3.1-70B}
+& Direct & 19.8$_{\pm{13.7}}$ & 70.3$_{\pm{32.0}}$ & \bestcell{84.3}$_{\pm{10.1}}$ \\
+& CoT & 33.8$_{\pm{13.6}}$ & 56.1$_{\pm{28.4}}$ & \secondcell{84.3}$_{\pm{12.0}}$ \\
+& Sequence & 53.0$_{\pm{7.9}}$ & 36.0$_{\pm{15.5}}$ & 78.1$_{\pm{11.4}}$ \\
+& Multi-turn & 55.8$_{\pm{10.4}}$ & \bestcell{28.6}$_{\pm{22.3}}$ & 82.2$_{\pm{11.4}}$ \\
+& \textbf{Verbalized Sampling} \\
+& $\hookrightarrow$ Standard & \secondcell{56.8$_{\pm{10.4}}$} & 32.1$_{\pm{23.2}}$ & 76.4$_{\pm{13.4}}$ \\
+& $\hookrightarrow$ CoT & 56.8$_{\pm{9.9}}$ & 33.1$_{\pm{22.1}}$ & 79.8$_{\pm{13.0}}$ \\
+& $\hookrightarrow$ Multi & \bestcell{58.2$_{\pm{9.7}}$} & \secondcell{31.4}$_{\pm{22.3}}$ & 73.0$_{\pm{14.1}}$ \\
+\midrule
+\multirow{7}{*}{Qwen3-235B-A22B}
+& Direct & 28.2$_{\pm{12.4}}$ & 53.3$_{\pm{31.0}}$ & \bestcell{85.1}$_{\pm{11.4}}$ \\
+& CoT & 55.2$_{\pm{12.7}}$ & 22.7$_{\pm{24.7}}$ & 82.5$_{\pm{12.2}}$ \\
+& Sequence & 59.2$_{\pm{8.8}}$ & 13.6$_{\pm{18.5}}$ & 83.2$_{\pm{12.1}}$ \\
+& Multi-turn & 57.2$_{\pm{8.2}}$ & 20.2$_{\pm{16.1}}$ & \secondcell{84.8}$_{\pm{11.8}}$ \\
+& \textbf{Verbalized Sampling} \\
+& $\hookrightarrow$ Standard & 64.0$_{\pm{8.8}}$ & 13.1$_{\pm{18.3}}$ & 82.9$_{\pm{11.8}}$ \\
+& $\hookrightarrow$ CoT & \secondcell{65.8$_{\pm{7.8}}$} & \secondcell{12.1}$_{\pm{15.2}}$ & 82.3$_{\pm{11.6}}$ \\
+& $\hookrightarrow$ Multi & \bestcell{66.4$_{\pm{9.2}}$} & \bestcell{11.7}$_{\pm{19.9}}$ & 81.1$_{\pm{12.1}}$ \\
+\midrule
+\multirow{7}{*}{DeepSeek-R1}
+& Direct & 56.2$_{\pm{9.4}}$ & 21.0$_{\pm{19.0}}$ & \secondcell{83.7}$_{\pm{11.2}}$ \\
+& CoT & 62.2$_{\pm{17.4}}$ & \bestcell{4.9}$_{\pm{18.7}}$ & 62.7$_{\pm{20.8}}$ \\
+& Sequence & 63.0$_{\pm{7.9}}$ & 12.0$_{\pm{15.5}}$ & 83.1$_{\pm{11.4}}$ \\
+& Multi-turn & 60.6$_{\pm{6.8}}$ & 17.3$_{\pm{10.9}}$ & \bestcell{84.7}$_{\pm{11.0}}$ \\
+& \textbf{Verbalized Sampling} \\
+& $\hookrightarrow$ Standard & 66.0$_{\pm{7.8}}$ & 12.2$_{\pm{15.3}}$ & 81.1$_{\pm{11.3}}$ \\
+& $\hookrightarrow$ CoT & \bestcell{67.0$_{\pm{7.6}}$} & \secondcell{11.1}$_{\pm{14.5}}$ & 81.3$_{\pm{12.1}}$ \\
+& $\hookrightarrow$ Multi & \secondcell{66.4$_{\pm{8.0}}$} & 11.9$_{\pm{16.8}}$ & 80.6$_{\pm{11.9}}$ \\
+\midrule
+\multirow{7}{*}{GPT-o3}
+& Direct & 49.2$_{\pm{11.2}}$ & 27.1$_{\pm{24.6}}$ & 87.5$_{\pm{10.6}}$ \\
+& CoT & 52.6$_{\pm{12.6}}$ & 26.9$_{\pm{26.6}}$ & 84.7$_{\pm{11.8}}$ \\
+& Sequence & 63.6$_{\pm{6.4}}$ & \secondcell{9.7}$_{\pm{9.5}}$ & \secondcell{87.7}$_{\pm{9.7}}$ \\
+& Multi-turn & 61.2$_{\pm{6.8}}$ & 15.6$_{\pm{11.6}}$ & \bestcell{88.6}$_{\pm{9.6}}$ \\
+& \textbf{Verbalized Sampling} \\
+& $\hookrightarrow$ Standard & \bestcell{66.0$_{\pm{6.8}}$} & \bestcell{9.6}$_{\pm{10.9}}$ & 87.1$_{\pm{9.9}}$ \\
+& $\hookrightarrow$ CoT & 65.4$_{\pm{7.3}}$ & 10.9$_{\pm{13.5}}$ & 86.4$_{\pm{10.7}}$ \\
+& $\hookrightarrow$ Multi & \secondcell{65.6$_{\pm{6.7}}$} & 11.3$_{\pm{12.0}}$ & 86.1$_{\pm{10.6}}$ \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+
+\newpage
+\subsection{Human Study on Creative Writing} \label{appendix:human_study_creativity}
+% \wyshi{need to re-read}
+% For automatic diversity evaluation, we primarily use cosine similarity of embeddings from OpenAI’s \texttt{text-embedding-3-small} model. To account for nuances that may not be fully captured by this embedding-based metric, we further perform a human evaluation of diversity across creative writing tasks, including poems, stories, and jokes.
+In this section, we describe details on our human study on diversity across creative writing tasks.  
+The study was approved by IRB at the researchers' institution. 
+% \simoncomment{Will this violate the double-blind?}
+
+% \wyshi{right now the study procedure and IAA are lumped together, i'd use the following structure to separate things}
+
+% \wyshi{i don't understand what this means}.
+% To compute the Inter-Annotator Agreement (IAA), each set of three comparisons (from the same topic, model, and method) in the overlapping subset was independently evaluated by three annotators \wyshi{i don't understand. i thought two topics are used to get the IAA, and the rest 7 are used for actual evaluation?}. 
+% In total, 18 annotators \wyshi{i thought it was 30 in the main text??} were recruited per task to assess two topics, resulting in 18 response pairs (three pairwise comparisons per method).
+% For the remaining eight topics in each task, 72 pairs were annotated by four annotators. 
+% Overall, 30 annotators participated per task, and 90 annotators were recruited across the story, poem, and joke evaluations. \wyshi{these numbers need to match the main text. it's confusing.} \wyshi{i'd separate the IAA group and the actual evaluation group.
+% } \wyshi{can you also make the text more concise, right now it has many repetitive information between paragraphs}
+
+% \paragraph{Inter-Annotator Agreement (IAA).} To assess inter-annotator agreement (IAA), three annotators independently evaluated each of the 18 pairs in the overlapping subset \wyshi{still confusing to me}. Agreement on a pair was defined as at least two annotators selecting the same score. We then computed IAA using Krippendorff’s alpha~\citep{krippendorff2018content}, which accounts for chance agreement and is suitable for ordinal data. The resulting agreement scores were 0.63 for poems, 0.71 for stories, and 0.89 for jokes, indicating moderate to high reliability across tasks.
+
+\paragraph{Data Used for Annotation.}
+The human study was structured as pairwise comparisons between outputs to assess the diversity of outputs generated by the same model and prompting method. 
+For each creative writing task (story, poem, joke), we curated ten topics (e.g., ``Write a short story about a bear''). 
+From each topic, we randomly sampled three responses across the three prompting methods: Direct, Sequence, and VS-Standard. 
+This resulted in 90 pairwise comparisons per task ($10$ topics $\times 3$ methods $\times 3$ responses=$90$ pairwise comparisons). 
+Eight topics were used for the main evaluation, and two additional topics were reserved for inter-annotator agreement (IAA) assessment.
+To ensure representative coverage, we selected strong-performing models tailored to each task: Gemini-2.5-Pro~\citep{comanici2025gemini25pushingfrontier} for poems, DeepSeek-R1~\citep{deepseekai2025deepseekr1incentivizingreasoningcapability} for stories, and Qwen3-235B~\citep{yang2025qwen3technicalreport} for jokes, spanning large-scale, reasoning-oriented, and open-source models.
+
+\paragraph{Annotation Procedure.}
+For evaluation, annotators rated each pair on a four-point Likert scale adopted from~\citep{chen-etal-2022-semeval}: Very Similar, Somewhat Similar, Somewhat Dissimilar, and Very Dissimilar. We aligned the assessment criteria with task-specific definition of diversity based on past literature: plot diversity for stories~\citep{Xu_2025}, stylistic diversity focusing on rhythm and imagery for poems~\citep{chen-etal-2024-evaluating-diversity}, and setup–punchline diversity for jokes~\citep{kim2025aihumorgenerationcognitive}. To ensure clarity, annotators were provided with definitions of these dimensions along with illustrative examples, which they could access throughout the annotation process. To reduce cognitive load, poems were truncated to the first two stanzas for evaluation.
+Illustrative examples of the human study for stories and poems are shown in~\Cref{fig:prolific_results}.
+
+\paragraph{Inter-Annotator Agreement (IAA).} 
+IAA was estimated using two topics per task. Each pair in this subset (18 pairs total: three comparisons per method across two topics) was independently evaluated by three annotators. Agreement was defined as at least two annotators selecting the same score, and Gwet's AC1~\citep{gwet2008computing} was used to quantify reliability. Agreement scores were 0.86 for jokes, 0.87 for stories, and 0.54 for poems, indicating moderate to high reliability. Complete IAA statistics are provided in~\Cref{tab:human_study_IAA}.
+
+\begin{table}[h]
+    \centering
+    \caption{Inter-rater agreement measures, Krippendorf's $\alpha$ and Gwet’s AC1, for each creativity task.}
+    \label{tab:human_study_IAA}
+    \begin{tabular}{cccc}
+        \toprule
+         & Joke & Poem & Story \\
+        \midrule
+        Gwet's AC1~\citep{gwet2008computing} & 0.86 & 0.54 & 0.87 \\
+        \midrule
+        Krippendorff's $\alpha$~\citep{krippendorff2018content}  & 0.81 & 0.46 & 0.71 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+
+\paragraph{Participants.} 
+We recruited annotators from Prolific who met the following eligibility criteria: aged 18–60, native English speakers residing in the United States, with an approval rate of 97–100\% and a minimum of 1,000 prior submissions. Participants were compensated at a rate of \$15.00 per hour. 
+To manage budget constraints, we limited the overlap of annotations: only two topics per task were annotated redundantly by three annotators, while the remaining topics were each evaluated by a single annotator.
+Per task, 30 annotators were recruited: 18 contributed to the IAA subset (two topics) and 12 to the main evaluation (seven topics). Across stories, poems, and jokes, this yielded 90 annotators in total.
+
+\paragraph{Diversity Score.}
+To compute the final diversity score, we first aggregated judgments from the pairwise comparisons conducted within the same model and prompting method. For each topic under a given method, we calculated the average diversity score based on annotators' ratings. These topic-level scores were then averaged across all topics to obtain the overall diversity score for that method. The response pairs used for computing inter-annotator agreement (IAA) were included in this process,
+as the IAA results indicated moderate to high reliability, ensuring the consistency of the diversity evaluation.
+% \wyshi{i usually don't include IAA pairs in the final evaluation}, \jiayicomment{I talked with Anthony. We would want to keep the IAA pairs in the diversity score}
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{figures/appendix/prolific_story.pdf}\\[1em]
+    \includegraphics[width=\linewidth]{figures/appendix/prolific_poem.pdf}
+    \caption{Example interfaces of the Prolific study for story (top) and poem (bottom).}
+    \label{fig:prolific_results}
+\end{figure}

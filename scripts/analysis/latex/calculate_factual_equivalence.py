@@ -19,9 +19,9 @@ METHOD_MAP = {
     "direct_cot": ("CoT", "direct_cot"),
     "sequence": ("Sequence", "sequence"),
     "multi_turn": ("Multi-turn", "multi_turn"),
-    "vs_standard": ("VS-Standard", "structure_with_prob"),
-    "vs_cot": ("VS-CoT", "chain_of_thought"),
-    "vs_combined": ("VS-Combined", "combined"),
+    "vs_standard": ("VS-Standard", "vs_standard"),
+    "vs_cot": ("VS-CoT", "vs_cot"),
+    "vs_combined": ("VS-Combined", "vs_multi"),
 }
 
 def bootstrap_equivalence_test(sample1, sample2, equiv_margin, n_bootstrap=N_BOOTSTRAP, confidence_level=BOOTSTRAP_CONFIDENCE, random_seed=42):

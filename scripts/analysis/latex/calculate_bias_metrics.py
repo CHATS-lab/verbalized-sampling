@@ -35,9 +35,9 @@ METHOD_MAP = {
     "direct_cot": ("CoT", "direct_cot"),
     "sequence": ("Sequence", "sequence"),
     "multi_turn": ("Multi-turn", "multi_turn"),
-    "vs_standard": ("VS-Standard", "structure_with_prob"),
-    "vs_cot": ("VS-CoT", "chain_of_thought"),
-    "vs_combined": ("VS-Multi", "combined"),
+    "vs_standard": ("VS-Standard", "vs_standard"),
+    "vs_cot": ("VS-CoT", "vs_cot"),
+    "vs_combined": ("VS-Multi", "vs_multi"),
 }
 
 # Useful ordered lists
@@ -48,7 +48,7 @@ VS_METHODS = ["VS-Standard", "VS-CoT", "VS-Multi"]
 
 def method_display_name_from_dir(method_dir_name: str) -> str | None:
     """
-    Map a raw directory name (e.g., 'structure_with_prob') to our display name (e.g., 'VS-Standard')
+    Map a raw directory name (e.g., 'vs_standard') to our display name (e.g., 'VS-Standard')
     using METHOD_MAP substring matching.
     """
     method_dir_name = method_dir_name.split()[0]
@@ -363,7 +363,7 @@ def plot_method_averages(all_results, task_type, output_dir):
 
 
 def plot_combined_metrics(all_results, task_type, output_dir):
-    """Create a combined graph showing KL divergence and Coverage-N metrics with legend on top"""
+    """Create a VS-Multi (vs_multi) graph showing KL divergence and Coverage-N metrics with legend on top"""
     
     # Create task-specific subdirectory
     task_output_dir = os.path.join(output_dir, task_type, "combined_metrics")
@@ -908,7 +908,7 @@ def main():
         # metric_directions=metric_directions,
     )
     
-    # Plot combined KL divergence and Coverage-N metrics
+    # Plot VS-Multi (vs_multi) KL divergence and Coverage-N metrics
     plot_combined_metrics(
         all_results=all_values,
         task_type=task_name,

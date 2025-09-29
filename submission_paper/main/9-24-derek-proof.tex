@@ -1,0 +1,56 @@
+\section{Method: Verbalized Sampling: Rework}
+
+\subsection{Asymptotic Behavior and Mode Collapse}
+
+The sharpening exponent $\gamma > 1$ in Equation~\eqref{eq:sharpened} has a profound effect on the output distribution. As $\gamma$ increases, the distribution $\pi^*(y \mid x) \propto \pi_\text{ref}(y \mid x)^\gamma$ becomes increasingly concentrated on high-probability regions of $\pi_\text{ref}$—analogous to temperature scaling but in the opposite direction. In the limit $\gamma \to \infty$, the probability ratio between any suboptimal response $y$ and the mode $y^*$ vanishes as $[\pi_\text{ref}(y \mid x) / \pi_\text{ref}(y^* \mid x)]^\gamma \to 0$, causing $\pi^*$ to converge to a Dirac delta:
+% AS: As gamma increases, probability shifts to the mode, so pi* is argmax
+% WS: Shorten para into 1 sentence - as sharpening exponent gamma increases, distribution ... will become equation 4
+% Wiser to avoid extensive formality
+% Move to 200?
+\begin{equation}
+\pi^*(y|x) \to \delta_{y^*} \quad \text{where } y^* = \arg\max_y \pi_\text{ref}(y \mid x)
+% add: on S
+\end{equation}
+This is precisely the mode collapse we observe empirically: sampling from the RLHF-trained model with strong typicality bias reduces to deterministically selecting the mode of the reference distribution, eliminating the diversity present in the original model.
+
+\subsection{Verbalized Sampling: Recovering Diversity through Distributional Prompting}
+
+\textbf{Core insight.} Can we circumvent this mode collapse without retraining? Our key observation is that by changing what we ask the model to produce—from a single instance to a distribution—we fundamentally alter what constitutes the `mode' of the output. Instead of prompting for a single response (e.g., ``Tell a joke about coffee''), we prompt the model to verbalize a distribution: ``Generate 5 different jokes about coffee and estimate the probability of each one.'' The model typically responds with numbered items and probability estimates, e.g., ``1. [joke] (Probability: 0.25)...''.
+
+\textbf{Intuition.} When asked for multiple samples with probabilities, even a mode-collapsed model must consider: what is the most likely \emph{set} of $k$ responses with associated probabilities? Intuitively, this cannot be $k$ copies of the single mode—that would obviously not represent a plausible distribution. Instead, the most representative output is one that mirrors the underlying distribution. We formalize this intuition below.
+
+\textbf{Theoretical justification: The modal type recovers the base distribution.} Consider a prompt requesting $k$ responses with their probabilities. Let $p = \pi_\text{ref}(\cdot \mid x)$ denote the base distribution over a finite outcome space $\mathcal{Y}$ with $|\mathcal{Y}| = m$. For a set of $k$ responses drawn i.i.d. from $p$, define the empirical distribution (or \emph{type} in information theory) $q = (q_1, \ldots, q_m)$ where $q_j = n_j/k$ is the fraction of responses equal to outcome $j$, with $\sum_j n_j = k$.
+
+Under i.i.d. sampling, the probability of observing type $q$ follows a multinomial distribution:
+\begin{equation}
+\Pr\{\text{type} = q\} = \frac{k!}{\prod_{j=1}^m (kq_j)!} \prod_{j=1}^m p_j^{kq_j}
+\label{eq:multinomial}
+\end{equation}
+
+Using Stirling's approximation $\log n! = n\log n - n + O(\log n)$ and the entropy $H(q) = -\sum_j q_j \log q_j$:
+\begin{align}
+\log \Pr\{\text{type} = q\} &= k H(q) + k\sum_j q_j \log p_j + O(\log k)\\
+&= -k \cdot \text{KL}(q \| p) + O(\log k)
+\label{eq:kl-form}
+\end{align}
+
+The $O(\log k)$ remainder is lower-order than the leading $-k \cdot \text{KL}$ term (see Appendix~\ref{app:vs-proof} for the complete derivation and method-of-types bounds). Therefore, maximizing \eqref{eq:multinomial} over $q \in \Delta_m$ is equivalent to minimizing $\text{KL}(q \| p)$.
+
+\begin{remark}
+The recovery of $p$ through VS is robust to the specific value of $k$. While larger $k$ provides better approximation theoretically (by the law of large numbers), we find $k=5$ sufficient in practice (Section~\ref{sec:experiments}), suggesting models have strong priors about representative distributions.
+\end{remark}
+
+\textbf{Overcoming typicality bias.} This result reveals why Verbalized Sampling successfully circumvents mode collapse: while standard prompting elicits $y^* = \arg\max_y \pi_\text{ref}(y|x)$ due to the sharpening effect of typicality bias (Equation~\eqref{eq:sharpened}), VS fundamentally changes the optimization objective. Instead of seeking the most likely \emph{instance}, the model now seeks the most likely \emph{distribution}—which is precisely $\pi_\text{ref}$ itself. Thus VS transforms the mode from a single stereotypical response to the diverse distribution learned during pretraining, effectively recovering the generative diversity that typicality bias had suppressed.
+
+% DC: The below is some handy text cut for length: May be useful to pull sentences out of for Discussion, Conclusion, etc.
+
+% \begin{theorem}[Modal Type Recovery]
+% The most likely type under i.i.d. sampling from $p$ is $q^* = p$ when all $p_j > 0$. For integer constraints, the modal counts are the nearest feasible approximation to $kp$ (see Appendix~\ref{app:rounding}).
+% \end{theorem}
+
+% \textbf{Bridging theory and practice.} While our analysis assumes true i.i.d. sampling, in practice VS operates through the model's learned capability to estimate and verbalize probability distributions \citep{tian_just_2023}, a skill developed during pretraining on diverse mathematical and statistical content. When prompted to assign probabilities, the model faces dual pressures: (1) producing plausible probability values that sum appropriately, and (2) generating responses that justify those probabilities. This dual constraint further encourages sampling from across the distribution rather than fixating on modal outputs.
+
+% \textbf{Controllable diversity.} An additional benefit of VS is fine-grained control over diversity. By adjusting the requested probabilities (e.g., ``with probabilities less than 0.1'' for higher diversity or ``with your top 3 most likely responses'' for lower diversity), we can tune the exploration-exploitation tradeoff, as demonstrated in Figure~\ref{fig:diversity-control} and Section~\ref{sec:ablations}.
+
+
+

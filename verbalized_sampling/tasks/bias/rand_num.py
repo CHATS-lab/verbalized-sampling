@@ -37,7 +37,7 @@ class RandomNumberTask(BaseTask):
     #     """Parse the model's response."""
     #     import json
         
-    #     if self.format in ["structure", "structure_with_prob"]:
+    #     if self.format in ["structure", "vs_standard"]:
     #         try:
     #             if isinstance(response, str):
     #                 # Remove markdown code block wrappers if present

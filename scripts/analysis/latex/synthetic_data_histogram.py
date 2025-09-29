@@ -13,9 +13,9 @@ METHOD_MAP = {
     "direct_cot": ("CoT", "cot"),
     "sequence": ("Sequence", "sequence"),
     "multi_turn": ("Multi-turn", "multi_turn"),
-    "vs_standard": ("VS-Standard", "structure_with_prob"),
-    "vs_cot": ("VS-CoT", "chain_of_thought"),
-    "vs_multi": ("VS-Multi", "combined"),
+    "vs_standard": ("VS-Standard", "vs_standard"),
+    "vs_cot": ("VS-CoT", "vs_cot"),
+    "vs_multi": ("VS-Multi", "vs_multi"),
 }
 
 
@@ -837,7 +837,7 @@ def main():
     # baseline_methods = ["direct", "direct_cot", "sequence", "multi_turn"]
     vs_methods = ["vs_standard", "vs_cot", "vs_multi"]
     
-    # Create the combined metrics plot
+    # Create the VS-Multi (vs_multi) metrics plot
     draw_combined_metrics_plot(
         metrics_values["GSM8K"],  # Use GSM8K data for the combined plot
         all_model_names,

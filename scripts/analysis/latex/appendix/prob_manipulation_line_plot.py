@@ -22,8 +22,8 @@ def load_evaluation_data(base_path):
     data = {
         'direct': {},
         'sequence': {},
-        'structure_with_prob': {},
-        'combined': {}
+        'vs_standard': {},
+        'vs_multi': {}
     }
     
     evaluation_path = os.path.join(base_path, 'evaluation')
@@ -41,11 +41,11 @@ def load_evaluation_data(base_path):
         elif 'sequence' in dir_name:
             method = 'sequence'
             prob_tuning = None  # Sequence doesn't have prob_tuning
-        elif 'structure_with_prob' in dir_name:
-            method = 'structure_with_prob'
+        elif 'vs_standard' in dir_name:
+            method = 'vs_standard'
             prob_tuning = extract_prob_tuning_from_path(dir_name)
-        elif 'combined' in dir_name:
-            method = 'combined'
+        elif 'vs_multi' in dir_name:
+            method = 'vs_multi'
             prob_tuning = extract_prob_tuning_from_path(dir_name)
         else:
             continue
@@ -95,17 +95,17 @@ def create_line_plots(data, output_path):
     })
 
     method_markers = {
-        'structure_with_prob': 'o',  # Circle
-        'combined': 's'  # Square
+        'vs_standard': 'o',  # Circle
+        'vs_multi': 's'  # Square
     }
     method_to_label = {
         'sequence': 'Sequence',
-        'structure_with_prob': 'VS-Standard',
-        'combined': 'VS-Multi'
+        'vs_standard': 'VS-Standard',
+        'vs_multi': 'VS-Multi'
     }
     # Define prob_tuning values (excluding None for direct/sequence)
     prob_tuning_values = []
-    for method in ['structure_with_prob', 'combined']:
+    for method in ['vs_standard', 'vs_multi']:
         for prob_tuning in data[method].keys():
             if prob_tuning is not None and prob_tuning not in prob_tuning_values:
                 prob_tuning_values.append(prob_tuning)
@@ -128,8 +128,8 @@ def create_line_plots(data, output_path):
     for idx, (metric, label) in enumerate(zip(metrics, metric_labels)):
         ax = axes[idx]
         
-        # Plot structure_with_prob and combined
-        for method in ['structure_with_prob', 'combined']:
+        # Plot structure_with_prob and VS-Multi (vs_multi)
+        for method in ['vs_standard', 'vs_multi']:
             x_values = []
             y_values = []
             

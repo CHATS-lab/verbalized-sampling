@@ -188,9 +188,9 @@ def prepare_synthetic_positive_method_dataset(question_generate_model_name, answ
         # "direct_cot": "direct_cot",
         # "multi_turn": "multi_turn",
         # "sequence": "sequence",
-        # "structure_with_prob": "vs_standard",
-        "chain_of_thought": "vs_cot",
-        # "combined": "vs_multi"
+        # "vs_standard": "vs_standard",
+        "vs_cot": "vs_cot",
+        # "vs_multi": "vs_multi"
     }
 
     os.makedirs("synthetic_lcb", exist_ok=True)

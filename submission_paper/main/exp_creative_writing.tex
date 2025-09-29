@@ -1,0 +1,353 @@
+\section{Creative Writing}\label{sec:creative_writing}
+% \wyshi{maybe consider a bold move to start with the task of "random number generation" and bia mitigation, instead of creativity tasks. Since these biased task really makes our point about mode collapse, but Figure~\ref{fig:training_progression} also proves this point. 
+
+
+% \jiayicomment{Need to define clearly about output diversity/creativity.}
+% \wyshi{also mention the joke and story task, you can have a separate section briefing the findings on these tasks. lots of good experiments buried in the appendix} \simoncomment{Will do once the experiment results are clear}
+
+% \wyshi{how did you choose the number of candidates? you two need to align your writing together, in the dialogue simulation task, it's mentioned, but not in the creative writing task?}
+
+% We begin with creativity tasks, as they are a good measure of a language model's output diversity. 
+Following prior work on LLM diversity~\citep{lu2025aihumanityssalieriquantifying}, we first study three creative writing tasks: poem continuation, story generation, and joke writing.
+
+
+\paragraph{Benchmarks.} We evaluate model performance on three benchmarks. For \textbf{(1) poem continuation} and \textbf{(2) story generation}, we follow the text continuation  setup in \citet{lu2025aihumanityssalieriquantifying}, and use poems from PoemHunter.com and stories from the BookMIA dataset \citep{shi2024detectingpretrainingdatalarge} for experiments.
+% we followed the same setup as the Creativity Index  \wyshi{on xx xx, very short and specific description}~\citep{lu2025aihumanityssalieriquantifying} that used poems collected by PoemHunter.com and Story collected from BookMIA (Shi et al., 2024) dataset. 
+For \textbf{(3) joke writing}: we follow \citet{turgeman2025jokeruleallimpossibility} and curate 100 thematic prompts from the Reddit r/DadJokes dataset~\citep{reddit_dad_jokes_2023}, each structured as ``Write me a joke about [topic]'' (e.g., ``...about an octopus''). 
+% to obtain a dataset with 100 curated thematic prompts from the Reddit r/DadJokes dataset~\citep{reddit_dad_jokes_2023} with the following structure: ``Write me a Joke about [Topic]'' (e.g., ``Write me a Joke about Octopus''). 
+To reduce computation costs, we randomly select 100 data points for these three tasks, and apply \ourslower to generate $k=5$ candidates and $N=30$ total samples for each data point. Detailed prompts are provided in \Cref{appendix:experiment_prompt}.
+
+
+\paragraph{Evaluation.}
+We evaluate all methods on two metrics: \textit{diversity} and \textit{quality}. (1) For diversity, we assess both semantic and lexical levels: (i) For semantic diversity, we follow prior work~\citep{cox2021directed,cann2023usingsemanticsimilaritytext,lu2025aihumanityssalieriquantifying,zhu2025bareleveragingbaselanguage} and calculate $1 - \bar{s}$, where $\bar{s}$ is the mean pairwise cosine similarity of response embeddings (generated using OpenAI's \texttt{text-embedding-3-small} model). Negative similarities are clipped to 0 to avoid inflating diversity and present the final score as a percentage, where 100\% represents maximum diversity. 
+% and use the following metrics:  $1 - $ the average pairwise cosine similarity of response embeddings (from OpenAI's \texttt{text-embedding-3-small} model). If the cosine similarity is negative, we clip it to 0, so the range is [0,1]. We express the final score in percentage, with 100\% as the maximum diversity.
+% Then we normalize this score to $[0, 1]$, where 0 represents semantic identity and 1 represents max diversity.
+% The similarity score is transformed to a normalized diversity score in the range $[0, 1]$, where 0 represents semantic identity and 1 represents max diversity. 
+(ii) For lexical diversity, we use ROUGE-L~\citep{lin-2004-rouge}, where lower scores indicate greater diversity~\citep{shaib2025standardizingmeasurementtextdiversity}. 
+% \wyshi{did we follow some prior work to use ROUGE-L? instead of type/token ratio} \simoncomment{\citep{shaib2025standardizingmeasurementtextdiversity}}
+% \as{Lexical diversity often refers to a type/token ratio -- I'm not sure if this is the same as ROUGE-L}. 
+(2) To evaluate output quality, we use Claude-3.7-Sonnet as the judge. We score \textit{Poem} and \textit{Story} with the rubrics from Creative Writing v3~\citep{paech2023eqbench}, and jokes with the Humor grader rubrics from HumorBench~\citep{narad2025llmsjokeprobingnonstem}. See \Cref{app:evaluation} for details on evaluation.
+
+
+
+
+\subsection{Results}
+% \begin{figure}[t]
+%   \centering
+%   \begin{subfigure}{0.48\textwidth}
+%     \centering
+%     \includegraphics[width=\textwidth]{figures/creative_writing/poem/method_average_diversity.pdf}
+%     % \caption{Average diversity across all models for different generation methods. VS-CoT and VS-Multi achieve significantly higher diversity (12.9\% and 11.6\%) compared to baseline methods. \wyshi{is it fair to compare VS-CoT to sequence? we can also have sequence-CoT, right}}
+%     % \label{fig:average_diversity}
+%   \end{subfigure}
+%   \hfill
+%   \begin{subfigure}{0.48\textwidth}
+%     \centering
+%     \includegraphics[width=\textwidth]{figures/creative_writing/poem/diversity_vs_quality_average.pdf}
+%     % \caption{Diversity-quality trade-offs for four frontier LLMs across different generation methods. Stars indicate Pareto optimal configurations that achieve the best balance between diversity and quality for each model.}
+%     % \label{fig:diversity_quality}
+%   \end{subfigure}
+%   \caption{\textbf{(Left)} Average diversity across all models for different prompting methods on \textbf{Poem Writing}. VS-CoT and VS-Multi achieve significantly higher diversity (12.9\% and 11.6\%) compared to baseline methods. \wyshi{is it fair to compare VS-CoT to sequence? we can also have sequence-CoT, right}
+%   \textbf{(Right)} Diversity-quality trade-offs across different prompting methods, averaged across models. Stars indicate Pareto optimal configurations that achieve the best balance between diversity and quality for each model. \wyshi{is this really the pareto optimal? its diversity is not the highest, right?} \wyshi{low priority: make the figure prettier, with seaborn e.g.}
+%   }
+%   \label{fig:diversity_main_plots}
+% \end{figure}
+
+% The strongest \wyshi{this is a subjective claim, just say that xx shows the result} results  of \ourslower are summarized in Figure~\ref{fig:diversity_main_plots}, with all experimental results in \Cref{tab:model_comparison_creativity} and \Cref{tab:joke_writing_performance}. \wyshi{Figure xx(a) shows the  diversity score across all models for different methods.} 
+% There are several takeaways: as shown in the left of the \Cref{fig:diversity_main_plots}, VS-CoT achieves the highest average diversity at 12.9\%, more than doubling the Direct baseline (5.7\%) and outperforming traditional approaches like CoT (6.1\%) and Multi-turn (7.5\%). $p$-test results show that the improvement is statistically significant compared to baselines.
+
+% \wyshi{just say 3b} The diversity-quality scatter plots in the right panel of Figure~\ref{fig:diversity_main_plots} reveal that VS-Multi method consistently achieve Pareto optimal configurations across frontier models. \wyshi{Figure 3b is the diversity-quality scatter plot. It shows that our VS-Multi method achieved the pareto optimal, with both a high diversity and a high quality score. }
+
+% === Statistical Tests for Poem ===
+% Direct**: VS-Standard (10.93) vs Direct (5.69), t=5.196, p=0.0000
+% CoT**: VS-Standard (10.93) vs CoT (6.11), t=4.743, p=0.0001
+% Sequence: VS-Standard (10.93) vs Sequence (9.13), t=1.280, p=0.1095
+% Multi-turn**: VS-Standard (10.93) vs Multi-turn (7.46), t=2.967, p=0.0045
+
+% === Statistical Tests for Story ===
+% Direct**: VS-Standard (17.36) vs Direct (11.09), t=5.315, p=0.0000
+% CoT**: VS-Standard (17.36) vs CoT (11.60), t=4.986, p=0.0001
+% Sequence**: VS-Standard (17.36) vs Sequence (14.79), t=1.974, p=0.0330
+% Multi-turn**: VS-Standard (17.36) vs Multi-turn (13.01), t=3.578, p=0.0013
+
+% === Statistical Tests for Joke ===
+% Direct**: VS-Standard (30.78) vs Direct (12.21), t=8.854, p=0.0000
+% CoT**: VS-Standard (30.78) vs CoT (13.72), t=8.305, p=0.0000
+% Sequence: VS-Standard (30.78) vs Sequence (30.53), t=0.243, p=0.4057
+% Multi-turn**: VS-Standard (30.78) vs Multi-turn (27.63), t=2.902, p=0.0052
+
+
+% \wyshi{can you either have three paragraphs, or put them together in one paragraph, instead of lumping story and joke together. it's not balanced. }
+%   \paragraph{Poem Continuation} Figure~\ref{fig:creativity_main}a shows the diversity and quality results on poem
+%   continuation, averaged across models. Results on individual model families are in \Cref{tab:model_comparison_creativity} and
+%   \Cref{tab:joke_writing_performance}. VS-Standard achieves significant improvements over most baseline methods, nearly doubling Direct performance ($p < 0.001$ by
+%   one-tailed t-test) and significantly outperforming CoT ($p < 0.001$) and Multi-turn ($p = 0.005$). The Sequence method shows
+%   improvement over simpler baselines but remains statistically comparable to VS-Standard ($p = 0.11$). \Cref{fig:creativity_main}\textbf{(d)} presents the diversity-quality trade-off plot. The VS-Multi method achieves the highest
+%   diversity while maintaining high quality scores, demonstrating that increased diversity does not compromise output quality. This demonstrates that our \ours
+%    can boost output diversity without hurting quality.
+
+%   \paragraph{Story Generation and Joke Writing} Figure~\ref{fig:creativity_main}\textbf{(b-c)} demonstrates that VS effectiveness
+%   extends consistently across creative writing domains. For story generation \textbf{(b)}, VS-Standard significantly outperforms all
+%   baseline methods: Direct and CoT ($p < 0.001$), Sequence ($p = 0.033$), and Multi-turn ($p = 0.001$). VS-CoT reaches the highest
+%   diversity score, representing a 47\% improvement over the best baseline. For joke writing \textbf{(c)}, the statistical advantage is even more pronounced. VS-Standard significantly outperforms Direct, CoT
+%   ($p < 0.001$), and Multi-turn ($p = 0.005$), while showing comparable performance to Sequence ($p = 0.41$). VS methods consistently
+%   dominate the top performance ranges across all tasks. Statistical analysis across all creative writing tasks ($N = 8$ models per comparison) reveals robust improvements, with
+%   particularly strong effects in poem ($t = 5.20$) and joke writing ($t = 8.85$ vs Direct). This consistent pattern validates
+%   the generalizability of our approach while preserving output quality, as shown in
+%   \Cref{tab:model_comparison_creativity_story} and \Cref{tab:joke_generation}.
+
+% \simoncomment{Explain why Multi better than CoT, but when VS-Multi under-perform CoT}
+
+
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=1\linewidth]{figures/creative_writing/unified_creativity_w_diversity_tuning.pdf}
+    \caption{
+    % \textbf{a-c:} Semantic diversity scores in poem continuation (\textbf{a}) story generation (\textbf{b}) and joke writing (\textbf{c}) across different methods. 
+    \textbf{a-c: Average semantic diversity scores} (\%) in poem  (\textbf{a}), story (\textbf{b}) and joke (\textbf{c}) across methods and models. Our methods consistently outperform the baselines. We performed a one-tailed t-test between VS-Standard and the baselines (* $p<0.05$, ** $p<0.01$, *** $p<0.001$). 
+    % One-tailed t-test shows VS-Standard significantly outperforms the baselines (** $p<0.01$).
+    \textbf{d: Diversity vs. Quality trade-off} for the poem task, where VS-Multi and VS-CoT approach the Pareto front. \textbf{e-f: Emergent Trend} where larger models benefit more from VS. We show differences in diversity \textbf{(e)} and quality \textbf{(f)} over Direct across small (GPT-4.1-Mini, Gemini-2.5-Flash) and large (GPT-4.1, Gemini-2.5-Pro) models. 
+    \textbf{g-i: Tunable Diversity} shows the diversity tuning results on Gemini-2.5-Flash across tasks. Unlike baseline methods in dashed lines, we can tune the diversity level with VS: as the probability threshold decreases, diversity increases.
+  % \wyshi{the y-axis of e and f "delta diversity against direct" is odd, maybe check with Gemini? "delta in diversity against xx"? i am not sure. diversity delta?} 
+  % \wyshi{what do these diversity scores mean intuitively? add reference that use this metrics, also need more qualitative examples in the appendix}
+  % \wyshi{the sign test results are different than before?}
+  % \wyshi{change the font for g-i title to align with others}
+  % \wyshi{increase the x and y-axis' font size, too small now}
+  % \wyshi{change a color for f, if they are all purple, i wouldn't notice that the y in f is quality difference, i would think that they are all divesity difference}
+%\cmcomment{For figure 2, what are the diversity scores? Are they percentages or what? That is, you say in the text above in section 5 that semantic diversity score is normalized to [0,1], but you’re showing numbers like “12”. Moreover, if semantic diversity is 1 - an average cosine similarity, then does it really need normalization? You’d be in the range of [0,1] unless the cosine score went negative (theoretically possible but tends not to happen in such language applications). Couldn’t you just truncate the cosine scores at 0, which is pretty common?}
+  \vspace{-3em}
+  % \wyshi{can we use a better and more consistent color for e and f}
+   % \as{Is this lexical or semantic diversity? Consider putting this type of info in all captions.}
+   % \as{Also, in a previous version I believe the error bars of the the model comparison were fairly large. Did we determine why that was? \simoncomment{The reason for the large error bars is that we averaged between the Gemini and GPT models, and the error bar reflected their performance difference.}}
+   }
+    \label{fig:creativity_main}
+\end{figure}
+
+
+\paragraph{Diversity Score.} Figure~\ref{fig:creativity_main}\text{(a)}-\text{(c)} show the semantic diversity score averaged across models on poem, story, and joke, respectively. %Results on lexical diversity and individual model families are in \Cref{tab:model_comparison_creativity}. 
+Across tasks, VS-Standard consistently and significantly outperforms baseline methods. The variants, VS-CoT and VS-Multi, further improve generation diversity. Detailed results on lexical diversity and individual model families are in \Cref{tab:model_comparison_creativity}.
+
+\paragraph{Diversity vs. Quality.} \Cref{fig:creativity_main}\text{(d)} shows the diversity-quality trade-off on the poem task. The quality of VS-Standard remains comparable to other methods. Notably, VS-CoT achieves the highest diversity while maintaining a high-quality score, pushing the Pareto front of this trade-off~\citep {zhang-etal-2021-trading}. This shows that VS can boost diversity without harming quality. See \Cref{appendix:creativity} for the diversity-quality trade-offs for the story and joke tasks.
+
+
+% The quality of VS-Standard drops a little bit, but is still comparable to other methods. VS-CoT achieves the highest diversity while maintaining a high quality score, pushing forward the Pareto-front of the ``diversity-quality tradeoff''~\citep {zhang-etal-2021-trading}. This demonstrates that VS can boost output diversity without hurting quality. See \Cref{appendix:creativity} for complete results on the diversity and quality tradeoff for story and joke tasks.
+
+
+
+
+\paragraph{Emergent Trend.}\label{sec:emergent_behavior}
+We observe an emergent trend where larger models benefit more from VS. \Cref{{fig:creativity_main}}\text{(e)} shows the diversity gain over the direct prompting which suffers from mode collapse. 
+Across all VS variants, larger models (GPT-4.1, Gemini-2.5-Pro) achieve diversity gains \text{1.5 to 2 times greater} than smaller models (GPT-4.1-Mini, Gemini-2.5-Flash). %This representation effectively highlights the net improvement over the baseline, which can suffer from mode collapse. 
+
+% \wyshi{where is cognitive burden? it's in FIg2, but i cannot easily map it to the text}
+% This scaling trend also extends to quality, as shown in \Cref{fig:creativity_main}\textbf{(f)}. Prior work \citep{yang_how_2025} found that more complex prompts can cause a ``cognitive burden''  that degrades LLM performance, and we observe similar phenomena that compared to a simple direct prompting baseline, more complex prompts like Sequence and VS-Standard will cause a drop in quality, but it is less severe for larger models. Moreover, more intricate methods (VS-CoT and VS-Multi) actually break this cognitive burden and improves the quality for larger models. This may suggest that eliciting a distribution in VS better utilizes the stronger capabilities of larger models, turnning potential complexity into a benfitl. 
+
+
+\paragraph{Cognitive Burden.} This scaling trend also extends to quality, as shown in \Cref{fig:creativity_main}\text{(f)}. While prior work \citep{hu_fine-tuning_2024} found complex prompts create a ``cognitive burden'' that degrades LLM performance, our findings are nuanced. Methods like Sequence and VS-Standard do cause a drop in quality, but this effect is less severe for larger models. Notably, more intricate variants like VS-CoT and VS-Multi overcome this burden, even improving quality on larger models. This suggests using VS may better utilize the capabilities of advanced models, turning complexity into benefits.
+
+% Prior work found that complex prompts can create a ``cognitive burden'' that degrades LLM performance. We observe a similar phenomenon: compared to the simple direct prompting baseline, more complex prompts like Sequence and VS-Standard cause a drop in quality, although this effect is less severe for larger models. Notably, more intricate methods like VS-CoT and VS-Multi appear to overcome this cognitive burden, even improving quality for larger models. This suggests that eliciting a response distribution via VS may better utilize the advanced capabilities of larger models, turning potential complexity into a benefit.
+
+% \paragraph{Diversity Tuning.} Unlike baseline methods, VS allows us to tune the output diversity by adjusting the probability threshold directly in the prompt (e.g., ``Generate five responses with probabilities below \{threshold\}''), without altering decoding parameters. As shown in \Cref{fig:creativity_main}\textbf{(h-j)}\wyshi{todo}, diversity increases as the probability threshold decreases. In contrast, with baseline methods like sequence, we cannot adjust the diversity level. See \Cref{sec:ablation_diversity_tuning_creativity} for more detailed results.
+
+% \paragraph{Diversity Tuning.} We can also tune the output diversity by adjusting the probability threshold directly in the prompt (e.g., ``Generate five responses with probabilities below \{threshold\}''), without altering decoding parameters. As shown in \Cref{fig:creativity_main}\textbf{(h-j)}\wyshi{todo}, diversity increases as the probability threshold decreases. In contrast, with baseline methods like sequence, we cannot change the diversity level. See \Cref{sec:ablation_diversity_tuning_creativity} for more detailed results.
+
+\paragraph{Diversity Tuning.} Unlike baseline methods, VS allows us to tune the output diversity by adjusting the probability threshold directly in the prompt (e.g., ``Generate five responses with probabilities below \{threshold\}''), without altering decoding parameters. As shown in \Cref{fig:creativity_main}\text{(g-i)}, diversity increases as the probability threshold decreases. See \Cref{sec:ablation_diversity_tuning_creativity} for more detailed results.
+
+
+% VS also enables \textbf{tunable diversity}, providing fine-grained control over the quality-diversity trade-off directly via prompting. By manipulating probability thresholds in the prompt, we can steer generation without changing decoding parameters. Full results are in Appendix \Cref{sec:ablation_diversity_tuning_creativity,sec:diversity_tuning_open_ended_qa}.
+
+\paragraph{Ablation on Post-Training Stages, Number of Candidates,  Decoding Methods, and Prompt Formats.} We perform comprehensive ablation studies on various factors. (1) 
+\Cref{sec:ablation_mitigation} confirms that post-training  reduces output diversity, and VS improves diversity across all post-training stages (SFT, RLHF, RLVR). (2) \Cref{sec:ablation_number_candidates} shows that a higher number of candidates, $k$, leads to greater diversity. (3) In \Cref{sec:ablation_decoding_strategies}, we vary the temperature and decoding strategies (top-$p$, and min-$p$), and show that VS is orthogonal to these generation parameters and can be combined with them to further enhance diversity-quality trade-off. 
+(4) In \Cref{sec:ablation_probability_format}, we test different prompt formats for eliciting distributions (e.g., asking for ``probability'', ``percentage'', or ``confidence''). While all formats improve diversity, we use the empirically best-performing format in the experiments: ``probability'' for VS-Standard and VS-CoT and ``confidence'' for VS-Multi. 
+% as long as it explicitly asks for a distribution. 
+% \jiayicomment{However, VS-Standard and VS-CoT generally perform better with ``probability,'' while VS-Multi performs better with ``confidence.'' So we use the same probability setting for the VS variants for the following experiments.}
+% So we use the standard probability-based prompt for the following experiments. \wyshi{edit this} 
+Across all these ablations, VS consistently outperformed the direct and sequence baselines under the same setups.
+
+% test different variations of prompt format, vary how we elicit the distribution in the prompt (e.g., ``generate five responses with their corresponding probability/perplexity/percentage''), and show that there is no significant different as long as it's an explicit distributional prompt, \wyshi{so in the following experient, we stick with the most standard format of asking for the probability}. In all these ablations, VS consistently outperforms the direct and sequence baseline with the same setup.
+
+% achieves better diversity-quality trade-off than sequence when we choose different number of candidates
+
+
+% Our method mitigates mode collapse during RLHF training and is orthogonal to generation parameters like the {number of candidates}, temperature, top-$p$, and min-$p$. This allows them to be used in combination to steer the quality-diversity trade-off. Detailed analyses are in Appendix \Cref{sec:ablation_mitigation} and \Cref{sec:ablation_decoding_strategies}.
+
+% \paragraph{Ablation on Probability Formats.}
+% We tested seven formats for verbalizing probabilities and found that while the optimal choice is task-dependent, using \textbf{Explicit} probabilities or \textbf{Confidence} scores are consistently strong strategies. The full analysis is presented in Appendix \Cref{sec:ablation_probability_format}.
+
+
+
+% \wyshi{add the tunable here?}
+% \wyshi{in the internal review, several questions on the ablation on decoding methods, etc. we should mention that they are in the appendix.}
+
+% \paragraph{Ablation on temperature, $top-p$, $min-p$ and RLHF stages~\citep{sec:ablation_mitigation}} \Cref{appendix:hyperparameters} \simoncomment{1-2 sentences summarize}
+
+% \paragraph{Ablation on Probability Formats} \Cref{sec:ablation_probability_format}
+
+% \paragraph{Ablation on Diversity tuning} \Cref{sec:ablation_diversity_tuning_creativity} for Creativity; \Cref{sec:diversity_tuning_open_ended_qa} for Open-ended QA
+% the structured reasoning of VS leverages the greater capacity of these models, turning potential complexity into a benefit. 
+%noted cognitive Notably, while more complex prompts can sometimes create a ``cognitive burden'' that degrades performance as in Sequence and VS-Standard~\citep{yang_how_2025}, especially for smaller models. In contrast, this drop is less significant for larger models, and more intricate methods (VS-CoT and VS-Multi) yield quality \textit{improvements} in larger models. This suggests that the structured reasoning of VS leverages the greater capacity of these models, turning potential complexity into a benefit.
+% \paragraph{Poem Continuation} 
+% Figure~\ref{fig:creativity_main}a shows the diversity and quality results on poem continuation, averaged across models. Results on individual model families are in \Cref{tab:model_comparison_creativity} and \Cref{tab:joke_writing_performance} \wyshi{missing link}. VS-Standard achieves significant improvements over most baseline methods, nearly doubling Direct performance ($p < 0.001$ by one-tailed t-test) and significantly outperforming CoT ($p < 0.001$) and Multi-turn ($p = 0.005$). %The Sequence method shows improvement over simpler baselines but remains statistically comparable to VS-Standard ($p = 0.11$). 
+% \Cref{fig:creativity_main}\textbf{(d)} presents the diversity-quality trade-off plot. The VS-Multi method achieves the highest diversity while maintaining high quality scores, pushing forward the Pareto-front of the ``quality-diversity tradeoff''~\citep {zhang-etal-2021-trading}. This demonstrates that our \ours can boost output diversity without hurting quality.
+
+% \paragraph{Story Generation} 
+% Figure~\ref{fig:creativity_main}\textbf{(b)} demonstrates that VS methods substantially improve diversity in story generation. VS-Standard significantly outperforms all baseline methods, including Direct, CoT, Multi-turn, and Sequence. Among all methods, VS-CoT achieves the highest diversity, improving by nearly 30\% over the strongest baseline. These results confirm that VS methods effectively enhance creativity in story generation without compromising quality.
+
+% \paragraph{Joke Writing} 
+% Figure~\ref{fig:creativity_main}\textbf{(c)} shows an even stronger advantage for joke writing. VS-Standard significantly outperforms Direct, CoT, and Multi-turn baselines, achieving performance comparable to Sequence. Among all variants, VS-CoT again reaches the highest diversity, slightly exceeding the best baselines and other VS methods. 
+
+% These results demonstrate that VS methods consistently gain better performance against baselines. The complete results for Poem, Story, and Joke are under \Cref{appendix:creativity}.
+
+
+ % Conversely, smaller models show more modest improvements and occasional quality trade-offs, indicating that the cognitive burden of following multiple instructions and probability estimation may challenge less capable models~\citep{hu_fine-tuning_2024, yang_how_2025}. These results collectively demonstrate that \ours represents a significant advancement in controllable text generation, offering substantial improvements across diverse model architectures while maintaining the quality-diversity balance essential for creative tasks.
+
+
+
+\subsection{Human Study on Diversity}
+To complement our automatic diversity scores, we conducted a human evaluation on Prolific. Following past work, we provided task-specific diversity definitions (plot, style and setup-punchline, respectively). 
+For each task, 30 annotators rated the diversity of 90 output pairs from three prompting methods (Direct, Sequence, VS-Standard)  across ten curated topics. 
+\begin{wrapfigure}{r}{0.5\textwidth}
+\vspace{-1em}
+    \captionof{table}{Human-rated diversity (1 = Very Similar, 4 = Very Dissimilar) for poem, story, and joke tasks under Direct, Sequence, and VS-Standard.%\wyshi{can we do t-test on this?}
+    }
+    \label{tab:human_study_diversity}
+    \resizebox{0.50\textwidth}{!}{
+    \centering
+    \begin{tabular}{lccc}
+    \toprule
+    \textbf{Task} & \textbf{Direct} & \textbf{Sequence} & \textbf{VS-Standard}\\
+    \midrule
+    Poem  & 1.90 & 2.07 & \textbf{2.39} \\ 
+    Story  & 2.74 & 2.76 & \textbf{3.06} \\
+    Joke  & 1.83 & 2.93 & \textbf{3.01} \\
+    \bottomrule
+    \end{tabular}
+    }
+    \vspace{-2em}
+\end{wrapfigure}
+Each pair was rated on a four-point Likert scale adopted from \citet{chen-etal-2022-semeval}: Very Similar, Somewhat Similar, Somewhat Dissimilar, or Very Dissimilar. Inter-annotator agreement was moderate for poems (0.54), high for stories (0.87) and jokes (0.86). 
+% We calculated the
+% inter-annotator agreement on two topics per task, yielding scores of  and 0.54 for poems \wyshi{why did this number change?, it was 0.6 something before?}, 0.87 for stories, 0.86 for jokes.
+Table~\ref{tab:human_study_diversity} shows that VS achieves higher diversity than the baselines on all tasks.
+See \S\ref{appendix:human_study_creativity} for more details on the human study.
+
+
+
+% We conducted a human evaluation on Prolific to complement the embedding-based diversity score. Following past work, we provided task-specific definitions of diversity: plot diversity for stories, stylistic diversity for poems, and setup–punchline diversity for jokes. For each task, 30 annotators compared 90 pairs of model outputs generated by the same prompting methods (Direct, Sequence, VS-Standard) to see how similar they are, across ten curated topics. Each pair was rated on a four-point Likert scale adopted from \citet{chen-etal-2022-semeval}: Very Similar, Somewhat Similar, Somewhat Dissimilar, or Very Dissimilar. We calculated the inter-annotator agreement on two topics per task, yielding scores of 0.86 for jokes, 0.87 for stories, and 0.54 for poems. Table~\ref{tab:human_study_diversity} shows that VS achieves higher diversity than the baselines on all tasks. See \S\ref{appendix:human_study_creativity} for more human study detail.
+
+% We recruited 30 annotators per task from Prolific, achieving inter-annotator agreement scores of 0.63, 0.71, and 0.89,  for poems, stories, and jokes, respectively. 
+% For each task, 30 annotators evaluated 90 pairwise comparisons of outputs from Gemini-2.5-Pro generated by direct, sequence, and VS-Standard methods . 
+% They rated each pair on a four-point Likert scale adopted from~\citep{chen-etal-2022-semeval}: ``Very Similar'', ``Somewhat Similar'', ``Somewhat Dissimilar'', and ``Very Dissimilar''. Table~\ref{tab:human_study_diversity} shows that VS achieves higher diversity than the baselines on all tasks. See \Cref{appendix:human_study_creativity} for the details on the human study setup.
+
+% \newtakeaway{On creative writing tasks, \ours enhances diversity while maintaining quality and allows tunable diversity. Larger models benefit more from VS.}
+
+%selected 9 topics (e.g., ``Write a story about a bear''), and sampled 3 responses per generation method, which led to 81 comparisons \wyshi{do you mean data points here? or pairs? not sure what does "comparison" mean here}\jiayicomment{pairwise comparison} per task.
+% \wyshi{did we exclude the pairs used to get the IAA?}\jiayicomment{include the pairs, since the agreement is okish}
+%For analysis, these ordinal ratings were mapped to numerical values ranging from 4 (Very Dissimilar) to 1 (Very Similar). %To normalize the diversity score for each pair, we applied the transformation 
+% $\frac{rating - 1}{3}$, analogous to the scaling procedure used in embedding-based pairwise diversity.
+% The inter-annotator agreement (IAA) on 18 pairs of comparisons for each task, finding Krippendorff’s alpha~\citep{krippendorff2018content} of 0.89, 0.63, and 0.71 for jokes, poems, and stories. 
+% \jiayicomment{We provided detailed human study design in appendix} \wyshi{how did you get the IAA, the diversity definition etc:  We focused on different aspects of diversity across tasks: plot diversity in stories, stylistic diversity (e.g., rhyme and imagery) in poems, and variation in setup–punchline structures in jokes.}
+% \jiayicomment{Report IAA, and results as a side table, correlation can be put in appendix}
+
+% \subsection{Ablation}
+
+
+% \subsection{Ablation Study}
+% We conduct several ablation studies on the poem task to better understand \ourslower's behavior. First, our ablation on model size revealed an 'emergent behavior'~\citep{wei2022emergentabilitieslargelanguage}, where the performance of \ourslower improves as model sizes increase while retaining quality. We also empirically validated our theoretical proof from \S~\ref{sec:oracle_principle}, confirming that \ourslower mitigates mode collapse across different RLHF stages.
+
+
+% This strategy mitigates the performance risks associated with a single, overly dense prompt~\citep{hu_fine-tuning_2024,jaroslawicz2025instructionsllmsfollowonce,yang_how_2025}. Our results demonstrate that Verbalized Sampling is a robust method for enhancing output diversity without compromising quality, with its benefits amplifying significantly with model scale.
+
+% \wyshi{i feel this part can be linked to the proof?} 
+% \paragraph{Effect of Temperature and Nucleus Sampling}
+% To understand whether traditional sampling techniques could achieve similar diversity gains, we compared Verbalized Sampling against various temperature ($t \in \{0.7, 1.0, 1.3\}$) and nucleus sampling ($p \in \{0.9, 0.95\}$) settings. While increasing temperature to 1.3 does improve diversity for baseline methods (reaching ~8-9\%), it comes at a significant quality cost, with average scores dropping by 15-20\%. Nucleus sampling shows even more limited improvements, achieving only 6-7\% diversity gains. Crucially, neither approach reaches the diversity levels of Verbalized Sampling (15\%), and both require careful hyperparameter tuning that varies across models and tasks. In contrast, Verbalized Sampling achieves high diversity without any sampling modifications, maintaining deterministic generation ($t=0$) and thus preserving output quality while enhancing variety through explicit reasoning.
+
+% We observe an emergent behavior that larger models benefit more from VS. \Cref{fig:diversity} shows the change in the diversity score \wyshi{is this the absolute change in diversity, the \% on the y-axis confuses me} \wyshi{wait, why is the y-axis "diversity change vs direct?" you can just show y-axis as the diversity score, across small and bigger models, right? don't need to compare with direct?}\simoncomment{We show the comparison against direct, such that it's easy to show the improvement over mode collapse outputs. The reader likely also easier to understand the improvement by showing the portion of improvement}. Across all VS variants, larger models (GPT-4.1, Gemini-2.5-Pro) consistently achieve 2-3$\times$ higher diversity improvements \wyshi{if it's absolute change, then this is inaccurate, where does the 2-3 times come from} \simoncomment{we mentioned it as 2-3 times \textbf{improvement} so it should be still a valid statement} compared to smaller models (GPT-4.1-Mini, Gemini-2.5-Flash). This gap is most pronounced in VS-Multi, %where large models achieve up to 7.7\% diversity improvement versus only 3.4\% for small models. 
+% This emergent trend also holds true for quality (\Cref{fig:quality}).
+
+% Notably, VS-CoT and VS-Multi effectively address the known challenge of "cognitive load" from complex prompts~\citep{yang_how_2025}: VS-CoT and VS-Multi are more complicated prompts, but their quality scores increases with larger models. This suggests that the extra step to verbalize probability \ourslower does not impose a burden to the model, but instead leverages the greater capacity of larger models to unlock more diverse outputs \wyshi{i think if you want to prove this point, you need to compare sequence-CoT and sequence-multi with VS-cot and vs-combined}. The VS-Multi approach manages a better balance than VS-Standard by spliting the task across turns. This avoids the potential cognitive load that can degrade performance when using a single, complex prompt \citep{hu_fine-tuning_2024,jaroslawicz2025instructionsllmsfollowonce,yang_how_2025}.
+% % \wyshi{i don't understand the logic here}.
+% Our approach demonstrates a robust solution to balance both diversity and quality, especially in larger models.
+
+% \simoncomment{Including the scaling experiments with different $N$ and also results across other models (Llama-3-405B, Qwen3-235B etc.)}
+% \paragraph{Cognitive Burden}.\wyshi{separate them to make the emergent thing more clear.} 
+% \vspace{-1.0em}
+
+
+% \section{Creative Writing} 
+% % Finish by simon
+
+% We begin with {two} creativity tasks to evaluate the effectiveness of Verbalized Sampling in enhancing diversity and creativity. 
+% We first evaluate our method on a self-curated joke writing dataset, then conduct a more comprehensive evaluation using the Creativity Index dataset~\citep{lu2025aihumanityssalieriquantifying}, which covers three different creative tasks: Poem writing, story generation and speech continuation.
+% Our results demonstrate that \ours achieves significant improvements in diversity across multiple state-of-the-art models while maintaining comparable quality scores. 
+% We also observed an emergent trend that Verbalized Sampling's effectiveness scales with model capacity, with larger models leveraging the structured generation process to enhance diversity while smaller models struggle with the increased cognitive demands, leading to minor quality degradation.
+
+
+% % \subsection{Experimental Setup}
+% \paragraph{Benchmarks} 
+% For the creative writing tasks, we followed the experimental settings from the Creativity Index~\citep{lu2025aihumanityssalieriquantifying}. We randomly sampled 100 poem continuation tasks from the Creativity Index, which is sourced from \url{PoemHunter.com}. For evaluation, we measured semantic diversity, n-gram overlap~\citep{lu2025aihumanityssalieriquantifying}, and employed an LLM-as-Judge approach to evaluate the quality of the generated stories. Specifically, we utilized the rubrics defined in Creative Writing~\citep{paech2023eqbench} and followed their settings, using Claude-4-Sonnet as the judge.
+
+
+% \subsection{Results}
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=\linewidth]{figures/poem/method_average_diversity_poem.pdf}
+%     \caption{A comparison of average diversity scores for different generation methods in the poem writing task. Higher values indicate greater diversity.}
+%     \label{fig:poem_method_avg_diversity}
+% \end{figure}
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=\linewidth]{figures/poem/method_average_quality_poem.pdf}
+%     \caption{A comparison of average quality scores for different generation methods in the poem writing task. Higher values represent better quality.}
+%     \label{fig:poem_method_avg_quality}
+% \end{figure}
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=\linewidth]{figures/poem/model_comparison_diversity_poem.pdf}
+%     \caption{Diversity scores for each model evaluated on the poem generation task. This figure allows for a direct comparison of diversity across models.}
+%     \label{fig:poem_model_comp_diversity}
+% \end{figure}
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=1.0\linewidth]{figures/poem/model_comparison_quality_poem.pdf}
+%     \caption{Quality scores for each model on the poem generation task. This chart provides a comparative view of the generated poem quality across all tested models.}
+%     \label{fig:poem_model_comp_quality}
+% \end{figure}
+
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=\linewidth]{figures/joke/method_average_rouge_l_joke.pdf}
+%     \caption{Average ROUGE-L scores for different methods in the joke generation task. Lower scores are preferable as they indicate less overlap with the source material.}
+%     \label{fig:joke_method_avg_rouge_l}
+% \end{figure}
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=\linewidth]{figures/joke/method_average_quality_joke.pdf}
+%     \caption{A comparison of average quality scores for various generation methods in the joke creation task. Higher scores denote higher quality jokes.}
+%     \label{fig:joke_method_avg_quality}
+% \end{figure}
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=\linewidth]{figures/joke/model_comparison_diversity_joke.pdf}
+%     \caption{Comparison of diversity scores across all tested models for the joke generation task, illustrating each model's capability to produce varied content.}
+%     \label{fig:joke_model_comp_diversity}
+% \end{figure}
+
+
+
+% \paragraph{Model size} Showing the emerged behavior which the verbalize sampling is most effective on larger models.
+
+% \paragraph{Cognitive burden}~\citep{yang_how_2025} We see drop in quality for verbalized sampling among most models, except for reasoning models. We treat this behavior as reaching the cognitive burden, as introduced in \citep{yang_how_2025}. The reduction on quality for certain models (esp. weaker models) can be explained by the cognitive burden to follow multiple instructions comparing with direct sampling, where LLMs are shown might not be a good sequential instruction followers~\citep{hu_fine-tuning_2024}.
+
+% \paragraph{Reasoning Model Performance}
+% Interestingly, reasoning-focused models (o3, DeepSeek-R1) show exceptional responsiveness to Verbalized Sampling. DeepSeek-R1 achieves the highest diversity improvement (+98.9\%) while simultaneously improving quality (+17.6\%), suggesting that models trained for complex reasoning tasks are particularly well-suited to leverage VS's structured approach to generation.
+
+% These results collectively demonstrate that Verbalized Sampling, particularly the Combined variant, represents a significant advancement in controllable text generation, offering substantial diversity improvements while preserving or enhancing quality across diverse model architectures and capabilities.

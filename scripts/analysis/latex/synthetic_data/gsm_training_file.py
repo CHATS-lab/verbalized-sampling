@@ -178,7 +178,7 @@ def read_response_file(file_path):
 
 
 def prepare_negative_dataset(dataset_train):
-    file_path = "method_synthetic_negative/gpt-4.1_synthetic_negative/generation/chain_of_thought [strict] (samples=5)/responses.jsonl"
+    file_path = "method_synthetic_negative/gpt-4.1_synthetic_negative/generation/vs_cot [strict] (samples=5)/responses.jsonl"
     prompt_to_responses = read_response_file(file_path)
 
     train_negative_file = []
@@ -244,9 +244,9 @@ def prepare_synthetic_positive_method_dataset(dataset_train, max_workers=5):
         "direct_cot": "direct_cot",
         # "multi_turn": "multi_turn",
         # "sequence": "sequence",
-        # "structure_with_prob": "vs_standard",
-        "chain_of_thought": "vs_cot",
-        # "combined": "vs_multi"
+        # "vs_standard": "vs_standard",
+        "vs_cot": "vs_cot",
+        # "vs_multi": "vs_multi"
     }
 
     os.makedirs("synthetic_data", exist_ok=True)
@@ -298,7 +298,7 @@ def prepare_synthetic_positive_method_dataset(dataset_train, max_workers=5):
 
 
 def prepare_synthetic_negative_kto_dataset(dataset_train, dataset_test):
-    file_path = "method_synthetic_negative/gpt-4.1_synthetic_negative/generation/chain_of_thought [strict] (samples=5)/responses.jsonl"
+    file_path = "method_synthetic_negative/gpt-4.1_synthetic_negative/generation/vs_cot [strict] (samples=5)/responses.jsonl"
     prompt_to_responses = read_response_file(file_path)
 
     train_negative_file = []

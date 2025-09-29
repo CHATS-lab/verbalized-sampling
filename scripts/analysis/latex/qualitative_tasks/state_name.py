@@ -77,7 +77,7 @@ def draw_distribution_comparison(direct_results, vs_results, direct_coverage_n, 
 
 def main():
     direct_results_file = "method_results_state_name/gpt-4.1_state_name/evaluation/direct (samples=1)/response_count_results.json"
-    vs_results_file = "method_results_state_name/gpt-4.1_state_name/evaluation/combined [strict] (samples=20)/response_count_results.json"
+    vs_results_file = "method_results_state_name/gpt-4.1_state_name/evaluation/vs_multi [strict] (samples=20)/response_count_results.json"
 
     with open(direct_results_file, "r") as f:
         direct_results = json.load(f)

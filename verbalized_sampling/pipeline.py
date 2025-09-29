@@ -211,7 +211,7 @@ class Pipeline:
                     "num_prompts": exp_config.num_prompts,
                     "random_seed": exp_config.random_seed,
                     "all_possible": exp_config.all_possible,
-                    "num_samples_per_prompt": exp_config.num_samples_per_prompt if exp_config.method == Method.COMBINED else None,
+                    "num_samples_per_prompt": exp_config.num_samples_per_prompt if exp_config.method == Method.VS_MULTI else None,
                 })
                 
                 # probability_definition is handled by the prompt system, not the task

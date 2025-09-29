@@ -105,7 +105,7 @@ if __name__ == "__main__":
         ]
         for prob_def in probability_definitions:
             methods.append({
-                'method': Method.STRUCTURE_WITH_PROB,
+                'method': Method.VS_STANDARD,
                 'strict_json': True,
                 'num_samples': C,
                 'probability_definition': prob_def,

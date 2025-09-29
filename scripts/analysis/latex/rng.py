@@ -397,9 +397,9 @@ def calculate_kl_divergence():
         cot_file = f"method_results_rng/{model}_rand_num/generation/direct_cot (samples=1)/responses.jsonl"
         multi_turn_file = f"method_results_rng/{model}_rand_num/generation/multi_turn (samples=5)/responses.jsonl"
         sequence_file = f"method_results_rng/{model}_rand_num/generation/sequence [strict] (samples=5)/responses.jsonl"
-        vs_standard_file = f"method_results_rng/{model}_rand_num/generation/structure_with_prob [strict] (samples=5)/responses.jsonl"
-        vs_cot_file = f"method_results_rng/{model}_rand_num/generation/chain_of_thought [strict] (samples=5)/responses.jsonl"
-        vs_multi_file = f"method_results_rng/{model}_rand_num/generation/combined [strict] (samples=5)/responses.jsonl"
+        vs_standard_file = f"method_results_rng/{model}_rand_num/generation/vs_standard [strict] (samples=5)/responses.jsonl"
+        vs_cot_file = f"method_results_rng/{model}_rand_num/generation/vs_cot [strict] (samples=5)/responses.jsonl"
+        vs_multi_file = f"method_results_rng/{model}_rand_num/generation/vs_multi [strict] (samples=5)/responses.jsonl"
         
         direct_samples = read_response_file(direct_file)
         cot_samples = read_response_file(cot_file)
@@ -464,7 +464,7 @@ def main():
     model = "gemini-2.5-pro"
     direct_file = f"method_results_rng/{model}_rand_num/generation/direct (samples=1)/responses.jsonl"
     sequence_file = f"method_results_rng/{model}_rand_num/generation/sequence [strict] (samples=5)/responses.jsonl"
-    vs_standard_file = f"method_results_rng/{model}_rand_num/generation/structure_with_prob [strict] (samples=5)/responses.jsonl"
+    vs_standard_file = f"method_results_rng/{model}_rand_num/generation/vs_standard [strict] (samples=5)/responses.jsonl"
 
     direct_samples = read_response_file(direct_file)
     sequence_samples = read_response_file(sequence_file)

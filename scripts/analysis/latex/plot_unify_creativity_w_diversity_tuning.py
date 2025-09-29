@@ -267,12 +267,12 @@ def load_baseline_data(base_path, model, task, baseline_type):
 def plot_single_model_diversity_tuning(ax, base_path, model, task, prob_values, title, colors, edge_colors):
     """Plot diversity tuning for a single model with styling aligned to plot_unify_creativity.py"""
 
-    # Load data for VS-Standard (structure_with_prob) and VS-Multi (combined)
+    # Load data for VS-Standard (structure_with_prob) and VS-Multi (VS-Multi (vs_multi))
     vs_standard_probs, vs_standard_divs = load_diversity_data(
-        base_path, model, task, "structure_with_prob", prob_values
+        base_path, model, task, "vs_standard", prob_values
     )
     vs_multi_probs, vs_multi_divs = load_diversity_data(
-        base_path, model, task, "combined", prob_values
+        base_path, model, task, "vs_multi", prob_values
     )
 
     # Load baseline data

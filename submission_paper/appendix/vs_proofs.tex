@@ -1,0 +1,443 @@
+
+% \appendix
+
+% \section{Proof of Modal Type Recovery}
+% \label{app:vs-proof}
+
+% \derek{This section is safe to remove, but perhaps best to leave until Anthony gets through as a reference}
+
+% We provide the complete derivation showing that the most likely type under i.i.d. sampling minimizes KL divergence from the base distribution.
+
+% \subsection{Setup and Multinomial Probability}
+
+% Consider outcomes $i = 1, \ldots, m$ with base distribution $p = (p_1, \ldots, p_m) \in \Delta_m$. For a size-$k$ unordered set drawn i.i.d. from $p$ with counts $n = (n_1, \ldots, n_m)$ where $\sum_i n_i = k$, the empirical distribution (type) is $q_i = n_i/k$. The probability of observing type $q$ is:
+% \begin{equation}
+% \Pr\{\text{type} = q\} = \frac{k!}{\prod_{i=1}^m (kq_i)!} \prod_{i=1}^m p_i^{kq_i}
+% \label{eq:app-multinomial}
+% \end{equation}
+
+% \subsection{Derivation via Stirling's Approximation}
+
+% Taking logarithms of \eqref{eq:app-multinomial}:
+% \begin{equation}
+% \log \Pr\{\text{type} = q\} = \log k! - \sum_{i=1}^m \log(kq_i)! + k\sum_{i=1}^m q_i \log p_i
+% \end{equation}
+
+% Applying Stirling's approximation $\log n! = n\log n - n + \tfrac{1}{2}\log(2\pi n) + r_n$ with $|r_n| \leq \frac{1}{12n}$:
+% \begin{align}
+% \log k! &= k\log k - k + \tfrac{1}{2}\log(2\pi k) + r_k\\
+% \log(kq_i)! &= kq_i \log(kq_i) - kq_i + \tfrac{1}{2}\log(2\pi kq_i) + r_{kq_i} \quad (q_i > 0)
+% \end{align}
+
+% For the main $k$-order terms, noting that $\sum_i kq_i \log(kq_i) = k\log k + k\sum_i q_i\log q_i$:
+% \begin{align}
+% (k\log k - k) - \sum_i(kq_i \log(kq_i) - kq_i) &= -k\sum_i q_i \log q_i = k H(q)
+% \end{align}
+
+% where $H(q) = -\sum_i q_i\log q_i$ is the Shannon entropy. Combined with the cross-entropy term:
+% \begin{equation}
+% k H(q) + k\sum_i q_i\log p_i = -k \cdot \text{KL}(q\|p)
+% \end{equation}
+
+% For the remainder terms, the half-logarithm contribution is:
+% \begin{align}
+% R_{\text{half-log}}(q) &= \tfrac{1}{2}\left[\log(2\pi k) - \sum_{i:q_i>0}\log(2\pi kq_i)\right]\\
+% &= -\tfrac{1}{2}\sum_{i:q_i>0}\log q_i + \tfrac{1}{2}(1-m_+)\log(2\pi k)
+% \end{align}
+
+% where $m_+ = |\{i : q_i > 0\}|$. Since $q_i \geq 1/k$ for nonzero coordinates, $|-\tfrac{1}{2}\sum\log q_i| \leq \tfrac{1}{2}m\log k$. Including Stirling remainders, the total remainder is $R_k(q) = O(\log k)$ uniformly over all types.
+
+% Therefore:
+% \begin{equation}
+% \boxed{\log \Pr\{\text{type} = q\} = -k \cdot \text{KL}(q\|p) + O(\log k)}
+% \end{equation}
+
+% Since the $O(\log k)$ term is lower-order, maximizing $\Pr\{\text{type} = q\}$ over $q \in \Delta_m$ is equivalent to minimizing $\text{KL}(q\|p)$. The unique minimizer is $q^* = p$, proving that the most likely type matches the base distribution.
+
+% \subsection{Integer Constraints and Rounding}
+% \label{app:rounding}
+
+% In practice, counts must be integers. We characterize the exact modal counts when rounding is necessary.
+
+% \begin{theorem}[Modal Multinomial Counts]
+% Let $p \in \Delta_m$ and $k \in \mathbb{N}$. Define $a_i = (k+1)p_i$, $b_i = \lfloor a_i \rfloor$, $f_i = \{a_i\}$ (fractional part), and $B = \sum_i b_i$. The modal count vectors $n^*$ are:
+
+% \begin{itemize}
+% \item \textbf{Case 1 ($B = k$):} Unique mode with $n^*_i = b_i$ for all $i$.
+% \item \textbf{Case 2 ($B < k$):} Modes have $n^*_i \in \{b_i, b_i+1\}$ with $\sum_i n^*_i = k$, where the $k-B$ increments go to indices with largest $f_i$.
+% \item \textbf{Case 3 ($B > k$):} Modes have $n^*_i \in \{b_i-1, b_i\}$ with $\sum_i n^*_i = k$, where the $B-k$ decrements go to indices with smallest $f_i$.
+% \end{itemize}
+
+% Equivalently, every coordinate satisfies:
+% \begin{equation}
+% \lfloor (k+1)p_i \rfloor - 1 \leq n^*_i \leq \lfloor (k+1)p_i \rfloor
+% \end{equation}
+% \end{theorem}
+
+% \begin{proof}[Proof Sketch]
+% For feasible $n$ and any $i \neq j$ with $n_j \geq 1$, moving one count from $j$ to $i$ yields:
+% \begin{equation}
+% \frac{P(n + e_i - e_j)}{P(n)} = \frac{n_j}{n_i+1} \cdot \frac{p_i}{p_j}
+% \end{equation}
+
+% At a maximum $n^*$, this ratio must be $\leq 1$ for all valid $(i,j)$, implying:
+% \begin{equation}
+% \frac{n^*_j}{p_j} \leq \frac{n^*_i + 1}{p_i} \quad \forall i,j \text{ with } n^*_j > 0
+% \end{equation}
+
+% This necessitates existence of $t \in [k, k+1]$ with $tp_i - 1 \leq n^*_i \leq tp_i$ for all $i$. The tightest such window uses $t = k+1$, yielding the stated bounds. The three cases follow from the sum constraint $\sum_i n^*_i = k$.
+% \end{proof}
+
+
+\section{Verbalized Sampling Theory}\label{appendix:additional_proof}
+
+
+\subsection{Empirical Insights: Pre-RLHF Preference Bias in Base Models}\label{appendix:preference_bias_base_model}
+
+  We investigate whether typicality bias exists in preference data before any preference
+  learning or alignment training. We evaluate five representative base models (Gemma-3-4B, Qwen3-4B,
+  Gemma-3-27B, Llama-3.1-8B, Llama-3.1-70B) on four widely-used preference datasets with different
+   annotation sources.
+
+  \textbf{Experimental Setup.} For each preference dataset, we present base models with preference
+   pairs and measure their agreement rate with the golden annotations. We sample 2,500 preference
+   pairs from each dataset and compute agreement percentages with 95\% confidence intervals. The
+  datasets span different domains and annotation methodologies: OpenAI TL;DR~\citep{stienon2020learning} (human-annotated
+  summarization), UltraFeedback~\citep{cui2023ultrafeedback} (GPT-4 annotations), NVIDIA HelpSteer-v2~\citep{wang2024helpsteer2} (human ratings), and
+  Skywork Preference~\citep{liu2024skywork} (hybrid).
+
+  \textbf{Results.} The results are shown in \Cref{fig:cognitive_bias_panels}. Our findings reveal the underlying preference biases across all base
+  models. Most critically, agreement rates consistently exceed the 50\% chance
+  baseline by 4-12 percentage points, indicating that base models exhibit implicit preference toward human preference. This suggests that preference biases emerge
+  during pre-training from underlying data distributions and model architectures.
+
+  The bias patterns show remarkable consistency: larger models (Llama-3.1-70B) tend to exhibit
+  stronger preference alignment, while smaller models show more variability. These results have significant implications for preference learning: RLHF and other preference
+  optimization methods may amplify existing biases rather than learning preferences de novo,
+resulting in the main cause of mode collapse or reduced diversity in model outputs.
+
+  \begin{figure}[!htbp]
+      \centering
+      \includegraphics[width=\linewidth]{figures/appendix/cognitive_bias_combined.pdf}
+      \caption{\textbf{Base model typicality bias with preference datasets across different annotation sources.} 
+      The y-axis measures the model's inherent alignment with human preferences, calculated as the percentage of times the base model assigns a higher probability to the human-preferred response over the dispreferred one. 
+      All models show a systematic, above-chance bias (agreement >50\%), with larger models generally exhibiting a stronger effect.
+      We also show the 95\% confidence intervals. 
+      The consistent above-chance preference shows that there exists a \textit{typicality biases} in human preference data.
+  }
+      \label{fig:cognitive_bias_panels}
+  \end{figure}
+  
+\subsection{Mode Collapse: Supplementary Experimental Validation}
+\label{app:evidence-controls}
+
+% DC: I'm inserting the raw result tables here to start - progressive enhancement into proper figures and tables coming!
+
+
+
+
+\begin{table}[h]
+\centering
+\small
+\caption{Bradley–Terry regressions estimating the typicality weight $\alpha$. OR = odds ratio per 1 SD of $\Delta\log p$ (base model log-probability). $\Delta P$ = predicted change in win probability from -1 SD to +1 SD.}
+\begin{tabular}{lcccccc}
+\toprule
+Base Model & Slice & $\hat\alpha$ & SE & OR (per 1 SD) & $\Delta P$ (-1→+1 SD) & $N$ pairs \\
+\midrule
+Llama 3.1 405B & Tie ($\Delta$corr=0) & 0.569 & 0.073 & 1.42 & +0.17 & 6{,}874 \\
+Llama 3.1 405B & Adjusted             & 0.456 & 0.048 & 1.80 & +0.28 & 28{,}283 \\
+GLM-4.5 & Tie                 & 0.649 & 0.072 & 1.47 & +0.19 & 6{,}874 \\
+GLM-4.5 & Adjusted             & 0.489 & 0.048 & 1.83 & +0.29 & 28{,}283 \\
+\bottomrule
+\end{tabular}
+\label{tab:mc-alpha}
+\end{table}
+
+
+
+% Extended version of main paper result: May be unpacked
+
+% \paragraph{(i) Controlled regression (HelpSteer).} 
+
+As outlined in \cref{sec:mc-typicality}, we test the “typicality” hypothesis on the training split of \textsc{HelpSteer}~\citep{wang2024helpsteer2}. We use per-response ratings for \emph{correctness} and \emph{overall helpfulness} to form $6{,}874$ within-prompt pairs matched on correctness (i.e., $\Delta\text{correctness}=0$), and compute per-token log-likelihoods under two base models, $\pi_{\text{ref}}$: \emph{Llama~3.1~405B Base} and \emph{GLM~4.5 Base}. We then fit the Bradley–Terry logistic model implied by \eqref{eq:bt-assumption}, with the binary outcome “which response receives higher helpfulness” and predictor $\Delta\bar{\ell}=\bar{\ell}_i-\bar{\ell}_j$ (difference in average log-likelihood under $\pi_{\text{ref}}$). The coefficient on $\Delta\bar{\ell}$ is the estimate of $\alpha$. Results are provided in Table~\ref{tab:mc-alpha}.
+
+On the correctness-matched pairs, we obtain $\hat{\alpha}=0.57\pm0.07$ for Llama~3.1~Base and $\hat{\alpha}=0.65\pm0.07$ for GLM~4.5~Base (cluster-robust SEs; both $p<10^{-14}$). Interpreted as odds ratios per one standard deviation in $\Delta\bar{\ell}$, this corresponds to $1.42$-$1.47\times$ higher odds of the more typical response being judged more helpful, a 17-19 percentage point increase in win probability. Using all $28{,}283$ within-prompt pairs and adding $\Delta\text{correctness}$ as a covariate yields similar but slightly smaller effects ($\hat{\alpha}\approx0.46$–$0.49$), confirming that typicality predicts helpfulness \emph{above and beyond} correctness. These results provide empirical evidence for a positive $\alpha$ term in \eqref{eq:bt-assumption}, i.e., human raters reward base-model typicality independent of semantic correctness.
+
+
+% DC: Reminders to self post-submission
+% 1. Add details for remaining two experiment (broader table below)
+% 2. Attach figures for the above - I've seen them and they look insanely compelling
+
+
+% Here we provide the per-model results with 95\% confidence intervals from the \emph{Reward Modelling Sanity Check} analysis.
+
+% \begin{table}[h]
+% \centering
+% \small
+% \caption{OpenAI Summarize-from-Feedback. Agreement rates with 95\% CIs.}
+% \label{tab:permodel-summarize}
+% \begin{tabular}{@{}lcc@{}}
+% \toprule
+% Model & Agreement (\%) & 95\% CI \\
+% \midrule
+% Gemma-3-4B & 52.4 & [50.4, 54.3] \\
+% Qwen-3-4B-Base & 51.6 & [49.7, 53.6] \\
+% Gemma-3-27B & 54.3 & [52.3, 56.2] \\
+% Llama-3.1-8B & 54.2 & [52.2, 56.1] \\
+% Llama-3.1-70B & 56.4 & [54.5, 58.3] \\
+% \bottomrule
+% \end{tabular}
+% \end{table}
+
+% \begin{table}[h]
+% \centering
+% \small
+% \caption{UltraFeedback (binarized). Agreement rates with 95\% CIs.}
+% \label{tab:permodel-ultra}
+% \begin{tabular}{@{}lcc@{}}
+% \toprule
+% Model & Agreement (\%) & 95\% CI \\
+% \midrule
+% Gemma-3-4B & 57.5 & [55.3, 59.6] \\
+% Qwen-3-4B-Base & 59.0 & [56.8, 61.1] \\
+% Gemma-3-27B & 60.2 & [58.0, 62.3] \\
+% Llama-3.1-8B & 58.0 & [55.8, 60.1] \\
+% Llama-3.1-70B & 59.5 & [57.3, 61.6] \\
+% \bottomrule
+% \end{tabular}
+% \end{table}
+
+% \begin{table}[h]
+% \centering
+% \small
+% \caption{NVIDIA HelpSteer. Agreement rates with 95\% CIs.}
+% \label{tab:permodel-helpsteer}
+% \begin{tabular}{@{}lcc@{}}
+% \toprule
+% Model & Agreement (\%) & 95\% CI \\
+% \midrule
+% Gemma-3-4B & 57.8 & [56.2, 60.2] \\
+% Qwen-3-4B-Base & 60.8 & [58.9, 62.8] \\
+% Gemma-3-27B & 58.4 & [55.4, 60.7] \\
+% Llama-3.1-8B & 56.2 & [53.9, 59.7] \\
+% Llama-3.1-70B & 59.8 & [58.6, 62.0] \\
+% \bottomrule
+% \end{tabular}
+% \end{table}
+
+% \begin{table}[h]
+% \centering
+% \small
+% \caption{Skywork Reward Preference. Agreement rates with 95\% CIs.}
+% \label{tab:permodel-skywork}
+% \begin{tabular}{@{}lcc@{}}
+% \toprule
+% Model & Agreement (\%) & 95\% CI \\
+% \midrule
+% Gemma-3-4B & 59.6 & [57.6, 61.5] \\
+% Qwen-3-4B-Base & 61.7 & [59.8, 63.6] \\
+% Gemma-3-27B & 59.6 & [57.6, 61.5] \\
+% Llama-3.1-8B & 58.8 & [56.9, 60.8] \\
+% Llama-3.1-70B & 59.6 & [57.7, 61.6] \\
+% \bottomrule
+% \end{tabular}
+% \end{table}
+
+
+\subsection{Power-Transform Sharpening under Typicality Bias}
+\label{app:power-sharpening}
+
+The closed-form solution to the KL-regularized RLHF objective \eqref{eq:objective} is well-known \citep{rafailov2024directpreferenceoptimizationlanguage}:
+\begin{equation}
+\pi^*(y\mid x) = \frac{1}{Z(x)}\,\pi_{\mathrm{ref}}(y\mid x)\,\exp\!\left(\frac{r(x,y)}{\beta}\right)
+\end{equation}
+
+Substituting our reward decomposition from \eqref{eq:bt-assumption}, we have:
+\begin{align}
+\pi^*(y\mid x) &= \frac{1}{Z(x)}\,\pi_{\mathrm{ref}}(y\mid x)\,\exp\!\left(\frac{r_{\text{true}}(x,y) + \alpha\,\log \pi_{\mathrm{ref}}(y\mid x) + \epsilon(x)}{\beta}\right) \nonumber\\
+&= \frac{\exp(\epsilon(x)/\beta)}{Z(x)}\,\pi_{\mathrm{ref}}(y\mid x)^{1+\alpha/\beta}\,\exp\!\left(\frac{r_{\text{true}}(x,y)}{\beta}\right)
+\end{align}
+
+Since the partition function $Z(x)$ contains the same $\exp(\epsilon(x)/\beta)$ factor, this cancels, yielding:
+\begin{equation}
+\pi^*(y\mid x) \propto \pi_{\mathrm{ref}}(y\mid x)^{\gamma}\,\exp\!\left(\frac{r_{\text{true}}(x,y)}{\beta}\right), \quad \gamma := 1 + \frac{\alpha}{\beta}
+\label{eq:power-result}
+\end{equation}
+
+This power transform with exponent $\gamma > 1$ (when $\alpha > 0$) sharpens the reference distribution, amplifying its modes while suppressing the tails. The effect strengthens as the typicality bias $\alpha$ increases or the KL penalty $\beta$ decreases. In the limiting case where true task utility is approximately flat over a set $\mathcal{S}$, the optimal policy reduces to $\pi^*(\cdot \mid x) \propto \pi_{\mathrm{ref}}(\cdot \mid x)^{\gamma}$ on $\mathcal{S}$, producing mode collapse toward the most typical responses under $\pi_{\mathrm{ref}}$.
+
+
+
+% claims about prompting section is here:
+\input{appendix/Anthony_proof}
+
+% OLD COMMENTED OUT BELOW
+% \subsection{Power Transform Sharpening}
+% \label{app:power-sharpening}
+
+% % --- Power-transform sharpening: derivation from (2) and (3) to (4) ---
+
+
+
+
+% \paragraph*{Power-transform sharpening.} Plugging (3) into (2) yields the following step-by-step simplification.
+
+% \medskip
+% \noindent\textbf{What (2) and (3) say.}
+% \begin{align*}
+% \text{(2)}\qquad
+% \pi^\star(y\mid x)
+% &= \frac{1}{Z(x)}\;\pi_{\mathrm{ref}}(y\mid x)\,\exp\!\big(r(x,y)/\beta\big),
+% \\[-2pt]
+% Z(x) \;&=\; \sum_{y'} \pi_{\mathrm{ref}}(y'\mid x)\,\exp\!\big(r(x,y')/\beta\big)
+% \quad\text{(replace $\sum$ by $\int$ if $y$ is continuous),}
+% \\[6pt]
+% \text{(3)}\qquad
+% r(x,y) \;&=\; r_{\mathrm{sem}}(x,y) \;+\; \alpha\,\log \pi_{\mathrm{ref}}(y\mid x) \;+\; c(x),
+% \qquad \alpha>0,
+% \end{align*}
+% where $c(x)$ does not depend on $y$.
+
+% \medskip
+% \noindent\textbf{Plug (3) into (2) and simplify.}
+% \begin{align*}
+% \pi^\star(y\mid x)
+% &= \frac{1}{Z(x)}\;
+% \pi_{\mathrm{ref}}(y\mid x)\,
+% \exp\!\Big(\tfrac{r_{\mathrm{sem}}(x,y) + \alpha \log \pi_{\mathrm{ref}}(y\mid x) + c(x)}{\beta}\Big) \\[4pt]
+% &= \frac{1}{Z(x)}\;
+% \pi_{\mathrm{ref}}(y\mid x)\,\exp\!\big(r_{\mathrm{sem}}(x,y)/\beta\big)\,
+% \exp\!\big(\alpha \log \pi_{\mathrm{ref}}(y\mid x)/\beta\big)\,
+% \exp\!\big(c(x)/\beta\big) \\[4pt]
+% &= \frac{\exp\!\big(c(x)/\beta\big)}{Z(x)}\;
+% \big(\pi_{\mathrm{ref}}(y\mid x)\big)^{\,1+\alpha/\beta}\;
+% \exp\!\big(r_{\mathrm{sem}}(x,y)/\beta\big),
+% \end{align*}
+% using $\exp(\alpha\log p/\beta)=p^{\alpha/\beta}$. The normalizer becomes
+% \begin{align*}
+% Z(x)
+% &= \sum_{y'} \pi_{\mathrm{ref}}(y'\mid x)\,
+% \exp\!\Big(\tfrac{r_{\mathrm{sem}}(x,y') + \alpha \log \pi_{\mathrm{ref}}(y'\mid x) + c(x)}{\beta}\Big) \\[2pt]
+% &= \exp\!\big(c(x)/\beta\big)\;
+% \sum_{y'} \big(\pi_{\mathrm{ref}}(y'\mid x)\big)^{\,1+\alpha/\beta}\;
+% \exp\!\big(r_{\mathrm{sem}}(x,y')/\beta\big).
+% \end{align*}
+% The factor $\exp(c(x)/\beta)$ cancels, so defining
+% \[
+% \tilde{Z}(x) \;=\; \sum_{y'} \big(\pi_{\mathrm{ref}}(y'\mid x)\big)^{\,1+\alpha/\beta}\;
+% \exp\!\big(r_{\mathrm{sem}}(x,y')/\beta\big),
+% \]
+% we obtain
+% \[
+% \boxed{\;
+% \pi^\star(y\mid x)
+% = \frac{\big(\pi_{\mathrm{ref}}(y\mid x)\big)^{\,1+\alpha/\beta}\;
+% \exp\!\big(r_{\mathrm{sem}}(x,y)/\beta\big)}
+% {\displaystyle \sum_{y'} \big(\pi_{\mathrm{ref}}(y'\mid x)\big)^{\,1+\alpha/\beta}\;
+% \exp\!\big(r_{\mathrm{sem}}(x,y')/\beta\big)}
+% \;\;\propto\;\;
+% \big(\pi_{\mathrm{ref}}(y\mid x)\big)^{\,1+\alpha/\beta}\;
+% \exp\!\big(r_{\mathrm{sem}}(x,y)/\beta\big)
+% \;}
+% \]
+% which is exactly (4).
+
+% % \medskip
+% % \noindent\textbf{Quick sanity checks.}
+% % \begin{itemize}
+% % \item \emph{$c(x)$ disappears.} It contributes $\exp(c(x)/\beta)$ that cancels in normalization, as shown.
+% % \item \emph{Sharpening exponent.} $\gamma = 1+\alpha/\beta>1$ (since $\alpha,\beta>0$), so $p \mapsto p^\gamma$ is a power transform that sharpens $\pi_{\mathrm{ref}}$.
+% % \item \emph{Odds form (consistency).} For any $y_a,y_b$,
+% % \[
+% % \frac{\pi^\star(y_a\mid x)}{\pi^\star(y_b\mid x)}
+% % = \Big(\frac{\pi_{\mathrm{ref}}(y_a\mid x)}{\pi_{\mathrm{ref}}(y_b\mid x)}\Big)^{1+\alpha/\beta}
+% % \exp\!\Big(\frac{r_{\mathrm{sem}}(x,y_a)-r_{\mathrm{sem}}(x,y_b)}{\beta}\Big).
+% % \]
+% % \end{itemize}
+
+% % \medskip
+% % \noindent\textbf{Inline log-space version.} Sometimes it is convenient to write
+% % \[
+% % \log \pi^\star(y\mid x) \;=\; \Big(1+\frac{\alpha}{\beta}\Big)\log \pi_{\mathrm{ref}}(y\mid x)
+% % \;+\; \frac{1}{\beta}r_{\mathrm{sem}}(x,y) \;-\; \log \tilde{Z}(x).
+% % \]
+
+
+
+% \subsection{Verbalized Sampling: Proof of the projection identity (Eq.~\eqref{eq:i-proj})}\label{app:iproof}
+
+% We restate the claim and give a full proof, including existence/uniqueness conditions.
+
+% \begin{proposition}[Projection identity under the log score]
+% Let $Y$ be finite, let $p\in\Delta(Y)$ with support $S_p=\{y\in Y:\,p(y)>0\}$, and let $\mathcal A\subseteq \Delta(Y)$ be nonempty. Define $L(q)=\E_{Y\sim p}[\log q(Y)]$ with the convention $\log 0=-\infty$ and $0\log(0/q)=0$. Then the sets of optimizers coincide:
+% \[
+% \arg\max_{q\in\mathcal A} L(q)
+% \;=\;
+% \arg\min_{q\in\mathcal A} \KL\!\big(p\ \|\ q\big),
+% \]
+% where $\KL(p\|q)=\sum_{y\in Y} p(y)\log\!\big(p(y)/q(y)\big)$ takes value $+\infty$ whenever $q(y)=0$ for some $y\in S_p$.
+
+% Moreover:
+% \begin{enumerate}
+% \item[(i)] (\emph{Existence}) If $\mathcal A$ contains at least one $q$ with $q(y)>0$ for all $y\in S_p$ and $\mathcal A$ is closed, then the minimum of $\KL(p\|q)$ over $\mathcal A$ is attained (and the same for the maximum of $L$).
+% \item[(ii)] (\emph{Uniqueness}) If, in addition, $\mathcal A$ is convex and intersects the relative interior
+% \[
+% \mathrm{ri}\big\{q\in\Delta(Y): q(y)>0\ \forall\,y\in S_p\big\},
+% \]
+% then the minimizer is unique.
+% \item[(iii)] (\emph{Distribution prompts}) If $\mathcal A=\Delta(Y)$, the unique optimizer is $q^\star=p$.
+% \end{enumerate}
+% \end{proposition}
+
+% \begin{proof}
+% \textbf{Equality of optimizer sets.}
+% For any $q$ with $q(y)>0$ for all $y\in S_p$,
+% \[
+% L(q)=\sum_{y\in Y} p(y)\log q(y) \;=\; -\KL(p\|q)-H(p),
+% \]
+% where $H(p)=-\sum_y p(y)\log p(y)$ does not depend on $q$. If $q(y)=0$ for some $y\in S_p$, then $L(q)=-\infty$ and $\KL(p\|q)=+\infty$, so such $q$ cannot optimize either objective. Hence the $\arg\max$ of $L$ over $\mathcal A$ coincides with the $\arg\min$ of $\KL(p\|q)$ over $\mathcal A$ (as extended-valued optimizations).
+
+% \textbf{(i) Existence.}
+% Because $Y$ is finite, $\Delta(Y)$ is compact. The map $q\mapsto \KL(p\|q)$ is lower semicontinuous on $\Delta(Y)$ when extended with the value $+\infty$ on $\{q:\exists\,y\in S_p,\ q(y)=0\}$. If $\mathcal A$ is closed and contains some $q$ strictly positive on $S_p$, then $\mathcal A\cap\{q:\ q>0\ \text{on}\ S_p\}$ is nonempty and (being a closed subset of a compact set) is compact. Lower semicontinuity yields attainment of the minimum of $\KL(p\|q)$ on this set, hence also of the maximum of $L$.
+
+% \textbf{(ii) Uniqueness.}
+% On $\{q:\ q(y)>0\ \forall y\in S_p\}$,
+% \[
+% \KL(p\|q) = \text{const} \;-\; \sum_{y\in S_p} p(y)\log q(y),
+% \]
+% and $q\mapsto -\log q(y)$ is strictly convex on $(0,1)$. A positive weighted sum of strictly convex functions, restricted to an affine slice (the simplex), remains strictly convex; thus $\KL(p\|\cdot)$ is strictly convex on any convex set contained in $\{q:\ q>0\ \text{on}\ S_p\}$. If $\mathcal A$ is convex and intersects the relative interior of this domain, the minimizer of a strictly convex function over $\mathcal A$ is unique.
+
+% \textbf{(iii) Case $\mathcal A=\Delta(Y)$.}
+% Gibbs’ inequality gives $\KL(p\|q)\ge 0$ with equality iff $q=p$, so $p$ is the unique minimizer (and thus maximizer of $L$).
+% \end{proof}
+
+% \paragraph{Remarks.}
+% (1) If $\mathcal A$ contains only distributions that place zero mass on some $y\in S_p$ (e.g., pure Dirac answers when $p$ is non-degenerate), then $\inf_{q\in\mathcal A}\KL(p\|q)=+\infty$ and $\sup_{q\in\mathcal A}L(q)=-\infty$; in practice we handle point prompts via soft-delta limits in Appendix~\ref{app:point-limit}. (2) For top-$k$ constraints with $k\ge |S_p|$, existence and uniqueness hold and the optimizer is $p$ restricted to the top-$k$ support and renormalized (the I-projection onto the $k$-sparse face).
+
+
+
+% \subsection{Verbalized Sampling: Point prompts as limits}\label{app:point-limit}
+% We justify the claim that \emph{point prompts return a mode} by treating point reports as limits of smooth distributions.
+
+% \paragraph{Setup.}
+% For each $y\in Y$ and temperature $\tau>0$, define a \emph{soft‑delta} $q_y^{(\tau)}\in\simplex(Y)$ such that $q_y^{(\tau)}(y)\to 1$ and $q_y^{(\tau)}(y')\to 0$ for $y'\neq y$ as $\tau\downarrow 0$. Two concrete families suffice:
+% \begin{enumerate}
+% \item \textbf{Sharpened categorical:} $q_y^{(\tau)}(y)=\frac{e^{1/\tau}}{e^{1/\tau}+ (|Y|-1)}$, $q_y^{(\tau)}(y')=\frac{1}{e^{1/\tau}+(|Y|-1)}$ for $y'\neq y$.
+% \item \textbf{Mixture with uniform:} $q_y^{(\tau)}=(1-\tau)\,\delta_y+\tau\,u$, where $u$ is uniform on $Y$.
+% \end{enumerate}
+% Let $\mathcal A^{(\tau)}(x)=\{q_y^{(\tau)}:\,y\in Y\}$ so that $\overline{\mathcal A^{(\tau)}(x)}\to \mathcal A_{\mathrm{point}}(x)$ as $\tau\downarrow 0$.
+
+% \paragraph{Claim.}
+% For every fixed $\tau>0$, the minimizer of $q\mapsto \KL(p\|q)$ over $\mathcal A^{(\tau)}(x)$ is some $q_{y^*}^{(\tau)}$ with $y^*\in\arg\max_y p(y\mid x)$. Moreover, as $\tau\downarrow 0$, any sequence of minimizers $q_{y^*}^{(\tau)}$ converges (in distribution) to $\delta_{y^*}$ with $y^*\in\arg\max_y p(y\mid x)$.
+
+% \paragraph{Proof sketch.}
+% For any $q\in\mathcal A^{(\tau)}(x)$,
+% \[
+% \KL(p\|q) \;=\; -\sum_y p(y\mid x)\log q(y) - H(p).
+% \]
+% The $-H(p)$ term is constant, so minimizing $\KL$ is equivalent to maximizing $\sum_y p(y)\log q(y)$.
+% For both constructions, $\log q_y^{(\tau)}(y)-\log q_y^{(\tau)}(y')$ is strictly increasing in $1/\tau$, and
+% \[
+% \Phi_{y}^{(\tau)} \;=\; p(y)\log q_y^{(\tau)}(y) + \sum_{y'\neq y} p(y')\log q_y^{(\tau)}(y')
+% \]
+% is strictly increasing in $p(y)$ because $q_y^{(\tau)}(y')$ is the same for all $y'\neq y$. Hence any maximizer must choose $y^*\in\arg\max_y p(y)$. Finally, epi/$\Gamma$‑convergence of $q\mapsto \KL(p\|q)$ on $\mathcal A^{(\tau)}(x)$ to its lower semicontinuous extension on $\mathcal A_{\mathrm{point}}(x)$ ensures $q_{y^*}^{(\tau)}\Rightarrow \delta_{y^*}$, establishing that \emph{the point‑prompt projection selects a mode}. \qedhere

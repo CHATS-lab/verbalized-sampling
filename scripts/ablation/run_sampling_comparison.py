@@ -58,7 +58,7 @@ def create_optimized_comparison_experiments(
     verbalized_methods = [
         (Method.SEQUENCE, "sequence"),
         (Method.MULTI_TURN, "multi_turn"), 
-        (Method.STRUCTURE_WITH_PROB, "structure_with_prob"),
+        (Method.VS_STANDARD, "vs_standard"),
     ]
     
     for method, name in verbalized_methods:
@@ -176,7 +176,7 @@ def run_quick_demo(
         ),
         ExperimentConfig(
             name="structure_with_prob_standard",
-            method=Method.STRUCTURE_WITH_PROB,
+            method=Method.VS_STANDARD,
             temperature=0.7,
             top_p=0.9,
             strict_json=True,

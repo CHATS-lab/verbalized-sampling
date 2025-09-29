@@ -1,0 +1,202 @@
+\subsection{Open-Ended Question Answering}\label{appendix:open_ended_qa}
+Building on the finding that VS improves diversity, this section evaluates whether it can also mitigate stereotypical outputs and generate more balanced answer distributions in open-ended QA tasks.
+
+
+\paragraph{Benchmarks.} We use the \textit{CoverageQA}~\citep{wong2024simplestratdiversifyinglanguagemodel} dataset designed to elicit a broad range of valid answers and expose potential bias (e.g., ``Name a US state''   expects all 50 states, revealing whether models overproduce frequent ones like ``California'' while neglecting rare ones like ``Wyoming''). 
+Each question has at least 20 ground-truth answers requiring no further reasoning or external knowledge, so that the evaluation strictly focuses on the response coverage. 
+To reduce cost, we evaluate VS on 40 questions, combining originals from the \textbf{CoverageQA} dataset~\citep{wong2024simplestratdiversifyinglanguagemodel} with additional ones we created in the same style.  
+For each question, we sample $N=100$ responses per method, with each LLM call generating $k=20$ candidates, capturing both within-call (across the $k$ candidates) and across-calls (over the total $N$ responses) diversity.
+Full prompts and questions are in~\Cref{appendix:experiment_prompt}.
+% \jiayicomment{50 general + 50 questions from the dataset, how to determine if general use small model and with at least 98\% accuracy}
+
+\paragraph{Evaluation.}
+We evaluate bias and coverage using three metrics: (1) \textbf{Coverage-N}, the fraction of unique ground-truth answers generated in $N$ samples; higher values indicate broader coverage. (2) \textbf{KL divergence}, the deviation of the model's answer distribution from uniform; %over ground-truth answers \wyshi{i thought there is no ground-truth?}\jiayicomment{we have ground truth answer but not ground truth distribution}; 
+lower values indicate a more balanced distribution. (3) \textbf{Precision}, the proportion of correct answers among all samples; it measures if the increased diversity comes at the expense of correctness. 
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+    \captionsetup{skip=2pt}
+    \centering
+    % % Figure with its own caption and label
+    % \begin{minipage}{\linewidth}
+    %     \centering
+    %     \includegraphics[width=\linewidth]{figures/bias/coverage_n.pdf}
+    %     \captionof{figure}{\textbf{Average Coverage-N} across models on different methods. \wyshi{this one overlaps with Figure 10, please delete}
+    %     }
+    %     \label{fig:bias_coverage_n}
+    % \end{minipage}
+
+    % \vspace{4pt}
+
+    \captionof{table}{Coverage test across models: percent of times (\%) VS-Standard fully covers Sequence or Sequence fully covers VS-Standard.}
+    \label{tab:bias_coverage_test}
+    \resizebox{0.5\textwidth}{!}{
+        \centering
+        \begin{tabular}{lcc}
+        \toprule
+        \textbf{Model} & \textbf{VS-Standard(\%)} & \textbf{Sequence(\%)} \\
+        \midrule
+        GPT-4.1-mini      & 47.5  & 15.0  \\
+        GPT-4.1           & 57.5  & 20.0  \\
+        Gemini-2.5-Flash  & 45.0  & 15.0  \\
+        Gemini-2.5-Pro    & 15.0  & 12.5  \\
+        Claude-4-Sonnet   & 40.0  & 30.0  \\
+        Deepseek-r1       & 25.0  & 17.5  \\
+        o3                & 20.0  & 20.0  \\
+        Qwen3-235b        & 37.5  & 22.5  \\
+        \bottomrule
+        \end{tabular}
+    }
+    \vspace{-2em}
+\end{wrapfigure}
+
+\paragraph{Results.} 
+% \wyshi{describe the KL, precision results here}
+Figure~\ref{fig:open_ended_qa_combined_results} reports qualitative results across methods. 
+For KL divergence in Figure~\ref{fig:open_ended_qa_combined_results} (a), VS-Standard achieves significantly lower KL divergence compared to Direct, CoT, and Multi-turn prompting, indicating more balanced response distributions. While the improvement over sequence prompting is modest, it remains consistent across models. 
+In terms of Coverage-N in Figure~\ref{fig:open_ended_qa_combined_results} (b), VS-Standard also significantly outperforms Direct, CoT, and Multi-turn prompting, with marginal improvement over Sequence. However, VS-Multi achieves the best overall tradeoff, delivering both the highest Coverage-N and lowest KL divergence. 
+
+To further assess diversity, we introduce a \textit{coverage test}, which measures how often responses from VS-Standard fully subsume those from sequence. As shown in Table~\ref{tab:bias_coverage_test}, VS-Standard consistently covers sequence more often than the reverse across models.
+However, because of mode collapse, direct prompting yields highly skewed and narrow outputs. For instance, when prompted with ``Name a US State,'' Claude-4-sonnet outputs ``California'' 95 out of 100 times, covering only 2 states. \ours reduces this bias to 5 occurrences of ``California'' and expands coverage to 20 states.
+Importantly, as shown in Figure~\ref{fig:open_ended_qa_combined_results} (c) these gains in diversity are achieved without loss of answer quality: precision for VS is stably close to 1 and comparable across all methods.
+See Table~\ref{tab:all_results_open_ended_qa_general} in Appendix~\ref{appendix:open_ended_qa} for detailed results.
+
+
+\newtakeaway{\ours reduces output bias and increases answer coverage without compromising answer quality.}
+
+
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/bias/combined_kl_coverage_precision.pdf}
+  \caption{
+  Results on the \textbf{Open-Ended QA} task averaged across models. We perform one-tailed t-test between VS-Standard and baselines (*$p<0.05$, **$p<0.01$, ***$p<0.001$). 
+      \textbf{(a)} shows the average KL divergence between the response distribution and a uniform distribution. VS achieves lower KL divergence (i.e., less biased) compared to baseline methods, indicating more balanced answer distributions. 
+      \textbf{(b)} shows the average Coverage-N across all models. This means VS can generate a broader range of correct answers than the baselines. 
+      \textbf{(c)}  shows the average precision across all models. VS methods maintain answer quality comparable to baseline approaches.
+      % \wyshi{merge figure 10 and 11, the precision one. and change the caption slightly. it looks ugly just by itself.}
+  }
+  \label{fig:open_ended_qa_combined_results}
+\end{figure*}
+
+% \begin{figure}[!htbp]
+%     \centering
+%     \includegraphics[width=0.5\linewidth]{figures/bias/method_average_precision.pdf}
+%     \caption{Precision results on \textbf{Open-Ended QA} task averaged across models.}
+%     \label{fig:open_ended_qa_precision}
+% \end{figure}
+
+
+\begin{table}[!htbp]% htbp
+\centering
+\small
+\caption{
+Individual model results for the \textbf{Open-Ended QA} task.
+% \wyshi{what do you mean by general questions? the 40+40 question sets?}. 
+Each method is evaluated by KL divergence (lower is better), Coverage-N (higher is better), and Precision (higher is better). 
+\sethlcolor{LightBlue}\hl{\textbf{Blue}} highlights the best-performing method for each model, 
+and \sethlcolor{LightGreen}\underline{\hl{green}} marks the second-best method.  
+}
+\label{tab:all_results_open_ended_qa_general}
+\resizebox{0.70\textwidth}{!}{
+\begin{tabular}{llccc}
+\toprule
+\textbf{Model} & \textbf{Settings} & \textbf{KL Divergence} $\downarrow$ & \textbf{Coverage-N} $\uparrow$ & \textbf{Precision} $\uparrow$  \\
+\midrule
+\multirow{8}{*}{GPT-4.1-mini} 
+& Direct           & 3.39$_{\pm 0.60}$ & 0.06$_{\pm 0.06}$ & \bestcell{1.00$_{\pm 0.01}$} \\
+& CoT              & 3.27$_{\pm 0.58}$ & 0.07$_{\pm 0.07}$ & \secondcell{0.99$_{\pm 0.09}$} \\
+& Sequence         & 0.69$_{\pm 0.59}$ & 0.59$_{\pm 0.22}$ & 0.93$_{\pm 0.18}$ \\
+& Multi-turn       & 1.20$_{\pm 0.63}$ & 0.42$_{\pm 0.20}$ & 0.96$_{\pm 0.07}$ \\
+& \textbf{Verbalized Sampling:} \\
+& $\hookrightarrow$ Standard  & 0.57$_{\pm 0.38}$ & 0.65$_{\pm 0.20}$ & 0.95$_{\pm 0.11}$ \\
+& $\hookrightarrow$ CoT  & \bestcell{0.55$_{\pm 0.38}$} & \bestcell{0.67$_{\pm 0.21}$} & 0.95$_{\pm 0.11}$ \\
+& $\hookrightarrow$ Multi-turn  & \secondcell{0.56$_{\pm 0.38}$} & \secondcell{0.66$_{\pm 0.20}$} & 0.94$_{\pm 0.10}$ \\
+\midrule
+\multirow{8}{*}{GPT-4.1}
+& Direct           & 3.25$_{\pm 0.62}$ & 0.09$_{\pm 0.07}$ & \bestcell{1.00$_{\pm 0.00}$} \\
+& CoT              & 3.12$_{\pm 0.63}$ & 0.10$_{\pm 0.08}$ & \secondcell{1.00$_{\pm 0.00}$} \\
+& Sequence         & 0.60$_{\pm 0.39}$ & 0.61$_{\pm 0.20}$ & 0.96$_{\pm 0.10}$ \\
+& Multi-turn       & 0.83$_{\pm 0.47}$ & 0.53$_{\pm 0.21}$ & 0.98$_{\pm 0.04}$ \\
+& \textbf{Verbalized Sampling:} \\
+& $\hookrightarrow$ Standard  & 0.55$_{\pm 0.38}$ & 0.66$_{\pm 0.21}$ & 0.97$_{\pm 0.07}$ \\
+& $\hookrightarrow$ CoT  & \bestcell{0.52$_{\pm 0.37}$} & \bestcell{0.68$_{\pm 0.20}$} & 0.97$_{\pm 0.08}$ \\
+& $\hookrightarrow$ Multi-turn  & \secondcell{0.53$_{\pm 0.38}$} & \secondcell{0.67$_{\pm 0.21}$} & 0.97$_{\pm 0.08}$ \\
+\midrule
+\multirow{8}{*}{Gemini-2.5-Flash} 
+& Direct           & 3.06$_{\pm 0.69}$ & 0.12$_{\pm 0.13}$ & 0.97$_{\pm 0.15}$ \\
+& CoT              & 3.20$_{\pm 0.55}$ & 0.08$_{\pm 0.06}$ & \bestcell{0.99$_{\pm 0.08}$} \\
+& Sequence         & 0.59$_{\pm 0.40}$ & 0.63$_{\pm 0.21}$ & 0.97$_{\pm 0.10}$ \\
+& Multi-turn       & 0.91$_{\pm 0.51}$ & 0.55$_{\pm 0.23}$ & 0.92$_{\pm 0.12}$ \\
+& \textbf{Verbalized Sampling:} \\
+& $\hookrightarrow$ Standard  & \secondcell{0.53$_{\pm 0.40}$} & \secondcell{0.68$_{\pm 0.23}$} & 0.96$_{\pm 0.10}$ \\
+& $\hookrightarrow$ CoT  & 0.54$_{\pm 0.39}$ & 0.67$_{\pm 0.22}$ & 0.95$_{\pm 0.10}$ \\
+& $\hookrightarrow$ Multi-turn  & \bestcell{0.52$_{\pm 0.42}$} & \bestcell{0.71$_{\pm 0.24}$} & \secondcell{0.97$_{\pm 0.06}$} \\
+\midrule
+\multirow{8}{*}{Gemini-2.5-Pro}
+& Direct           & 2.94$_{\pm 0.57}$ & 0.12$_{\pm 0.09}$ & \bestcell{1.00$_{\pm 0.00}$} \\
+& CoT              & 3.13$_{\pm 0.52}$ & 0.09$_{\pm 0.08}$ & \secondcell{1.00$_{\pm 0.00}$} \\
+& Sequence         & \secondcell{0.52$_{\pm 0.35}$} & \secondcell{0.67$_{\pm 0.20}$} & 0.98$_{\pm 0.04}$ \\
+& Multi-turn       & 0.66$_{\pm 0.39}$ & 0.64$_{\pm 0.20}$ & 0.95$_{\pm 0.04}$ \\
+& \textbf{Verbalized Sampling:} \\
+& $\hookrightarrow$ Standard  & 0.54$_{\pm 0.34}$ & 0.66$_{\pm 0.20}$ & 0.98$_{\pm 0.03}$ \\
+& $\hookrightarrow$ CoT  & 0.53$_{\pm 0.33}$ & 0.66$_{\pm 0.19}$ & 0.98$_{\pm 0.04}$ \\
+& $\hookrightarrow$ Multi-turn  & \bestcell{0.48$_{\pm 0.33}$} & \bestcell{0.71$_{\pm 0.20}$} & 0.98$_{\pm 0.04}$ \\
+\midrule
+\multirow{8}{*}{Claude-4-Sonnet}
+& Direct           & 3.37$_{\pm 0.43}$ & 0.05$_{\pm 0.04}$ & \secondcell{1.00$_{\pm 0.00}$} \\
+& CoT              & 3.49$_{\pm 0.48}$ & 0.04$_{\pm 0.03}$ & \bestcell{1.00$_{\pm 0.00}$} \\
+& Sequence         & 0.62$_{\pm 0.42}$ & 0.60$_{\pm 0.22}$ & 0.94$_{\pm 0.13}$ \\
+& Multi-turn       & 2.41$_{\pm 0.53}$ & 0.20$_{\pm 0.11}$ & 0.99$_{\pm 0.02}$ \\
+& \textbf{Verbalized Sampling:} \\
+& $\hookrightarrow$ Standard  & 0.60$_{\pm 0.39}$ & 0.61$_{\pm 0.21}$ & 0.96$_{\pm 0.10}$ \\
+& $\hookrightarrow$ CoT  & \secondcell{0.58$_{\pm 0.39}$} & \secondcell{0.63$_{\pm 0.21}$} & 0.97$_{\pm 0.10}$ \\
+& $\hookrightarrow$ Multi-turn  & \bestcell{0.32$_{\pm 0.34}$} & \bestcell{0.80$_{\pm 0.20}$} & 0.95$_{\pm 0.10}$ \\
+\midrule
+\multirow{8}{*}{DeepSeek-R1}
+& Direct           & 2.79$_{\pm 0.61}$ & 0.15$_{\pm 0.12}$ & \secondcell{0.99$_{\pm 0.02}$} \\
+& CoT              & 3.04$_{\pm 0.59}$ & 0.10$_{\pm 0.07}$ & \bestcell{1.00$_{\pm 0.02}$} \\
+& Sequence         & 0.52$_{\pm 0.41}$ & 0.68$_{\pm 0.23}$ & 0.96$_{\pm 0.10}$ \\
+& Multi-turn       & 0.59$_{\pm 0.38}$ & 0.68$_{\pm 0.21}$ & 0.91$_{\pm 0.10}$ \\
+& \textbf{Verbalized Sampling:} \\
+& $\hookrightarrow$ Standard  & \secondcell{0.52$_{\pm 0.35}$} & 0.70$_{\pm 0.19}$ & 0.95$_{\pm 0.08}$ \\
+& $\hookrightarrow$ CoT  & \bestcell{0.50$_{\pm 0.41}$} & \bestcell{0.73$_{\pm 0.22}$} & 0.94$_{\pm 0.13}$ \\
+& $\hookrightarrow$ Multi-turn  & 0.55$_{\pm 0.39}$ & \secondcell{0.73$_{\pm 0.23}$} & 0.93$_{\pm 0.13}$ \\
+\midrule
+\multirow{8}{*}{o3}
+& Direct           & 3.02$_{\pm 0.65}$ & 0.11$_{\pm 0.09}$ & \bestcell{1.00$_{\pm 0.00}$} \\
+& CoT              & 3.00$_{\pm 0.63}$ & 0.11$_{\pm 0.08}$ & \secondcell{1.00$_{\pm 0.00}$} \\
+& Sequence         & \secondcell{0.48$_{\pm 0.34}$} & 0.70$_{\pm 0.19}$ & 0.98$_{\pm 0.04}$ \\
+& Multi-turn       & 0.52$_{\pm 0.34}$ & 0.68$_{\pm 0.19}$ & 0.98$_{\pm 0.05}$ \\
+& \textbf{Verbalized Sampling:} \\
+& $\hookrightarrow$ Standard  & 0.48$_{\pm 0.33}$ & \secondcell{0.71$_{\pm 0.19}$} & 0.98$_{\pm 0.05}$ \\
+& $\hookrightarrow$ CoT  & 0.49$_{\pm 0.33}$ & 0.69$_{\pm 0.19}$ & 0.97$_{\pm 0.06}$ \\
+& $\hookrightarrow$ Multi-turn  & \bestcell{0.46$_{\pm 0.32}$} & \bestcell{0.72$_{\pm 0.18}$} & 0.97$_{\pm 0.05}$ \\
+\midrule
+\multirow{8}{*}{Qwen3-235B}
+& Direct           & 3.30$_{\pm 0.56}$ & 0.07$_{\pm 0.06}$ & \secondcell{1.00$_{\pm 0.00}$} \\
+& CoT              & 3.37$_{\pm 0.51}$ & 0.06$_{\pm 0.05}$ & \bestcell{1.00$_{\pm 0.00}$} \\
+& Sequence         & 0.60$_{\pm 0.40}$ & 0.62$_{\pm 0.21}$ & 0.96$_{\pm 0.10}$ \\
+& Multi-turn       & 1.54$_{\pm 0.65}$ & 0.38$_{\pm 0.20}$ & 0.97$_{\pm 0.05}$ \\
+& \textbf{Verbalized Sampling:} \\
+& $\hookrightarrow$ Standard  & \secondcell{0.57$_{\pm 0.38}$} & 0.65$_{\pm 0.21}$ & 0.95$_{\pm 0.11}$ \\
+& $\hookrightarrow$ CoT  & \bestcell{0.56$_{\pm 0.39}$} & \bestcell{0.66$_{\pm 0.21}$} & 0.95$_{\pm 0.10}$ \\
+& $\hookrightarrow$ Multi-turn  & 0.61$_{\pm 0.41}$ & \secondcell{0.65$_{\pm 0.22}$} & 0.96$_{\pm 0.08}$ \\
+\midrule
+\rowcolor{gray!15}
+\textbf{Direct} & & 3.14$_{\pm 0.21}$ & 0.10$_{\pm 0.03}$ & 1.00$_{\pm 0.01}$ \\
+\rowcolor{gray!15}
+\textbf{CoT} & & 3.20$_{\pm 0.16}$ & 0.08$_{\pm 0.02}$ & 1.00$_{\pm 0.01}$ \\
+\rowcolor{gray!15}
+\textbf{Sequence} & & 0.58$_{\pm 0.06}$ & 0.64$_{\pm 0.04}$ & 0.96$_{\pm 0.02}$ \\
+\rowcolor{gray!15}
+\textbf{Multi-turn} & & 1.08$_{\pm 0.59}$ & 0.51$_{\pm 0.16}$ & 0.96$_{\pm 0.03}$ \\
+% \midrule
+\rowcolor{gray!15}
+\textbf{VS-Standard} & & 0.54$_{\pm 0.04}$ & 0.67$_{\pm 0.04}$ & 0.96$_{\pm 0.01}$ \\
+\rowcolor{gray!15}
+\textbf{VS-CoT} & & 0.53$_{\pm 0.03}$ & 0.68$_{\pm 0.03}$ & 0.96$_{\pm 0.01}$ \\
+\rowcolor{gray!15}
+\textbf{VS-Multi} & & 0.50$_{\pm 0.08}$ & 0.71$_{\pm 0.04}$ & 0.96$_{\pm 0.02}$ \\
+\bottomrule
+\end{tabular}
+}
+\end{table}

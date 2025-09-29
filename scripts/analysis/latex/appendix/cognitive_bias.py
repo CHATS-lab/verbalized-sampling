@@ -309,14 +309,14 @@ def plot_panels(models: List[str], datasets: List[Dict], data: Dict[str, Dict[st
 def main():
     parser = argparse.ArgumentParser(description="Plot cognitive bias bar charts with CIs")
     parser.add_argument('--output-dir', type=str, default='latex_figures/appendix', help='Directory to save figures')
-    parser.add_argument('--figures', type=str, default='both', choices=['combined', 'panels', 'both'], help='Which figures to generate')
+    parser.add_argument('--figures', type=str, default='both', choices=['vs_multi', 'panels', 'both'], help='Which figures to generate')
 
     args = parser.parse_args()
 
     models, datasets, data = get_data()
 
     generated = []
-    if args.figures in ('combined', 'both'):
+    if args.figures in ('vs_multi', 'both'):
         generated.append(plot_combined(models, datasets, data, args.output_dir))
     if args.figures in ('panels', 'both'):
         generated.append(plot_panels(models, datasets, data, args.output_dir))

@@ -6,7 +6,11 @@
 - [x] Add LICENSE file to repository (Apache-2.0 for CHATS-Lab)
 - [x] Add Makefile for development workflow automation
 - [x] Add setup.py for backward compatibility
-- [ ] Clean up repository structure - move/organize loose files and directories
+- [x] Clean up repository structure - move/organize loose files and directories
+- [x] Create new directory structure (scripts/, generated_data/, plots/, examples/, docs/)
+- [x] Move all experiment files to organized locations
+- [x] Update .gitignore for new structure
+- [x] Remove temporary and duplicate files
 - [ ] Set up pre-commit hooks for code formatting (black, isort, ruff, mypy)
 - [ ] Add comprehensive test suite and improve pytest configuration
 
@@ -41,22 +45,41 @@
 -  Evaluation framework with multiple metrics
 
 ### Areas Needing Attention
-- L No LICENSE file (only declared in pyproject.toml)
-- L Repository cluttered with experiment files and loose directories
-- L No pre-commit hooks or CI/CD
-- L Limited test coverage
-- L Generated responses scattered across multiple directories
-- L Missing OSS community standards files
-- L No proper documentation structure (just README)
+- ✅ LICENSE file now implemented (Apache-2.0)
+- ✅ Repository structure completely reorganized and clean
+- ✅ Professional directory structure with organized file placement
+- ❌ No pre-commit hooks or CI/CD
+- ❌ Limited test coverage
+- ❌ Missing OSS community standards files
+- ❌ No proper documentation structure (just README)
 
-### Repository Structure Issues
-The following files/directories should be organized:
-- Loose experiment files: `book_diversity_tuning_comparison.pdf`, `joke_diversity_tuning_comparison.pdf`, etc.
-- Generated data directories: `generated_data/`, `synthetic_*/`, `method_results_*/`, etc.
-- Analysis scripts: `extract_joke_results.py`, `plot_max_diversity.py`, etc.
-- Temporary files: `temp_combine_script.py`, `test.py`
+### Repository Structure - COMPLETED ✅
+**New Professional Structure:**
+```
+verbalized-sampling/
+├── scripts/                    # All executable scripts
+│   ├── analysis/              # Analysis and plotting code (includes latex/)
+│   ├── data_processing/       # Data processing scripts + processing/
+│   ├── experiments/           # Experiment runners and tests
+│   └── tasks/                 # Existing task scripts
+├── generated_data/            # All experiment results (organized)
+├── plots/                     # Generated plots and figures
+├── examples/                  # Usage examples (demo_safety_usage.py)
+├── docs/                      # Ready for documentation
+├── ablation_data/             # Ablation study results (kept)
+├── analyse/                   # Analysis code (kept)
+├── data/                      # Source datasets (kept)
+└── verbalized_sampling/       # Main package (kept)
+```
+
+**Major Cleanup Accomplished:**
+- ✅ 8 Python scripts → organized into scripts/ subdirectories
+- ✅ 9 experiment directories → moved to generated_data/
+- ✅ PNG files + latex_figures → organized in plots/
+- ✅ processing/ → moved to scripts/data_processing/
+- ✅ Removed temporary files (temp_combine_script.py, test.py, __init__.py)
+- ✅ Updated .gitignore for new structure
 
 ### Missing Features
 - Persuasion Simulation task (mentioned in original requirements)
-- Unified storage solution for generated responses
-- External storage integration to reduce repo size
+- External storage integration to reduce repo size further

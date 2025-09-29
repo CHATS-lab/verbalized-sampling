@@ -67,7 +67,7 @@ class BaseTask(ABC):
 
 
     def _run_combined(self, progress: Progress = None, task_id: int = None) -> List[Any]:
-        """Run combined multi-turn conversations with structured responses."""
+        """Run VS-Multi (vs_multi) multi-turn conversations with structured responses."""
         initial_prompts = [prompt for prompt in self.get_prompt() for _ in range(self.num_responses)]
         all_results = []
         

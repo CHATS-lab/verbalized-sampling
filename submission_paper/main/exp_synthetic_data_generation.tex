@@ -1,0 +1,210 @@
+\section{Synthetic Data Generation}
+\label{sec:sythetic data}
+\vspace{-0.5em}
+Recent research has shown that the diversity of synthetic data plays an important role in improving downstream model performance \citep{chen_diversity_2024,zhu2025bareleveragingbaselanguage}. So we further evaluate VS through synthetic data generation, including incorrect synthetic data (\S~\ref{sec:negative synthetic data}).
+% So we also test VS on synthetic data generation to further evaluate it effectiveness. We also experiment to generate incorrect synthetic data in \S\ref{appendix:synthetic_data}. 
+ %For example,~\citet{chen_diversity_2024} demonstrate that higher synthetic data diversity leads to better pre-training and fine-tuning outcomes, and propose metrics such as cluster-based diversity to capture this effect. Similarly, the BARE framework~\citep{zhu2025bareleveragingbaselanguage} highlights the value of generating synthetic data that is both diverse and indistinguishable from real data, introducing the indistinguishable rate as a quality measure. 
+ % \subsection{Preliminary Training}
+
+
+
+% \paragraph{Synthetic Data Generation}
+% \subsection{Scaled up Experiments}
+% To investigate if the method still work when scaling up the data, we performed extended experiments:
+
+
+%  for GSM8K~\citep{cobbe2021trainingverifierssolvemath}
+\begin{wraptable}{r}{0.55\textwidth}
+    \vspace{-1em}
+    \centering
+    \caption{
+        Downstream accuracy averaged across MATH500, OlympiadBench and Minerva Math. ``Gen Models'' show the models used to generate the 1K synthetic questions. ``SFT Models'' are the ones used to finetune on the 1K synthetic data. VS and its variants improve the downstream task performance.
+    }
+    \label{tab:synthetic_results}
+    % The resizebox command scales the table to fit the container width
+    \resizebox{\linewidth}{!}{%
+        \begin{tabular}{l ccc}
+        \toprule
+        \textbf{Gen Model} & \multicolumn{3}{c}{\textbf{GPT-4.1 / Gemini-2.5-Flash}} \\
+        \cmidrule(lr){2-4}
+        \textbf{SFT Model}  & Qwen2.5-7B & Q3-1.7B-Base & Q3-4B-Base \\
+        \midrule
+        Baseline       & 27.2 & 30.5  & 40.7 \\
+        \midrule
+        Direct         & 26.1 / 24.9 & 31.4 / 29.5 & 34.5 / 36.9 \\
+        CoT            & 30.1 / 27.6 & 32.5 / 32.1 & 39.4 / 40.5 \\
+        Sequence       & 30.5 / 28.2 & 31.0 / 31.7 & 42.1 / 42.5 \\
+        Multi-Turn     & 29.9 / 27.1 & 31.9 / 32.2 & 41.3 / 37.1 \\
+        \midrule
+        \textit{Our Methods} \\
+        \quad VS-Standard  & 32.7 / 28.6 & 33.6 / 33.3 & 45.5 / 42.8 \\
+        \quad VS-CoT       & 33.4 / 29.4 & 33.7 / {\bfseries 35.8} & {\bfseries 45.9} / 43.4 \\
+        \quad VS-Multi     & {\bfseries 34.8} / {\bfseries 31.7} & {\bfseries 34.9} / 34.8 & 45.0 / {\bfseries 43.6} \\
+        \bottomrule
+        \end{tabular}
+    } % End of resizebox
+    \vspace{-1em}
+\end{wraptable}
+\paragraph{Synthetic Data Generation Setup.} 
+We prompt GPT-4.1 and Gemini-2.5-flash, with different prompting methods, to generate $N=1{,}000$ synthetic competition math questions, with $k=5$ in each call. We use a small $k$ to ensure the generation quality as it is a complex task. See~\Cref{appendix:experiment_prompt} for the prompts. Then we use Qwen3-32B to generate their corresponding reasoning trajectories and answers, as the model is proficient on math benchmarks and capable of producing reliable reasoning traces.  %To ensure comparable results with related work~\citep{liu2025understandingr1zeroliketrainingcritical}, we use the same temperature of $0.6$ and top-p of $0.95$ for the answer generation.
+
+\paragraph{Fine-tuning on Synthetic Data.} With this 1K synthetic dataset, we follow the SFT setting in LIMO~\citep{ye2025limoreasoning}, an effective method to improve reasoning performance with small dataset size, and finetune the following models on this 1K dataset: Qwen2.5-7B, Qwen3-1.7B-Base, and Qwen3-4B-Base~\citep{qwen2025qwen25technicalreport, yang2025qwen3technicalreport}. The training is done with 5 epochs and a learning rate of $5e-6$. 
+
+\paragraph{Benchmarks and Evaluation.} We evaluate the fine-tuned models' downstream task performance on three widely-used math datasets: MATH500~\citep{hendrycksmath2021}, OlympiadBench~\citep{he2024olympiadbench}, and Minerva Math~\citep{lewkowycz2022solving}. We use Math-Verify\footnote{\url{https://github.com/huggingface/Math-Verify}.} for the evaluation. 
+
+
+\paragraph{Results.}
+Table~\ref{tab:synthetic_results} shows the average accuracy across the three datasets. VS and its variants improve the performance across the board. See~\Cref{tab:results_qwen_7b},~\ref{tab:results_qwen_1.7b}, and~\ref{tab:results_qwen_4b} for the results on individual datasets.
+
+% \newtakeaway{VS generates more diverse synthetic data to improve downstream math tasks.}
+
+% models to simulate donation distributions that closely match human donation behavior, and simulate diverse multi-turn dialogues. %while approaching human-level linguistic diversity without compromising quality.
+% \wyshi{i thought the conclusion here is it cannot achieve human-level lignuistic diversity?}
+% } 
+% \simoncomment{We are missing takeaway for this part }
+
+% \begin{table}[!htbp]
+% \centering
+% \caption{
+% Downstream accuracy averaged across MATH500, OlympiadBench and Minerva Math. ``Gen. Models'' show the models used to generate 1K synthetic questions. ``SFT Models'' are the ones used to finetune on the 1K synthetic data. VS and its variants improve the downstream task performance. 
+%  \wyshi{squeeze this to a half page}
+% }
+% \label{tab:synthetic_results}
+% \footnotesize % Use a smaller font size
+% \setlength{\tabcolsep}{5pt} % Adjust column spacing
+% \renewcommand{\arraystretch}{1.1} % Adjust row spacing
+% \begin{tabular}{l ccc}
+% \toprule
+% \textbf{Gen. Models} & \multicolumn{3}{c}{\textbf{GPT-4.1 / Gemini-2.5-Flash}} \\
+% \cmidrule(lr){2-4}
+% \textbf{SFT Models}  & Qwen2.5-7B & Q3-1.7B-Base & Q3-4B-Base \\
+% \midrule
+% Baseline      & 27.2 & 30.5  & 40.7 \\
+% \midrule
+% Direct        & 26.1 / 24.9 & 31.4 / 29.5 & 34.5 / 36.9 \\
+% CoT           & 30.1 / 27.6 & 32.5 / 32.1 & 39.4 / 40.5 \\
+% Sequence      & 30.5 / 28.2 & 31.0 / 31.7 & 42.1 / 42.5 \\
+% Multi-Turn    & 29.9 / 27.1 & 31.9 / 32.2 & 41.3 / 37.1 \\
+% \midrule
+% \textit{Our Methods} \\
+% \quad VS-Standard   & 32.7 / 28.6 & 33.6 / 33.3 & 45.5 / 42.8 \\
+% \quad VS-CoT        & 33.4 / 29.4 & 33.7 / {\bfseries 35.8} & {\bfseries 45.9} / 43.4 \\
+% \quad VS-Multi      & {\bfseries 34.8} / {\bfseries 31.7} & {\bfseries 34.9} / 34.8 & 45.0 / {\bfseries 43.6} \\
+% \bottomrule
+% \end{tabular}
+% \end{table}
+
+
+
+
+% \jiayicomment{In our experiments, we closely follow the setup of BARE~\citep{zhu2025bareleveragingbaselanguage}. However, instead of providing three seed in-context examples and prompting the model to generate question–answer pairs, we directly prompt the model to generate synthetic questions for GSM8K~\citep{cobbe2021trainingverifierssolvemath}, and then GPT-4.1~\citep{openai2025gpt41} is used to generate the corresponding answers. For each method, we sample a total of $N=1000$ responses, with each LLM call producing $k=5$ responses.}
+
+% To evaluate \textit{diversity}, we compute \textbf{pairwise semantic diversity} using OpenAI's \texttt{text-embedding-3-small} embeddings~\citep{openai2024embedding} to calculate the average pairwise cosine similarity, as well as average of \textbf{Distinct-1/2/3} for surface-level variation. 
+% For \textit{quality}, we report the \textbf{indistinguishability rate} (IR) following ~\citep{zhu2025bareleveragingbaselanguage}, which defines quality as the proportion of cases where a strong LLM judge cannot reliably differentiate synthetic samples from the real ones.
+
+% As shown in \Cref{fig:synthetic_positive_combined_results}, VS achieves the strongest overall balance between diversity and quality. While sequence prompting sometimes yields slightly higher diversity (e.g., the semantic diversity and Distinct-N on GSM8K dataset) and multi-turn prompting achieves higher indistinguishable rates, these gains come at the cost of trade-offs in the other dimension. In contrast, \ours consistently delivers competitive diversity scores close to the best-performing methods while simultaneously maintaining high indistinguishable rates. \Cref{fig:synthetic_positive_combined_results} (d) provides a closer examination of semantic diversity under direct and VS-Standard prompting. The results show that while VS-Standard achieves slightly higher embedding similarities than sequence, it still produces lower similarities than direct prompting, confirming its ability to generate more diverse samples.
+
+% \begin{figure}[!ht] % 't' means top, use 'b' for bottom
+%     \centering
+%     \includegraphics[width=\textwidth]{figures/qualitative_tasks/synthetic_data_combined_metrics.pdf}
+%     \caption{Average diversity and quality results on the \textbf{positive synthetic data generation} task with GPT-4.1.
+% \textbf{(a)} Indistinguishability rate (IR), where higher values indicate better quality; Direct achieves the highest score.
+% \textbf{b–c} Diversity metrics: \textbf{(b)} proportion of unique n-grams (Distinct-N) and \textbf{(c)} pairwise semantic diversity.
+% \textbf{(d)} Distribution of pairwise cosine similarity, providing a closer view of semantic diversity, where lower similarity corresponds to greater diversity.
+%     % \wyshi{can you just combine this with fig11, similar to fig13. this will reduce cognitive load to think about what each figure means. also, small text on the bars. Can you two share the same configs for the figure, like font size for the title, for the caption, for the numbers on the bar. for the y labels.}
+%     \vspace{-1em}
+%     }
+%     \label{fig:synthetic_positive_combined_results}
+% \end{figure}
+
+% \paragraph{Fine-tuning.}
+
+% \begin{table*}[!ht]
+% \centering
+% \caption{\textbf{Full Supervised Fine-Tuning (SFT) accuracy on the entire GSM8K test set.} We fine-tune the Llama-3.2-1B-Instruct model on 1K positive examples for each method. The values in parentheses show the absolute improvement over the ``Golden Train'' baseline. The best result is in \textbf{bold}. \textsuperscript{†}As reported by the BARE paper~\citep{zhu2025bareleveragingbaselanguage}, trained with LoRA only.}
+% \label{tab:positive_data_training}
+% \begin{tabular}{lc}
+% \toprule
+% \textbf{Method} & \textbf{Accuracy (\%)} \\
+% \midrule
+% \multicolumn{2}{l}{\textit{References}} \\
+% \quad Llama-3.2-1B-Instruct & 21.61 \\
+% \quad GSM8k (BARE~\citep{zhu2025bareleveragingbaselanguage}) & 29.8\textsuperscript{†} \\
+% \quad GSM8k (Original Training dataset) & 34.12 \\
+% \quad GSM8k (Golden Prompts + Response regenerated by GPT-4.1) & 46.50 \\
+% \midrule
+% \multicolumn{2}{l}{\textit{Our Methods (trained on 1K generated data by GPT-4.1)}} \\
+% \quad Direct & 40.07 ($\uparrow$ 5.9) \\
+% \quad CoT & 45.19 ($\uparrow$ 11.1) \\
+% \quad Sequence & 44.88 ($\uparrow$ 10.8) \\
+% \quad Multi-Turn & 44.73 ($\uparrow$ 10.6) \\
+% \midrule
+% \quad VS Standard & 46.63 ($\uparrow$ 12.5) \\
+% \quad VS CoT & \textbf{47.92} ($\uparrow$ 13.8) \\
+% \quad VS Multi & 47.31 ($\uparrow$ 13.2) \\
+% \bottomrule
+% \end{tabular}
+% \\
+% \vspace{0.5em} % Adds a little space
+% \end{table*}
+
+
+% \paragraph{Evaluation} We then fine-tune on these synthetic QA pairs and use the downstream task performance to evaluate different methods. 
+
+
+% The results demonstrate the clear superiority of our data generation methods. All approaches significantly outperform the Llama-3.2-1b instruct baseline (21.61\%), the BARE model (29.8\%), and the model trained on 1K human-annotated golden data (34.12\%). The verification and selection (VS) strategies proved most effective, with {VS Standard}, {VS Multi}, and {VS CoT} achieving accuracies of 46.63\%, 47.31\%, and \textbf{47.92\%}, respectively. The top score from {VS CoT} marks a 13.8 point improvement over the golden data baseline, highlighting the high quality of the synthetically generated training examples.
+
+
+
+% \begin{table}[!htbp]
+% \centering
+% \small
+% \caption{Downstream accuracy averaged across MATH500, OlympiadBench and Minerva Math. ``Gen. Models'' show the models used to generate 1K synthetic questions. ``SFT Models'' are the ones used to finetune on the 1K synthetic data. VS and its variants improve the downstream task performance. 
+% \wyshi{squeeze this to a half page}
+% }
+% \label{tab:synthetic_results}
+% \setlength{\tabcolsep}{4.5pt}
+% \renewcommand{\arraystretch}{1.18}
+% \robustify\bfseries
+% \newcommand{\na}{\textemdash}
+% \resizebox{\textwidth}{!}{%
+% \begin{tabular}{ll   
+% S[table-format=2.1]
+%   S[table-format=2.1]
+%   S[table-format=2.1]
+%   S[table-format=2.1]
+%   S[table-format=2.1]
+%   S[table-format=2.1]
+% }
+% \toprule
+% \multicolumn{2}{c}{\textbf{Gen. Models}} &
+% \multicolumn{3}{c}{\textbf{GPT-4.1}} & 
+% \multicolumn{3}{c}{\textbf{Gemini-2.5-Flash}} \\
+% \cmidrule(lr){3-5}\cmidrule(lr){6-8}
+
+% \multicolumn{2}{c}{{\textbf{SFT Models}}} &
+% \multicolumn{1}{c}{{Qwen2.5-7B}} &
+% \multicolumn{1}{c}{{Qwen3-1.7-Base}} &
+% \multicolumn{1}{c}{{Qwen3-4B-Base}} &
+% \multicolumn{1}{c}{{Qwen2.5-7B}} &
+% \multicolumn{1}{c}{{Qwen3-1.7-Base}} &
+% \multicolumn{1}{c}{{Qwen3-4B-Base}} \\
+% \midrule
+% Baseline & & 27.2 & 30.5 & 40.7 & 27.2 & 30.5 & 40.7 \\
+% \midrule
+% \quad Direct & & 26.1 & 31.4 & 34.5 & 24.9 & 29.5 & 36.9 \\
+% \quad CoT & & 30.1  & 32.5 & 39.4 & 27.6 & 32.1 & 40.5 \\
+% \quad Sequence & & 30.5 & 31.0 & 42.1 & 28.2 & 31.7 & 42.5 \\
+% \quad Multi-Turn & & 29.9 & 31.9 & 41.3 &  27.1 & 32.2 & 37.1 \\
+% \midrule
+% \multicolumn{2}{l}{\textit{Our Methods}} \\
+% \quad VS-Standard & & 32.7  & 33.6  & 45.5 & 28.6 & 33.3 & 42.8 \\
+% \quad VS-CoT & & 33.4  & 33.7 & {\bfseries 45.9} & 29.4 & {\bfseries 35.8} & 43.4 \\
+% \quad VS-Multi & & {\bfseries 34.8}  & {\bfseries 34.9} & 45.0 & {\bfseries 31.7} & 34.8 & {\bfseries 43.6} \\
+% \bottomrule
+% \end{tabular}
+% }
+% \vspace{-2em}
+% \end{table}
+
+

@@ -698,7 +698,7 @@ def plot_cognitive_burden_analysis_subfigures(results_by_size, output_dir="latex
     
     ax1_combined.axhline(y=0, color='black', linestyle='-', alpha=0.5)
     ax1_combined.set_ylabel('Diversity Change vs Direct ($\Delta$)', fontweight='bold', fontsize=16)
-    # ax1_combined.set_title('Diversity Impact by Model Size', fontweight='bold', fontsize=18)
+    # ax1_VS-Multi (vs_multi).set_title('Diversity Impact by Model Size', fontweight='bold', fontsize=18)
     ax1_combined.set_xticks(x_methods)
     ax1_combined.set_xticklabels(methods_subset, fontsize=14)
     ax1_combined.tick_params(axis='y', labelsize=14)
@@ -714,7 +714,7 @@ def plot_cognitive_burden_analysis_subfigures(results_by_size, output_dir="latex
     
     ax2_combined.axhline(y=0, color='black', linestyle='-', alpha=0.5)
     ax2_combined.set_ylabel('Quality Change vs Direct ($\Delta$)', fontweight='bold', fontsize=16)
-    # ax2_combined.set_title('Quality Impact by Model Size', fontweight='bold', fontsize=18)
+    # ax2_VS-Multi (vs_multi).set_title('Quality Impact by Model Size', fontweight='bold', fontsize=18)
     ax2_combined.set_xticks(x_methods)
     ax2_combined.set_xticklabels(methods_subset, fontsize=14)
     ax2_combined.tick_params(axis='y', labelsize=14)
@@ -1543,7 +1543,7 @@ def main():
     # NEW: Generate cognitive burden analysis with subfigures
     cognitive_stats = plot_cognitive_burden_analysis_subfigures(results_by_size, args.output_dir)
     
-    # Also generate original combined plot
+    # Also generate original VS-Multi (vs_multi) plot
     plot_cognitive_burden_analysis(results_by_size, args.output_dir)
     
     # NEW: Generate clean bar charts without error bars

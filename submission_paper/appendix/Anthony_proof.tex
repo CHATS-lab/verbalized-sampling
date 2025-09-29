@@ -1,0 +1,148 @@
+\subsection{An Analysis of Prompt Capability Under Mode Collapse}
+\label{appendix:anthony's proof on the mode for different prompts}
+\paragraph{Setup.} For a fixed prompt $x_\text{orig}$, we are interested in recovering the full diversity inherent to the reference policy $\pi_\text{ref}(\cdot | x_\text{orig})$. We hope to do so for some corresponding affected set $\mathcal{S}_{\text{orig}}$, where $\pi^\star$ is mode collapsed. Specifically, mode collapse means:
+\begin{equation}
+    \pi^\star(y | x) = \delta_{y^\star}(y) \quad\text{on } \ \mathcal{S}_\text{orig}, \quad\text{where}\quad y^\star \in \text{arg}\max\nolimits_y \pi_\text{ref}(y | x)
+\end{equation}
+and $\delta$ is the Dirac function: $\delta_{y^\star}(y) = \{1 \text{ if }y^\star = y, 0\text{ else}\}.$
+
+To recover diversity, we assume a new prompt $x$, which is possibly distinct from $x_\text{orig}$, and a (new) sampling strategy that may extend beyond direct sampling of the policy $\pi^\star(\cdot | x)$. Since we demonstrated the potential for mode collapse of $\pi^\star$ independent of prompt, we also assume $\pi^\star(\cdot | x)$ remains mode collapsed on some set $\mathcal{S}$.
+\paragraph{A Stronger Notion of Mode Collapse for $x$.} For tractability, we assume $\mathcal{S} = \mathcal{Y}$. While coarse, this assumption is justified in practice: repeated samples from $\pi^\star$ return the same completion with high probability, implying that the total probability mass away from this completion (the mode $y^\star$) is negligible. From the perspective of observable sampling behavior, $\pi^\star$ is effectively mode collapsed on all of $\mathcal{Y}$; it is mode collapsed to $y^\star$ on some set and has near-zero probability everywhere else.
+
+\paragraph{Claim 1} \textit{Instance-level prompts return the mode of $\pi_\text{ref}$.} 
+\begin{proof}
+Let $x = x_\text{orig}$. Since $\pi^\star(\cdot | x)$ is collapsed, we know $\pi^\star(y | x) = \delta_{y^\star}(y)$ for any $y$. So, all probability is on the mode of $\pi_\textrm{ref}(\cdot |x)$. Any sample $y \sim \pi^\star(y | x)$ returns this mode almost surely.
+\end{proof}
+
+\paragraph{Claim 2} \textit{List-level prompts return uniform distributions at best.}
+\begin{proof}
+Fix the list prompt $x \neq x_\text{orig}$ and let $Z \sim \pi^\star(\cdot | x)$ be the random completion for this list prompt (presumably, a list of completions itself). To process lists, assume a list parser $\phi : \mathcal{Y} \to \mathcal{Y}^*$ and write $\phi(Z) = \{Y_i\}_{i=1}^k$. Then, by the rule of total probability, the probability of any completion $y \in \mathcal{Y}$ is written
+\begin{equation}
+    \mathbb{P}(Y = y) = \sum_{z \in \mathcal{Y}} \ \mathbb{P}(Y = y | Z = z)\mathbb{P}(Z = z).
+\end{equation}
+Since $\pi^\star$ is mode collapsed, $\mathbb{P}(Z = z) = \pi^\star(z | x) = \delta_{y^\star}(z)$ for all $z$. Thus, because $\delta_{y^\star}(z)$ is null for all $z \neq y^\star$, the probability simplifies:
+\begin{equation}
+    \mathbb{P}(Y = y) = \mathbb{P}(Y = y | Z = y^\star) = \frac{1}{|\phi(y^\star)|} \sum_{y_i \in \phi(y^\star)}  \delta_{y_i}(y),
+\end{equation}
+where the last part leverages the fact that we sample from list-level prompts uniformly at random. When $\phi(y^\star)$ is a list of distinct elements -- as requested in the list-level prompt -- this simplifies further:
+\begin{equation}
+    \mathbb{P}(Y = y) = \mathbb{P}(Y = y | Z = y^\star) = \frac{1}{|\phi(y^\star)|}.
+\end{equation}
+This is true because $y = y_i$ can only hold a single element of the (distinct) list $\phi(y^\star)$. So, we recover a uniform distribution over the elements of $\phi(y^\star)$.
+\end{proof}
+
+\paragraph{Claim 3} \textit{Distribution-level prompts can approximate $\pi_\text{ref}(\cdot | x_\text{orig})$.}
+\begin{proof}
+Fix a distribution prompt $x \neq x_\text{orig}$ and let $Z \sim \pi^\star(\cdot | x)$ be the random completion for this distribution prompt (presumably, a list of completions itself with associated probabilities). To process, assume a parser $\phi : \mathcal{Y} \to \mathcal{Y}^k \times \Delta(k)$ where $\Delta(k)$ is the probability simplex on $k$ elements. Write $\phi(Z) = \{(Y_i, P_i)\}_{i=1}^k$ for the parsed completion $Z$. As before, by the chain rule of probability, the probability of any completion $y \in \mathcal{Y}$ is written
+\begin{equation}
+    \mathbb{P}(Y = y) = \sum_{z \in \mathcal{Y}} \ \mathbb{P}(Y = y | Z = z)\mathbb{P}(Z = z).
+\end{equation}
+As in \textbf{Claim 2}, this simplifies, owed to mode collapse of $\pi^\star$:
+\begin{equation}
+    \mathbb{P}(Y = y) = \mathbb{P}(Y = y | Z = y^\star) = \sum_{(y_i,p_i) \in \phi(y^\star)}  p_i\delta_{y_i}(y).
+\end{equation}
+Different from \textbf{Claim 2}, the last part leverages the fact that we sample from distribution-level prompts according to the values $(p_i)_i$. This is an intuitive result: $P(Y = y) = p_i$ for each $y_i$ in the sequence returned by $\pi^\star(\cdot | x)$.
+
+The final goal is to see how $\mathbb{P}(Y = y)$ can replicate $\pi_\textrm{ref}(\cdot | x_\text{orig})$. We provide a constructive argument. Start by indexing each unique element $y \in \mathcal{Y}$, resulting in a sequence $(y_i)_{i=1}^m$ for $m = |\mathcal{Y}|$\footnote{It is reasonable to assume $\mathcal{Y}$ is finite because all computer representations are necessarily finite due to fixed memory. More practically speaking, we typically assume completions to be finite combinations of a finite token alphabet, which implies $\mathcal{Y}$ is finite.} where $y_i \neq y_j$ for $i \neq j$. This index enforces that $\delta_{y_i}(y)$ returns 1 for a single unique $y$. Then, we have:
+\begin{equation}
+    \forall i \in [m] \ : \ \pi_\text{ref}(y_i | x_\text{orig}) = \pi_\text{ref}(y_i | x_\text{orig}) \delta_{y_i}(y_i) + \underbrace{\sum_{j \neq i} \pi_\text{ref}(y_j | x) \delta_{y_i}(y_j)}_{j \neq i \ \Rightarrow \ \sum \ = \ 0} = \pi_\text{ref}(y_i | x_\text{orig}).
+\end{equation}
+Leveraging this equality, we can write $\pi_\text{ref}(\cdot | x')$ as below:
+\begin{equation}
+    \pi_\text{ref}(y | x_\text{orig}) = \sum_{i=1}^m \pi_\text{ref}(y_i | x_\text{orig}) \delta_{y_i}(y).
+\end{equation}
+Immediately, we see how distribution-level prompts can encode $\pi_\text{ref}(y | x_\text{orig})$. Specifically, we can set $p_i = \pi_\text{ref}(y_i | x_\text{orig})$ and $k=m$, assuming a shared index between $\phi(Z)$ and $\mathcal{Y}$. Then,
+\begin{equation}
+    \mathbb{P}(Y = y) = \sum_{(y_i,p_i) \in \phi(y^\star)}  p_i\delta_{y_i}(y) = \sum_{i=1}^m p_i \delta_{y_i}(y) = \sum_{i=1}^m \pi_\text{ref}(y | x_\text{orig})\delta_{y_i}(y).
+\end{equation}
+In the last summand, $\delta_{y_i}(y)$ returns 1 only when $y = y_i$, so we have
+\begin{equation}
+    \mathbb{P}(Y = y) = \pi_\text{ref}(y | x_\text{orig}).
+\end{equation}
+\end{proof}
+\paragraph{Remark.} An important part of the argument for \textbf{Claim 3} was our choice of the probabilities $p_i$, which implicitly means we are choosing the quality of $\pi^\star$ in our construction -- text sampled from $\pi^\star$ must be sufficiently accurate to encode distributional information, from $\pi_\text{ref}$, about the elements of $\mathcal{S}_\text{orig}$. In practice, we expect to observe some error here; e.g.,
+\begin{equation}
+    \forall i \in [m] \ : \ |p_i -  \pi_\text{ref}(y_i | x_\text{orig})| \leq \varepsilon.
+\end{equation}
+In this case, one can still directly show that 
+\begin{equation}
+    |\mathbb{P}(Y = y) - \pi_\text{ref}(y | x_\text{orig})| \leq \varepsilon
+\end{equation}
+as well by the following a nearly identical argument. The takeaway is: although we make a strong assumption in our construction (i.e., perfect modeling of $\pi_\text{ref}$) this result also holds for subpar policies $\pi^\star$ with proportional bounds on error. In theory, since list-level prompts always return a uniform distribution, they do not share this property.
+
+% OLD MAIN TEXT VERSION IS BELOW:
+% Given a policy $\pi$, we consider a prompt $x$ with an associated sampling strategy $s_x$, as defined below. %Consider the following definitions of $x$ and $s_x$.
+% % Here, we allow $s_x$ to sample from $\pi$ in non-traditional ways. For example, consider the following definitions of $x$ and $s_x$.
+% \begin{enumerate}[nolistsep, leftmargin=*]
+% \item \textbf{Instance-level prompts}: The prompt $x$ is the most traditional one, requesting one instance (e.g., ``Tell a joke about coffee''). So $s_x$ acts like an identity function: $s_x(\pi(\cdot | x)) = \pi(\cdot | x)$. 
+% %In contrast to these non-traditional sampling strategies, we can also sample $\pi$ in the usual manner. So, $s_x$ would act like an identity function: $s_x(\pi(\cdot | x)) = \pi(\cdot | x)$.
+%     \item \textbf{List-level prompts}: The prompt $x$ requests a list of outputs (e.g., ``Tell me $k$ jokes''), as used in~\cite{zhang_diverging_2024, meister_benchmarking_2024}. Without further information on this list, a reasonable choice for $s_x$ is to %sample $\pi(\cdot | x)$ to produce a list and then 
+%     randomly sample any element from it with uniform probability as the output. %\as{potentially useful to provide a pointer to other work here}
+%     \item \textbf{Distribution-level prompts}: The prompt $x$ requests $k$ outputs with corresponding probabilities. For example, for the prompt ``Tell $k$ jokes about coffee with their probabilities'', an instruction-tuned model generates $k$ distinct jokes $J_i$ with $k$ probabilities $p_i$. $s_x$ can randomly pick from each $J_i$ according to the associated probabilities $p_i$.
+%     % (DC: Actively working on this section...)
+% \end{enumerate}
+% In general, we use $s_x(\pi(\cdot | x))$ to denote the distribution defined by sampling according to $s_x$.
+% %We consider prompts that admit a dual sampling process \wyshi{why dual? what's Q?}: $Q \sim \pi^\star(\cdot | x)$, then $y \sim Q$. For example, consider the \textbf{distribution-level} prompt: “Tell me $k$ jokes about coffee with their probabilities.” An instruction-tuned model generates $k$ distinct jokes $J_i$ with $k$ probabilities $p_i$. Then, we can sample from the induced distribution $Q = \sum_{i=1}^k p_i\delta_{J_i}$. \wyshi{what's $\delta$ here}
+
+% Intuitively, we want to find a prompt $x$ and a sampling strategy $s_x$ that can %where it would be feasible to 
+% recover the diverse base model $\pi_\text{ref}$, even when $\pi$ is mode collapsed. The best thing we could do is to use that $x$ and $s_x$ to train a model $\pi$ to replicate $\pi_\text{ref}$. \wyshi{i am here}
+
+% % We consider this recovery feasible if we can successfully use that $x$ and $s_x$ to train a model $\pi$ to replicate $\pi_\text{ref}$.
+
+% Formally, we define feasibility by whether it would be possible to train a model $\pi$ that can replicate $\pi_\text{ref}$ when using $x$ and $s_x$. Assuming a standard cross-entropy loss on data generated by $\pi_\text{ref}$, this training procedure is encoded in the following:
+% \begin{equation}
+% M(x)\;=\;\arg\min\nolimits_{\pi} \ \mathbb{E}_{y\sim \pi_{\textrm{ref}}(\cdot | x')} \ \!\big[-\log s_x(\pi(y|x))\big].
+% % \;=\;\arg\min_{q\in\mathcal A(x)} \KL\!\big(p\ \|\ q\big)
+% % }
+% \label{eq:i-proj}
+% \end{equation}
+% $M(x)$ is the policy that minimizes loss for the prompt pair $(x, s_x)$. It is the best we can possibly do at replicating $\pi_\text{ref}$ if we restrict ourselves to the prompt pair $(x, s_x)$.
+% % With this notation, a prompt is a constraint on the types of distributions a model may report. For a given prompt $x$, write $\mathcal A(x)\subseteq\simplex(Y)$  \wyshi{what's $\mathcal A(x)$ and $\Delta(Y)$} \as{TODO, add some short explanation,} 
+% % for the set of \emph{admissible reports} \wyshi{admissible formats?} (e.g., “point answer,” “top‑$k$ with weights,” “full distribution”). Among the distributions a prompt admits, the maximum likelihood estimate according to data from $\pi_\textrm{ref}(\cdot | x)$ is given below \wyshi{not following the equation} \wyshi{pick q to distill to minimize, a prompt that allows you to pick a model that fits pi ref}
+% % \wyshi{a(x) = roll a dice, a(x) = give a distribution of dice rolling, } 
+% % \as{TODO, Derek}
+% % :
+% % \begin{equation}
+% % M(x)\;=\;\arg\max\nolimits_{Q \in \mathcal{A}(x)} \ \mathbb{E}_{y\sim \pi_{\textrm{ref}}(\cdot | x')} \ \!\big[\log Q(y)\big].
+% % % \;=\;\arg\min_{q\in\mathcal A(x)} \KL\!\big(p\ \|\ q\big)
+% % % }
+% % \label{eq:i-proj}
+% % \end{equation}
+% % Ideally, a prompt admits distributions such that $M(x) = \pi_\textrm{ref}(\cdot | x)$. In this case, it would be possible for some high-quality trained policy $\pi^\star$ to recover $\pi_\textrm{ref}(\cdot | x)$ via prompting alone -- whether $\pi^\star$ is mode collapsed or not.
+% %%% OLD version
+% % We view a \emph{prompt as a constraint on what the model may report}.
+% % Let $Y$ be a finite outcome space and let $p(\cdot\mid x)$ denote the model’s latent predictive distribution for prompt $x$. Fix a single strictly proper scoring rule—the \emph{log score} $S(q,y)=\log q(y)$. For a given prompt $x$, write $\mathcal A(x)\subseteq\simplex(Y)$ for the set of \emph{admissible reports} (e.g., “point answer,” “top‑$k$ with weights,” “full distribution”). The log‑loss Bayes act is the information projection of $p$ onto $\mathcal A(x)$:
+% % \as{Need to introduce proper scoring rules (quickly) and make clear why we look at them}.
+% % \as{We can drop unnecessary terminology like i-projection}.
+% % \derek{Agreed: What other terms can we take out?}
+% % \as{Why expectation wrt p?} 
+% % % DC: Possible useful thing to note: "Other strictly proper rules are possible; we focus on log for concreteness and its link to KL"
+% % \begin{equation}
+% % \boxed{
+% % M(x)\;=\;\arg\max_{q\in\mathcal A(x)}\ \E_{Y\sim p}\!\big[\log q(Y)\big]
+% % \;=\;\arg\min_{q\in\mathcal A(x)} \KL\!\big(p\ \|\ q\big)
+% % }
+% % \label{eq:i-proj}
+% % \end{equation}
+% % since $\E_p[\log q]= -\KL(p\|q)-H(p)$ and $H(p)$ is constant in $q$ (see Appendix~\ref{app:iproof} for complete proof).
+
+% Three immediate consequences are useful to observe. Proof is provided for all of these claims in Appendix~\ref{}. \wyshi{how to prove these? do i just plug in the $s_x$ up there?}
+% \begin{enumerate}[leftmargin=*, nolistsep]
+% \item \textbf{Instance-level prompts return a mode.}
+% When $\pi$ is mode collapsed (i.e., \textit{sharpened}), it can be shown that instance-level prompts can only return the mode of $\pi_\textrm{ref}$: $M(x) = \delta_{y^\star}$ with $y^\star\in\arg\max_{y\in Y}\pi_\text{ref}(y\mid x)$. We show this by assuming $\pi$ puts most of its probability on one outputs and a small constant amount on all other outputs. The key takeaway is that we fail to recover any of the diversity expressed by $\pi_\text{ref}$.
+% % Assume only \emph{point answers} are admissible and $\pi^\star(\cdot | x)$ is mode collapsed (i.e., \textit{sharpened}). Then, we can model $\mathcal{A}(x)$ as a family of smoothed Dirac $\delta$ functions \wyshi{what's this, and why Dirac $\delta$?}: one completion holds most of the probability under $\pi^\star$ and the rest hold a small amount (constant for convenience). In this case, it can be shown that $M(x) = \delta_{y^\star}$ with $y^\star\in\arg\max_{y\in Y}\pi_\text{ref}(y\mid x)$. We fail to recover all of $\pi_\text{ref}(\cdot \mid x)$. In fact, we only recover its mode.
+% \item \textbf{List-level prompts also suffer.} Similar to instance-level prompts, list-level prompts also fail to recover the full distribution $\pi_\text{ref}(\cdot \mid x)$ when $\pi$ is mode collapsed. Instead, $M(x)$ would be a uniform distribution \wyshi{why uniform} \wyshi{may add a bit more intuitive rational, the only way would be uniform, the way to maximize diversity is uniform
+% } over the $k$ most likely outputs according to $\pi_\text{ref}(\cdot \mid x)$. \as{I think specifying what we mean by list-level before solves this? lmk}
+% %$\mathcal A_{\text{point}}(x)=\{\delta_y:\,y\in Y\}$. Interpreting \eqref{eq:i-proj} on the closure of admissible reports (Diracs as limits of smooth distributions), the projection selects any $y^*\in\arg\max_{y\in Y}p(y\mid x)$. A short limit argument appears in Appendix~\ref{app:point-limit}. \as{if q is a point mass, then DKL is inf when p not absolutely continuous to q and 0 iff q = p. so p would need also be a point mass (I think) for this to be true. We may need to find a workaround for this part of proof. Maybe since we only care about mode collapsed p anyway we can just assume it’s a point mass }
+% % \as{TODO: possibly switch to simpler variance argument in slack to avoid this limit proof.}
+% % \derek{WIP: I had 2-3 other ways of getting to this, this was the cleanest notationally and I think there was a trick needed - more to come}
+% \item \textbf{Distribution prompts recover $\pi_\text{ref}$.} Only distribution-level prompts have the capability to recover $\pi_\text{ref}(\cdot \mid x)$ if $\pi$ is mode collapsed. 
+% % If $\mathcal A(x) = \simplex(Y)$, then the unique minimizer is $M(x) = \pi_\textrm{ref}(\cdot\mid x)$ because $\log$ is a strictly proper score \wyshi{what's proper score} \citep{gneiting2007strictly}.
+% If $k$ is large enough, then $s_x(\pi(\cdot | x)$ can approximate \textit{any} distribution over outputs. Specifically, if $\pi^\star$ is optimal among mode collapsed policies, then $M(x)$ is the unique optimum and $s_x(\pi^\star(\cdot | x)) \to \pi_\text{ref}$ exactly as $k$ grows. In practice, $k$ does not need to be very large to observe benefits. We use $k$ ranging from $5$ to $20$ in our experiments and conduct an ablation on $k$ in \cref{fig:num_candidates_ablation}\simoncomment{in xxx}.
+% % \wyshi{does it matter we only use k=5 in some experiments?} \as{We can point to ablation study here? feel free to edit that blurb}
+% %Distribution-level prompts allow $\mathcal{A}(x) \to \simplex(Y)$ with larger and larger $k$ \wyshi{does it matter we only use k=5 in some experiments?} -- that is, whenever $\pi^\star$ is of sufficient quality to model $\pi_\text{ref}$ at request.
+% \end{enumerate}
+% \as{Derek, these could use discussed proofs in the appendix. The list-level claim is similar to the point-level claim.}
+
+% \noindent
+% Thus, Equation~\ref{eq:i-proj} is the key design lever: by changing $\mathcal A(x)$ with the prompt, we change what is optimal to report -- \emph{a single prototype} under point prompts versus \emph{the entire distribution} under distribution prompts. An optimal policy $\pi^\star$, \textit{even one that is mode collapsed}, can still report $\pi_\text{ref}$ when requested via distribution-level prompting; here, other prompts fall provably short. This perspective connects directly to the typicality‑induced sharpening in Section~\ref{sec:typicality} and motivates our method below.%
