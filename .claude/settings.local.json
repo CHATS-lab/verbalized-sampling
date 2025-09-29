@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(head:*)",
+      "Bash(python:*)",
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "Read(//Users/simonyu/**)",
+      "WebSearch",
+      "Bash(grep:*)",
+      "Bash(tail:*)",
+      "Bash(chmod:*)",
+      "Bash(conda activate:*)",
+      "Bash(find:*)",
+      "Bash(for dir in aime amc minerva olympiad_bench)",
+      "Bash(do echo \"=== $dir ===\")",
+      "Bash(done)",
+      "Bash(pip install:*)",
+      "Bash(./run_math_experiments.sh:*)",
+      "Bash(git add:*)",
+      "Bash(tree:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

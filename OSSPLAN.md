@@ -3,7 +3,9 @@
 ## Todo List
 
 ### Immediate Foundation
-- [ ] Add LICENSE file to repository (MIT license already declared in pyproject.toml)
+- [x] Add LICENSE file to repository (Apache-2.0 for CHATS-Lab)
+- [x] Add Makefile for development workflow automation
+- [x] Add setup.py for backward compatibility
 - [ ] Clean up repository structure - move/organize loose files and directories
 - [ ] Set up pre-commit hooks for code formatting (black, isort, ruff, mypy)
 - [ ] Add comprehensive test suite and improve pytest configuration

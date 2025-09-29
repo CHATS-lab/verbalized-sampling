@@ -70,13 +70,31 @@ log/
 output/
 outputs/
 results/
-*.png
 *.jsonl
 *.env
 archive/
 *results*/
 *CLAUDE.md
 */.claude*
+
+# Generated data and plots (organized structure)
+generated_data/*/
+plots/*.png
+plots/*.pdf
+docs/_build/
+docs/_static/
+ablation_data/results/
+
+# Experiment outputs
+*.log
+*.out
+*.err
+
+# Model checkpoints and large files
+*.ckpt
+*.pth
+*.bin
+*.safetensors
 
 # macOS
 .DS_Store
