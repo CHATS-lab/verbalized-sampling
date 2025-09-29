@@ -19,6 +19,14 @@ from ...plots import (
     plot_comparison_chart
 )
 
+# Dialogue evaluators (integrated from persuasion_simulation)
+try:
+    from ...evals.dialogue import DonationEvaluator as DialogueDonationEvaluator
+    from ...evals.dialogue import DialogueLinguisticEvaluator
+except Exception:
+    DialogueDonationEvaluator = None
+    DialogueLinguisticEvaluator = None
+
 __all__ = [
     "DiversityEvaluator",
     "TTCTEvaluator",
@@ -60,6 +68,14 @@ def get_evaluator(metric: str, **kwargs):
         return JokeQualityEvaluator(**kwargs)
     elif metric == "synthetic_data_quality":
         return SyntheticDataQualityEvaluator(**kwargs)
+    elif metric == "donation":
+        if DialogueDonationEvaluator is None:
+            raise ImportError("Dialogue donation evaluator not available")
+        return DialogueDonationEvaluator(**kwargs)
+    elif metric in ("dialogue_linguistic", "linguistic_dialogue"):
+        if DialogueLinguisticEvaluator is None:
+            raise ImportError("Dialogue linguistic evaluator not available")
+        return DialogueLinguisticEvaluator(**kwargs)
     elif metric == "safety":
         raise NotImplementedError("SafetyEvaluator not available - missing implementation")
     elif metric == "accuracy":

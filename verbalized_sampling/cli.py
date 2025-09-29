@@ -3,6 +3,7 @@ Command-line interface for verbalized-sampling.
 """
 
 import typer
+import json
 from pathlib import Path
 from rich.console import Console
 from rich.table import Table
@@ -11,6 +12,10 @@ from typing import List, Optional
 from verbalized_sampling.pipeline import run_quick_comparison
 from verbalized_sampling.tasks import Task
 from verbalized_sampling.methods import Method
+from verbalized_sampling.tasks.dialogue.persuasion import PersuasionTask
+from verbalized_sampling.llms import get_model
+from verbalized_sampling.evals.dialogue import DonationEvaluator, DialogueLinguisticEvaluator
+from datetime import datetime
 
 app = typer.Typer(help="Run controlled experiments with LLMs using different sampling methods")
 console = Console()
@@ -46,6 +51,9 @@ TASK_DESCRIPTIONS = {
 
     # Safety evaluation (Appendix)
     Task.SAFETY: "Safety evaluation - test refusal rates for harmful content using StrongReject",
+
+    # Dialogue simulation (Section 6)
+    Task.PERSUASION_DIALOGUE: "PersuasionForGood dialogue simulation - multi-turn persuasive conversations about charity donation",
 }
 
 # Method descriptions (VS = Verbalized Sampling)
@@ -151,3 +159,132 @@ def list_methods():
 
 if __name__ == "__main__":
     app()
+    
+@app.command()
+def dialogue(
+    persuader_model: str = typer.Option("openai/gpt-4.1-mini", help="Model name for persuader role"),
+    persuadee_model: str = typer.Option("openai/gpt-4.1-mini", help="Model name for persuadee role"),
+    method: Method = typer.Option(Method.VS_STANDARD, help="Sampling method for persuadee"),
+    max_turns: int = typer.Option(10, help="Maximum conversation turns"),
+    word_limit: int = typer.Option(160, help="Word limit per turn"),
+    num_samplings: int = typer.Option(4, help="Number of samples for VS methods"),
+    num_conversations: int = typer.Option(5, help="Number of conversations to simulate"),
+    dataset_path: Optional[Path] = typer.Option(None, help="Path to PersuasionForGood dataset"),
+    corpus_path: Optional[Path] = typer.Option(None, help="Path to persona corpus"),
+    temperature: float = typer.Option(0.7, help="Sampling temperature"),
+    top_p: float = typer.Option(0.9, help="Top-p sampling"),
+    max_tokens: int = typer.Option(500, help="Max tokens per response"),
+    response_selection: str = typer.Option("probability", help="Response selection strategy",
+                                           rich_help_panel="Selection",
+                                           case_sensitive=False),
+    evaluate: bool = typer.Option(False, help="Compute donation and linguistic metrics"),
+    ground_truth_path: Optional[Path] = typer.Option(None, help="Ground truth donation JSON for evaluation"),
+    output_file: Optional[Path] = typer.Option(None, help="Output JSONL path for results"),
+):
+    """Run PersuasionForGood dialogue simulations with VS methods."""
+    console.print("🎭 Running persuasion dialogue simulation")
+
+    # Model configs
+    config = {"temperature": temperature, "top_p": top_p, "max_tokens": max_tokens}
+
+    # Build models
+    persuader = get_model(
+        model_name=persuader_model,
+        method=Method.DIRECT,
+        config=config,
+        num_workers=1,
+        strict_json=False,
+    )
+    persuadee = get_model(
+        model_name=persuadee_model,
+        method=method,
+        config=config,
+        num_workers=1,
+        strict_json=(method in [Method.VS_STANDARD, Method.VS_COT, Method.SEQUENCE]),
+    )
+
+    # Instantiate task
+    task = PersuasionTask(
+        persuader_model=persuader,
+        persuadee_model=persuadee,
+        method=method,
+        max_turns=max_turns,
+        word_limit=word_limit,
+        num_samplings=num_samplings,
+        sampling_method=method.value,
+        dataset_path=str(dataset_path) if dataset_path else None,
+        corpus_path=str(corpus_path) if corpus_path else None,
+    )
+
+    # Selection mapping
+    if response_selection.lower().startswith("prob"):
+        task.response_selection = "probability_weighted"
+    else:
+        task.response_selection = "random"
+
+    # Run experiment
+    conversations = task.run_experiment(num_conversations=num_conversations)
+
+    # Save results
+    if output_file is None:
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        out_dir = Path("results") / "dialogue"
+        out_dir.mkdir(parents=True, exist_ok=True)
+        output_file = out_dir / f"persuasion_{method.value}_{ts}.jsonl"
+
+    output_file.parent.mkdir(parents=True, exist_ok=True)
+    with open(output_file, "w") as f:
+        for conv in conversations:
+            # Serialize ConversationState
+            result = {
+                "conversation_id": conv.conversation_id,
+                "persuader_persona": conv.persuader_persona,
+                "persuadee_persona": conv.persuadee_persona,
+                "turns": [
+                    {
+                        "role": t.role.value,
+                        "text": t.text,
+                        "turn_number": t.turn_number,
+                        "metadata": t.metadata,
+                    }
+                    for t in conv.turns
+                ],
+                "outcome": conv.outcome,
+                "method": method.value,
+                "persuader_model": persuader_model,
+                "persuadee_model": persuadee_model,
+                "config": config,
+            }
+            f.write(json.dumps(result) + "\n")
+    console.print(f"✅ Results saved to {output_file}")
+
+    # Optional evaluation
+    if evaluate:
+        donation_eval = DonationEvaluator(ground_truth_path=str(ground_truth_path) if ground_truth_path else None)
+        ling_eval = DialogueLinguisticEvaluator()
+
+        donation_metrics = [donation_eval.compute_instance_metric("", r) for r in _iter_results_jsonl(output_file)]
+        linguistic_metrics = [ling_eval.compute_instance_metric("", r) for r in _iter_results_jsonl(output_file)]
+
+        agg_donation = donation_eval.aggregate_metrics(donation_metrics)
+        agg_linguistic = ling_eval.aggregate_metrics(linguistic_metrics)
+
+        eval_file = output_file.parent / f"{output_file.stem}_evaluation.json"
+        with open(eval_file, "w") as f:
+            json.dump({"donation_metrics": agg_donation, "linguistic_metrics": agg_linguistic}, f, indent=2)
+        console.print(f"📊 Evaluation saved to {eval_file}")
+
+    # Summary
+    total_turns = sum(len(c.turns) for c in conversations)
+    donations = sum(1 for c in conversations if c.outcome and c.outcome.get("final_donation_amount", 0) > 0)
+    console.print(f"📈 Conversations: {len(conversations)}, Avg turns: {total_turns/len(conversations):.1f}")
+    console.print(f"💰 Donation rate: {donations/len(conversations):.1%}")
+
+
+def _iter_results_jsonl(path: Path):
+    with open(path, "r") as f:
+        for line in f:
+            try:
+                yield json.loads(line)
+            except Exception:
+                continue

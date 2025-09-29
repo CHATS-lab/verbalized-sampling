@@ -18,6 +18,7 @@ from .synthetic_data.livecodebench import LiveCodeBenchTask
 from .synthetic_data.synthetic_negative import SyntheticNegativeTask
 from .safety.safety import SafetyTask
 from .math.math_task import MathTask
+from .dialogue.persuasion import PersuasionTask
 from enum import Enum
 
 class Task(str, Enum):
@@ -157,6 +158,14 @@ class Task(str, Enum):
     Tests advanced problem-solving and mathematical creativity.
     """
 
+    PERSUASION_DIALOGUE = "persuasion_dialogue"
+    """PersuasionForGood dialogue simulation task.
+
+    Simulates multi-turn persuasive dialogues where a persuader tries
+    to convince a persuadee to donate to charity. Tests dialogue coherence,
+    persuasion effectiveness, and realistic conversation simulation.
+    """
+
 
 TASK_REGISTRY: Dict[str, Type[BaseTask]] = {
     # creativity
@@ -183,6 +192,8 @@ TASK_REGISTRY: Dict[str, Type[BaseTask]] = {
     "math_amc": lambda **kwargs: MathTask(dataset="amc", **kwargs),
     "math_minerva": lambda **kwargs: MathTask(dataset="minerva", **kwargs),
     "math_olympiad_bench": lambda **kwargs: MathTask(dataset="olympiad_bench", **kwargs),
+    # dialogue
+    "persuasion_dialogue": PersuasionTask,
 }
 
 def get_task(task_name: Task, **kwargs) -> BaseTask:
