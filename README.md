@@ -1,419 +1,250 @@
 # Verbalized Sampling
 
-A library for running controlled experiments with LLMs using different sampling methods.
+<p align="center">
+  <img src="assets/teaser.png" alt="Verbalized Sampling teaser" width="800">
+</p>
+
+**Verbalized Sampling (VS)** is a prompting strategy that mitigates mode collapse in Large Language Models by explicitly requesting responses with associated probabilities. This repository contains the official implementation of our paper **"Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity"**.
+
+## Overview
+
+Mode collapse in aligned LLMs leads to repetitive, predictable outputs that lack diversity. Verbalized Sampling addresses this by prompting models to generate multiple responses along with their estimated probabilities, effectively recovering the diversity present in the base model while maintaining quality.
+
+**Key Features:**
+- 🎯 **Training-free**: Works with any LLM without fine-tuning
+- 🔄 **Model-agnostic**: Compatible with GPT, Claude, Gemini, and open models
+- 📊 **Measurable diversity**: Quantitative improvements in semantic and lexical diversity
+- 🎮 **Tunable**: Control diversity levels via probability thresholds
+- 🔬 **Reproducible**: Complete experimental framework with evaluation metrics
 
 ## Installation
 
 ```bash
-# Install in development mode
+# Lightweight install (API-based models only)
 pip install -e .
 
-# Install with development dependencies
+# With GPU support for local models (vLLM, torch, transformers)
+pip install -e ".[gpu]"
+
+# Development install
 pip install -e ".[dev]"
+
+# Complete install
+pip install -e ".[gpu,dev]"
 ```
 
-## Usage
+### API Keys Setup
+```bash
+export OPENAI_API_KEY="your_openai_key"
+export OPENROUTER_API_KEY="your_openrouter_key"
+```
+
+## Quick Start
 
 ### Command Line Interface
 
-The package provides a command-line interface for running experiments:
-
 ```bash
-# List available tasks
+# List available tasks and methods
 verbalize list-tasks
-
-# List available sampling methods
 verbalize list-methods
 
 # Run an experiment
 verbalize run \
     --task JOKE \
     --model "anthropic/claude-sonnet-4" \
-    --methods DIRECT STRUCTURE_WITH_PROB \
+    --methods DIRECT VS_STANDARD \
+    --num-responses 50 \
+    --metrics diversity length ngram
+
+# Run quick test (TODO add this support to the CLI)
+verbalize run \
+    --prompt "Write a joke about the weather." \
+    --model "anthropic/claude-sonnet-4" \
+    --methods DIRECT VS_STANDARD \
     --num-responses 50 \
     --metrics diversity length ngram
 ```
 
 ### Python API
 
-You can also use the package in your Python code:
-
 ```python
 from verbalized_sampling.pipeline import run_quick_comparison
 from verbalized_sampling.tasks import Task
 from verbalized_sampling.prompts import Method
-from pathlib import Path
 
 # Run a quick comparison
 results = run_quick_comparison(
     task=Task.JOKE,
-    methods=[Method.DIRECT, Method.STRUCTURE_WITH_PROB],
+    methods=[Method.DIRECT, Method.VS_STANDARD],
     model_name="anthropic/claude-sonnet-4",
     metrics=["diversity", "length", "ngram"],
-    output_dir=Path("results"),
     num_responses=50,
-    num_samples=5,
-    num_prompts=1,
-    strict_json=False,
-    temperature=0.7,
-    top_p=1.0,
 )
+
+print(f"VS Diversity: {results['VS_STANDARD']['diversity']:.2f}")
+print(f"Direct Diversity: {results['DIRECT']['diversity']:.2f}")
 ```
 
-### Example Scripts
+## VS Method Variants
 
-The package includes example scripts in the `verbalized_sampling/scripts` directory:
+| Method | Description | Use Case |
+|--------|-------------|----------|
+| **VS-Standard** | Basic VS with probability estimates | General diversity improvement |
+| **VS-CoT** | VS + Chain-of-Thought reasoning | Complex reasoning tasks |
+| **VS-Multi** | VS across multiple conversation turns | Multi-turn dialogues |
 
-```python
-from verbalized_sampling.scripts.run_state_name import run_state_name_example
+### Example Usage
 
-# Run the state name example
-run_state_name_example()
-```
-
-## Development
-
-1. Install development dependencies:
-   ```bash
-   pip install -e ".[dev]"
-   ```
-
-2. Run tests:
-   ```bash
-   pytest
-   ```
-
-3. Format code:
-   ```bash
-   black .
-   isort .
-   ```
-
-4. Type checking:
-   ```bash
-   mypy .
-   ```
-
-5. Linting:
-   ```bash
-   ruff check .
-   ```
-
-## License
-
-MIT
-
-## Summary
-This repository contains experiments for testing how verbalized sampling can reduce and mitigate mode collapse in LLMs on tasks that require simulation of popularity and diversity. The project includes:
-
-- Random number/sequence generation
-    - Evaluated using chi-square tests compared with Python's random package
-- Story generation
-    - Evaluated using n-gram metrics and sentence transformer metrics
-
-## Structure
-
-- `verbalized_sampling/`: Main package directory
-    - `tasks/`: Task implementations
-        - `base.py`: Base task interface
-        - `rand_num.py`: Random number generation task
-        - `story.py`: Story generation task
-    - `llms/`: Language model interfaces
-        - `base.py`: Base LLM interface
-        - `vllm.py`: vLLM implementation
-        - `openrouter.py`: OpenRouter implementation
-    - `analysis/`: Analysis modules
-        - `plots.py`: Histogram plotting
-        - `metrics.py`: Statistical metrics (chi-square, etc.)
-    - `prompts/`: Task-specific prompts
-    - `cli.py`: Command-line interface using Typer
-- `scripts/`: Shell scripts for batch jobs
-- `output/`: Model outputs and response files
-- `analysis/`: Analysis results
-    - `plots/`: Generated plots
-    - `metrics/`: Statistical metrics
-
-## Usage
-
-### Running Experiments
-
-You can run experiments using the CLI:
-
-```bash
-python -m verbalized_sampling run-experiment \
-    --task rand_num \
-    --model-name meta-llama/Llama-3.1-70B-Instruct \
-    --format structure \
-    --temperature 0.7 \
-    --top-p 0.9 \
-    --num-responses 3 \
-    --num-samples 1 \
-    --output-file responses.jsonl
-```
-
-### Analyzing Results
-
-To analyze experiment results:
-
-```bash
-python -m verbalized_sampling analyze-results \
-    --target-dir output/meta-llama_Llama-3.3-70B-Instruct \
-    --output-dir analysis \
-    --sizes 1 3 5 10 50
-```
-
-This will:
-1. Generate histograms in `analysis/plots/`
-2. Calculate chi-square metrics in `analysis/metrics/`
-
-### Available Options
-
-- `--task`: Task to run (rand_num or story)
-- `--model-name`: Model name to use
-- `--format`: Sampling format (direct, seq, structure, structure_with_prob)
-- `--temperature`: Sampling temperature (default: 0.7)
-- `--top-p`: Top-p sampling parameter (default: 0.9)
-- `--num-responses`: Number of responses to generate (default: 3)
-- `--num-samples`: Number of samples per response (default: 1)
-- `--num-workers`: Number of parallel workers (default: 128)
-- `--output-file`: Output file path (default: responses.jsonl)
-- `--use-vllm`: Whether to use vLLM (default: False)
-
-### Scripts
-
-All `.sh` scripts are in the `scripts/` directory. Run them as needed:
-
-```bash
-bash scripts/run.sh
-``` 
-
-### ✅ Completed Features
-
-#### LLMs
-- ✅ Parallel workers support
-- ✅ Multi-turn conversation handling
-- ✅ Structured output with JSON validation
-- ✅ OpenRouter and vLLM integration
-- ✅ Embedding model support
-
-#### Tasks  
-- ✅ Story task refinement
-- ✅ New tasks for creativity evaluation (Book, Poem, Speech)
-
-#### Prompts
-- ✅ Comprehensive prompt factory
-- ✅ 8 different sampling methods
-- ✅ Robust response parsing
-- ✅ Multi-turn conversation support
-
-#### Generation Methods
-- ✅ Direct generation
-- ✅ Sequential sampling
-- ✅ Structured JSON output
-- ✅ Structured with probabilities
-- ✅ Multi-turn conversations
-- ✅ Chain-of-thought reasoning
-- ✅ Self-reflection sampling
-- ✅ Temperature-based sampling
-
-#### Evaluation Methods
-- ✅ Diversity evaluation with embeddings
-- ✅ TTCT creativity assessment
-- ✅ Creativity Index (overlap detection)
-
-## Framework Capabilities
-
-### 🎯 Tasks
-The framework supports multiple task types with reproducible sampling:
-
-- **Random Number Task** (`rand_num`) - Generate random numbers
-- **Creative Story Task** (`creative_story`) - Generate creative stories
-- **📚 Book Task** (`book`) - Novel/book continuations (100 prompts from literary works)
-- **🎭 Poem Task** (`poem`) - Poetry generation (247 prompts with starting lines)
-- **🎤 Speech Task** (`speech`) - Speech generation (235 prompts with opening sentences)
-
-**Key Features:**
-- ✅ Reproducible sampling with `random_seed` parameter
-- ✅ Configurable `num_prompts` for dataset subsampling
-- ✅ Multiple prompt access via `prompt_index`
-- ✅ Task metadata and statistics
-- ✅ Integration with all sampling methods
-
-### 🔄 Sampling Methods
-Comprehensive set of verbalized sampling approaches:
-
-#### Core Methods
-- **Direct** (`direct`) - Use prompts as-is
-- **Sequence** (`sequence`) - Generate multiple responses in Python list format
-- **Structure** (`structure`) - JSON format with response field only
-- **Structure with Probability** (`structure_with_prob`) - JSON with response and probability fields
-
-#### Advanced Methods  
-- **Multi-turn** (`multi_turn`) - Conversational multi-turn sampling
-- **Chain of Thought** (`chain_of_thought`) - Include reasoning process with responses
-- **Self-Reflection** (`self_reflection`) - Responses with quality reflection and confidence scores
-- **Temperature Sampling** (`temperature_sampling`) - Varying creativity levels across responses
-
-**Features:**
-- ✅ Robust parsing for each response format
-- ✅ Error handling with fallbacks
-- ✅ Structured JSON output validation
-- ✅ Multi-turn conversation support
-- ✅ Backward compatibility
-
-### 📊 Evaluation Methods
-Multi-dimensional assessment of generated content:
-
-#### Diversity Assessment
-- **Diversity Evaluator** (`diversity`)
-  - Semantic similarity using OpenAI embeddings
-  - Pairwise similarity analysis
-  - Vocabulary richness metrics
-  - Supports `text-embedding-3-small/large`
-
-#### Creativity Assessment  
-- **TTCT Evaluator** (`ttct`) - Torrance Tests of Creative Thinking
-  - **Fluency**: Meaningful and relevant responses (1-5 scale)
-  - **Flexibility**: Distinct categories and conceptual shifts (1-5 scale)
-  - **Originality**: Statistical rarity and uniqueness (1-5 scale)
-  - **Elaboration**: Detail and descriptive richness (1-5 scale)
-  - LLM-as-a-judge with comprehensive rubrics
-
-#### Originality Assessment
-- **Creativity Index Evaluator** (`creativity_index`)
-  - Measures overlap with pretraining data
-  - **Exact matching**: Uses Infini-gram API for n-gram detection
-  - **Semantic matching**: Earth Mover Distance with embeddings
-  - Creativity Index = 1 - coverage (higher = more creative)
-
-**Features:**
-- ✅ JSON serializable results
-- ✅ Save/load evaluation results
-- ✅ Detailed span-level analysis
-- ✅ Cost tracking for API usage
-- ✅ Parallel processing support
-
-### 🤖 Supported LLMs
-
-#### Generation Models
-- **OpenRouter** - Access to Claude, Gemini, and other models
-  - `claude-3-opus`, `claude-3.5-sonnet`, `claude-3.5-haiku`
-  - `gemini-2.0-flash`, `gemini-2.5-flash`, `gemini-2.5-pro`
-- **vLLM** - Local model serving with OpenAI-compatible API
-- **Structured Output** - JSON schema validation for applicable methods
-
-#### Embedding Models  
-- **OpenAI Embeddings** - For diversity evaluation
-  - `text-embedding-3-small` (default)
-  - `text-embedding-3-large`
-  - `text-embedding-ada-002`
-
-**Features:**
-- ✅ Parallel processing with configurable workers
-- ✅ Structured output support
-- ✅ Cost tracking and rate limiting
-- ✅ Error handling and retries
-
-## Quick Start Examples
-
-### Basic Task Usage
 ```python
 from verbalized_sampling.tasks import get_task, Task
 from verbalized_sampling.prompts import Method
 
-# Create reproducible task
-task = get_task(Task.BOOK, num_prompts=10, random_seed=42)
+# Create a task
+task = get_task(Task.STORY, num_prompts=10, random_seed=42)
 
-# Generate with different methods
-direct_prompt = task.get_prompt(Method.DIRECT, prompt_index=0)
-structured_prompt = task.get_prompt(Method.STRUCTURE_WITH_PROB, num_samples=5, prompt_index=0)
+# Generate diverse responses
+vs_prompt = task.get_prompt(Method.VS_STANDARD, num_samples=5, prompt_index=0)
+responses = model.generate(vs_prompt)
+parsed = task.parse_response(Method.VS_STANDARD, responses)
+# Returns: [{"response": "...", "probability": 0.15}, ...]
+
+# Chain-of-thought reasoning
+cot_prompt = task.get_prompt(Method.VS_COT, num_samples=3)
+cot_responses = model.generate(cot_prompt)
+parsed_cot = task.parse_response(Method.VS_COT, cot_responses)
+# Returns: [{"reasoning": "...", "response": "...", "probability": 0.22}, ...]
 ```
 
-### Comprehensive Evaluation
+## Supported Tasks
+
+The framework supports various task types from our paper experiments:
+
+### Creative Writing (§5)
+- **Poetry Continuation**: Continue poems with diverse styles and themes
+- **Story Generation**: Generate creative stories with varied plots and characters
+- **Joke Writing**: Create humorous content with different comedic approaches
+
+### Synthetic Data Generation (§7)
+- **Math Problems**: Generate diverse competition-level math questions (GSM8K, AMC/AIME, LiveCodeBench)
+- **Negative Examples**: Create incorrect solutions for robust training
+
+### Bias Mitigation (Appendix)
+- **Random Number Generation**: Achieve uniform sampling vs. mode-collapsed outputs
+- **Geographic Bias**: Mitigate location-based biases in state/country naming
+
+### Knowledge & Safety (Appendix)
+- **Open-ended QA**: Diverse factual responses while maintaining accuracy
+- **Safety Evaluation**: Preserve refusal rates for harmful content
+
+## Evaluation Framework
+
+### Diversity Metrics
 ```python
 from verbalized_sampling.evals import get_evaluator
 
-# Evaluate with multiple metrics
+# Semantic diversity using embeddings
 diversity_eval = get_evaluator("diversity")
-ttct_eval = get_evaluator("ttct") 
-creativity_eval = get_evaluator("creativity_index")
+result = diversity_eval.evaluate(prompts, responses)
+print(f"Semantic Diversity: {result.overall_metrics['average_similarity']:.3f}")
 
-# Run evaluations
-diversity_result = diversity_eval.evaluate(prompts, responses)
-ttct_result = ttct_eval.evaluate(prompts, responses)
-creativity_result = creativity_eval.evaluate(prompts, responses)
-
-# Access results
-print(f"Diversity: {diversity_result.overall_metrics['average_similarity']:.3f}")
-print(f"TTCT Creativity: {ttct_result.overall_metrics['overall']['creativity_score']:.1f}/5")
-print(f"Originality Index: {creativity_result.overall_metrics['average_creativity_index']:.3f}")
+# Creativity assessment (TTCT framework)
+ttct_eval = get_evaluator("ttct")
+creativity_result = ttct_eval.evaluate(prompts, responses)
+print(f"Creativity Score: {creativity_result.overall_metrics['overall']['creativity_score']:.1f}/5")
 ```
 
-### Advanced Sampling
-```python
-# Chain of thought reasoning
-cot_prompt = task.get_prompt(Method.CHAIN_OF_THOUGHT, num_samples=3)
-cot_response = model.generate(cot_prompt)
-parsed_cot = task.parse_response(Method.CHAIN_OF_THOUGHT, cot_response)
-# Returns: [{"reasoning": "...", "response": "..."}]
+### Supported Models
 
-# Self-reflection with confidence
-reflection_prompt = task.get_prompt(Method.SELF_REFLECTION, num_samples=3)
-reflection_response = model.generate(reflection_prompt)
-parsed_reflection = task.parse_response(Method.SELF_REFLECTION, reflection_response)
-# Returns: [{"response": "...", "reflection": "...", "confidence": 0.85}]
-```
+- **Closed Models**: GPT-4.1, Claude-3.5-Sonnet, Gemini-2.5-Pro
+- **Open Models**: Llama-3.1-70B, Qwen3-235B
+- **Reasoning Models**: OpenAI o3, DeepSeek-R1
+- **Local Models**: Via vLLM integration (requires `[gpu]` install)
 
-## Data Statistics
+## Reproducing Paper Results
 
-| Task | Prompts Available | Domain | Format |
-|------|------------------|--------|---------|
-| Book | 100 | Literary continuations | Novel prompts from published works |
-| Poem | 247 | Poetry | Starting lines from various poems |
-| Speech | 235 | Rhetoric | Opening sentences from historical speeches |
-| Creative Story | Dynamic | General creativity | Prompt factory generated |
-| Random Number | N/A | Simple generation | Numeric task |
-
-## Installation & Setup
-
-### Basic Requirements
-```bash
-pip install torch numpy nltk transformers sacremoses unidecode tqdm requests
-```
-
-### API Keys
-```bash
-export OPENAI_API_KEY="your_openai_key"
-export OPENROUTER_API_KEY="your_openrouter_key"
-```
-
-### Optional: Creativity Index Setup
-For exact matching (requires Infini-gram API access):
-```python
-evaluator = get_evaluator("creativity_index", method="exact")
-```
-
-For semantic matching (requires embedding table):
-```python
-from verbalized_sampling.evals.creativity_index import create_embedding_table
-create_embedding_table("meta-llama/Meta-Llama-3-8B-Instruct", "embeddings.pkl")
-evaluator = get_evaluator("creativity_index", method="semantic", embed_table_path="embeddings.pkl")
-```
-
-## Demo Scripts
+Run experiments in the order presented in our paper:
 
 ```bash
-# Test all evaluation methods
-python verbalized_sampling/examples/evaluation_demo.py
+# Main experiments (Sections 5-7)
+python scripts/tasks/run_poem.py --method vs_standard
+python scripts/tasks/run_story.py --method vs_standard
+python scripts/tasks/run_jokes.py --method vs_standard
 
-# Test all tasks and sampling methods  
-python verbalized_sampling/examples/tasks_demo.py
+# Synthetic data generation
+python scripts/tasks/run_positive_gsm8k.py --method vs_standard
+python scripts/tasks/run_positive_amc_aime.py --method vs_standard
+
+# Bias mitigation
+python scripts/tasks/run_rng.py --method vs_standard
+python scripts/tasks/run_state_name.py --method vs_standard
+
+# Safety evaluation
+python scripts/tasks/run_safety.py --method vs_standard
 ```
 
-### 🚧 Future Enhancements
+## Key Results
 
-- **Additional Tasks**: Scientific writing, code generation, dialogue
-- **Advanced Sampling**: Tree-of-thought, iterative refinement
-- **Evaluation Extensions**: Factual accuracy, coherence metrics
-- **Model Support**: Additional LLM providers, local model optimization
-- **Analysis Tools**: Statistical significance testing, correlation analysis
+Our experiments demonstrate consistent improvements across tasks and models:
+
+- **Creative Writing**: 2-3x diversity improvement while maintaining quality
+- **Bias Mitigation**: Uniform sampling (KL divergence: 0.027 vs 0.926 for direct)
+- **Emergent Scaling**: Larger models show greater benefits from VS
+- **Safety**: Preserved refusal rates for harmful content
+- **Tunable Diversity**: Control output diversity via probability thresholds
+
+## Repository Structure
+
+```
+verbalized_sampling/           # Main package
+├── tasks/                     # Task implementations
+│   ├── creativity/           # Creative writing tasks
+│   ├── synthetic_data/       # Data generation tasks
+│   ├── bias/                # Bias mitigation tasks
+│   └── safety/              # Safety evaluation
+├── prompts/                  # VS method implementations
+├── llms/                     # Model interfaces
+├── evals/                    # Evaluation metrics
+└── cli.py                    # Command line interface
+
+scripts/tasks/                 # Experimental scripts
+├── run_poem.py               # Poetry experiments
+├── run_story.py              # Story generation
+├── run_jokes.py              # Joke writing
+├── run_positive_*.py         # Synthetic data generation
+├── run_rng.py                # Random number generation
+├── run_state_name.py         # Geographic bias
+└── run_safety.py             # Safety evaluation
+```
+
+## Development
+
+```bash
+# Install development dependencies
+pip install -e ".[dev]"
+
+# Code formatting and linting
+black .
+isort .
+ruff check .
+mypy .
+
+# Run tests
+pytest
+```
+
+## Citation
+
+If you use Verbalized Sampling in your research, please cite our paper:
+
+```bibtex
+@article{zhang2025verbalized,
+  title={Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity},
+  author={Zhang, Jiayi and Yu, Simon and Chong, Derek and Sicilia, Anthony and Tomz, Michael R and Manning, Christopher D and Shi, Weiyan},
+  journal={arXiv preprint arXiv:XXXX.XXXXX},
+  year={2025}
+}
+```
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.

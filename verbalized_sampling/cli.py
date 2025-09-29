@@ -17,24 +17,54 @@ console = Console()
 
 # Task descriptions
 TASK_DESCRIPTIONS = {
-    Task.RANDOM_NUM: "Random number generation - tests basic sampling uniformity",
-    Task.CREATIVE_STORY: "Creative story generation - tests narrative coherence and creativity",
-    Task.BOOK: "Book continuation - tests long-form narrative coherence",
+    # Creative writing tasks (Section 5)
     Task.POEM: "Poetry generation - tests creative expression and poetic forms",
-    Task.SPEECH: "Speech generation - tests rhetorical effectiveness",
-    Task.STATE_NAME: "State name generation - tests creative naming capabilities",
+    # Task.CREATIVE_STORY: "Creative story generation - tests narrative coherence and creativity",
     Task.JOKE: "Joke generation - tests humor and creative wordplay",
+    Task.BOOK: "Story continuation - tests long-form narrative coherence",
+    # Task.SPEECH: "Speech generation - tests rhetorical effectiveness",
+
+    # Bias mitigation tasks (Appendix)
+    Task.RANDOM_NUM: "Random number generation - tests basic sampling uniformity",
+    Task.STATE_NAME: "State name generation - tests creative naming capabilities",
+
+    # Knowledge and QA tasks (Appendix)
+    Task.SIMPLE_QA: "Simple QA - tests factual knowledge diversity while maintaining accuracy",
+
+    # Synthetic data generation tasks (Section 7)
+    Task.GSM8K: "GSM8K math problems - generate grade school math word problems",
+    Task.AMCAndAIMEMathTask: "AMC/AIME math - generate competition-level mathematics problems",
+    Task.LIVECODEBENCH: "LiveCodeBench - generate coding problems for evaluation",
+    Task.SYNTHETIC_NEGATIVE: "Negative examples - generate incorrect solutions for robust training",
+
+    # Math evaluation tasks
+    Task.MATH: "MATH dataset problems - complex mathematical reasoning tasks",
+    Task.AIME: "AIME problems - American Invitational Mathematics Examination",
+    Task.AMC: "AMC problems - American Mathematics Competitions",
+    Task.MINERVA: "Minerva math - mathematical reasoning evaluation dataset",
+    Task.OLYMPIAD_BENCH: "Olympiad problems - international mathematics olympiad challenges",
+
+    # Safety evaluation (Appendix)
+    Task.SAFETY: "Safety evaluation - test refusal rates for harmful content using StrongReject",
 }
 
 # Method descriptions (VS = Verbalized Sampling)
 METHOD_DESCRIPTIONS = {
+    # Baseline methods
     Method.DIRECT: "Direct sampling - baseline method using prompt as-is",
+    Method.DIRECT_BASE: "Direct base sampling - direct prompting for base models without chat template",
+    Method.DIRECT_COT: "Chain-of-Thought - adds reasoning step to direct prompting",
     Method.SEQUENCE: "Sequential sampling - generates multiple responses in list format",
-    Method.STRUCTURE: "Structured sampling - uses JSON format with response field",
+    Method.STRUCTURE: "Structured sampling - uses JSON format with response field only",
+    Method.MULTI_TURN: "Multi-turn sampling - generates multiple responses in multi-turn format",
+
+    # Verbalized Sampling methods (paper-aligned)
     Method.VS_STANDARD: "VS-Standard - verbalized sampling with responses and probabilities",
     Method.VS_COT: "VS-CoT - verbalized sampling with chain-of-thought reasoning",
     Method.VS_MULTI: "VS-Multi - verbalized sampling with multi-turn/combined approach",
-    Method.MULTI_TURN: "Multi-turn conversation - conversational format with multiple turns",
+
+    # Additional specialized methods
+    # Method.STANDARD_ALL_POSSIBLE: "All-possible standard - generates all reasonable variations of a response",
 
     # Note: Legacy method names (STRUCTURE_WITH_PROB, CHAIN_OF_THOUGHT, COMBINED)
     # are aliases that resolve to the same enum objects as VS_STANDARD, VS_COT, VS_MULTI
