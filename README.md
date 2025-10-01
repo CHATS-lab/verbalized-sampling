@@ -1,21 +1,29 @@
-# Verbalized Sampling
-
 <p align="center">
-  <img src="https://raw.githubusercontent.com/jia-yi-zhang/verbalized-sampling/main/assets/teaser.png" alt="Verbalized Sampling teaser" width="800">
+  <img src="./assets/teaser.png" width=90% alt="Verbalized Sampling" />
 </p>
 
-**Verbalized Sampling (VS)** is a prompting strategy that mitigates mode collapse in Large Language Models by explicitly requesting responses with associated probabilities. This repository contains the official implementation of our paper **"Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity"**.
+[![PyPI - Version](https://img.shields.io/pypi/v/verbalized-sampling.svg)](https://pypi.org/project/verbalized-sampling/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/verbalized-sampling.svg)](https://pypi.org/project/verbalized-sampling/)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![arXiv](https://img.shields.io/badge/arXiv-XXXX.XXXXX-b31b1b.svg)](https://arxiv.org/abs/XXXX.XXXXX)
 
-## Overview
+[Installation](#installation) | [Quick Start](#quick-start) | [Tasks](#supported-tasks) | [Citation](#citation)
 
-Mode collapse in aligned LLMs leads to repetitive, predictable outputs that lack diversity. Verbalized Sampling addresses this by prompting models to generate multiple responses along with their estimated probabilities, effectively recovering the diversity present in the base model while maintaining quality.
+---
 
-**Key Features:**
-- 🎯 **Training-free**: Works with any LLM without fine-tuning
-- 🔄 **Model-agnostic**: Compatible with GPT, Claude, Gemini, and open models
-- 📊 **Measurable diversity**: Quantitative improvements in semantic and lexical diversity
-- 🎮 **Tunable**: Control diversity levels via probability thresholds
-- 🔬 **Reproducible**: Complete experimental framework with evaluation metrics
+## Updates
+* 🎉 01/10/2025: We release our paper, code and package. Check the release page for more details.
+
+## Introduction
+
+**Verbalized Sampling (VS)** is a prompting strategy that mitigates mode collapse in Large Language Models by explicitly requesting responses with associated probabilities. This framework is:
+
+* **Training-Free**: Works with any LLM without fine-tuning—simply apply VS prompts to unlock diversity.
+* **Model-Agnostic**: Compatible with GPT, Claude, Gemini, and open models like Llama and Qwen.
+* **Measurable Impact**: Achieves 2-3x diversity improvement in creative writing while maintaining quality.
+* **Versatile Applications**: Supports creative writing, synthetic data generation, bias mitigation.
+* **Complete Framework**: Includes task implementations, evaluation metrics, and reproducible experiments from our paper.
+* **Easy to Use**: Simple CLI and Python API for running experiments and comparing methods.
 
 ## Installation
 
@@ -131,7 +139,8 @@ parsed_cot = task.parse_response(Method.VS_COT, cot_responses)
 # Returns: [{"reasoning": "...", "response": "...", "probability": 0.22}, ...]
 ```
 
-## Supported Tasks
+<details>
+<summary><h2 style="display: inline;">Tasks</h2></summary>
 
 The framework supports various task types from our paper experiments:
 
@@ -152,7 +161,11 @@ The framework supports various task types from our paper experiments:
 - **Open-ended QA**: Diverse factual responses while maintaining accuracy
 - **Safety Evaluation**: Preserve refusal rates for harmful content
 
-## Evaluation Framework
+</details>
+
+<details>
+
+<summary><h2 style="display: inline;">Evaluation Framework</h2></summary>
 
 ### Diversity Metrics
 ```python
@@ -175,6 +188,8 @@ print(f"Creativity Score: {creativity_result.overall_metrics['overall']['creativ
 - **Open Models**: Llama-3.1-70B, Qwen3-235B
 - **Reasoning Models**: OpenAI o3, DeepSeek-R1
 - **Local Models**: Via vLLM integration (requires `[gpu]` install)
+
+</details>
 
 ## Reproducing Paper Results
 
