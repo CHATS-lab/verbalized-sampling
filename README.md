@@ -68,16 +68,16 @@ curl https://api.openai.com/v1/chat/completions \
 
 ```bash
 # Lightweight install (API-based models only)
-pip install -e .
+pip install verbalized-sampling
 
 # With GPU support for local models (vLLM, torch, transformers)
-pip install -e ".[gpu]"
+pip install verbalized-sampling[gpu]
 
 # Development install
-pip install -e ".[dev]"
+pip install verbalized-sampling[dev]
 
 # Complete install
-pip install -e ".[gpu,dev]"
+pip install verbalized-sampling[gpu,dev]
 ```
 
 ### API Keys Setup
