@@ -6,13 +6,7 @@ Each experiment is mapped to its corresponding paper section with LaTeX labels f
 
 ## Table of Contents
 
-- [Reproducing Paper Results](#reproducing-paper-results)
-  - [Table of Contents](#table-of-contents)
-  - [Script Naming Conventions](#script-naming-conventions)
-    - [Main Scripts (Use These)](#main-scripts-use-these)
-    - [Variant Scripts](#variant-scripts)
-    - [Which Script Should I Use?](#which-script-should-i-use)
-  - [Main Experiments (§5-8)](#main-experiments-5-8)
+- [Main Experiments (§5-8)](#main-experiments-5-8)
     - [§5: Creative Writing](#5-creative-writing)
       - [5.1 Poem Continuation](#51-poem-continuation)
       - [5.2 Story Generation](#52-story-generation)
@@ -43,42 +37,6 @@ Each experiment is mapped to its corresponding paper section with LaTeX labels f
   - [Running All Experiments](#running-all-experiments)
   - [Citation](#citation)
   - [Need Help?](#need-help)
-
----
-
-## Script Naming Conventions
-
-The `scripts/tasks/` directory contains the following types of experiment scripts:
-
-### Main Scripts (Use These)
-- **`run_<task>.py`** - Primary scripts for running experiments with API-based models (GPT, Gemini, Claude)
-  - Examples: `run_poem.py`, `run_story.py`, `run_jokes.py`, `run_safety.py`
-  - Use `use_vllm=False` or litellm by default
-
-### Variant Scripts
-- **`run_<task>_local.py`** - Scripts configured for local/open-source models using vLLM
-  - Examples: `run_jokes_local.py`, `run_safety_local.py`
-  - Use `use_vllm=True` for GPU acceleration
-  - Optimized for models like Llama-3.1-70B, Qwen3-235B
-
-- **`run_<task>_gpu.py`** - GPU-optimized versions for specific tasks
-  - Examples: `run_story_gpu.py`
-  - Similar to `_local` but with additional GPU-specific configurations
-
-- **`run_<task>_test.py`** - Development/testing versions (not for paper reproduction)
-  - Examples: `run_poem_test.py`
-  - Used for testing different model configurations
-  - **Note**: These are experimental and not required for paper reproduction
-
-### Which Script Should I Use?
-
-| Scenario | Script Type | Example |
-|----------|-------------|---------|
-| **Paper reproduction with API models** (GPT-4.1, Gemini, Claude) | `run_<task>.py` | `run_poem.py` |
-| **Using local models with GPU** (Llama, Qwen) | `run_<task>_local.py` or `run_<task>_gpu.py` | `run_jokes_local.py` |
-| **Testing/development** | Modify main scripts | N/A |
-
-**Recommendation**: Use the main `run_<task>.py` scripts for paper reproduction. The `_local`, `_gpu`, and `_test` variants are provided for convenience but are not necessary for reproducing paper results.
 
 ---
 

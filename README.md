@@ -178,7 +178,7 @@ parsed_cot = task.parse_response(Method.VS_COT, cot_responses)
 
 For detailed instructions on reproducing all experiments from our paper, including exact commands, parameter settings, and expected outputs, see:
 
-**📊 [EXPERIMENTS.md](scripts/README.md) - Complete Experiment Replication Guide**
+**📊 [EXPERIMENTS.md](scripts/EXPERIMENTS.md) - Complete Experiment Replication Guide**
 
 This guide provides 1-to-1 mapping between paper sections (§5-8) and experiment scripts.
 
