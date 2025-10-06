@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <a href="#try-it-yourself">Try it yourself</a> | <a href="#installation">Installation</a> | <a href="#quick-start">Quick Start</a> | <a href="#citation">Citation</a>
+  <a href="#try-it-yourself">Try it yourself</a> | <a href="#installation">Installation</a> | <a href="#quick-start">Quick Start</a> | <a href="#reproducing-paper-results">Reproduce Experiments</a> | <a href="#citation">Citation</a>
 </p>
 
 ---
@@ -174,77 +174,13 @@ parsed_cot = task.parse_response(Method.VS_COT, cot_responses)
 # Returns: [{"reasoning": "...", "response": "...", "probability": 0.22}, ...]
 ```
 
-<details>
-<summary><h2 style="display: inline;">Tasks</h2></summary>
-
-The framework supports various task types from our paper experiments:
-
-### Creative Writing (§5)
-- **Poetry Continuation**: Continue poems with diverse styles and themes
-- **Story Generation**: Generate creative stories with varied plots and characters
-- **Joke Writing**: Create humorous content with different comedic approaches
-
-### Synthetic Data Generation (§7)
-- **Math Problems**: Generate diverse competition-level math questions (GSM8K, AMC/AIME, LiveCodeBench)
-- **Negative Examples**: Create incorrect solutions for robust training
-
-### Bias Mitigation (Appendix)
-- **Random Number Generation**: Achieve uniform sampling vs. mode-collapsed outputs
-- **Geographic Bias**: Mitigate location-based biases in state/country naming
-
-### Knowledge & Safety (Appendix)
-- **Open-ended QA**: Diverse factual responses while maintaining accuracy
-- **Safety Evaluation**: Preserve refusal rates for harmful content
-</details>
-
-<details>
-<summary><h2 style="display: inline;">Evaluation Framework</h2></summary>
-
-### Diversity Metrics
-```python
-from verbalized_sampling.evals import get_evaluator
-
-# Semantic diversity using embeddings
-diversity_eval = get_evaluator("diversity")
-result = diversity_eval.evaluate(prompts, responses)
-print(f"Semantic Diversity: {result.overall_metrics['average_similarity']:.3f}")
-
-# Creativity assessment (TTCT framework)
-ttct_eval = get_evaluator("ttct")
-creativity_result = ttct_eval.evaluate(prompts, responses)
-print(f"Creativity Score: {creativity_result.overall_metrics['overall']['creativity_score']:.1f}/5")
-```
-
-### Supported Models
-
-- **Closed Models**: GPT-4.1, Claude-3.5-Sonnet, Gemini-2.5-Pro
-- **Open Models**: Llama-3.1-70B, Qwen3-235B
-- **Reasoning Models**: OpenAI o3, DeepSeek-R1
-- **Local Models**: Via vLLM integration (requires `[gpu]` install)
-
-</details>
-
 ## Reproducing Paper Results
 
-Run experiments in the order presented in our paper:
+For detailed instructions on reproducing all experiments from our paper, including exact commands, parameter settings, and expected outputs, see:
 
-```bash
-# Main experiments (Sections 5-7)
-python scripts/tasks/run_poem.py --method vs_standard
-python scripts/tasks/run_story.py --method vs_standard
-python scripts/tasks/run_jokes.py --method vs_standard
+**📊 [EXPERIMENTS.md](scripts/README.md) - Complete Experiment Replication Guide**
 
-# Synthetic data generation
-python scripts/tasks/run_positive_gsm8k.py --method vs_standard
-python scripts/tasks/run_positive_amc_aime.py --method vs_standard
-
-# Bias mitigation
-python scripts/tasks/run_rng.py --method vs_standard
-python scripts/tasks/run_state_name.py --method vs_standard
-
-# Safety evaluation
-python scripts/tasks/run_safety.py --method vs_standard
-```
+This guide provides 1-to-1 mapping between paper sections (§5-8) and experiment scripts.
 
 ## Key Results
 
