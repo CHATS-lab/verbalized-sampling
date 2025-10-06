@@ -1,33 +1,19 @@
 <p align="center">
-  <img src="./assets/teaser.png" width=90% alt="Verbalized Sampling" />
+  <a href="https://pypi.org/project/verbalized-sampling/"><img src="https://img.shields.io/pypi/v/verbalized-sampling.svg" alt="PyPI - Version"></a>
+  <a href="https://pypi.org/project/verbalized-sampling/"><img src="https://img.shields.io/pypi/pyversions/verbalized-sampling.svg" alt="PyPI - Python Version"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
+  <a href="https://arxiv.org/abs/2510.01171"><img src="https://img.shields.io/badge/arXiv-2510.01171-b31b1b.svg" alt="arXiv"></a>
 </p>
 
-[![PyPI - Version](https://img.shields.io/pypi/v/verbalized-sampling.svg)](https://pypi.org/project/verbalized-sampling/)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/verbalized-sampling.svg)](https://pypi.org/project/verbalized-sampling/)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
-[![arXiv](https://img.shields.io/badge/arXiv-2510.01171-b31b1b.svg)](https://arxiv.org/abs/2510.01171)
-
-[Installation](#installation) | [Quick Start](#quick-start) | [Tasks](#supported-tasks) | [Citation](#citation)
+<p align="center">
+  <a href="#try-it-yourself">Try it yourself</a> | <a href="#installation">Installation</a> | <a href="#quick-start">Quick Start</a> | <a href="#citation">Citation</a>
+</p>
 
 ---
 
-## Updates
-* 🎉 10/01/2025: We release our paper, code and package. Check the release page for more details.
-
-## Introduction
-
-**Verbalized Sampling (VS)** is a prompting strategy that mitigates mode collapse in Large Language Models by explicitly requesting responses with associated probabilities. This framework is:
-
-* **Training-Free**: Works with any LLM without fine-tuning—simply apply VS prompts to unlock diversity.
-* **Model-Agnostic**: Compatible with GPT, Claude, Gemini, and open models like Llama and Qwen.
-* **Measurable Impact**: Achieves 2-3x diversity improvement in creative writing while maintaining quality.
-* **Versatile Applications**: Supports creative writing, synthetic data generation, open-ended QA.
-* **Complete Framework**: Includes task implementations, evaluation metrics, and reproducible experiments from our paper.
-* **Easy to Use**: Simple CLI and Python API for running experiments and comparing methods.
-
 ## Try it yourself
 
-#### Example 1: Add to your own prompts in Chat Interface
+#### Example 1: Add before your own prompts in Chat Interface
 
 Copy and paste this prompt into any chat interface (ChatGPT, Claude, Gemini, etc.):
 
@@ -39,11 +25,12 @@ Return ONLY the responses in JSON format, with no additional explanations or tex
 <user_query>Write a short story about a bear.</user_query>
 ```
 
-#### Example 2: OpenAI API query
+#### Example 2: Query via API
 
-Use this curl command to try VS-Standard with the OpenAI API. Replace `gpt-4` with your model of choice:
+Use this curl command to try VS-Standard with the OpenAI API. Replace `gpt-4.1` with your model of choice:
 
 ```bash
+export OPENAI_API_KEY="your_openai_key"
 curl https://api.openai.com/v1/chat/completions \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $OPENAI_API_KEY" \
@@ -63,6 +50,23 @@ curl https://api.openai.com/v1/chat/completions \
   }'
 ```
 
+## Introduction
+
+**Verbalized Sampling (VS)** is a prompting strategy that mitigates mode collapse in Large Language Models by explicitly requesting responses with associated probabilities. This framework is:
+
+* **Training-Free**: Works with any LLM without fine-tuning—simply apply VS prompts to unlock diversity.
+* **Model-Agnostic**: Compatible with GPT, Claude, Gemini, and open models like Llama and Qwen.
+* **Measurable Impact**: Achieves 2-3x diversity improvement in creative writing while maintaining quality.
+* **Versatile Applications**: Supports creative writing, synthetic data generation, open-ended QA.
+* **Complete Framework**: Includes task implementations, evaluation metrics, and reproducible experiments from our paper.
+* **Easy to Use**: Simple CLI and Python API for running experiments and comparing methods.
+
+<p align="center">
+  <img src="./assets/teaser.png" width=90% alt="Verbalized Sampling" />
+</p>
+
+## Updates
+* 🎉 10/01/2025: We release our paper, code and package. Check the release page for more details.
 
 ## Installation
 
