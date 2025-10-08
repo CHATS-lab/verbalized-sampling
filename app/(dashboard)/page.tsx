@@ -547,33 +547,30 @@ export default function HomePage() {
           {/* Paper Title and Authors Section */}
           <div className="text-center">
             <h1 className="text-4xl font-bold text-gray-700 tracking-tight sm:text-5xl mb-6">
-              CollabLLM: From Passive Responders to Active Collaborators
+              Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity
             </h1>
             
             <div className="text-xl text-gray-600 mb-2 max-w-5xl mx-auto leading-relaxed">
               <div className="mb-1">
-                <a href="https://cs.stanford.edu/~shirwu/" className="text-blue-400 hover:text-blue-400 transition-colors">Shirley Wu</a><sup className="text-orange-500">1</sup>,{' '}
-                <a href="https://www.microsoft.com/en-us/research/people/mgalley/" className="text-blue-400 hover:text-blue-400 transition-colors">Michel Galley</a><sup className="text-orange-500">2</sup>,{' '}
-                <a href="https://www.microsoft.com/en-us/research/people/baolinpeng/" className="text-blue-400 hover:text-blue-400 transition-colors">Baolin Peng</a><sup className="text-orange-500">2</sup>,{' '}
-                <a href="https://sites.google.com/site/hcheng2site" className="text-blue-400 hover:text-blue-400 transition-colors">Hao Cheng</a><sup className="text-orange-500">2</sup>,{' '}
-                <a href="https://scholar.google.com/citations?user=jJglcU8AAAAJ&hl=en" className="text-blue-400 hover:text-blue-400 transition-colors">Gavin Li</a><sup className="text-orange-500">1</sup>,{' '}
-                <a href="https://yao-dou.github.io/" className="text-blue-400 hover:text-blue-400 transition-colors">Yao Dou</a><sup className="text-orange-500">3</sup>,{' '}
-                <a href="https://www.linkedin.com/in/wilsoncai" className="text-blue-400 hover:text-blue-400 transition-colors">Weixin Cai</a><sup className="text-orange-500">1</sup>
+                <a href="https://jiayizx.github.io/" className="text-blue-400 hover:text-blue-400 transition-colors">Jiayi Zhang</a><sup className="text-orange-500">1</sup>,{' '}
+                <a href="https://simonucl.github.io/" className="text-blue-400 hover:text-blue-400 transition-colors">Simon Yu</a><sup className="text-orange-500">1</sup>,{' '}
+                <a href="https://www.linkedin.com/in/derekch" className="text-blue-400 hover:text-blue-400 transition-colors">Derek Chong</a><sup className="text-orange-500">2</sup>,{' '}
+                <a href="https://anthonysicilia.tech/" className="text-blue-400 hover:text-blue-400 transition-colors">Anthony Sicilia</a><sup className="text-orange-500">3</sup>
               </div>
               <div>
-                <a href="https://www.james-zou.com/" className="text-blue-400 hover:text-blue-400 transition-colors">James Zou</a><sup className="text-orange-500">1</sup>,{' '}
-                <a href="https://cs.stanford.edu/people/jure/" className="text-blue-400 hover:text-blue-400 transition-colors">Jure Leskovec</a><sup className="text-orange-500">1</sup>,{' '}
-                <a href="https://www.microsoft.com/en-us/research/people/jfgao/" className="text-blue-400 hover:text-blue-400 transition-colors">Jianfeng Gao</a><sup className="text-orange-500">2</sup>
+                <a href="https://tomz.people.stanford.edu/" className="text-blue-400 hover:text-blue-400 transition-colors">Michael R. Tomz</a><sup className="text-orange-500">2</sup>,{' '}
+                <a href="https://nlp.stanford.edu/~manning/" className="text-blue-400 hover:text-blue-400 transition-colors">Christopher D. Manning</a><sup className="text-orange-500">2</sup>,{' '}
+                <a href="https://wyshi.github.io/" className="text-blue-400 hover:text-blue-400 transition-colors">Weiyan Shi</a><sup className="text-orange-500">1</sup>
               </div>
             </div>
             
             <div className="text-xl text-black-500 mb-4">
-              <sup className="text-orange-500">1</sup>Stanford University, <sup className="text-orange-500">2</sup>Microsoft, <sup className="text-orange-500">3</sup>Georgia Tech
+              <sup className="text-orange-500">1</sup>Northeastern University, <sup className="text-orange-500">2</sup>Stanford University, <sup className="text-orange-500">3</sup>West Virginia University
             </div>
             
-            <div className="text-xl font-bold">
+            {/* <div className="text-xl font-bold">
               <span className="text-orange-600">ICML 2025 Outstanding Paper</span>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
@@ -746,231 +743,7 @@ export default function HomePage() {
         </div>
       </section>
 
-{/* Blog Section */}
-<section id="blog" className="py-16 bg-white">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    {/* Blog Header */}
-    <div className="text-center mb-12">
-      <h2 className="text-3xl font-bold text-gray-700 sm:text-4xl mb-3">
-        From the Blog
-      </h2>
-      <p className="text-lg text-gray-500">
-        Insights and updates from our research team
-      </p>
-    </div>
 
-    {/* Blog Post */}
-    <article className="max-w-none">
-      {/* Blog Post Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-700 sm:text-4xl mb-4 font-serif">
-          Building the Future of Collaborative AI: Our Journey with CollabLLM
-        </h1>
-        <div className="flex items-center gap-6 text-gray-500">
-          <div className="flex items-center gap-2">
-            <Calendar size={16} />
-            <span className="text-sm">June 12, 2025</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Clock size={16} />
-            <span className="text-sm">6 min read</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <User size={16} />
-            <span className="text-sm">Shirley Wu, Michel Galley</span>
-          </div>
-        <ViewerSystem />
-          
-        </div>
-        
-        {/* Viewer System Component */}
-      </div>
-
-      {/* Blog Content */}
-      <div className="">
-        <div className="prose prose-lg max-w-none font-serif leading-relaxed text-gray-500">
-          <p className="text-xl text-gray-500 mb-6 italic">
-            "The future of AI isn't just about making models smarter—it's about making them truly collaborative partners in human endeavors."
-          </p>
-
-          <h2 className="text-2xl font-bold text-gray-700 mt-10 mb-4">
-            The Challenge We Set Out to Solve
-          </h2>
-          
-              
-        <p className="mb-4 text-lg">
-          When we first started working with large language models, we noticed something puzzling. We saw that these models were incredibly capable. However, we all experienced a particular kind of frustration, illustrated perfectly by this example from{' '}
-          <a 
-            href="https://www.platformer.news/openai-operator-ai-agent-hands-on/" 
-            className="text-blue-800 hover:text-blue-800 underline"
-            target="_blank" 
-            rel="noopener noreferrer"
-          >
-            Casey Newton
-          </a>:
-        </p>
-
-
-          {/* Quote Box */}
-          <blockquote className="border-l-4 border-gray-500 pl-6 py-4 mb-6 bg-gray-50 rounded-r-lg italic">
-            <p className="text-lg text-gray-500 mb-3">
-              My most frustrating experience with Operator was my first one: trying to order groceries. </p>
-            <p className="text-lg text-gray-500 mb-3">
-              <em>“Help me buy groceries on Instacart,”</em> I said, expecting it to ask me some basic questions:
-              Where do I live? What store do I usually buy groceries from? What kinds of groceries do I want?
-            </p>
-            <p className="text-lg text-gray-500">
-              It didn’t ask me any of that. Instead, Operator opened Instacart in a browser tab and began 
-              searching for milk in grocery stores located in Des Moines, Iowa.
-            </p>
-          </blockquote>
-
-          <p className="mb-4 text-lg text-gray-500">
-            It’s genuinely surprising: one of the <strong>smartest LLMs</strong>—capable of solving graduate-level math problems—
-            can still fail at basic human communication.
-          </p>
-
-          <p className="mb-4 text-lg text-gray-500">
-            <strong>This is not a minor flaw.</strong> LLMs that lack effective communication skills pose challenges across key dimensions:
-            <span className="italic"> performance, safety, and efficiency</span>. 
-            Ask yourself:
-          </p>
-
-          <ul className="list-disc list-inside mb-4 text-lg text-gray-500">
-            <li>How can we get satisfactory results if LLMs make assumptions about our preferences?</li>
-            <li>How reliable is it to consult AI on healthcare, legal, or financial decisions?</li>
-            <li>How much time and patience are we expected to waste just trying to get our point across?</li>
-          </ul>
-
-          <p className="mb-6 text-lg text-gray-500">
-            The problem runs deeper. We typically evaluate LLMs in <strong>simple, sanitized test environments</strong>—single-turn prompts with clear, unambiguous instructions. But is that how real communication works?
-          </p>
-
-          <p className="mb-6 text-lg text-gray-500">
-            In real life, solving meaningful problems requires <strong>collaboration, iteration, and contextual awareness</strong>. Moreover, if humans and LLMs are going to tackle groundbreaking problems together, AI systems can't just passively respond to human requests—they need to actively <strong>stimulate human creativity</strong> and guide the collaborative process. 
-          </p>
-          <p className="mb-6 text-lg text-gray-500">
-            That’s why we’re introducing <span className="font-semibold text-black-500">CollabLLM</span>: 
-            a framework designed to unlock the potential of human-AI collaboration by enabling LLMs to act 
-            as <em>active, collaborative partners</em> rather than passive responders.
-          </p>
-          <h2 className="text-2xl font-bold text-gray-700 mt-10 mb-4">
-            Our Breakthrough Approach
-          </h2>
-
-          <p className="mb-4 text-lg">
-            The core idea behind CollabLLM is simple: in a multi-turn interaction, what matters most is not how good a single response is—but how it affects the rest of the conversation.
-          </p>
-
-          <p className="mb-4 text-lg">
-            Take this scene from{' '}
-            <a 
-              href="https://www.youtube.com/watch?v=7fbaP2YjJ40&t=245s" 
-              className="text-blue-800 hover:text-blue-800 underline"
-              target="_blank" 
-              rel="noopener noreferrer"
-            >
-              <em>Friends</em> (4:05 in the YouTube clip)
-            </a>{' '}
-            <a 
-              href="https://www.bilibili.com/video/BV1vJ4m1j7zF/?spm_id_from=333.337.search-card.all.click" 
-              className="text-blue-800 hover:text-blue-800 underline"
-              target="_blank" 
-              rel="noopener noreferrer"
-            >
-              / (1:42 in the Bilibili clip)
-            </a>
-            : Rachel and Joey are talking about dating strategies. Rachel asks a seemingly simple question: 
-            <em>"So, where'd you grow up?"</em> Joey immediately mocks her—<em>"That's your move?"</em>—implying the question is naive. 
-            But a few turns later, his tone changes. He's genuinely impressed: <em>"Wow!"</em>—because the question led him to open up and connect. The key insight? <strong>What matters isn't how a response is judged in the moment, but how it shapes the entire conversation.</strong>
-          </p>
-
-          <p className="mb-4 text-lg">
-            Now imagine a model that chooses to ask a clarifying question instead of giving a direct answer. Standard reinforcement learning from human feedback (RLHF) might penalize that—it didn't provide information right away. But if the question helps uncover useful context that improves the conversation downstream, shouldn't it be rewarded?
-          </p>
-
-          {/* Key Concept Highlight */}
-          <div className="bg-blue-50 border-l-4 border-blue-400 p-6 my-6 rounded-r-lg">
-            <p className="text-lg text-gray-800 mb-0">
-              That's exactly what CollabLLM does. We define a new reward function that measures the <strong>causal effect</strong> of a model's response on the future trajectory of a conversation. We call this the <strong>Multiturn-aware Reward (MR)</strong>. It evaluates a single model action based on its longer-term impact—not just immediate helpfulness.
-            </p>
-          </div>
-
-          <p className="mb-4 text-lg">
-            <strong>Quiz:</strong> is asking a question always better than giving an answer? The answer is—not necessarily. It depends entirely on the objective. 
-            In most real-world situations, repeatedly asking questions without making progress is inefficient, because the ultimate goal remains unmet. 
-            But take the game <em>20 Questions</em> as an example—where the objective is to guess what someone is thinking by asking a limited number of yes/no questions. 
-            In that case, asking questions is essential, and giving an answer too early would break the format and defeat the purpose of the game. 
-            This is where Multiturn-aware Reward (MR) comes in: it allows the model to adapt its behavior based on the context, learning <em>when</em> to ask and <em>when</em> to answer—depending entirely on what the task requires.
-          </p>
-
-          <p className="mb-4 text-lg">
-            Now, going back to the <em>Friends</em> example with Rachel and Joey—how do we measure the value of Rachel's question over the course of a conversation? We need two components:<br />
-            1) A <strong>user simulator</strong> to generate realistic follow-up responses (e.g., what Joey might say next), and<br />
-            2) An <strong>evaluator</strong> to judge whether the interaction is successful—such as whether Joey becomes more romantically engaged.
-          </p>
-
-          <p className="mb-4 text-lg">
-            Fortunately, both parts are quite feasible. First, the model you're training—let's call it "Rachel"—serves as the policy model generating responses. To simulate realistic dialogue, we prompt another model to act as "Joey," a proxy for the user. While inspired by our earlier example, "Joey" can represent <strong>any user simulator</strong>: a shopper trying to order groceries, a student asking math questions, or a writer seeking feedback. Second, we define task-specific metrics to evaluate success. In the dating example, it might be emotional engagement; in writing, it could be clarity or persuasiveness; in a question-answering task, it might be factual correctness. These evaluation criteria can even be combined—it's entirely up to your application!
-          </p>
-
-          <p className="mb-4 text-lg">
-            With Multiturn-aware Reward in place, the goal becomes straightforward: train the policy model to maximize this reward. In doing so, the model learns to drive the conversation effectively toward the desired outcome—whether that's solving a task, clarifying a request, or building rapport.
-          </p>
-                    
-        {/* Closing Statement */}
-        <div className="bg-green-50 border-l-4 border-green-600 p-4 my-6 rounded-r-lg">
-          <p className="text-lg text-gray-800 mb-0">
-            After all, you don't need massive changes to build a collaborative model. Just a new way to define the objective—and a longer lens for measuring what matters in a conversation.
-          </p>
-        </div>
-
-
-          <h2 className="text-2xl font-bold text-gray-700 mt-10 mb-4">
-            Real-World Impact
-          </h2>
-
-          <p className="mb-4 text-gray-500 text-lg">
-            The applications of collaborative AI are vast and exciting. From working on document editing to solving complex scientific problems, CollabLLM opens up new possibilities for human-AI collaboration.
-          </p>
-
-          <p className="mb-6 text-gray-500 text-lg">
-            We've seen remarkable results in our initial testing, with collaborative LLMs outperforming non-collaboratively trained LLMs across various benchmarks. More importantly, users report a more efficient, engaging, and reliable interaction experience when working with the collaborative LLMs.
-          </p>
-
-          <h2 className="text-2xl font-bold text-gray-700 mt-10 mb-4">
-            What's Next?
-          </h2>
-
-          <p className="mb-4 text-lg">
-            We're continuously refining our approach, exploring new collaboration patterns. Our goal is to democratize collaborative AI and enable anyone to build more effective AI-powered solutions.
-          </p>
-
-          <p className="text-lg font-medium text-gray-500 mb-8">
-            Join us in building the future of collaborative AI. Check out our code, contribute to the project, and help us shape the next generation of AI systems that truly understand the power of working together.
-          </p>
-        </div>
-
-        {/* Call to Action */}
-        <div className="mt-8 pt-6 border-t border-gray-200">
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="https://github.com/Wuyxin/collabllm.git" target="_blank">
-              <Button size="lg" className="rounded-full">
-                Explore the Code
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </a>
-            <a href="https://arxiv.org/pdf/2502.00640" target="_blank">
-              <Button size="lg" variant="outline" className="rounded-full">
-                Read Our Paper
-              </Button>
-            </a>
-          </div>
-        </div>
-      </div>
-    </article>
-  </div>
-</section>
     </main>
   );
 }

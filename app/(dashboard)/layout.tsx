@@ -48,7 +48,7 @@ function UserMenu() {
         </Link>
       </Button>
       <Button asChild className="rounded-full">
-        <Link href="https://arxiv.org/pdf/2502.00640" className="flex items-center gap-2">
+        <Link href="https://arxiv.org/pdf/2510.01171" className="flex items-center gap-2">
           <FileText size={16} />
           Paper
         </Link>
@@ -63,7 +63,7 @@ function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center">
           <CircleIcon className="h-6 w-6 text-orange-500" />
-          <span className="ml-2 text-xl font-semibold text-gray-900">CollabLLM</span>
+          <span className="ml-2 text-xl font-semibold text-gray-900">Verbalized Sampling</span>
         </Link>
         <div className="flex items-center space-x-4">
           <Suspense fallback={<div className="h-9" />}>
