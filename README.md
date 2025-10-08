@@ -50,6 +50,18 @@ curl https://api.openai.com/v1/chat/completions \
   }'
 ```
 
+## 📓 Interactive Notebooks
+
+Explore verbalized sampling with our interactive Jupyter notebooks:
+
+| Notebook | Description | Code | Run it Yourself! |
+|----------|-------------|--------|-------|
+| **Direct vs. Verbalized Sampling** | Head-to-head comparison demonstrating VS effectiveness: 2-3x diversity improvement in creative tasks while maintaining quality | [View on GitHub](notebooks/vs_base.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1UDk4W5w6gF0dQ9Tpu0sPQethEht51GXL#offline=true&sandboxMode=true) |
+| **Image Generation with VS** | Visual comparison of Direct Prompting vs. Verbalized Sampling for text-to-image generation, showcasing creative diversity in artistic styles | [View on GitHub](notebooks/vs_with_image.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1J18VJRnrCjIb6sTivY-znb8C3JsLQCIz#offline=true&sandboxMode=true) |
+| **Complete Framework Tutorial** | Step-by-step guide to using verbalized sampling: API basics, transforms, selection methods, recipes, and advanced features | [View on GitHub](notebooks/framework_demo.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1eC0nIUVC1kyANxxzhNib44qmPphdWy9o#offline=true&sandboxMode=true) |
+
+> 💡 **Tip**: Start with **Direct vs. Verbalized Sampling** to see the effectiveness, then explore **Image Generation** for visual results, or dive into the **Complete Tutorial** to learn the full API!
+
 ## Introduction
 
 **Verbalized Sampling (VS)** is a prompting strategy that mitigates mode collapse in Large Language Models by explicitly requesting responses with associated probabilities. This framework is:
