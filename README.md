@@ -32,7 +32,7 @@ This is a starter template for building a SaaS application using **Next.js** wit
 ## Getting Started
 
 ```bash
-git clone https://github.com/Wuyxin/collabllm.git
+git clone https://github.com/CHATS-lab/verbalize-sampling.git
 cd saas-starter
 pnpm install
 ```
