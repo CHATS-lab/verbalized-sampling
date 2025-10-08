@@ -36,7 +36,7 @@ function UserMenu() {
       >
       </Link>
       <Button asChild className="rounded-full">
-        <Link href="https://github.com/Wuyxin/collabllm" className="flex items-center gap-2">
+        <Link href="https://github.com/CHATS-lab/verbalized-sampling" className="flex items-center gap-2">
           <Github size={16} />
           Github
         </Link>
