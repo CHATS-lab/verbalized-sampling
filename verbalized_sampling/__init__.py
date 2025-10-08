@@ -12,5 +12,35 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# verbalized_sampling/__init__.py
-from .cli import app as cli_app  # optional
+"""Verbalized Sampling: Ask for a distribution, not a sample.
+
+This package provides two APIs:
+
+1. Simple API (NEW in v0.2):
+   - verbalize() - One-liner to get a distribution
+   - DiscreteDist - Distribution object with .argmax() and .sample()
+   - Item - Single candidate with probability
+
+2. Research API (for paper reproduction):
+   - Pipeline - Full experimental framework
+   - Method, Task, ExperimentConfig
+"""
+
+# Simple API (NEW in v0.2)
+from .api import select, verbalize
+from .selection import DiscreteDist, Item
+
+# Research API (existing, unchanged)
+from .cli import app as cli_app
+
+__all__ = [
+    # Simple API
+    "verbalize",
+    "select",
+    "Item",
+    "DiscreteDist",
+    # Research API
+    "cli_app",
+]
+
+__version__ = "0.2.0"
