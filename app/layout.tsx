@@ -5,8 +5,8 @@ import { getUser, getTeamForUser } from '@/lib/db/queries';
 import { SWRConfig } from 'swr';
 
 export const metadata: Metadata = {
-  title: 'CollabLLM',
-  description: 'Making LLMs Collabrative'
+  title: 'Verbalized Sampling',
+  description: 'Mitigate Mode Collapse and Unlock LLM Diversity'
 };
 
 export const viewport: Viewport = {

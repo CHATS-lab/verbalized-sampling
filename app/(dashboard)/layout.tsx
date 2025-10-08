@@ -42,7 +42,8 @@ function UserMenu() {
         </Link>
       </Button>
       <Button asChild className="rounded-full">
-        <Link href="#blog" className="flex items-center gap-2">
+        {/* <Link href="#blog" className="flex items-center gap-2"> */}
+        <Link href="https://www.verbalized-sampling.com/#blog" className="flex items-center gap-2" target="_blank" rel="noopener noreferrer">
           <BookOpen size={16} />
           Blog
         </Link>

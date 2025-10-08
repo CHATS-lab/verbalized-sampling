@@ -552,9 +552,9 @@ export default function HomePage() {
             
             <div className="text-xl text-gray-600 mb-2 max-w-5xl mx-auto leading-relaxed">
               <div className="mb-1">
-                <a href="https://jiayizx.github.io/" className="text-blue-400 hover:text-blue-400 transition-colors">Jiayi Zhang</a><sup className="text-orange-500">1</sup>,{' '}
-                <a href="https://simonucl.github.io/" className="text-blue-400 hover:text-blue-400 transition-colors">Simon Yu</a><sup className="text-orange-500">1</sup>,{' '}
-                <a href="https://www.linkedin.com/in/derekch" className="text-blue-400 hover:text-blue-400 transition-colors">Derek Chong</a><sup className="text-orange-500">2</sup>,{' '}
+                <a href="https://jiayizx.github.io/" className="text-blue-400 hover:text-blue-400 transition-colors">Jiayi Zhang</a><sup className="text-orange-500">1</sup><sup className="text-orange-500">†</sup>,{' '}
+                <a href="https://simonucl.github.io/" className="text-blue-400 hover:text-blue-400 transition-colors">Simon Yu</a><sup className="text-orange-500">1</sup><sup className="text-orange-500">†</sup>,{' '}
+                <a href="https://www.linkedin.com/in/derekch" className="text-blue-400 hover:text-blue-400 transition-colors">Derek Chong</a><sup className="text-orange-500">2</sup><sup className="text-orange-500">†</sup>,{' '}
                 <a href="https://anthonysicilia.tech/" className="text-blue-400 hover:text-blue-400 transition-colors">Anthony Sicilia</a><sup className="text-orange-500">3</sup>
               </div>
               <div>
@@ -565,7 +565,8 @@ export default function HomePage() {
             </div>
             
             <div className="text-xl text-black-500 mb-4">
-              <sup className="text-orange-500">1</sup>Northeastern University, <sup className="text-orange-500">2</sup>Stanford University, <sup className="text-orange-500">3</sup>West Virginia University
+              <sup className="text-orange-500">1</sup>Northeastern University, <sup className="text-orange-500">2</sup>Stanford University, <sup className="text-orange-500">3</sup>West Virginia University<br/>
+              <sup className="text-orange-500">†</sup>Equal contribution
             </div>
             
             {/* <div className="text-xl font-bold">
