@@ -662,7 +662,7 @@ export default function HomePage() {
                  <div className="space-y-4 text-lg text-gray-600">
                    <p>
                      Cognitive psychology shows that people prefer text that is familiar, fluent, and predictable.
-                     We use base models as human proxies and verify this on multiple preference datasets and base models, 
+                     We use base models as human proxies and verify this empirically on multiple preference datasets and base models, 
                      confirming that the typicality bias exists (see Figure 2).
                    </p>
                      <p>
