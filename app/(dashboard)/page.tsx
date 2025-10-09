@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, CreditCard, Database, Calendar, User, Clock, Eye, Heart, ThumbsUp, Share2 } from 'lucide-react';
 
@@ -867,6 +868,21 @@ export default function HomePage() {
       url={https://arxiv.org/abs/2510.01171}, 
 }`}
               </pre>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex justify-center gap-4 mt-8">
+              <Button asChild size="lg" className="rounded-full bg-black text-white hover:bg-gray-800">
+                <Link href="https://github.com/CHATS-lab/verbalized-sampling" className="flex items-center gap-2">
+                  Explore the Code
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="rounded-full border-gray-300 hover:bg-gray-50">
+                <Link href="https://arxiv.org/abs/2510.01171">
+                  Read Our Paper
+                </Link>
+              </Button>
             </div>
           </div>
         </div>

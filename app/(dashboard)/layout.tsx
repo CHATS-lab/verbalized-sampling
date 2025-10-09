@@ -89,11 +89,32 @@ function Header() {
   );
 }
 
+function Footer() {
+  return (
+    <footer className="border-t border-gray-200 bg-gray-50 mt-auto">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <p className="text-center text-sm text-gray-600">
+          This website is adapted from the template by{' '}
+          <Link
+            href="https://next-saas-start.vercel.app/"
+            className="text-orange-500 hover:text-orange-600 underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Vercel
+          </Link>
+        </p>
+      </div>
+    </footer>
+  );
+}
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <section className="flex flex-col min-h-screen">
       <Header />
       {children}
+      <Footer />
     </section>
   );
 }
