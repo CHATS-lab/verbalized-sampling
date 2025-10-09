@@ -36,6 +36,12 @@ function UserMenu() {
       >
       </Link>
       <Button asChild className="rounded-full">
+        <Link href="https://arxiv.org/abs/2510.01171" className="flex items-center gap-2">
+          <FileText size={16} />
+          Paper
+        </Link>
+      </Button>
+      <Button asChild className="rounded-full">
         <Link href="https://github.com/CHATS-lab/verbalized-sampling" className="flex items-center gap-2">
           <Github size={16} />
           Github
@@ -46,12 +52,6 @@ function UserMenu() {
         <Link href="https://www.verbalized-sampling.com/#blog" className="flex items-center gap-2" target="_blank" rel="noopener noreferrer">
           <BookOpen size={16} />
           Blog
-        </Link>
-      </Button>
-      <Button asChild className="rounded-full">
-        <Link href="https://arxiv.org/pdf/2510.01171" className="flex items-center gap-2">
-          <FileText size={16} />
-          Paper
         </Link>
       </Button>
     </>
