@@ -539,6 +539,41 @@ const ViewerSystem = () => {
   );
 };
 
+const RollingText = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const texts = ["Creative Writing", "Social Simulation", "Synthetic Data", "Your Task!"];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % texts.length);
+    }, 5000); // Change every 5 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <span className="block overflow-hidden relative" style={{ height: '48px' }}>
+      <span
+        className="transition-transform duration-500 ease-in-out"
+        style={{
+          transform: `translateY(-${currentIndex * 48}px)`,
+          display: 'block'
+        }}
+      >
+        {texts.map((text, index) => (
+          <span
+            key={index}
+            className="block text-orange-500"
+            style={{ height: '48px', lineHeight: '48px' }}
+          >
+            {text}
+          </span>
+        ))}
+      </span>
+    </span>
+  );
+};
+
 export default function HomePage() {
   return (
     <main>
@@ -585,7 +620,7 @@ export default function HomePage() {
               alt="Verbalized Sampling Introduction"
               className="w-full max-w-5xl mx-auto rounded-lg shadow-lg"
             />
-            <div className="text-sm text-gray-500 mt-2">
+            <div className="text-base text-gray-500 mt-2">
               <strong>Figure 1:</strong> Overview of Verbalized Sampling (VS) for unlocking LLM diversity.
             </div>
           </div>
@@ -642,7 +677,7 @@ export default function HomePage() {
                   alt="Cognitive Bias and Typicality in Preference Data"
                   className="w-full rounded-lg shadow-lg"
                 />
-                <p className="text-sm text-gray-500 mt-3 text-center italic">
+                <p className="text-base text-gray-500 mt-3 text-center italic">
                   <strong>Figure 2:</strong> How often the human-preferred response in a preference pair is assigned a higher log likelihood by a base model.
                 </p>
               </div>
@@ -659,7 +694,7 @@ export default function HomePage() {
                   alt="Prompting Methods Comparison"
                   className="w-full rounded-lg shadow-lg"
                 />
-                <p className="text-sm text-gray-500 mt-3 text-center italic">
+                <p className="text-base text-gray-500 mt-3 text-center italic">
                   <strong>Figure 3:</strong> Three types of prompting methods: instance-level, list-level, and distribution-level, given the same computation budget of N total responses.
                 </p>
               </div>
@@ -696,7 +731,7 @@ export default function HomePage() {
             <div className="max-w-5xl mx-auto text-center">
               <h2 className="text-3xl font-bold text-gray-700 tracking-tight sm:text-4xl mb-6">
                 Verbalized Sampling Works On
-                <span className="block text-orange-500">Multiple Tasks</span>
+                <RollingText />
               </h2>
               <div className="text-center mb-8">
                 <img 
@@ -704,7 +739,7 @@ export default function HomePage() {
                   alt="Qualitative Examples Across Multiple Tasks"
                   className="w-full max-w-6xl mx-auto rounded-lg shadow-lg"
                 />
-                <p className="text-sm text-gray-500 mt-3 text-center italic">
+                <p className="text-base text-gray-500 mt-3 text-center italic">
                   <strong>Figure 4:</strong> Qualitative and quantitative examples of Verbalized Sampling on creative writing, dialogue simulation, and enumerative open-ended QA.
                 </p>
               </div>
@@ -733,7 +768,7 @@ export default function HomePage() {
                        alt="Emergent Trend: Larger Models Benefit More from VS"
                        className="w-full rounded-lg shadow-lg"
                      />
-                     <p className="text-sm text-gray-500 mt-3 text-center italic">
+                     <p className="text-base text-gray-500 mt-3 text-center italic">
                        <strong>Figure 5:</strong> Emergent trend where larger models benefit more from VS. We show differences in
                        diversity (e) and quality (f) over Direct across small and large models.
                      </p>
@@ -767,8 +802,8 @@ export default function HomePage() {
                   alt="Probability Tuning for Maximum Diversity"
                   className="w-full rounded-lg shadow-lg"
                 />
-                <p className="text-sm text-gray-500 mt-3 text-center italic">
-                  <strong>Figure 6:</strong> Tunable Diversity shows the diversity tuning results on Gemini-2.5-Flash across tasks. 
+                <p className="text-base text-gray-500 mt-3 text-center italic">
+                  <strong>Figure 6:</strong> Tunable Diversity shows the diversity tuning results on Gemini-2.5-Flash across tasks.
                 </p>
               </div>
             </div>
