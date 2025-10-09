@@ -546,7 +546,7 @@ const RollingText = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % texts.length);
-    }, 5000); // Change every 5 seconds
+    }, 3000); // Change every 3 seconds
 
     return () => clearInterval(interval);
   }, []);
