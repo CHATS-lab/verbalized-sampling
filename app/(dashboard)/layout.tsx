@@ -62,7 +62,7 @@ function UserMenu() {
         </Link>
       </Button>
       <Button asChild className="rounded-full">
-        <Link href="https://colab.research.google.com/YOUR_NOTEBOOK_URL" className="flex items-center gap-2">
+        <Link href="https://github.com/CHATS-lab/verbalized-sampling?tab=readme-ov-file#-interactive-notebooks" className="flex items-center gap-2">
           <NotebookPen size={16} />
           Notebook
         </Link>
