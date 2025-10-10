@@ -342,8 +342,8 @@ const ViewerSystem = () => {
 
     // Create share data
     const shareData = {
-      title: 'CollabLLM: From Passive Responders to Active Collaborators',
-      text: 'Sharing the blog: "Building the Future of Collaborative AI: Our Journey with CollabLLM" - A unified fine-tuning framework that optimizes LLMs for effective multiturn collaboration.',
+      title: 'Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity',
+      text: 'Sharing the blog: "Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity" - A training-free, model-agnostic approach to mitigating mode collapse by prompting the model to generate response distributions with verbalized probability estimates.',
       url: `${window.location.origin}${window.location.pathname}#blog`
     };
 
@@ -361,8 +361,8 @@ const ViewerSystem = () => {
 
   const shareToSocial = (platform: SharePlatform) => {
     const shareData = {
-      title: 'CollabLLM: From Passive Responders to Active Collaborators',
-      text: 'Sharing the blog: "Building the Future of Collaborative AI: Our Journey with CollabLLM" - A unified fine-tuning framework that optimizes LLMs for effective multiturn collaboration.',
+      title: 'Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity',
+      text: 'Sharing the blog: "Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity" - A training-free, model-agnostic approach to mitigating mode collapse by prompting the model to generate response distributions with verbalized probability estimates.',
       url: `${window.location.origin}${window.location.pathname}#blog`
     };
 
@@ -731,7 +731,7 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-5xl mx-auto text-center">
               <h2 className="text-3xl font-bold text-gray-700 tracking-tight sm:text-4xl mb-6">
-                Where VS Works:<br />
+                Where Verbalized Sampling Works:<br />
                 <span className="block text-orange-500">Creative Writing, Social Simulation, ..., and Your Task!</span>
                 {/* <RollingText /> */}
               </h2>
