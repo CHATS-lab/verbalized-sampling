@@ -579,14 +579,14 @@ export default function HomePage() {
   return (
     <main>
       <section className="py-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
           {/* Paper Title and Authors Section */}
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-gray-700 tracking-tight sm:text-5xl mb-6">
+            <h1 className="text-4xl sm:text-4xl font-bold text-gray-700 tracking-tight mb-6">
               Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity
             </h1>
-            
-            <div className="text-xl text-gray-600 mb-2 max-w-5xl mx-auto leading-relaxed">
+
+            <div className="text-lg text-gray-600 mb-2 max-w-6xl mx-auto leading-relaxed">
               <div className="mb-1">
                 <a href="https://jiayizx.github.io/" className="text-blue-400 hover:text-blue-400 transition-colors">Jiayi Zhang</a><sup className="text-orange-500">1</sup><sup className="text-orange-500">†</sup>,{' '}
                 <a href="https://simonucl.github.io/" className="text-blue-400 hover:text-blue-400 transition-colors">Simon Yu</a><sup className="text-orange-500">1</sup><sup className="text-orange-500">†</sup>,{' '}
@@ -600,7 +600,7 @@ export default function HomePage() {
               </div>
             </div>
             
-            <div className="text-xl text-black-500 mb-4">
+            <div className="text-lg text-black-500 mb-4">
               <sup className="text-orange-500">1</sup>Northeastern University, <sup className="text-orange-500">2</sup>Stanford University, <sup className="text-orange-500">3</sup>West Virginia University<br/>
               <sup className="text-orange-500">†</sup>Equal contribution
             </div>
@@ -614,14 +614,14 @@ export default function HomePage() {
       
       {/* Introduction */}
       <section className="py-8 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
           <div className="text-center">
             <img 
               src="/images/intro_teaser.jpg" 
               alt="Verbalized Sampling Introduction"
-              className="w-full max-w-5xl mx-auto rounded-lg shadow-lg"
+              className="w-full max-w-4xl mx-auto rounded-lg shadow-lg"
             />
-            <div className="text-base text-gray-500 mt-2">
+            <div className="text-sm text-gray-500 mt-2">
               <strong>Figure 1:</strong> Overview of Verbalized Sampling (VS) for unlocking LLM diversity.
             </div>
           </div>
@@ -629,19 +629,19 @@ export default function HomePage() {
       </section>
 
       <section className="py-12 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-700 tracking-tight sm:text-4xl mb-8">
+            <h2 className="text-xl font-bold text-gray-700 tracking-tight sm:text-3xl mb-8">
               Abstract
             </h2>
-            <div className="max-w-5xl mx-auto">
-              <p className="text-lg text-gray-600 leading-relaxed text-left">
+            <div className="max-w-6xl mx-auto">
+              <p className="text-base text-gray-600 leading-relaxed text-left">
                 Post-training alignment often reduces LLM diversity, leading to a phenomenon known as <em>mode collapse</em>. 
                 Unlike prior work that attributes this effect to algorithmic limitations, we identify a fundamental, pervasive data-level driver: <em>typicality bias</em> in preference data, 
                 whereby annotators systematically favor familiar text as a result of well-established findings in cognitive psychology. 
                 We formalize this bias theoretically, verify it empirically on preference datasets, and show that it plays a central role in mode collapse. 
               </p>
-              <p className="text-lg text-gray-600 leading-relaxed text-left mt-6">
+              <p className="text-base text-gray-600 leading-relaxed text-left mt-6">
                 Motivated by this analysis, we introduce <strong>Verbalized Sampling (VS)</strong>, a simple, training-free prompting method to circumvent mode collapse. VS prompts the model to verbalize a probability distribution over a set of responses (e.g., "Generate 5 jokes about coffee and their corresponding probabilities").
                 Comprehensive experiments show that VS significantly improves performance across creative writing (poems, stories, jokes), dialogue simulation, open-ended QA, and synthetic data generation, without sacrificing factual accuracy and safety. For instance, in creative writing, VS increases diversity by 1.6-2.1× over direct prompting. We further observe an emergent trend that more capable models benefit more from VS.
                 In sum, our work provides a new data-centric perspective on mode collapse and a practical inference-time remedy that helps unlock pre-trained generative diversity.
@@ -652,14 +652,14 @@ export default function HomePage() {
         </section>
 
         <section className="py-12 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
             <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
               <div>
-                  <h2 className="text-3xl font-bold text-gray-700 tracking-tight sm:text-4xl mb-6">
+                  <h2 className="text-xl font-bold text-gray-700 tracking-tight sm:text-3xl mb-6">
                     Why Mode Collapse Happens?<br />
                     <span className="text-orange-500">Typicality Bias</span>
                   </h2>
-                 <div className="space-y-4 text-lg text-gray-600">
+                 <div className="space-y-4 text-base text-gray-600">
                    <p>
                      Cognitive psychology shows that people prefer text that is familiar, fluent, and predictable.
                      We use base models as human proxies and verify this empirically on multiple preference datasets and base models, 
@@ -678,7 +678,7 @@ export default function HomePage() {
                   alt="Cognitive Bias and Typicality in Preference Data"
                   className="w-full rounded-lg shadow-lg"
                 />
-                <p className="text-base text-gray-500 mt-3 text-center italic">
+                <p className="text-sm text-gray-500 mt-3 text-center italic">
                   <strong>Figure 2:</strong> How often the human-preferred response in a preference pair is assigned a higher log likelihood by a base model.
                 </p>
               </div>
@@ -687,7 +687,7 @@ export default function HomePage() {
         </section>
 
         <section className="py-12 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
             <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
               <div className="mt-8 lg:mt-0">
                 <img 
@@ -695,16 +695,16 @@ export default function HomePage() {
                   alt="Prompting Methods Comparison"
                   className="w-full rounded-lg shadow-lg"
                 />
-                <p className="text-base text-gray-500 mt-3 text-center italic">
+                <p className="text-sm text-gray-500 mt-3 text-center italic">
                   <strong>Figure 3:</strong> Three types of prompting methods: instance-level, list-level, and distribution-level, given the same computation budget of N total responses.
                 </p>
               </div>
               <div>
-                <h2 className="text-3xl font-bold text-gray-700 tracking-tight sm:text-4xl mb-6">
+                <h2 className="text-xl font-bold text-gray-700 tracking-tight sm:text-3xl mb-6">
                   How to Mitigate Mode Collapse?<br />
                   <span className="block text-orange-500">Verbalized Sampling</span>
                 </h2>
-                  <div className="space-y-4 text-lg text-gray-600">
+                  <div className="space-y-4 text-base text-gray-600">
                     <p>
                       Motivated by the theoretical understanding of mode collapse, we propose Verbalized Sampling (VS) and formalize prompting methods into three categories, each with their corresponding modes (see Figure 3):
                     </p>
@@ -728,9 +728,9 @@ export default function HomePage() {
         </section>
 
         <section className="py-12 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-5xl mx-auto text-center">
-              <h2 className="text-3xl font-bold text-gray-700 tracking-tight sm:text-4xl mb-6">
+          <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
+            <div className="max-w-6xl mx-auto text-center">
+              <h2 className="text-xl font-bold text-gray-700 tracking-tight sm:text-3xl mb-6">
                 Where Verbalized Sampling Works:<br />
                 <span className="block text-orange-500">Creative Writing, Social Simulation, ..., and Your Task!</span>
                 {/* <RollingText /> */}
@@ -741,11 +741,11 @@ export default function HomePage() {
                   alt="Qualitative Examples Across Multiple Tasks"
                   className="w-full max-w-6xl mx-auto rounded-lg shadow-lg"
                 />
-                <p className="text-base text-gray-500 mt-3 text-center italic">
+                <p className="text-sm text-gray-500 mt-3 text-center italic">
                   <strong>Figure 4:</strong> Qualitative and quantitative examples of Verbalized Sampling on creative writing, dialogue simulation, and enumerative open-ended QA.
                 </p>
               </div>
-               <div className="space-y-4 text-lg text-gray-600 text-left">
+               <div className="space-y-4 text-base text-gray-600 text-left">
                  <p>
                    Our comprehensive experiments on multiple tasks demonstrate that Verbalized Sampling significantly improves the diversity-quality trade-off across tasks and model families, 
                    without compromising factual accuracy and safety.
@@ -763,14 +763,14 @@ export default function HomePage() {
         </section>
 
         <section className="py-12 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
             <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
               <div>
-                <h2 className="text-3xl font-bold text-gray-700 tracking-tight sm:text-4xl mb-6">
+                <h2 className="text-xl font-bold text-gray-700 tracking-tight sm:text-3xl mb-6">
                   What Else We Discovered:
                   <span className="block text-orange-500">Emergent Trends</span>
                 </h2>
-                <div className="space-y-4 text-lg text-gray-600">
+                <div className="space-y-4 text-base text-gray-600">
                   <p>
                     We observe an <strong>emergent trend</strong> where larger models benefit more from VS. Figure 5 shows the diversity gain over the direct prompting which suffers from mode collapse. 
                     Across all VS variants, larger models (GPT-4.1, Gemini-2.5-Pro) achieve diversity gains 1.5 to 2 times greater than smaller models (GPT-4.1-Mini, Gemini-2.5-Flash).
@@ -783,7 +783,7 @@ export default function HomePage() {
                   alt="Emergent Trend: Larger Models Benefit More from VS"
                   className="w-full rounded-lg shadow-lg"
                 />
-                <p className="text-base text-gray-500 mt-3 text-center italic">
+                <p className="text-sm text-gray-500 mt-3 text-center italic">
                   <strong>Figure 5:</strong> Emergent trend where larger models benefit more from VS. We show differences in
                   diversity (e) and quality (f) over Direct across small and large models.
                 </p>
@@ -793,14 +793,14 @@ export default function HomePage() {
         </section>
 
         <section className="py-12 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
             <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
               <div>
-                <h2 className="text-3xl font-bold text-gray-700 tracking-tight sm:text-4xl mb-6">
+                <h2 className="text-xl font-bold text-gray-700 tracking-tight sm:text-3xl mb-6">
                   How to Maximize Diversity:
                   <span className="block text-orange-500">Probability Tuning</span>
                 </h2>
-                <div className="space-y-4 text-lg text-gray-600">
+                <div className="space-y-4 text-base text-gray-600">
                   <p>
                     Unlike baseline methods, Verbalized Sampling allows us to tune the output diversity by adjusting
                     the probability threshold directly in the prompt (e.g., "Generate five responses with probabilities
@@ -815,7 +815,7 @@ export default function HomePage() {
                   alt="Probability Tuning for Maximum Diversity"
                   className="w-full rounded-lg shadow-lg"
                 />
-                <p className="text-base text-gray-500 mt-3 text-center italic">
+                <p className="text-sm text-gray-500 mt-3 text-center italic">
                   <strong>Figure 6:</strong> Tunable Diversity shows the diversity tuning results on Gemini-2.5-Flash across tasks.
                 </p>
               </div>
@@ -823,49 +823,35 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="py-12 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:grid lg:grid-cols-12 lg:gap-8">
-            <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-7 lg:text-left">
-              <h2 className="text-3xl font-bold text-gray-700 tracking-tight sm:text-4xl mb-4">
-                Try It Yourself:
-                <span className="block text-orange-500">The Magic Prompt</span>
-              </h2>
-              <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-              Verbalized Sampling provides a training-free, model-agnostic approach to mitigating mode collapse by prompting the model to generate response distributions with verbalized probability estimates.
-              </p>
-              {/* <div className="mt-8 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left lg:mx-0">
-                <a
-                  href="https://huggingface.co/verbalized-sampling"
-                  target="_blank"
-                >
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="text-lg rounded-full"
-                  >
-                    Try Verbalized Sampling
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </a>
-              </div> */}
-            </div>
-            <div className="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-5 lg:flex lg:items-center">
-              <Terminal_Prompt />
+        <section className="py-12 bg-white w-full">
+          <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
+            <div className="lg:grid lg:grid-cols-12 lg:gap-8">
+              <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-7 lg:text-left">
+                <h2 className="text-xl font-bold text-gray-700 tracking-tight sm:text-3xl mb-6">
+                  Try It Yourself:
+                  <span className="block text-orange-500">The Magic Prompt</span>
+                </h2>
+                <div className="space-y-4 text-base text-gray-600">
+                  <p>
+                    Verbalized Sampling provides a training-free, model-agnostic approach to mitigating mode collapse by prompting the model to generate response distributions with verbalized probability estimates.
+                  </p>
+                </div>
+              </div>
+              <div className="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-5 lg:flex lg:items-center">
+                <Terminal_Prompt />
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-
+        </section>
 
       {/* BibTeX Citation */}
-      <section className="py-12 bg-white w-full">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-12 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-700 sm:text-4xl mb-8">
+            <h2 className="text-xl font-bold text-gray-700 sm:text-3xl mb-8">
               📌 BibTeX Citation
             </h2>
-            <p className="text-lg text-gray-600 mb-8">
+            <p className="text-base text-gray-600 mb-8">
               If you find our project useful, please consider citing:
             </p>
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 w-full max-w-6xl mx-auto">
