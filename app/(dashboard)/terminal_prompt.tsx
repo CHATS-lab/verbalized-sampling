@@ -9,8 +9,8 @@ export function Terminal_Prompt() {
   const terminalSteps = [
     { line: 'You are a helpful assistant. For each user query, generate a set of five responses. Each response should be approximately 200 words.', showPrompt: true },
     { line: 'Return the responses each within a separate <response> tag.', showPrompt: false },
-    { line: 'Each <response> tag include a <text> and a numeric <probability>.', showPrompt: false },
-    { line: 'Please sample at random from the full distribution.', showPrompt: false },
+    { line: 'Each <response> tag must include a <text> and a numeric <probability>.', showPrompt: false },
+    { line: 'Randomly sample the responses from the full distribution.', showPrompt: false },
     { line: '<user_query>Write a short story about a bear.</user_query>', showPrompt: true },
   ];
 
