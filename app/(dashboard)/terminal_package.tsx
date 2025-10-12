@@ -4,8 +4,6 @@ import { useState, useEffect } from 'react';
 import { Copy, Check } from 'lucide-react';
 
 export function Terminal() {
-  const [terminalStep, setTerminalStep] = useState(0);
-  const [copied, setCopied] = useState(false);
   const pipCommand = [
     'pip install verbalized-sampling'
   ];
@@ -21,16 +19,9 @@ export function Terminal() {
   ];
 
   const allSteps = [...pipCommand, '', ...pythonCode];
+  const [terminalStep, setTerminalStep] = useState(allSteps.length - 1);
+  const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setTerminalStep((prev) =>
-        prev < allSteps.length - 1 ? prev + 1 : prev
-      );
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [terminalStep, allSteps]);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(allSteps.join('\n'));
@@ -156,7 +147,6 @@ export function Terminal() {
         <div className="space-y-2">
           {/* Pip Install Block */}
           <div className="space-y-1">
-            <div className="text-xs text-gray-500 mb-1">Installation:</div>
             {pipCommand.map((step, index) => (
               <div
                 key={`pip-${index}`}
@@ -174,9 +164,6 @@ export function Terminal() {
 
           {/* Python Code Block */}
           <div className="space-y-1">
-            <div className={`${pipCommand.length + pythonCode.length > terminalStep ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300 text-xs text-gray-500 mb-1`}>
-              Usage Example:
-            </div>
             {pythonCode.map((step, index) => {
               const globalIndex = pipCommand.length + 1 + index;
               return (
