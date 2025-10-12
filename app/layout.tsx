@@ -6,7 +6,27 @@ import { SWRConfig } from 'swr';
 
 export const metadata: Metadata = {
   title: 'Verbalized Sampling',
-  description: 'Mitigate Mode Collapse and Unlock LLM Diversity'
+  description: 'Mitigate Mode Collapse and Unlock LLM Diversity',
+  openGraph: {
+    title: 'Verbalized Sampling',
+    description: 'Mitigate Mode Collapse and Unlock LLM Diversity',
+    url: 'https://www.verbalized-sampling.com/',
+    type: 'website',
+    images: [
+      {
+        url: 'https://www.verbalized-sampling.com/images/intro_teaser.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Verbalized Sampling'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Verbalized Sampling',
+    description: 'Mitigate Mode Collapse and Unlock LLM Diversity',
+    images: ['https://www.verbalized-sampling.com/images/intro_teaser.jpg']
+  }
 };
 
 export const viewport: Viewport = {
