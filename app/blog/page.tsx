@@ -1,0 +1,19 @@
+'use client';
+
+import { useEffect } from 'react';
+
+export default function BlogRedirect() {
+  useEffect(() => {
+    window.location.href = 'https://www.verbalized-sampling.blog/';
+  }, []);
+
+  return (
+    <div style={{ padding: '20px', textAlign: 'center' }}>
+      <p>Redirecting to blog...</p>
+      <p>
+        If you are not redirected automatically,{' '}
+        <a href="https://www.verbalized-sampling.blog/">click here</a>.
+      </p>
+    </div>
+  );
+}
