@@ -611,9 +611,49 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Verbalized Sampling: Title & Description left, install/code right */}
+      <section className="py-8 bg-white">
+          <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
+            <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
+              <div>
+                  <h2 className="text-xl font-bold text-gray-700 tracking-tight sm:text-3xl mb-6">
+                    Make Your LLMs More Creative!<br />
+                    <span className="text-orange-500"> with Verbalized Sampling</span>
+                  </h2>
+                 <div className="space-y-4 text-base text-gray-600">
+                    <p>
+                      Run verbalized sampling and unlock diverse LLM generations in seconds. 
+                      Just install and use—the open-source package is free for research and ready for your next project!
+                    </p>
+                    <p>
+                      Check our{' '}
+                      <a
+                        href="https://github.com/CHATS-lab/verbalize-sampling"
+                        className="underline hover:text-orange-500 font-semibold"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        GitHub
+                      </a>{' '}
+                      for more details.
+                    </p>
+                 </div>
+              </div>
+              <div className="mt-8 lg:mt-0">
+                <div className="w-full">
+                  {(() => {
+                    const { Terminal } = require("./terminal_package");
+                    return <Terminal />;
+                  })()}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       
       {/* Introduction */}
-      <section className="py-8 bg-white">
+      <section className="py-12 bg-gray-50">
         <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
           <div className="text-center">
             <img 
