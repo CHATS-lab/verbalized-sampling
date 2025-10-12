@@ -42,6 +42,12 @@ function UserMenu() {
         </Link>
       </Button>
       <Button asChild className="rounded-full">
+        <Link href="https://www.verbalized-sampling.blog/" className="flex items-center gap-2" target="_blank" rel="noopener noreferrer">
+          <BookOpen size={16} />
+          Blog
+        </Link>
+      </Button>
+      <Button asChild className="rounded-full">
         <Link href="https://github.com/CHATS-lab/verbalized-sampling" className="flex items-center gap-2">
           <Github size={16} />
           Github
@@ -55,18 +61,31 @@ function UserMenu() {
           X Thread
         </Link>
       </Button>
-      <Button asChild className="rounded-full">
-        <Link href="https://www.verbalized-sampling.com/#blog" className="flex items-center gap-2" target="_blank" rel="noopener noreferrer">
-          <BookOpen size={16} />
-          Blog
-        </Link>
-      </Button>
-      <Button asChild className="rounded-full">
-        <Link href="https://github.com/CHATS-lab/verbalized-sampling?tab=readme-ov-file#-interactive-notebooks" className="flex items-center gap-2">
-          <NotebookPen size={16} />
-          Notebook
-        </Link>
-      </Button>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button className="rounded-full flex items-center gap-2">
+            <NotebookPen size={16} />
+            Notebooks
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem asChild>
+            <Link href="https://colab.research.google.com/drive/1UDk4W5w6gF0dQ9Tpu0sPQethEht51GXL#offline=true&sandboxMode=true" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+              Direct vs. Verbalized Sampling
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="https://colab.research.google.com/drive/1J18VJRnrCjIb6sTivY-znb8C3JsLQCIz#offline=true&sandboxMode=true" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+              Image Generation with VS
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="https://colab.research.google.com/drive/1eC0nIUVC1kyANxxzhNib44qmPphdWy9o#offline=true&sandboxMode=true" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+              Complete Framework Tutorial
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </>
   );
 }
