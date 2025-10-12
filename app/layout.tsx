@@ -25,6 +25,19 @@ export default function RootLayout({
       lang="en"
       className={`bg-white dark:bg-gray-950 text-black dark:text-white ${manrope.className}`}
     >
+      <head>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-GFJBYGEWEH"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-GFJBYGEWEH');
+            `
+          }}
+        />
+      </head>
       <body className="min-h-[100dvh] bg-gray-50">
         <SWRConfig
           value={{
