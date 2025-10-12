@@ -825,7 +825,7 @@ export default function HomePage() {
 
         <section className="py-12 bg-white w-full">
           <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
-            <div className="lg:grid lg:grid-cols-12 lg:gap-8">
+            <div className="lg:grid lg:grid-cols-12 lg:gap-4">
               <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-7 lg:text-left">
                 <h2 className="text-xl font-bold text-gray-700 tracking-tight sm:text-3xl mb-6">
                   Try It Yourself:
