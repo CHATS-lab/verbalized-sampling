@@ -612,19 +612,56 @@ export default function HomePage() {
         </div>
       </section>
 
+      
+      {/* Introduction */}
+      <section className="py-12 bg-white">
+        <div className="max-w-4xl mx-auto px-8 sm:px-12 lg:px-16">
+          <div className="text-center">
+            <div className="text-center mb-8">
+              <img 
+                src="/images/intro_teaser.jpg" 
+                alt="Verbalized Sampling Introduction"
+                className="w-full max-w-4xl mx-auto rounded-lg shadow-lg"
+              />
+              <div className="text-sm text-gray-500 mt-2">
+                <strong>Figure 1:</strong> Overview of Verbalized Sampling (VS) for unlocking LLM diversity.
+              </div>
+            </div>
+
+            <h2 className="text-xl font-bold text-gray-700 tracking-tight sm:text-3xl mb-8">
+              Abstract
+            </h2>
+
+            <div className="max-w-4xl mx-auto">
+              <p className="text-base text-gray-600 leading-relaxed text-left">
+                Post-training alignment often reduces LLM diversity, leading to a phenomenon known as <em>mode collapse</em>. 
+                Unlike prior work that attributes this effect to algorithmic limitations, we identify a fundamental, pervasive data-level driver: <em>typicality bias</em> in preference data, 
+                whereby annotators systematically favor familiar text as a result of well-established findings in cognitive psychology. 
+                We formalize this bias theoretically, verify it empirically on preference datasets, and show that it plays a central role in mode collapse. 
+              </p>
+              <p className="text-base text-gray-600 leading-relaxed text-left mt-6">
+                Motivated by this analysis, we introduce <strong>Verbalized Sampling (VS)</strong>, a simple, training-free prompting method to circumvent mode collapse. VS prompts the model to verbalize a probability distribution over a set of responses (e.g., "Generate 5 jokes about coffee and their corresponding probabilities").
+                Comprehensive experiments show that VS significantly improves performance across creative writing (poems, stories, jokes), dialogue simulation, open-ended QA, and synthetic data generation, without sacrificing factual accuracy and safety. For instance, in creative writing, VS increases diversity by 1.6-2.1× over direct prompting. We further observe an emergent trend that more capable models benefit more from VS.
+                In sum, our work provides a new data-centric perspective on mode collapse and a practical inference-time remedy that helps unlock pre-trained generative diversity.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Verbalized Sampling: Title & Description left, install/code right */}
-      <section className="py-8 bg-white">
+      <section className="py-12 bg-gray-50">
           <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
             <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
               <div>
                   <h2 className="text-xl font-bold text-gray-700 tracking-tight sm:text-3xl mb-6">
                     Make Your LLMs More Creative!<br />
-                    <span className="text-orange-500"> with Verbalized Sampling</span>
+                    <span className="text-orange-500"> With Verbalized Sampling</span>
                   </h2>
                  <div className="space-y-4 text-base text-gray-600">
                     <p>
-                      Run verbalized sampling and unlock diverse LLM generations in seconds. 
-                      Just install and use—the open-source package is free for research and ready for your next project!
+                      Run Verbalized Sampling and unlock diverse LLM generations in seconds. 
+                      Just install and use our open-source package!
                     </p>
                     <p>
                       Check our{' '}
@@ -651,47 +688,8 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-      
-      {/* Introduction */}
-      <section className="py-12 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
-          <div className="text-center">
-            <img 
-              src="/images/intro_teaser.jpg" 
-              alt="Verbalized Sampling Introduction"
-              className="w-full max-w-4xl mx-auto rounded-lg shadow-lg"
-            />
-            <div className="text-sm text-gray-500 mt-2">
-              <strong>Figure 1:</strong> Overview of Verbalized Sampling (VS) for unlocking LLM diversity.
-            </div>
-          </div>
-        </div>
-      </section>
 
-      <section className="py-12 bg-white">
-        <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
-          <div className="text-center">
-            <h2 className="text-xl font-bold text-gray-700 tracking-tight sm:text-3xl mb-8">
-              Abstract
-            </h2>
-            <div className="max-w-6xl mx-auto">
-              <p className="text-base text-gray-600 leading-relaxed text-left">
-                Post-training alignment often reduces LLM diversity, leading to a phenomenon known as <em>mode collapse</em>. 
-                Unlike prior work that attributes this effect to algorithmic limitations, we identify a fundamental, pervasive data-level driver: <em>typicality bias</em> in preference data, 
-                whereby annotators systematically favor familiar text as a result of well-established findings in cognitive psychology. 
-                We formalize this bias theoretically, verify it empirically on preference datasets, and show that it plays a central role in mode collapse. 
-              </p>
-              <p className="text-base text-gray-600 leading-relaxed text-left mt-6">
-                Motivated by this analysis, we introduce <strong>Verbalized Sampling (VS)</strong>, a simple, training-free prompting method to circumvent mode collapse. VS prompts the model to verbalize a probability distribution over a set of responses (e.g., "Generate 5 jokes about coffee and their corresponding probabilities").
-                Comprehensive experiments show that VS significantly improves performance across creative writing (poems, stories, jokes), dialogue simulation, open-ended QA, and synthetic data generation, without sacrificing factual accuracy and safety. For instance, in creative writing, VS increases diversity by 1.6-2.1× over direct prompting. We further observe an emergent trend that more capable models benefit more from VS.
-                In sum, our work provides a new data-centric perspective on mode collapse and a practical inference-time remedy that helps unlock pre-trained generative diversity.
-              </p>
-            </div>
-          </div>
-        </div>
-        </section>
-
-        <section className="py-12 bg-gray-50">
+        <section className="py-12 bg-white">
           <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
             <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
               <div>
@@ -726,7 +724,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="py-12 bg-white">
+        <section className="py-12 bg-gray-50">
           <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
             <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
               <div className="mt-8 lg:mt-0">
@@ -767,7 +765,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="py-12 bg-gray-50">
+        <section className="py-12 bg-white">
           <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
             <div className="max-w-6xl mx-auto text-center">
               <h2 className="text-xl font-bold text-gray-700 tracking-tight sm:text-3xl mb-6">
@@ -785,24 +783,24 @@ export default function HomePage() {
                   <strong>Figure 4:</strong> Qualitative and quantitative examples of Verbalized Sampling on creative writing, dialogue simulation, and enumerative open-ended QA.
                 </p>
               </div>
-               <div className="space-y-4 text-base text-gray-600 text-left">
-                 <p>
-                   Our comprehensive experiments on multiple tasks demonstrate that Verbalized Sampling significantly improves the diversity-quality trade-off across tasks and model families, 
-                   without compromising factual accuracy and safety.
-                 </p>
-                 <p>
-                   As shown in Figure 4, for <strong>story writing</strong>, VS improves the output diversity. 
-                   For <strong>dialogue simulation</strong>, VS simulates the donation amount distribution much closer to the human distribution, and generates more realistic persuasion behaviors.
-                   On the task of <strong>enumerative open-ended QA</strong>, we ask the model to "generate US states". We first query a pretraining corpus (RedPajama) to establish a "reference" distribution of US 
-                   state names in the pretraining data. The verbalized probability distribution generated by VS, when averaged over 10 trials, closely aligns with this reference pretraining distribution (KL=0.12). 
-                   In contrast, direct prompting collapses into a few modes, repeatedly outputting states like California and Texas. 
-                 </p>
-               </div>
+              <div className="space-y-4 text-base text-gray-600 text-left max-w-5xl mx-auto xl:max-w-3xl">
+                <p>
+                  Our comprehensive experiments on multiple tasks demonstrate that Verbalized Sampling significantly improves the diversity-quality trade-off across tasks and model families, 
+                  without compromising factual accuracy and safety.
+                </p>
+                <p>
+                  As shown in Figure 4, for <strong>story writing</strong>, VS improves the output diversity. 
+                  For <strong>dialogue simulation</strong>, VS simulates the donation amount distribution much closer to the human distribution, and generates more realistic persuasion behaviors.
+                  On the task of <strong>enumerative open-ended QA</strong>, we ask the model to "generate US states". We first query a pretraining corpus (RedPajama) to establish a "reference" distribution of US 
+                  state names in the pretraining data. The verbalized probability distribution generated by VS, when averaged over 10 trials, closely aligns with this reference pretraining distribution (KL=0.12). 
+                  In contrast, direct prompting collapses into a few modes, repeatedly outputting states like California and Texas. 
+                </p>
+              </div>
             </div>
           </div>
         </section>
 
-        <section className="py-12 bg-white">
+        <section className="py-12 bg-gray-50">
           <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
             <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
               <div>
@@ -832,7 +830,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="py-12 bg-gray-50">
+        <section className="py-12 bg-white">
           <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
             <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
               <div>
@@ -863,7 +861,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="py-12 bg-white w-full">
+        <section className="py-12 bg-gray-50 w-full">
           <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
             <div className="lg:grid lg:grid-cols-12 lg:gap-4">
               <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-7 lg:text-left">
@@ -885,7 +883,7 @@ export default function HomePage() {
         </section>
 
       {/* BibTeX Citation */}
-      <section className="py-12 bg-gray-50">
+      <section className="py-12 bg-white">
         <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
           <div className="text-center">
             <h2 className="text-xl font-bold text-gray-700 sm:text-3xl mb-8">
