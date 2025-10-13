@@ -655,8 +655,8 @@ export default function HomePage() {
             <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
               <div>
                   <h2 className="text-xl font-bold text-gray-700 tracking-tight sm:text-3xl mb-6">
-                    Make Your LLMs More Creative!<br />
-                    <span className="text-orange-500"> With Verbalized Sampling</span>
+                    Make Your LLM Output More Diverse<br />
+                    <span className="text-orange-500">With Verbalized Sampling!</span>
                   </h2>
                  <div className="space-y-4 text-base text-gray-600">
                     <p>
