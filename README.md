@@ -1,16 +1,16 @@
-<p align="center">
-  <a href="https://pypi.org/project/verbalized-sampling/"><img src="https://img.shields.io/pypi/v/verbalized-sampling.svg" alt="PyPI - Version"></a>
-  <a href="https://pypi.org/project/verbalized-sampling/"><img src="https://img.shields.io/pypi/pyversions/verbalized-sampling.svg" alt="PyPI - Python Version"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
-  <a href="https://arxiv.org/abs/2510.01171"><img src="https://img.shields.io/badge/arXiv-2510.01171-b31b1b.svg" alt="arXiv"></a>
-</p>
+
+
+<div align="center">
+<h1>Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity</h1>
+
+[![PyPI](https://img.shields.io/pypi/v/verbalized-sampling?style=for-the-badge&logo=pypi&logoColor=white)](https://pypi.org/project/verbalized-sampling/) [![Python](https://img.shields.io/pypi/pyversions/verbalized-sampling?style=for-the-badge&logo=python&logoColor=white)](https://pypi.org/project/verbalized-sampling/) [![Homepage](https://img.shields.io/badge/Homepage-4d8cd8?style=for-the-badge&logo=google-chrome&logoColor=white)](https://www.verbalized-sampling.com/) [![arXiv](https://img.shields.io/badge/arXiv-2510.01171-red?style=for-the-badge)](https://arxiv.org/abs/2510.01171)  [![Blog](https://img.shields.io/badge/Blog-4d8cd8?style=for-the-badge&logo=notion&logoColor=white)](https://simonucl.notion.site/verbalized-sampling)
+</div>
+
+---
 
 <p align="center">
   <a href="#try-it-yourself">Try it yourself</a> | <a href="#installation">Installation</a> | <a href="#quick-start">Quick Start</a> | <a href="#reproducing-paper-results">Reproduce Experiments</a> | <a href="#citation">Citation</a>
 </p>
-
----
-
 ## Try it yourself
 
 #### Example 1: Add before your own prompts in Chat Interface
