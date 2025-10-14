@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 export default function BlogRedirect() {
   useEffect(() => {
-    window.location.href = 'https://www.verbalized-sampling.blog/';
+    window.location.href = 'https://simonucl.notion.site/verbalized-sampling';
   }, []);
 
   return (
