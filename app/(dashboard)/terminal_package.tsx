@@ -9,7 +9,7 @@ export function Terminal() {
   ];
 
   const pythonCode = [
-    'verbalize run \\',
+    'verbalize run',
     '    --task joke \\',
     '    --prompt "Tell me a joke about coffee." \\',
     '    --model "gpt-4.1" \\',
@@ -18,7 +18,7 @@ export function Terminal() {
     '    --metrics "diversity joke_quality"'
   ];
 
-  const allSteps = [...pipCommand, '', ...pythonCode];
+  const allSteps = [...pipCommand, ...pythonCode];
   const [terminalStep, setTerminalStep] = useState(allSteps.length - 1);
   const [copied, setCopied] = useState(false);
 
@@ -61,7 +61,7 @@ export function Terminal() {
         <>
           <span className="text-blue-400">verbalize</span>
           <span className="text-white"> run </span>
-          <span className="text-white">\\</span>
+          <span className="text-white">\</span>
         </>
       );
     }
@@ -125,8 +125,8 @@ export function Terminal() {
 
   return (
     <div className="w-full min-w-full rounded-lg shadow-lg overflow-hidden bg-gray-900 text-white font-mono text-sm relative">
-      <div className="p-1">
-        <div className="flex justify-between items-center mb-2">
+      <div className="p-4">
+        <div className="flex justify-between items-center mb-4">
           <div className="flex space-x-2">
             <div className="w-3 h-3 rounded-full bg-red-500"></div>
             <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
@@ -144,9 +144,9 @@ export function Terminal() {
             )}
           </button>
         </div>
-        <div className="space-y-2">
+        <div className="space-y-4">
           {/* Pip Install Block */}
-          <div className="space-y-1">
+          <div className="space-y-2">
             {pipCommand.map((step, index) => (
               <div
                 key={`pip-${index}`}
@@ -157,13 +157,8 @@ export function Terminal() {
             ))}
           </div>
 
-          {/* Separator */}
-          <div className={`${pipCommand.length > terminalStep ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}>
-            <div className="text-gray-500">&nbsp;</div>
-          </div>
-
           {/* Python Code Block */}
-          <div className="space-y-1">
+          <div className="space-y-2">
             {pythonCode.map((step, index) => {
               const globalIndex = pipCommand.length + 1 + index;
               return (
