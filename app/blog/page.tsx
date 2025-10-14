@@ -12,7 +12,7 @@ export default function BlogRedirect() {
       <p>Redirecting to blog...</p>
       <p>
         If you are not redirected automatically,{' '}
-        <a href="https://www.verbalized-sampling.blog/">click here</a>.
+        <a href="https://simonucl.notion.site/verbalized-sampling">click here</a>.
       </p>
     </div>
   );

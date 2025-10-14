@@ -42,7 +42,7 @@ function UserMenu() {
         </Link>
       </Button>
       <Button asChild className="rounded-full">
-        <Link href="https://www.verbalized-sampling.blog/" className="flex items-center gap-2" target="_blank" rel="noopener noreferrer">
+        <Link href="https://simonucl.notion.site/verbalized-sampling" className="flex items-center gap-2" target="_blank" rel="noopener noreferrer">
           <BookOpen size={16} />
           Blog
         </Link>
