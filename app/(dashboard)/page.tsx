@@ -612,12 +612,15 @@ export default function HomePage() {
         </div>
       </section>
 
+
+      
+
       
       {/* Introduction */}
       <section className="py-12 bg-white">
         <div className="max-w-4xl mx-auto px-8 sm:px-12 lg:px-16">
           <div className="text-center">
-            <div className="text-center mb-8">
+            {/* <div className="text-center mb-8">
               <img 
                 src="/images/intro_teaser.jpg" 
                 alt="Verbalized Sampling Introduction"
@@ -625,6 +628,26 @@ export default function HomePage() {
               />
               <div className="text-sm text-gray-500 mt-2">
                 <strong>Figure 1:</strong> Overview of Verbalized Sampling (VS) for unlocking LLM diversity.
+              </div>
+            </div> */}
+
+            {/* Demo Video */}
+            <div className="text-center mb-8">
+              <video 
+                controls 
+                className="w-full max-w-4xl mx-auto rounded-lg shadow-lg"
+                poster="/images/intro_teaser.jpg"
+                onEnded={(e) => {
+                  const video = e.target as HTMLVideoElement;
+                  video.poster = "/images/intro_teaser.jpg";
+                  video.load();
+                }}
+              >
+                <source src="/video/Demo.m4v" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              <div className="text-sm text-gray-500 mt-2">
+                <strong>Figure 1 &amp; Demo:</strong> Overview of Verbalized Sampling (VS) for unlocking LLM diversity. Demo video by Qihui Fan.
               </div>
             </div>
 
