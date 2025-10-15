@@ -896,6 +896,16 @@ export default function HomePage() {
                   <p>
                     Verbalized Sampling provides a training-free, model-agnostic approach to mitigating mode collapse by prompting the model to generate response distributions with verbalized probability estimates.
                   </p>
+                  Check our{' '}
+                      <a
+                        href="https://arxiv.org/abs/2510.01171"
+                        className="underline hover:text-orange-500 font-semibold"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Paper
+                      </a>{' '}
+                      for more details on the prompt.
                 </div>
               </div>
               <div className="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-5 lg:flex lg:items-center">

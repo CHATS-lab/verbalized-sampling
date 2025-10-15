@@ -7,11 +7,10 @@ export function Terminal_Prompt() {
   const [copied, setCopied] = useState(false);
   
   const terminalSteps = [
-    { line: 'You are a helpful assistant. For each user query, generate a set of five responses. Each response should be approximately 200 words.', showPrompt: true },
-    { line: 'Return the responses each within a separate <response> tag.', showPrompt: false },
+    { line: 'Generate 10 responses to the user query, each within a separate <response> tag.', showPrompt: true },
     { line: 'Each <response> tag must include a <text> and a numeric <probability>.', showPrompt: false },
     { line: 'Randomly sample the responses from the full distribution.', showPrompt: false },
-    { line: '<user_query>Write a short story about a bear.</user_query>', showPrompt: true },
+    { line: '<user_query>Write a 100-word story about a bear.</user_query>', showPrompt: true },
   ];
 
   const fullPrompt = terminalSteps.map(step => step.line).join('\n');
@@ -23,7 +22,7 @@ export function Terminal_Prompt() {
   };
 
   return (
-    <div className="w-full rounded-lg shadow-lg overflow-hidden bg-gray-900 text-white font-mono text-sm relative min-h-[300px]">
+    <div className="w-full rounded-lg shadow-lg overflow-hidden bg-gray-900 text-white font-mono text-sm relative min-h-[200px]">
       <div className="p-4">
         <div className="flex justify-between items-center mb-4">
           <div className="flex space-x-2">
