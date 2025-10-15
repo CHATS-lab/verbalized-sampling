@@ -192,8 +192,8 @@ export default function HomePage() {
                 Try It Yourself: <span className="text-orange-500">The Magic Prompt</span>
               </h2>
               <p className="text-base text-gray-600 mt-4">
-                Use this prompt to sample multiple responses with explicit probabilities from your LLM. 
-                Copy it into your provider’s playground, API call, or chat interface, then replace the last line with your task.
+                Use this prompt to sample multiple responses with explicit probabilities from your favorite LLM. 
+                Copy it into your provider's playground, API call, or chat interface, then replace "Write a 100-word story about a bear" with your task.
               </p>
             </div>
             <div className="mt-8 lg:mt-0 lg:col-span-5 lg:mx-0 w-full">
