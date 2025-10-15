@@ -128,27 +128,29 @@ export function Terminal({ height = "auto" }: TerminalProps) {
   };
 
   return (
-    <div className="w-full min-w-full rounded-lg shadow-lg overflow-hidden bg-gray-900 text-white font-mono text-sm relative" style={{ height }}>
-      <div className="p-2">
-        <div className="flex justify-between items-center mb-2">
+    <div className="w-full rounded-lg shadow-lg overflow-hidden bg-gray-900 text-white font-mono text-sm relative min-h-[200px]" style={{ height }}>
+      <div className="p-4 pb-8">
+        <div className="flex justify-between items-center mb-4">
           <div className="flex space-x-2">
             <div className="w-3 h-3 rounded-full bg-red-500"></div>
             <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
             <div className="w-3 h-3 rounded-full bg-green-500"></div>
           </div>
-          <button
-            onClick={copyToClipboard}
-            className="text-gray-400 hover:text-white transition-colors"
-            aria-label="Copy to clipboard"
-          >
-            {copied ? (
-              <Check className="h-5 w-5" />
-            ) : (
-              <Copy className="h-5 w-5" />
-            )}
-          </button>
+          <div className="flex space-x-2">
+            <button
+              onClick={copyToClipboard}
+              className="text-gray-400 hover:text-white transition-colors"
+              aria-label="Copy to clipboard"
+            >
+              {copied ? (
+                <Check className="h-5 w-5" />
+              ) : (
+                <Copy className="h-5 w-5" />
+              )}
+            </button>
+          </div>
         </div>
-        <div className="space-y-2">
+        <div className="space-y-4 leading-tight">
           {/* Pip Install Block */}
           <div className="space-y-1">
             {pipCommand.map((step, index) => (
