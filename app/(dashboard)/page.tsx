@@ -126,23 +126,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Terminal Prompt */}
-      <section className="py-12 bg-white w-full">
-        <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
-          <div className="lg:grid lg:grid-cols-12 lg:gap-4">
-            <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-7 lg:text-left">
-              <h2 className="text-xl font-bold text-gray-700 tracking-tight sm:text-3xl mb-6">
-                Try It Yourself:
-                <span className="block text-orange-500">The Magic Prompt</span>
-              </h2>
-            </div>
-            <div className="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-5 lg:flex lg:items-center">
-              <Terminal_Prompt />
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Pip Install Section */}
       <section className="py-12 bg-gray-50">
           <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
@@ -181,6 +164,28 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+
+      {/* Terminal Prompt (after Pip Install) */}
+      <section className="py-12 bg-white w-full">
+        <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
+          <div className="lg:grid lg:grid-cols-12 lg:gap-4 lg:items-start">
+            <div className="lg:col-span-7 text-left sm:text-center lg:text-left">
+              <h2 className="text-xl font-bold text-gray-700 tracking-tight sm:text-3xl">
+                Try It Yourself: <span className="text-orange-500">The Magic Prompt</span>
+              </h2>
+              <p className="text-base text-gray-600 mt-4">
+                Use this prompt to sample multiple responses with explicit probabilities from your model. 
+                Copy it into your provider’s playground or API call, then replace the <code className="font-mono">&lt;user_query&gt;</code> with your task.
+              </p>
+            </div>
+            <div className="mt-8 lg:mt-0 lg:col-span-5 lg:mx-0 w-full">
+              <div className="w-full">
+                <Terminal_Prompt />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* BibTeX Citation */}
       <section className="py-12 bg-white">
