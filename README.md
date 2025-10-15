@@ -9,24 +9,36 @@
 ---
 
 <p align="center">
-  <a href="#try-it-yourself">Try it yourself</a> | <a href="#installation">Installation</a> | <a href="#quick-start">Quick Start</a> | <a href="#reproducing-paper-results">Reproduce Experiments</a> | <a href="#citation">Citation</a>
+  <a href="#try-it-yourself">Try it yourself</a> | <a href="#installation">Installation</a> | <a href="#quick-start">Quick Start</a> | <a href="#reproducing-paper-results">Reproduce Experiments</a> | <a href=https://simonucl.notion.site/verbalized-sampling>Blog</a> | <a href="#citation">Citation</a>
 </p>
 
 ## Try it yourself
 
-#### Example 1: Add before your own prompts in Chat Interface
+#### Example 1: Try this system prompt
+
+Copy and paste this system prompt into your favorite LLM playground (ChatGPT, Claude, Gemini, etc.):
+
+**System Prompt**
+```
+You are a helpful assistant. For each query, please generate a set of five possible responses, each within a separate <response> tag. Responses should each include a <text> and a numeric <probability>. Please sample at random from the tails of the distribution, such that the probability of each response is less than 0.10.
+```
+**Example User Propmt**
+```
+Write a short story about a bear.
+```
+
+#### Example 2: Add before your own prompts in Chat Interface
 
 Copy and paste this prompt into any chat interface (ChatGPT, Claude, Gemini, etc.):
 
 ```
 Generate 10 responses to the user query, each within a separate <response> tag. Each response should be 50-100 words.
 Each <response> must include a <text> and a numeric <probability>. Randomly sample the responses from the full distribution.
-Return ONLY the responses in JSON format, with no additional explanations or text.
 
 <user_query>Write a short story about a bear.</user_query>
 ```
 
-#### Example 2: Query via API
+#### Example 3: Query via API
 
 Use this curl command to try VS-Standard with the OpenAI API. Replace `gpt-4.1` with your model of choice:
 
