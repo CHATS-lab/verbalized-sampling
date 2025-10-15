@@ -13,10 +13,11 @@ export function Terminal_Prompt() {
   //   { line: '<user_query>Write a 100-word story about a bear.</user_query>', showPrompt: true },
   // ];
   const terminalSteps = [
-    { line: 'Generate 10 responses to the user query, each within a separate <response> tag.', showPrompt: true },
-    { line: 'Each <response> tag must include a <text> and a numeric <probability>.', showPrompt: false },
+    { line: '<instruction>', showPrompt: true },
+    { line: 'Generate 5 responses to the user query, each within a separate <response> tag. Each <response> must include a <text> and a numeric <probability>.', showPrompt: false },
     { line: 'Randomly sample the responses from the full distribution.', showPrompt: false },
-    { line: '<user_query>Write a 100-word story about a bear.</user_query>', showPrompt: true },
+    { line: '</instruction>', showPrompt: false },
+    { line: 'Write a 100-word story about a bear.', showPrompt: true },
   ];
 
   const fullPrompt = terminalSteps.map(step => step.line).join('\n');

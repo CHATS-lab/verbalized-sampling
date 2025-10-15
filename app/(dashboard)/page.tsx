@@ -100,10 +100,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Demo Video */}
       <section className="py-12 bg-white">
         <div className="max-w-4xl mx-auto px-8 sm:px-12 lg:px-16">
           <div className="text-center">
+            {/* Demo Video */}
             <div className="text-center mb-8">
               <video 
                 controls 
@@ -122,12 +122,30 @@ export default function HomePage() {
                 <strong>Figure 1 &amp; Demo:</strong> Overview of Verbalized Sampling (VS) for unlocking LLM diversity. Demo video by Qihui Fan.
               </div>
             </div>
+
+            <h2 className="text-xl font-bold text-gray-700 tracking-tight sm:text-3xl mb-8">
+              Abstract
+            </h2>
+
+            <div className="max-w-4xl mx-auto">
+              <p className="text-base text-gray-600 leading-relaxed text-left">
+                Post-training alignment often reduces LLM diversity, leading to a phenomenon known as <em>mode collapse</em>. 
+                Unlike prior work that attributes this effect to algorithmic limitations, we identify a fundamental, pervasive data-level driver: <em>typicality bias</em> in preference data, 
+                whereby annotators systematically favor familiar text as a result of well-established findings in cognitive psychology. 
+                We formalize this bias theoretically, verify it empirically on preference datasets, and show that it plays a central role in mode collapse. 
+              </p>
+              <p className="text-base text-gray-600 leading-relaxed text-left mt-6">
+                Motivated by this analysis, we introduce <strong>Verbalized Sampling (VS)</strong>, a simple, training-free prompting method to circumvent mode collapse. VS prompts the model to verbalize a probability distribution over a set of responses (e.g., "Generate 5 jokes about coffee and their corresponding probabilities").
+                Comprehensive experiments show that VS significantly improves performance across creative writing (poems, stories, jokes), dialogue simulation, open-ended QA, and synthetic data generation, without sacrificing factual accuracy and safety. For instance, in creative writing, VS increases diversity by 1.6-2.1× over direct prompting. We further observe an emergent trend that more capable models benefit more from VS.
+                In sum, our work provides a new data-centric perspective on mode collapse and a practical inference-time remedy that helps unlock pre-trained generative diversity.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Pip Install Section */}
-      <section className="py-12 bg-gray-50">
+      {/* <section className="py-12 bg-gray-50">
           <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
             <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
               <div>
@@ -163,7 +181,7 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
 
       {/* Terminal Prompt (after Pip Install) */}
       <section className="py-12 bg-white w-full">
@@ -174,8 +192,8 @@ export default function HomePage() {
                 Try It Yourself: <span className="text-orange-500">The Magic Prompt</span>
               </h2>
               <p className="text-base text-gray-600 mt-4">
-                Use this prompt to sample multiple responses with explicit probabilities from your model. 
-                Copy it into your provider’s playground or API call, then replace the <code className="font-mono">&lt;user_query&gt;</code> with your task.
+                Use this prompt to sample multiple responses with explicit probabilities from your LLM. 
+                Copy it into your provider’s playground, API call, or chat interface, then replace the last line with your task.
               </p>
             </div>
             <div className="mt-8 lg:mt-0 lg:col-span-5 lg:mx-0 w-full">
