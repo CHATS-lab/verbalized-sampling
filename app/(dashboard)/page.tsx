@@ -43,37 +43,37 @@ export default function HomePage() {
             </div>
             
             {/* Action Buttons */}
-            <div className="flex flex-wrap justify-center gap-4 mt-10">
-              <Button asChild className="rounded-full px-14 py-8 text-2xl">
-                <Link href="https://arxiv.org/abs/2510.01171" className="flex items-center gap-2">
-                  <FileText size={28} />
+            <div className="flex flex-wrap justify-center gap-4 mt-8">
+              <Button asChild className="rounded-full px-8 py-4 text-lg">
+                <Link href="https://arxiv.org/abs/2510.01171" className="flex items-center gap-3">
+                  <FileText size={20} />
                   Paper
                 </Link>
               </Button>
-              <Button asChild className="rounded-full px-14 py-8 text-2xl">
-                <Link href="https://simonucl.notion.site/verbalized-sampling" className="flex items-center gap-2" target="_blank" rel="noopener noreferrer">
-                  <BookOpen size={28} />
+              <Button asChild className="rounded-full px-8 py-4 text-lg">
+                <Link href="https://simonucl.notion.site/verbalized-sampling" className="flex items-center gap-3" target="_blank" rel="noopener noreferrer">
+                  <BookOpen size={20} />
                   Blog
                 </Link>
               </Button>
-              <Button asChild className="rounded-full px-14 py-8 text-2xl">
-                <Link href="https://github.com/CHATS-lab/verbalized-sampling" className="flex items-center gap-2">
-                  <Github size={28} />
+              <Button asChild className="rounded-full px-8 py-4 text-lg">
+                <Link href="https://github.com/CHATS-lab/verbalized-sampling" className="flex items-center gap-3">
+                  <Github size={20} />
                   Github
                 </Link>
               </Button>
-              <Button asChild className="rounded-full px-14 py-8 text-2xl">
-                <Link href="https://x.com/YOUR_X_THREAD_URL" className="flex items-center gap-2">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+              <Button asChild className="rounded-full px-8 py-4 text-lg">
+                <Link href="https://x.com/shi_weiyan/status/1978453313096908916" className="flex items-center gap-3">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                   </svg>
-                  Thread
+                  X Thread
                 </Link>
               </Button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button className="rounded-full flex items-center gap-2 px-14 py-8 text-2xl">
-                    <NotebookPen size={28} />
+                  <Button className="rounded-full flex items-center gap-3 px-8 py-4 text-lg">
+                    <NotebookPen size={20} />
                     Notebooks
                   </Button>
                 </DropdownMenuTrigger>
