@@ -3,7 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, CreditCard, Database, Calendar, User, Clock, Eye, Heart, ThumbsUp, Share2 } from 'lucide-react';
+import { ArrowRight, CreditCard, Database, Calendar, User, Clock, Eye, Heart, ThumbsUp, Share2, Github, BookOpen, FileText, NotebookPen } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
 
 import { Terminal_Prompt } from './terminal_prompt';
 
@@ -608,6 +614,61 @@ export default function HomePage() {
             {/* <div className="text-xl font-bold">
               <span className="text-orange-600">ICML 2025 Outstanding Paper</span>
             </div> */}
+            
+            {/* Action Buttons */}
+            <div className="flex flex-wrap justify-center gap-4 mt-8">
+              <Button asChild className="rounded-full">
+                <Link href="https://arxiv.org/abs/2510.01171" className="flex items-center gap-2">
+                  <FileText size={16} />
+                  Paper
+                </Link>
+              </Button>
+              <Button asChild className="rounded-full">
+                <Link href="https://simonucl.notion.site/verbalized-sampling" className="flex items-center gap-2" target="_blank" rel="noopener noreferrer">
+                  <BookOpen size={16} />
+                  Blog
+                </Link>
+              </Button>
+              <Button asChild className="rounded-full">
+                <Link href="https://github.com/CHATS-lab/verbalized-sampling" className="flex items-center gap-2">
+                  <Github size={16} />
+                  Github
+                </Link>
+              </Button>
+              <Button asChild className="rounded-full">
+                <Link href="https://x.com/YOUR_X_THREAD_URL" className="flex items-center gap-2">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                  </svg>
+                  X Thread
+                </Link>
+              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button className="rounded-full flex items-center gap-2">
+                    <NotebookPen size={16} />
+                    Notebooks
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem asChild>
+                    <Link href="https://colab.research.google.com/drive/1UDk4W5w6gF0dQ9Tpu0sPQethEht51GXL#offline=true&sandboxMode=true" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                      Direct vs. Verbalized Sampling
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="https://colab.research.google.com/drive/1J18VJRnrCjIb6sTivY-znb8C3JsLQCIz#offline=true&sandboxMode=true" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                      Image Generation with VS
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="https://colab.research.google.com/drive/1eC0nIUVC1kyANxxzhNib44qmPphdWy9o#offline=true&sandboxMode=true" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                      Complete Framework Tutorial
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
         </div>
       </section>
@@ -643,7 +704,7 @@ export default function HomePage() {
                   video.load();
                 }}
               >
-                <source src="/video/Demo.m4v" type="video/mp4" />
+                <source src="/video/Demo.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
               <div className="text-sm text-gray-500 mt-2">
@@ -678,8 +739,7 @@ export default function HomePage() {
             <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
               <div>
                   <h2 className="text-xl font-bold text-gray-700 tracking-tight sm:text-3xl mb-6">
-                    Make Your LLM Output More Diverse<br />
-                    <span className="text-orange-500">With Verbalized Sampling!</span>
+                    Make Your LLM Output More Diverse <span className="text-orange-500">With Verbalized Sampling</span>
                   </h2>
                  <div className="space-y-4 text-base text-gray-600">
                     <p>
@@ -704,7 +764,7 @@ export default function HomePage() {
                 <div className="w-full">
                   {(() => {
                     const { Terminal } = require("./terminal_package");
-                    return <Terminal />;
+                    return <Terminal height="220px"/>;
                   })()}
                 </div>
               </div>
@@ -747,7 +807,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="py-12 bg-gray-50">
+        {/* <section className="py-12 bg-gray-50">
           <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
             <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
               <div className="mt-8 lg:mt-0">
@@ -786,14 +846,16 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
 
-        <section className="py-12 bg-white">
+        <section className="py-12 bg-gray-50">
           <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
             <div className="max-w-6xl mx-auto text-center">
               <h2 className="text-xl font-bold text-gray-700 tracking-tight sm:text-3xl mb-6">
-                Where Verbalized Sampling Works:<br />
-                <span className="block text-orange-500">Creative Writing, Social Simulation, ..., and Your Task!</span>
+                {/* Where Verbalized Sampling Works:<br />
+                <span className="block text-orange-500">Creative Writing, Social Simulation, ..., and Your Task!</span> */}
+                How to Mitigate Mode Collapse?<br />
+                <span className="block text-orange-500">Verbalized Sampling</span>
                 {/* <RollingText /> */}
               </h2>
               <div className="text-center mb-8">
@@ -803,27 +865,36 @@ export default function HomePage() {
                   className="w-full max-w-6xl mx-auto rounded-lg shadow-lg"
                 />
                 <p className="text-sm text-gray-500 mt-3 text-center italic">
-                  <strong>Figure 4:</strong> Qualitative and quantitative examples of Verbalized Sampling on creative writing, dialogue simulation, and enumerative open-ended QA.
+                  <strong>Figure 3:</strong> Qualitative and quantitative examples of Verbalized Sampling on creative writing, dialogue simulation, and enumerative open-ended QA.
                 </p>
               </div>
               <div className="space-y-4 text-base text-gray-600 text-left max-w-5xl mx-auto xl:max-w-3xl">
                 <p>
-                  Our comprehensive experiments on multiple tasks demonstrate that Verbalized Sampling significantly improves the diversity-quality trade-off across tasks and model families, 
-                  without compromising factual accuracy and safety.
+                  Motivated by the theoretical understanding of mode collapse, we propose Verbalized Sampling (VS). 
+                  Through comprehensive experiments across multiple tasks, we demonstrate that this approach significantly improves the diversity-quality trade-off across 
+                  model families without compromising factual accuracy and safety.
                 </p>
                 <p>
-                  As shown in Figure 4, for <strong>story writing</strong>, VS improves the output diversity. 
-                  For <strong>dialogue simulation</strong>, VS simulates the donation amount distribution much closer to the human distribution, and generates more realistic persuasion behaviors.
-                  On the task of <strong>enumerative open-ended QA</strong>, we ask the model to "generate US states". We first query a pretraining corpus (RedPajama) to establish a "reference" distribution of US 
-                  state names in the pretraining data. The verbalized probability distribution generated by VS, when averaged over 10 trials, closely aligns with this reference pretraining distribution (KL=0.12). 
-                  In contrast, direct prompting collapses into a few modes, repeatedly outputting states like California and Texas. 
+                  <ul className="list-disc pl-6 space-y-2">
+                    <li>
+                      For <strong>story writing</strong>, VS improves the output diversity.
+                    </li>
+                    <li>
+                      For <strong>dialogue simulation</strong>, VS simulates the donation amount distribution much closer to the human distribution, and generates more realistic persuasion behaviors.
+                    </li>
+                    <li>
+                      For <strong>enumerative open-ended QA</strong>, we ask the model to "generate US states". 
+                      The verbalized probability distribution generated by VS, when averaged over 10 trials, closely aligns with the reference pretraining distribution (queried from RedPajama).
+                      In contrast, direct prompting collapses into a few modes, repeatedly outputting states like California and Texas.
+                    </li>
+                  </ul>
                 </p>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="py-12 bg-gray-50">
+        <section className="py-12 bg-white">
           <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
             <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
               <div>
@@ -833,7 +904,7 @@ export default function HomePage() {
                 </h2>
                 <div className="space-y-4 text-base text-gray-600">
                   <p>
-                    We observe an <strong>emergent trend</strong> where larger models benefit more from VS. Figure 5 shows the diversity gain over the direct prompting which suffers from mode collapse. 
+                    We also observe an <strong>emergent trend</strong> where larger models benefit more from VS. Figure 5 shows the diversity gain over the direct prompting which suffers from mode collapse. 
                     Across all VS variants, larger models (GPT-4.1, Gemini-2.5-Pro) achieve diversity gains 1.5 to 2 times greater than smaller models (GPT-4.1-Mini, Gemini-2.5-Flash).
                   </p>
                 </div>
@@ -853,7 +924,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="py-12 bg-white">
+        <section className="py-12 bg-gray-50">
           <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
             <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
               <div>
@@ -884,7 +955,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="py-12 bg-gray-50 w-full">
+        <section className="py-12 bg-white w-full">
           <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
             <div className="lg:grid lg:grid-cols-12 lg:gap-4">
               <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-7 lg:text-left">
@@ -916,7 +987,7 @@ export default function HomePage() {
         </section>
 
       {/* BibTeX Citation */}
-      <section className="py-12 bg-white">
+      <section className="py-12 bg-gray-50">
         <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
           <div className="text-center">
             <h2 className="text-xl font-bold text-gray-700 sm:text-3xl mb-8">

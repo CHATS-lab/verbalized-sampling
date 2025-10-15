@@ -6,6 +6,12 @@ import { Copy, Check } from 'lucide-react';
 export function Terminal_Prompt() {
   const [copied, setCopied] = useState(false);
   
+  // const terminalSteps = [
+  //   { line: 'Generate 10 responses to the user query, each within a separate <response> tag.', showPrompt: true },
+  //   { line: 'Each <response> tag must include a <text> and a numeric <probability>.', showPrompt: false },
+  //   { line: 'Randomly sample the responses from the full distribution.', showPrompt: false },
+  //   { line: '<user_query>Write a 100-word story about a bear.</user_query>', showPrompt: true },
+  // ];
   const terminalSteps = [
     { line: 'Generate 10 responses to the user query, each within a separate <response> tag.', showPrompt: true },
     { line: 'Each <response> tag must include a <text> and a numeric <probability>.', showPrompt: false },
