@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Github, BookOpen, FileText, NotebookPen } from 'lucide-react';
+import { Github, BookOpen, FileText, NotebookPen, Image as ImageIcon } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -60,6 +60,12 @@ export default function HomePage() {
                 <Link href="https://github.com/CHATS-lab/verbalized-sampling" className="flex items-center gap-3">
                   <Github size={20} />
                   Github
+                </Link>
+              </Button>
+              <Button asChild className="rounded-full px-8 py-4 text-lg">
+                <Link href="https://tinyurl.com/vs-gallery" className="flex items-center gap-3">
+                  <ImageIcon size={20} />
+                  Gallery
                 </Link>
               </Button>
               <Button asChild className="rounded-full px-8 py-4 text-lg">
