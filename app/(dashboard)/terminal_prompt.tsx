@@ -17,6 +17,7 @@ export function Terminal_Prompt() {
     { line: 'Generate 5 responses to the user query, each within a separate <response> tag. Each <response> must include a <text> and a numeric <probability>. Please sample at random from the tails of the distribution, such that the probability of each response is less than 0.10.', showPrompt: false },
     // { line: 'Please sample at random from the tails of the distribution, such that the probability of each response is less than 0.10.', showPrompt: false },
     { line: '</instruction>', showPrompt: false },
+    { line: '', showPrompt: true },
     { line: 'Tell me a short story about a bear.', showPrompt: true },
   ];
 
