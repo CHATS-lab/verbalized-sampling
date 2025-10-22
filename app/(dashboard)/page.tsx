@@ -65,7 +65,7 @@ export default function HomePage() {
               <Button asChild className="rounded-full px-8 py-4 text-lg">
                 <Link href="https://tinyurl.com/vs-gallery" className="flex items-center gap-3">
                   <ImageIcon size={20} />
-                  Gallery
+                  Examples
                 </Link>
               </Button>
               <Button asChild className="rounded-full px-8 py-4 text-lg">
