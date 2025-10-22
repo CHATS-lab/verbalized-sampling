@@ -206,9 +206,23 @@ export default function HomePage() {
                 Try It Yourself: <span className="text-orange-500">The Magic Prompt</span>
               </h2>
               <p className="text-base text-gray-600 mt-4">
-                Use this prompt to sample multiple responses with explicit probabilities from your favorite LLM. 
+                Use this prompt to sample multiple responses with explicit probabilities with your favorite LLM. 
                 Copy it into your provider's playground, API call, or chat interface, then replace "Tell me a short story about a bear" with your task.
-                For best results, we recommend starting with models like GPT-5, Claude 4 Opus, and Gemini 2.5 Pro.
+                <br />
+                <br />
+                For best results, we recommend starting with models like GPT-5, Claude Opus 4, and Gemini 2.5 Pro.
+                <br />
+                <br />
+                Please refer to our&nbsp;
+                <a
+                  href="https://github.com/CHATS-lab/verbalize-sampling#prompt-templates"
+                  className="underline hover:text-orange-500 font-semibold"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  GitHub
+                </a>
+                &nbsp;for additional prompt variations and examples.
               </p>
             </div>
             <div className="mt-8 lg:mt-0 lg:col-span-5 lg:mx-0 w-full">
