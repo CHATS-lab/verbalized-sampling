@@ -207,7 +207,8 @@ export default function HomePage() {
               </h2>
               <p className="text-base text-gray-600 mt-4">
                 Use this prompt to sample multiple responses with explicit probabilities from your favorite LLM. 
-                Copy it into your provider's playground, API call, or chat interface, then replace "Write a 100-word story about a bear" with your task.
+                Copy it into your provider's playground, API call, or chat interface, then replace "Tell me a short story about a bear" with your task.
+                For best results, we recommend starting with models like GPT-5, Claude 4 Opus, and Gemini 2.5 Pro.
               </p>
             </div>
             <div className="mt-8 lg:mt-0 lg:col-span-5 lg:mx-0 w-full">
