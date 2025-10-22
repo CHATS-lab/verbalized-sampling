@@ -101,6 +101,14 @@ export default function HomePage() {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+              <Button asChild className="rounded-full px-8 py-4 text-lg">
+                <Link href="https://www.youtube.com/watch?v=VoBdywmdim0" className="flex items-center gap-3" target="_blank" rel="noopener noreferrer">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M10 8.64L15.27 12 10 15.36V8.64M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M12 20C7.59 20 4 16.41 4 12S7.59 4 12 4 20 7.59 20 12 16.41 20 12 20Z" />
+                  </svg>
+                  Podcast
+                </Link>
+              </Button>
             </div>
           </div>
         </div>
