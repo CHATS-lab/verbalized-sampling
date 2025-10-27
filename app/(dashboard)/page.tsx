@@ -222,7 +222,7 @@ export default function HomePage() {
                 >
                   GitHub
                 </a>
-                &nbsp;for additional prompt variations and examples.
+                &nbsp;for additional prompt variations and examples. And check out this <a href="https://x.com/dch/status/1978471395173740900" className="underline hover:text-orange-500 font-semibold" target="_blank" rel="noopener noreferrer">X thread</a> for more practical tips and troubleshooting help!
               </p>
             </div>
             <div className="mt-8 lg:mt-0 lg:col-span-5 lg:mx-0 w-full">
