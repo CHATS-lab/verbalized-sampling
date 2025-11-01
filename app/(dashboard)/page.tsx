@@ -133,6 +133,17 @@ export default function HomePage() {
                 <span className="font-semibold text-gray-800">VentureBeat</span>
               </a>
 
+              {/* Forbes */}
+              <a
+                href="https://www.forbes.com/sites/lanceeliot/2025/11/01/prompt-engineering-newest-technique-is-verbalized-sampling-that-stirs-ai-to-be-free-thinking-and-improve-your-responses/?ss=ai"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-black rounded-full hover:bg-gray-50 transition-all shadow-sm"
+              >
+                <span className="text-blue-600 font-bold text-sm">F</span>
+                <span className="font-semibold text-gray-800">Forbes</span>
+              </a>
+
               {/* Yahoo News */}
               <a
                 href="https://currently.att.yahoo.com/att/magic-prompt-allegedly-makes-chatgpt-180523549.html"
