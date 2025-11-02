@@ -115,22 +115,22 @@ export default function HomePage() {
       </section>
 
      {/* Media Coverage Section */}
-     <section className="py-16 bg-white">
-        <div className="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-800 mb-8">
-              Media Coverage
+     <section className="py-6 bg-white">
+        <div className="max-w-4xl mx-auto px-8 sm:px-12 lg:px-16">
+          <div className="flex flex-wrap items-center gap-4">
+            <h2 className="text-2xl sm:text-2xl font-bold text-gray-800 whitespace-nowrap">
+              Featured On:
             </h2>
-            <div className="flex flex-wrap justify-center gap-4 items-center">
+            <div className="flex flex-wrap gap-2 items-center justify-center w-full">
               {/* VentureBeat */}
               <a
                 href="https://venturebeat.com/ai/researchers-find-adding-this-one-simple-sentence-to-prompts-makes-ai-models"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-black rounded-full hover:bg-gray-50 transition-all shadow-sm"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border-2 border-black rounded-full hover:bg-gray-50 transition-all shadow-sm"
               >
-                <span className="text-red-500 font-bold text-sm">VB</span>
-                <span className="font-semibold text-gray-800">VentureBeat</span>
+                <span className="text-red-500 font-bold text-xs">VB</span>
+                <span className="font-semibold text-gray-800 text-sm">VentureBeat</span>
               </a>
 
               {/* Forbes */}
@@ -138,10 +138,10 @@ export default function HomePage() {
                 href="https://www.forbes.com/sites/lanceeliot/2025/11/01/prompt-engineering-newest-technique-is-verbalized-sampling-that-stirs-ai-to-be-free-thinking-and-improve-your-responses/?ss=ai"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-black rounded-full hover:bg-gray-50 transition-all shadow-sm"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border-2 border-black rounded-full hover:bg-gray-50 transition-all shadow-sm"
               >
-                <span className="text-blue-600 font-bold text-sm">F</span>
-                <span className="font-semibold text-gray-800">Forbes</span>
+                <span className="text-blue-600 font-bold text-xs">F</span>
+                <span className="font-semibold text-gray-800 text-sm">Forbes</span>
               </a>
 
               {/* Yahoo News */}
@@ -149,10 +149,10 @@ export default function HomePage() {
                 href="https://currently.att.yahoo.com/att/magic-prompt-allegedly-makes-chatgpt-180523549.html"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-black rounded-full hover:bg-gray-50 transition-all shadow-sm"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border-2 border-black rounded-full hover:bg-gray-50 transition-all shadow-sm"
               >
-                <span className="text-purple-700 font-bold text-sm">Y!</span>
-                <span className="font-semibold text-gray-800">Yahoo News</span>
+                <span className="text-purple-700 font-bold text-xs">Y!</span>
+                <span className="font-semibold text-gray-800 text-sm">Yahoo News</span>
               </a>
 
               {/* TLDR AI */}
@@ -160,10 +160,10 @@ export default function HomePage() {
                 href="https://tldr.tech/ai/2025-10-16"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-black rounded-full hover:bg-gray-50 transition-all shadow-sm"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border-2 border-black rounded-full hover:bg-gray-50 transition-all shadow-sm"
               >
-                <span className="text-blue-500 font-bold text-sm">📰</span>
-                <span className="font-semibold text-gray-800">TLDR AI</span>
+                <span className="text-blue-500 font-bold text-xs">📰</span>
+                <span className="font-semibold text-gray-800 text-sm">TLDR AI</span>
               </a>
 
               {/* Medium */}
@@ -171,10 +171,10 @@ export default function HomePage() {
                 href="https://generativeai.pub/stanford-just-killed-prompt-engineering-with-8-words-and-i-cant-believe-it-worked-8349d6524d2b"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-black rounded-full hover:bg-gray-50 transition-all shadow-sm"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border-2 border-black rounded-full hover:bg-gray-50 transition-all shadow-sm"
               >
-                <span className="text-black font-bold text-sm">M</span>
-                <span className="font-semibold text-gray-800">Medium</span>
+                <span className="text-black font-bold text-xs">M</span>
+                <span className="font-semibold text-gray-800 text-sm">Medium</span>
               </a>
 
               {/* Neuron Daily */}
@@ -182,10 +182,10 @@ export default function HomePage() {
                 href="https://www.theneurondaily.com/p/new-ai-models-introducing-veo-3-1-and-claude-haiku-4-5"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-black rounded-full hover:bg-gray-50 transition-all shadow-sm"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border-2 border-black rounded-full hover:bg-gray-50 transition-all shadow-sm"
               >
-                <span className="text-orange-500 font-bold text-sm">🧠</span>
-                <span className="font-semibold text-gray-800">Neuron Daily</span>
+                <span className="text-orange-500 font-bold text-xs">🧠</span>
+                <span className="font-semibold text-gray-800 text-sm">Neuron Daily</span>
               </a>
 
               {/* Analytics Vidhya */}
@@ -193,10 +193,10 @@ export default function HomePage() {
                 href="https://www.analyticsvidhya.com/blog/2025/10/verbalized-sampling/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-black rounded-full hover:bg-gray-50 transition-all shadow-sm"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border-2 border-black rounded-full hover:bg-gray-50 transition-all shadow-sm"
               >
-                <span className="text-green-600 font-bold text-sm">📊</span>
-                <span className="font-semibold text-gray-800">Analytics Vidhya</span>
+                <span className="text-green-600 font-bold text-xs">📊</span>
+                <span className="font-semibold text-gray-800 text-sm">Analytics Vidhya</span>
               </a>
 
               {/* AI Papers Podcast Daily */}
@@ -204,12 +204,12 @@ export default function HomePage() {
                 href="https://www.youtube.com/watch?v=VoBdywmdim0"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-black rounded-full hover:bg-gray-50 transition-all shadow-sm"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border-2 border-black rounded-full hover:bg-gray-50 transition-all shadow-sm"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="red" className="inline-block">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="red" className="inline-block">
                   <path d="M10 8.64L15.27 12 10 15.36V8.64M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M12 20C7.59 20 4 16.41 4 12S7.59 4 12 4 20 7.59 20 12 16.41 20 12 20Z" />
                 </svg>
-                <span className="font-semibold text-gray-800">AI Papers Podcast</span>
+                <span className="font-semibold text-gray-800 text-sm">AI Papers Podcast</span>
               </a>
 
               {/* AI in Education Daily Podcast */}
@@ -217,15 +217,23 @@ export default function HomePage() {
                 href="https://podfollow.com/ai-in-education-daily/episode/8650510757ba9be732ddcaa600ec4403d1229020/view"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-black rounded-full hover:bg-gray-50 transition-all shadow-sm"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border-2 border-black rounded-full hover:bg-gray-50 transition-all shadow-sm"
               >
-                <span className="text-indigo-600 font-bold text-sm">🎓</span>
-                <span className="font-semibold text-gray-800">AI in Education</span>
+                <span className="text-indigo-600 font-bold text-xs">🎓</span>
+                <span className="font-semibold text-gray-800 text-sm">AI in Education</span>
               </a>
             </div>
           </div>
         </div>
       </section>
+
+      {/* decrease section 间距 */}
+      <style jsx global>{`
+        section.py-12 {
+          padding-top: 1.0rem !important;
+          padding-bottom: 1.0rem !important;
+        }
+      `}</style>
 
       <section className="py-12 bg-white">
         <div className="max-w-4xl mx-auto px-8 sm:px-12 lg:px-16">
