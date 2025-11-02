@@ -118,9 +118,7 @@ export default function HomePage() {
      <section className="py-6 bg-white">
         <div className="max-w-4xl mx-auto px-8 sm:px-12 lg:px-16">
           <div className="flex flex-wrap items-center gap-4">
-            <h2 className="text-2xl sm:text-2xl font-bold text-gray-800 whitespace-nowrap">
-              Featured On:
-            </h2>
+            <h2 className="text-2xl sm:text-2xl font-bold text-gray-800 whitespace-nowrap">Featured On:</h2>
             <div className="flex flex-wrap gap-2 items-center justify-center w-full">
               {/* VentureBeat */}
               <a
@@ -230,8 +228,8 @@ export default function HomePage() {
       {/* decrease section 间距 */}
       <style jsx global>{`
         section.py-12 {
-          padding-top: 1.0rem !important;
-          padding-bottom: 1.0rem !important;
+          padding-top: 0.3rem !important;
+          padding-bottom: 0.3rem !important;
         }
       `}</style>
 
