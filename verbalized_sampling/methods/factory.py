@@ -48,6 +48,10 @@ class Method(str, Enum):
 
     # Additional methods
     STANDARD_ALL_POSSIBLE = "standard_all_possible"
+    
+    # Sequence variants
+    SEQUENCE_COT = "sequence_cot"  # Sequence with chain-of-thought
+    SEQUENCE_MULTI = "sequence_multi"  # Sequence with multi-turn
 
     @property
     def paper_name(self) -> str:
@@ -113,7 +117,7 @@ def is_method_multi_turn(method: Method) -> bool:
 
 def is_method_combined(method: Method) -> bool:
     """Check if a method requires VS-Multi (vs_multi) sampling."""
-    return method in [Method.VS_MULTI, Method.VS_MULTI]  # Support both old and new
+    return method in [Method.VS_MULTI, Method.VS_MULTI, Method.SEQUENCE_MULTI]  # Support both old and new
 
 
 def is_vs_method(method: Method) -> bool:
@@ -165,6 +169,9 @@ class PromptFactory:
         Method.VS_STANDARD: "vs_standard",
         Method.VS_COT: "vs_cot",
         Method.VS_MULTI: "vs_multi",
+        # Sequence variants
+        Method.SEQUENCE_COT: "sequence_cot",
+        Method.SEQUENCE_MULTI: "sequence_multi",
     }
 
     # Available probability definition types
@@ -230,6 +237,10 @@ class PromptFactory:
             return "vs_cot"
         elif method == Method.VS_MULTI:
             return "vs_multi"
+        elif method == Method.SEQUENCE_COT:
+            return "sequence_cot"
+        elif method == Method.SEQUENCE_MULTI:
+            return "sequence_multi"
         elif all_possible:
             return "standard_all_possible"
         else:  # Method.SEQUENCE, Method.STRUCTURE
@@ -278,7 +289,7 @@ class PromptFactory:
                     prompt_type=prompt_type,
                     num_samplings=num_samplings,
                     num_samples_per_prompt=(
-                        num_samples_per_prompt if method == Method.VS_MULTI else None
+                        num_samples_per_prompt if method in [Method.VS_MULTI, Method.SEQUENCE_MULTI] else None
                     ),
                     target_words=target_words,
                     task_name=task_name,
@@ -334,6 +345,23 @@ class PromptFactory:
             num_samplings=num_samplings_per_prompt, target_words=target_words
         )
         print("VS-Multi continuation prompt: ", continuation_prompt)
+
+        return chat_history + [{"role": "user", "content": continuation_prompt}]
+    
+    @staticmethod
+    def get_sequence_multi_continuation(
+        chat_history: List[Dict[str, str]],
+        num_samplings_per_prompt: int,
+        task: str,
+        target_words: int,
+    ) -> List[Dict[str, str]]:
+        """Get continuation prompt for Sequence-Multi sampling."""
+        task_type = PromptFactory._get_task_type_from_task_name(task)
+        template = PromptTemplateFactory.get_template(task_type)
+        continuation_prompt = template.get_continue_prompt(
+            num_samplings=num_samplings_per_prompt, target_words=target_words
+        )
+        print("Sequence-Multi continuation prompt: ", continuation_prompt)
 
         return chat_history + [{"role": "user", "content": continuation_prompt}]
 

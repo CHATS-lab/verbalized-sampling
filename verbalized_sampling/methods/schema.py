@@ -242,6 +242,48 @@ def get_tool_schema(
                 },
             }
         ]
+    
+    elif method == Method.SEQUENCE_COT:
+        return [
+            {
+                "name": "generate_responses_with_reasoning",
+                "description": "Generate multiple responses with step-by-step reasoning",
+                "input_schema": {
+                    "type": "object",
+                    "properties": {
+                        "reasoning": {
+                            "type": "string",
+                            "description": "Step-by-step reasoning process for generating diverse responses",
+                        },
+                        "responses": {
+                            "type": "array",
+                            "description": "List of response strings",
+                            "items": {"type": "string", "description": "A response text"},
+                        }
+                    },
+                    "required": ["reasoning", "responses"],
+                },
+            }
+        ]
+    
+    elif method == Method.SEQUENCE_MULTI:
+        return [
+            {
+                "name": "generate_responses",
+                "description": "Generate multiple responses in sequence format",
+                "input_schema": {
+                    "type": "object",
+                    "properties": {
+                        "responses": {
+                            "type": "array",
+                            "description": "List of response strings",
+                            "items": {"type": "string", "description": "A response text"},
+                        }
+                    },
+                    "required": ["responses"],
+                },
+            }
+        ]
 
     elif method == Method.STRUCTURE:
         return [
@@ -404,6 +446,34 @@ SequenceResponse = {
     },
 }
 
+SequenceCoTResponse = {
+    "type": "json_schema",
+    "json_schema": {
+        "name": "sequence_cot_responses_schema",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "reasoning": {
+                    "type": "string",
+                    "description": "Step-by-step reasoning process for generating diverse responses.",
+                },
+                "responses": {
+                    "type": "array",
+                    "description": "A list of string responses.",
+                    "items": {
+                        "type": "string",
+                        "description": "Individual response as a string.",
+                        "minLength": 1,
+                    },
+                }
+            },
+            "required": ["reasoning", "responses"],
+            "additionalProperties": False,
+        },
+        "strict": True,
+    },
+}
+
 StructuredResponseList = {
     "type": "json_schema",  # Required for OpenRouter
     "json_schema": {
@@ -446,6 +516,10 @@ def get_schema(
         return DirectCoTResponse
     elif method == Method.SEQUENCE:
         return SequenceResponse
+    elif method == Method.SEQUENCE_COT:
+        return SequenceCoTResponse
+    elif method == Method.SEQUENCE_MULTI:
+        return SequenceResponse  # Same format as SEQUENCE
     elif method == Method.STRUCTURE:
         return StructuredResponseList
     elif method == Method.VS_STANDARD:

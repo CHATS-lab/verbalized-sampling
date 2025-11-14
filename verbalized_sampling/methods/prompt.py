@@ -65,6 +65,14 @@ class BasePromptTemplate:
     def get_vs_multi_turn_prompt(self, **kwargs) -> str:
         """Get the multi-turn prompt for the task."""
         raise NotImplementedError
+    
+    def get_sequence_cot_prompt(self, **kwargs) -> str:
+        """Get the sequence with chain-of-thought prompt for the task."""
+        raise NotImplementedError
+    
+    def get_sequence_multi_turn_prompt(self, **kwargs) -> str:
+        """Get the sequence multi-turn prompt for the task."""
+        raise NotImplementedError
 
     def get_continue_prompt(self, **kwargs) -> str:
         """Get the continuation prompt for the task."""
@@ -130,6 +138,19 @@ Return ONLY the JSON object, with no additional explanations or text.
             # """,
             "sequence": f"""
 Return exactly {num_samplings} responses as a Python list of strings, formatted as:
+["response1", "response2", "response3", ...]
+
+Return ONLY the list, with no additional explanations or text.
+""",
+            "sequence_cot": f"""
+First, provide a single "reasoning" field as a string, detailing your step-by-step thought process for generating diverse responses.
+Then, return exactly {num_samplings} responses as a Python list of strings, formatted as:
+["response1", "response2", "response3", ...]
+
+Return ONLY a JSON object with "reasoning" and "responses" fields, with no additional explanations or text.
+""",
+            "sequence_multi": f"""
+Return the responses as a Python list of strings, formatted as:
 ["response1", "response2", "response3", ...]
 
 Return ONLY the list, with no additional explanations or text.
@@ -249,6 +270,34 @@ Generate {num_samplings} responses to the input prompt.{word_constraint}
 
 First, sample {num_samples_per_prompt} responses. 
 """
+    
+    def get_sequence_cot_prompt(self, num_samplings: int = 5, target_words: int = 200, **kwargs) -> str:
+        word_constraint = (
+            f" Each response should be approximately {target_words} words."
+            if target_words > 0
+            else ""
+        )
+        return f"""
+Generate {num_samplings} responses to the input prompt using chain-of-thought reasoning.{word_constraint}
+"""
+    
+    def get_sequence_multi_turn_prompt(
+        self,
+        num_samplings: int = 5,
+        num_samples_per_prompt: int = 2,
+        target_words: int = 200,
+        **kwargs,
+    ) -> str:
+        word_constraint = (
+            f" Each response should be approximately {target_words} words."
+            if target_words > 0
+            else ""
+        )
+        return f"""
+Generate {num_samplings} responses to the input prompt.{word_constraint}
+
+First, sample {num_samples_per_prompt} responses.
+"""
 
     # Return the responses in JSON format with the key: "responses" (list of dicts). Each dictionary must include:
     # - 'text': the response string only (no explanations or extra text).
@@ -264,6 +313,7 @@ Generate one alternative response to the original input prompt.
             return f"""
 Randomly sample {num_samplings} alternative responses to the original input prompt.
 """
+
 
     def get_format_prompt(
         self,
@@ -331,6 +381,24 @@ Generate an alternative response to the original input prompt.
         else:
             return f"""
 Randomly sample {num_samplings} alternative responses to the original input prompt.
+"""
+    
+    def get_sequence_cot_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        return f"""
+Generate {num_samplings} plausible responses to the input prompt using chain-of-thought reasoning.
+
+First, provide step-by-step reasoning about how to approach generating diverse responses.
+Then, output the responses as a Python list of strings.
+"""
+    
+    def get_sequence_multi_turn_prompt(
+        self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs
+    ) -> str:
+        return f"""
+Generate {num_samplings} plausible responses to the input prompt.
+
+First, sample {num_samples_per_prompt} responses.
+Return them as a Python list of strings: ["response1", "response2", ...]
 """
 
     def get_format_prompt(
@@ -402,6 +470,25 @@ Provide one alternative response for the original input prompt that you think co
         else:
             return f"""
 Provide {num_samplings} alternative responses for the original input prompt that you think could be correct.
+"""
+    
+    
+    def get_sequence_cot_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        return f"""
+Provide your {num_samplings} best-guess responses for the given question that you think could be correct using chain-of-thought reasoning.
+
+First, provide step-by-step reasoning about how to approach generating diverse responses.
+Then, output the responses as a Python list of strings.
+"""
+    
+    def get_sequence_multi_turn_prompt(
+        self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs
+    ) -> str:
+        return f"""
+You will generate a total of {num_samplings} responses that you think could be correct for the given question.
+
+First, provide {num_samples_per_prompt} best-guess responses.
+Return them as a Python list of strings: ["response1", "response2", ...]
 """
 
     def get_format_prompt(
@@ -507,6 +594,39 @@ Generate one more data instance based on the original input prompt.
             return f"""
 Randomly sample {num_samplings} alternative data instances based on the original input prompt.
 """
+    
+    
+    def get_sequence_cot_prompt(self, num_samplings: int = 5, target_words: int = 100, **kwargs) -> str:
+        word_constraint = (
+            f" Each data instance should be approximately {target_words} words."
+            if target_words > 0
+            else ""
+        )
+        return f"""
+Generate {num_samplings} data instances based on the input prompt using chain-of-thought reasoning.{word_constraint}
+
+First, provide step-by-step reasoning about how to approach generating diverse data instances.
+Then, output the responses as a Python list of strings.
+"""
+    
+    def get_sequence_multi_turn_prompt(
+        self,
+        num_samplings: int = 5,
+        num_samples_per_prompt: int = 2,
+        target_words: int = 100,
+        **kwargs,
+    ) -> str:
+        word_constraint = (
+            f" Each data instance should be approximately {target_words} words."
+            if target_words > 0
+            else ""
+        )
+        return f"""
+Generate {num_samplings} data instances based on the input prompt.{word_constraint}
+
+First, sample {num_samples_per_prompt} data instances.
+Return them as a Python list of strings: ["response1", "response2", ...]
+"""
 
     def get_format_prompt(
         self,
@@ -585,6 +705,29 @@ Generate one alternative seems logical but incorrect solution to the given math 
         else:
             return f"""
 Randomly sample {num_samplings} alternative seems logical but incorrect solutions to the given math problem.
+"""
+    
+    
+    def get_sequence_cot_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        return f"""
+Generate {num_samplings} solutions to the given math problem using chain-of-thought reasoning.
+Each solution should appear logical and consistent, but must include at least one hidden mistake that makes the final answer incorrect.
+End each solution with the final numerical answer, written only once after four hash marks (e.g., ####123).
+
+First, provide step-by-step reasoning about how to approach generating diverse solutions.
+Then, output the responses as a Python list of strings.
+"""
+    
+    def get_sequence_multi_turn_prompt(
+        self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs
+    ) -> str:
+        return f"""
+Generate a total of {num_samplings} solutions to the given math problem.
+Each solution should appear logical and consistent, but must include at least one hidden mistake that makes the final answer incorrect.
+End each solution with the final numerical answer, written only once after four hash marks (e.g., ####123).
+
+First, sample {num_samples_per_prompt} solutions.
+Return them as a Python list of strings: ["response1", "response2", ...]
 """
 
     def get_format_prompt(
@@ -673,6 +816,25 @@ Generate an alternative response to the original input prompt.
             return f"""
 Sample {num_samplings} alternative responses to the original input prompt.
 """
+    
+    
+    def get_sequence_cot_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        return f"""
+Generate {num_samplings} responses to the input prompt using chain-of-thought reasoning.
+
+First, provide step-by-step reasoning about how to approach generating diverse responses.
+Then, output the responses as a Python list of strings.
+"""
+    
+    def get_sequence_multi_turn_prompt(
+        self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs
+    ) -> str:
+        return f"""
+Generate a total of {num_samplings} responses to the input prompt.
+
+First, sample {num_samples_per_prompt} responses.
+Return them as a Python list of strings: ["response1", "response2", ...]
+"""
 
     def get_format_prompt(
         self,
@@ -730,6 +892,26 @@ Generate an alternative solution to the math problem.
         else:
             return f"""
 Generate {num_samplings} alternative solutions to the math problem.
+"""
+
+    
+    def get_sequence_cot_prompt(self, num_samplings: int = 5, **kwargs) -> str:
+        return f"""
+Generate {num_samplings} solutions to the math problem using step-by-step reasoning.
+
+First, provide step-by-step reasoning about how to approach generating diverse solutions.
+Then, output the responses as a Python list of strings, each ending with \\boxed{{final_answer}}.
+"""
+    
+    def get_sequence_multi_turn_prompt(
+        self, num_samplings: int = 5, num_samples_per_prompt: int = 2, **kwargs
+    ) -> str:
+        return f"""
+Generate a total of {num_samplings} solutions to the math problem.
+
+First, provide {num_samples_per_prompt} solutions.
+Return them as a Python list of strings: ["solution1", "solution2", ...]
+Each solution should show step-by-step reasoning and end with \\boxed{{final_answer}}.
 """
 
     def get_format_prompt(
@@ -852,6 +1034,8 @@ class PromptTemplateFactory:
             "standard": template.get_standard_prompt,  # vs standard
             "vs_cot": template.get_vs_cot_prompt,  # vs chain_of_thought
             "vs_multi": template.get_vs_multi_turn_prompt,  # vs multi_turn
+            "sequence_cot": template.get_sequence_cot_prompt,  # sequence with chain-of-thought
+            "sequence_multi": template.get_sequence_multi_turn_prompt,  # sequence multi-turn
             "continue": template.get_continue_prompt,
             "standard_all_possible": getattr(
                 template, "get_standard_all_possible_prompt", template.get_standard_prompt

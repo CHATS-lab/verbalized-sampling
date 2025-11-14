@@ -69,6 +69,10 @@ class ResponseParser:
                 return ResponseParser.parse_chain_of_thought(response)
             case Method.VS_MULTI:
                 return ResponseParser.parse_combined(response)
+            case Method.SEQUENCE_COT:
+                return ResponseParser.parse_sequence_cot(response)
+            case Method.SEQUENCE_MULTI:
+                return ResponseParser.parse_sequence(response)
             case _:
                 raise ValueError(f"Unknown parsing method: {method}")
     
@@ -137,6 +141,39 @@ class ResponseParser:
     def parse_combined(response: str) -> List[Dict]:
         """Parse VS-Multi (vs_multi) response."""
         return ResponseParser.parse_structure_with_probability(response)
+    
+    @staticmethod
+    def parse_sequence_cot(response: str) -> List[Dict]:
+        """Parse sequence with chain-of-thought response (reasoning + list of responses)."""
+        # Extract responses from dict format (with reasoning field)
+        if isinstance(response, dict):
+            if "responses" in response:
+                # Extract the responses list and parse it as a sequence
+                responses_list = response["responses"]
+                return ResponseParser.parse_sequence(responses_list)
+            else:
+                # Fallback: treat as single response
+                return [{'text': str(response)}]
+        
+        # For string or other types, extract JSON first
+        if not isinstance(response, (dict, list)):
+            try:
+                parsed = ResponseParser._extract_json(response)
+                # Recursively parse the extracted JSON
+                return ResponseParser.parse_sequence_cot(parsed)
+            except Exception:
+                # Fallback: try Python list format
+                try:
+                    parsed = ast.literal_eval(response)
+                    return ResponseParser.parse_sequence_cot(parsed)
+                except Exception:
+                    return [{'text': response}]
+        
+        # If it's already a list, parse as sequence
+        if isinstance(response, list):
+            return ResponseParser.parse_sequence(response)
+        
+        return [{'text': str(response)}]
     
     @staticmethod
     def parse_structure_with_probability(response: str) -> List[Dict[str, Union[str, float]]]:

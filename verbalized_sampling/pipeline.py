@@ -253,7 +253,7 @@ class Pipeline:
                         "all_possible": exp_config.all_possible,
                         "num_samples_per_prompt": (
                             exp_config.num_samples_per_prompt
-                            if exp_config.method == Method.VS_MULTI
+                            if exp_config.method in [Method.VS_MULTI, Method.SEQUENCE_MULTI]
                             else None
                         ),
                     }

@@ -40,10 +40,10 @@ def create_method_experiments(
     base = {
         "task": task,
         "model_name": model_name,
-        "num_responses": 30,  # 30
-        "num_prompts": 100,  # 100
+        "num_responses": 10,  # 30
+        "num_prompts": 5,  # 100
         "target_words": 0,
-        "temperature": 0.5,
+        "temperature": 0.7,
         "top_p": 1.0,
         "random_seed": 42,
         # 'use_vllm': True,
@@ -103,37 +103,48 @@ if __name__ == "__main__":
 
     # Test multi-turn and JSON mode variations
     methods = [
+        # {
+        #     "method": Method.DIRECT,
+        #     "strict_json": False,
+        #     "num_samples": 1,
+        # },
+        # {
+        #     "method": Method.SEQUENCE,
+        #     "strict_json": True,
+        #     "num_samples": 5,
+        # },
         {
-            "method": Method.DIRECT,
-            "strict_json": False,
-            "num_samples": 1,
-        },
-        {
-            "method": Method.SEQUENCE,
+            "method": Method.SEQUENCE_COT,
             "strict_json": True,
             "num_samples": 5,
         },
-        {
-            "method": Method.MULTI_TURN,
-            "strict_json": True,
-            "num_samples": 5,
-        },
-        {
-            "method": Method.VS_STANDARD,
-            "strict_json": True,
-            "num_samples": 5,
-            "probability_definition": "explicit",
-        },
-        {
-            "method": Method.VS_MULTI,
-            "strict_json": True,
-            "num_samples": 5,
-            "num_samples_per_prompt": 2,
-        },
+        # {
+        #     "method": Method.SEQUENCE_MULTI,
+        #     "strict_json": True,
+        #     "num_samples": 5,
+        #     "num_samples_per_prompt": 3,
+        # },
+        # {
+        #     "method": Method.MULTI_TURN,
+        #     "strict_json": True,
+        #     "num_samples": 5,
+        # },
+        # {
+        #     "method": Method.VS_STANDARD,
+        #     "strict_json": True,
+        #     "num_samples": 5,
+        #     "probability_definition": "explicit",
+        # },
+        # {
+        #     "method": Method.VS_MULTI,
+        #     "strict_json": True,
+        #     "num_samples": 5,
+        #     "num_samples_per_prompt": 2,
+        # },
     ]
 
     models = [
-        # "openai/gpt-4.1",
+        "openai/gpt-4.1",
         # "openai/gpt-4.1-mini",
         # "google/gemini-2.5-flash",
         # "anthropic/claude-4-sonnet",
@@ -141,12 +152,12 @@ if __name__ == "__main__":
         # "openai/o3",
         # "deepseek/deepseek-r1-0528",
         # "google/gemini-2.5-pro",
-        "Qwen/Qwen3-235B-A22B-Instruct-2507",
+        # "Qwen/Qwen3-235B-A22B-Instruct-2507",
         # "meta-llama/Llama-3.1-70B-Instruct"
         # "meta-llama/llama-3.1-70b-instruct"
         # "openai/o3",
         # "Qwen/Qwen3-235B-A22B-Instruct-2507",
-        "qwen3-235b",
+        # "qwen3-235b",
     ]
     for model in models:
         model_basename = model.replace("/", "_")
