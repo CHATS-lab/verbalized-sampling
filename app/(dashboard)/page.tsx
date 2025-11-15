@@ -219,6 +219,21 @@ export default function HomePage() {
               <span className="text-indigo-600 font-bold text-xs">🎓</span>
               <span className="font-semibold text-gray-800 text-sm">AI in Education</span>
             </a>
+
+            {/* Daily Dose of Data Science */}
+            <a
+              href="https://blog.dailydoseofds.com/p/verbalized-sampling-in-llms"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border-2 border-black rounded-full hover:bg-gray-50 transition-all shadow-sm"
+            >
+              <img 
+                src="https://substackcdn.com/image/fetch/w_80,h_80,c_fill,f_webp,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fc5dc1fee-2d1e-4892-b219-4b96f6998ab5_288x288.png"
+                alt="Daily Dose of Data Science"
+                className="w-4 h-4 rounded-full"
+              />
+              <span className="font-semibold text-gray-800 text-sm">Daily Dose of DS</span>
+            </a>
           </div>
         </div>
       </section>
