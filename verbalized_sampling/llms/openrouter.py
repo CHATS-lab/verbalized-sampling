@@ -77,18 +77,26 @@ class OpenRouterLLM(BaseLLM):
         else:
             provider_args = None
 
-        # Build parameters dynamically
+        # Build parameters dynamically (avoid passing unknown top-level kwargs to the SDK)
         params = {
             "model": self.model_name,
             "messages": messages,
             "temperature": self.config.get("temperature", 0.7),
             "top_p": self.config.get("top_p", 0.9),
-            "provider": provider_args,
         }
 
+        # Some backends (OpenRouter) accept provider/min_p inside the request body.
+        # The OpenAI Python client will reject unknown top-level kwargs like `provider`,
+        # so include provider/min_p under `extra_body` which the client will forward.
+        extra_body = {}
+        if provider_args is not None:
+            # provider_args is already a dict like {"provider": {...}}
+            extra_body.update(provider_args)
         # Only add min_p if it's provided in config
         if "min_p" in self.config:
-            params["min_p"] = self.config["min_p"]
+            extra_body["min_p"] = self.config["min_p"]
+        if extra_body:
+            params["extra_body"] = extra_body
 
         try:
             response = self.client.chat.completions.create(**params)
@@ -120,19 +128,23 @@ class OpenRouterLLM(BaseLLM):
 
                 # print("Schema: ", schema)
 
-                # Build parameters dynamically
+                # Build parameters dynamically (avoid passing unknown top-level kwargs)
                 params = {
                     "model": self.model_name,
                     "messages": messages,
                     "temperature": self.config.get("temperature", 0.7),
                     "top_p": self.config.get("top_p", 0.9),
                     "response_format": schema,
-                    "provider": provider_args,
                 }
 
-                # Only add min_p if it's provided in config
+                # Collect provider/min_p into extra_body so the underlying client forwards them
+                extra_body = {}
+                if provider_args is not None:
+                    extra_body.update(provider_args)
                 if "min_p" in self.config:
-                    params["extra_body"] = {"min_p": self.config["min_p"]}
+                    extra_body["min_p"] = self.config["min_p"]
+                if extra_body:
+                    params["extra_body"] = extra_body
 
                 completion = self.client.chat.completions.create(**params)
 

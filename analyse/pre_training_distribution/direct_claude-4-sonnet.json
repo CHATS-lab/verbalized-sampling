@@ -1,14 +1,42 @@
-{
-  "California": {
-    "count": 47,
-    "percentage": 0.94
+[
+  {
+    "California": 47,
+    "Ohio": 1,
+    "Texas": 2
   },
-  "Ohio": {
-    "count": 1,
-    "percentage": 0.02
+  {
+    "California": 47,
+    "Texas": 3
   },
-  "Texas": {
-    "count": 2,
-    "percentage": 0.04
+  {
+    "California": 47,
+    "Texas": 3
+  },
+  {
+    "California": 50
+  },
+  {
+    "Texas": 4,
+    "California": 46
+  },
+  {
+    "California": 47,
+    "Texas": 3
+  },
+  {
+    "California": 47,
+    "Texas": 3
+  },
+  {
+    "Texas": 3,
+    "California": 47
+  },
+  {
+    "California": 48,
+    "Texas": 2
+  },
+  {
+    "California": 49,
+    "Texas": 1
   }
-}
+]

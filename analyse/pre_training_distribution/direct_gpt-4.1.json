@@ -1,26 +1,79 @@
-{
-  "California": {
-    "count": 6,
-    "percentage": 0.12
+[
+  {
+    "California": 6,
+    "Montana": 10,
+    "Texas": 23,
+    "Oregon": 9,
+    "Arizona": 1,
+    "Colorado": 1
   },
-  "Montana": {
-    "count": 10,
-    "percentage": 0.2
+  {
+    "Ohio": 5,
+    "Texas": 21,
+    "California": 12,
+    "Montana": 7,
+    "Oregon": 4,
+    "Colorado": 1
   },
-  "Texas": {
-    "count": 23,
-    "percentage": 0.46
+  {
+    "Texas": 22,
+    "Oregon": 9,
+    "Ohio": 7,
+    "California": 6,
+    "Montana": 5,
+    "Colorado": 1
   },
-  "Oregon": {
-    "count": 9,
-    "percentage": 0.18
+  {
+    "California": 8,
+    "Ohio": 2,
+    "Texas": 28,
+    "Oregon": 7,
+    "Colorado": 1,
+    "Montana": 4
   },
-  "Arizona": {
-    "count": 1,
-    "percentage": 0.02
+  {
+    "Texas": 27,
+    "California": 4,
+    "Montana": 11,
+    "Colorado": 1,
+    "Oregon": 6,
+    "Ohio": 1
   },
-  "Colorado": {
-    "count": 1,
-    "percentage": 0.02
+  {
+    "Texas": 26,
+    "Oregon": 7,
+    "California": 9,
+    "Montana": 3,
+    "Ohio": 5
+  },
+  {
+    "Ohio": 3,
+    "California": 13,
+    "Texas": 23,
+    "Oregon": 3,
+    "Montana": 7,
+    "Colorado": 1
+  },
+  {
+    "Montana": 7,
+    "Colorado": 4,
+    "California": 7,
+    "Texas": 22,
+    "Oregon": 9,
+    "Ohio": 1
+  },
+  {
+    "Montana": 7,
+    "Texas": 28,
+    "California": 4,
+    "Ohio": 3,
+    "Oregon": 8
+  },
+  {
+    "Texas": 29,
+    "Oregon": 7,
+    "Montana": 8,
+    "Ohio": 3,
+    "California": 3
   }
-}
+]

@@ -38,7 +38,7 @@ def create_method_experiments(
     base = {
         "task": task,
         "model_name": model_name,
-        "num_responses": 1050,
+        "num_responses": 1050, #1050
         "num_prompts": 1,  # current total: 300; total: 4326
         "target_words": 80,
         "temperature": temperature,
@@ -96,45 +96,56 @@ def run_method_tests(
 if __name__ == "__main__":
     num_samples = 5
     methods = [
+        # {
+        #     "method": Method.DIRECT,
+        #     "strict_json": False,
+        #     "num_samples": 1,
+        # },
+        # {
+        #     "method": Method.DIRECT_COT,
+        #     "strict_json": False,
+        #     "num_samples": 1,
+        # },
+        # {
+        #     "method": Method.MULTI_TURN,
+        #     "strict_json": False,
+        #     "num_samples": num_samples,
+        # },
+        # {
+        #     "method": Method.SEQUENCE,
+        #     "strict_json": True,
+        #     "num_samples": num_samples,
+        # },
         {
-            "method": Method.DIRECT,
-            "strict_json": False,
-            "num_samples": 1,
-        },
-        {
-            "method": Method.DIRECT_COT,
-            "strict_json": False,
-            "num_samples": 1,
-        },
-        {
-            "method": Method.MULTI_TURN,
-            "strict_json": False,
-            "num_samples": num_samples,
-        },
-        {
-            "method": Method.SEQUENCE,
+            "method": Method.SEQUENCE_COT,
             "strict_json": True,
             "num_samples": num_samples,
         },
         {
-            "method": Method.VS_STANDARD,
-            "strict_json": True,
-            "num_samples": num_samples,
-            "probability_definition": "explicit",
-        },
-        {
-            "method": Method.VS_COT,
-            "strict_json": True,
-            "num_samples": num_samples,
-            "probability_definition": "explicit",
-        },
-        {
-            "method": Method.VS_MULTI,
+            "method": Method.SEQUENCE_MULTI,
             "strict_json": True,
             "num_samples": num_samples,
             "num_samples_per_prompt": 3,
-            "probability_definition": "confidence",
         },
+        # {
+        #     "method": Method.VS_STANDARD,
+        #     "strict_json": True,
+        #     "num_samples": num_samples,
+        #     "probability_definition": "explicit",
+        # },
+        # {
+        #     "method": Method.VS_COT,
+        #     "strict_json": True,
+        #     "num_samples": num_samples,
+        #     "probability_definition": "explicit",
+        # },
+        # {
+        #     "method": Method.VS_MULTI,
+        #     "strict_json": True,
+        #     "num_samples": num_samples,
+        #     "num_samples_per_prompt": 3,
+        #     "probability_definition": "confidence",
+        # },
     ]
 
     models = [
@@ -153,7 +164,7 @@ if __name__ == "__main__":
             task=Task.AMCAndAIMEMathTask,
             model_name=model,
             methods=methods,
-            metrics=["diversity"],
+            metrics=[""],
             temperature=0.7,
             top_p=1.0,
             output_dir="method_results_amc_aime_1000_no_example",
