@@ -31,6 +31,7 @@ def create_method_experiments(
     temperature: float,
     top_p: float,
     methods: List[Dict[str, Any]],
+    num_responses: int = 500,
 ) -> List[ExperimentConfig]:
     """Create experiments for testing specific method variations."""
 
@@ -38,7 +39,7 @@ def create_method_experiments(
     base = {
         "task": task,
         "model_name": model_name,
-        "num_responses": 500,
+        "num_responses": num_responses,
         "num_prompts": 1,
         "target_words": 0,
         "temperature": temperature,
@@ -69,11 +70,14 @@ def run_method_tests(
     top_p: float,
     output_dir: str,
     num_workers: int = 16,
+    num_responses: int = 500,
 ) -> None:
     """Run tests for specific method variations."""
     print("🔬 Running Method Tests")
 
-    experiments = create_method_experiments(task, model_name, temperature, top_p, methods)
+    experiments = create_method_experiments(
+        task, model_name, temperature, top_p, methods, num_responses
+    )
     print(f"📊 {len(experiments)} methods to test")
 
     for i, exp in enumerate(experiments, 1):
@@ -85,6 +89,7 @@ def run_method_tests(
         evaluation=EvaluationConfig(metrics=metrics),
         output_base_dir=Path(f"{output_dir}/{model_basename}_{task.value}"),
         skip_existing=True,
+        num_workers=num_workers,
     )
 
     pipeline = Pipeline(config)
@@ -93,70 +98,82 @@ def run_method_tests(
 
 
 if __name__ == "__main__":
-    # Example usage for testing different method variations
+    import argparse
 
-    # Test multi-turn and JSON mode variations
-    methods = [
-        {
-            "method": Method.DIRECT,
-            "strict_json": False,
-            "num_samples": 1,
-        },
-        # {
-        #     'method': Method.MULTI_TURN,
-        #     'strict_json': False,
-        #     'num_samples': 20,
-        # },
-        # {
-        #     'method': Method.SEQUENCE,
-        #     'strict_json': True,
-        #     'num_samples': 20,
-        # },
-        # {
-        #     'method': Method.VS_STANDARD,
-        #     'strict_json': True,
-        #     'num_samples': 20,
-        # },
-        # {
-        #     'method': Method.VS_COT,
-        #     'strict_json': True,
-        #     'num_samples': 20,
-        # },
-        {
-            "method": Method.VS_MULTI,
-            "strict_json": True,
-            "num_samples": 20,
-            "num_samples_per_prompt": 5,
-        },
-        # {
-        #     'method': Method.DIRECT_COT,
-        #     'strict_json': True,
-        #     'num_samples': 1,
-        # }
-    ]
+    parser = argparse.ArgumentParser(description="Run state name experiments")
+    parser.add_argument("--model", type=str, default="gpt-4.1", help="Model to use")
+    parser.add_argument(
+        "--methods",
+        type=str,
+        default="direct,vs_standard",
+        help="Comma-separated list of methods (e.g., 'direct,vs_standard,vs_cot')",
+    )
+    parser.add_argument("--num-responses", type=int, default=500, help="Number of responses")
+    parser.add_argument("--temperature", type=float, default=0.7, help="Temperature")
+    parser.add_argument("--top-p", type=float, default=1.0, help="Top-p sampling")
+    parser.add_argument(
+        "--output-dir", type=str, default="method_results_state_name", help="Output directory"
+    )
+    parser.add_argument("--num-workers", type=int, default=None, help="Number of workers")
+    args = parser.parse_args()
 
-    models = [
-        # "gpt-4.1-mini",
-        "gpt-4.1",
-        # "gemini-2.5-flash",
-        # "gemini-2.5-pro",
-        # "llama-3.1-70b-instruct",
-        # "anthropic/claude-4-sonnet",
-        # "deepseek-r1",
-        # "o3",
-    ]
-    for model in models:
-        model_basename = model.replace("/", "_")
-        run_method_tests(
-            task=Task.STATE_NAME,
-            model_name=model,
-            methods=methods,
-            metrics=["response_count"],
-            temperature=0.7,
-            top_p=1.0,
-            output_dir="method_results_state_name",
-            num_workers=16 if any(x in model_basename for x in ["claude", "gemini"]) else 32,
-        )
+    # Parse methods from command line
+    method_names = [m.strip().lower() for m in args.methods.split(",")]
+    method_map = {
+        "direct": Method.DIRECT,
+        "multi_turn": Method.MULTI_TURN,
+        "sequence": Method.SEQUENCE,
+        "vs_standard": Method.VS_STANDARD,
+        "vs_cot": Method.VS_COT,
+        "vs_multi": Method.VS_MULTI,
+        "direct_cot": Method.DIRECT_COT,
+    }
+
+    methods = []
+    for method_name in method_names:
+        if method_name not in method_map:
+            print(f"Warning: Unknown method '{method_name}', skipping")
+            continue
+
+        method = method_map[method_name]
+        if method == Method.DIRECT:
+            methods.append({"method": method, "strict_json": False, "num_samples": 1})
+        elif method == Method.DIRECT_COT:
+            methods.append({"method": method, "strict_json": True, "num_samples": 1})
+        elif method == Method.VS_MULTI:
+            methods.append(
+                {
+                    "method": method,
+                    "strict_json": True,
+                    "num_samples": 20,
+                    "num_samples_per_prompt": 5,
+                }
+            )
+        else:
+            methods.append({"method": method, "strict_json": True, "num_samples": 20})
+
+    if not methods:
+        print("Error: No valid methods specified")
+        exit(1)
+
+    # Determine number of workers
+    model_basename = args.model.replace("/", "_")
+    if args.num_workers is None:
+        num_workers = 16 if any(x in model_basename for x in ["claude", "gemini"]) else 32
+    else:
+        num_workers = args.num_workers
+
+    run_method_tests(
+        task=Task.STATE_NAME,
+        model_name=args.model,
+        methods=methods,
+        metrics=["response_count"],
+        temperature=args.temperature,
+        top_p=args.top_p,
+        output_dir=args.output_dir,
+        num_workers=num_workers,
+        num_responses=args.num_responses,
+    )
 
     # run_method_tests(
     #     task=Task.STATE_NAME,
