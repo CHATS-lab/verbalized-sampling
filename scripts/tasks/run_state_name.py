@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import argparse
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -98,8 +99,6 @@ def run_method_tests(
 
 
 if __name__ == "__main__":
-    import argparse
-
     parser = argparse.ArgumentParser(description="Run state name experiments")
     parser.add_argument("--model", type=str, default="gpt-4.1", help="Model to use")
     parser.add_argument(
